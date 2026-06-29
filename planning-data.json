@@ -1,0 +1,16 @@
+[
+  {
+    "id": "fbd81126-b193-414f-9030-d22b1efac00d",
+    "name": "Prueba primera",
+    "startdate": null,
+    "weeks": 2,
+    "days": []
+  },
+  {
+    "id": "8b85f1f2-ba02-4ce7-b09c-aceee05c4a53",
+    "name": "Segunda planificacion",
+    "startdate": null,
+    "weeks": 1,
+    "days": []
+  }
+]
