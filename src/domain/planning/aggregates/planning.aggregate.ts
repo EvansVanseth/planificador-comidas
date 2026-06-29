@@ -1,25 +1,35 @@
 import { DomainError } from "@/domain/shared/errors/domain-error";
 import { Id } from "@/domain/shared/value-objects/id.vo";
 import { Name } from "@/domain/shared/value-objects/name.vo";
+import { UserId } from "@/domain/users/value-objects/user-id.vo";
 import { StartDate } from "../value-objects/start-date.vo";
 import { PlannedWeeks } from "../value-objects/planned-weeks.vo";
-import { PlannedDay, PlannedDayDTO } from "../entities/planned-day.entity";
+import { PlannedDay, PlannedDayDTO, PlannedDayPrimitives } from "../entities/planned-day.entity";
 import { MealTime } from '../entities/meal-time.enum'
-import { MealService } from "../entities/meal-service.interface";
-import { CoversNumber } from "../value-objects/covers-number.vo";
 
 const DIAS_SEMANA = 7;
 const PLANNING_NAME_NICK = "Planning name";
 
+export type PlanningPrimitives = {
+  id: string;
+  userid: string;
+  name: string;
+  startdate: string | null;
+  weeks: number;
+  days: PlannedDayPrimitives[];
+};
+
 export class Planning {
   private id: Id;
+  private userId: UserId;
   private name: Name;
   private startDate: StartDate;
   private weeks: PlannedWeeks;
   private days: Map<number, PlannedDay> = new Map();
 
-  private constructor(id: Id, name: Name, startDate: StartDate, weeks: PlannedWeeks) {
+  private constructor(id: Id, userId: UserId, name: Name, startDate: StartDate, weeks: PlannedWeeks) {
     this.id = id;
+    this.userId = userId;
     this.name = name;
     this.startDate = startDate;
     this.weeks = weeks;
@@ -29,9 +39,10 @@ export class Planning {
     return this.weeks.value * DIAS_SEMANA;
   }
 
-  public static create(id: string, name: string, startDate: Date | null, weeks: number): Planning {
+  public static create(id: string, userId: string, name: string, startDate: Date | null, weeks: number): Planning {
     return new Planning(
       Id.create(id),
+      UserId.create(userId),
       Name.create(PLANNING_NAME_NICK, name),
       StartDate.create(startDate),
       PlannedWeeks.create(weeks)
@@ -41,6 +52,11 @@ export class Planning {
   //Id
   public getId(): string {
     return this.id.value;
+  }
+
+  // UserId
+  public getUserId(): string {
+    return this.userId.value;
   }
 
   // Name
@@ -118,11 +134,12 @@ export class Planning {
   }
 
   // Primitivas
-  public toPrimitives(): any {
+  public toPrimitives(): PlanningPrimitives {
     const serializedDays = Array.from(this.days.values()).map(day => day.toPrimitives());
 
     return {
-      id: this.id.value, 
+      id: this.id.value,
+      userid: this.userId.value,
       name: this.name.value,
       startdate: this.startDate.value ? this.startDate.value.toISOString() : null,
       weeks: this.weeks.value,
@@ -130,12 +147,13 @@ export class Planning {
     };
   }
 
-  public static fromPrimitives(data: any): Planning {
+  public static fromPrimitives(data: PlanningPrimitives): Planning {
 
-    const parsedDate = data.startDate ? new Date(data.startDate) : null;
+    const parsedDate = data.startdate ? new Date(data.startdate) : null;
 
     const planning = new Planning(
       Id.create(data.id),
+      UserId.create(data.userid),
       Name.create(PLANNING_NAME_NICK, data.name),
       StartDate.create(parsedDate),
       PlannedWeeks.create(data.weeks)

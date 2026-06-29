@@ -1,7 +1,7 @@
 import { Id } from "@/domain/shared/value-objects/id.vo";
 import { DayOrder } from "../value-objects/day-order.vo";
 import { MealTime } from './meal-time.enum'
-import { MealService } from './meal-service.interface'
+import { MealService, MealServicePrimitives } from './meal-service.interface'
 import { DomainError } from "@/domain/shared/errors/domain-error";
 import { CoversNumber } from "../value-objects/covers-number.vo";
 
@@ -12,12 +12,11 @@ export interface PlannedDayDTO {
   readonly services: Record<MealTime, MealService | null>;
 }
 
-// Para devolver las primitivas de los servicios (Meals)
-export interface MealServicePrimitives {
-  time: string;
-  recipeId: string;
-  covers: number;
-}
+export type PlannedDayPrimitives = {
+  id: string;
+  order: number;
+  services: MealServicePrimitives[];
+};
 
 export class PlannedDay {
   private id: Id;
@@ -42,7 +41,6 @@ export class PlannedDay {
   public getOrdenDia() : number {
     return this.orden_dia.value;
   }  
-
 
   // Meals
   public addMeal(time: MealTime, recipeId: string, covers: number): void {
@@ -71,13 +69,13 @@ export class PlannedDay {
   }
 
   // Primitivas
-  public toPrimitives(): any {
+  public toPrimitives(): PlannedDayPrimitives {
 
     const serializedServices: MealServicePrimitives[] = Array.from(this.services.entries()).map(([time, service]) => {
       return {
         time: time as string,
-        recipeId: service.recipeId.value, // Extraemos el primitivo del VO
-        covers: service.covers.value      // Extraemos el primitivo del VO
+        recipeId: service.recipeId.value, 
+        covers: service.covers.value      
       };
     });    
 
@@ -88,7 +86,7 @@ export class PlannedDay {
     };
   }
 
-  public static fromPrimitives(data: any): PlannedDay {
+  public static fromPrimitives(data: PlannedDayPrimitives): PlannedDay {
     const day = new PlannedDay(
       Id.create(data.id),
       DayOrder.create(data.order)

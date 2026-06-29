@@ -1,0 +1,6 @@
+export enum TagDimension {
+  MOMENTO_DIA = 'MOMENTO_DIA',
+  FORMATO = 'FORMATO',
+  TIPO_PLATO = 'TIPO_PLATO',
+  ESTILOS_VIDA = 'ESTILOS_VIDA',
+}

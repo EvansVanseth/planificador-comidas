@@ -6,9 +6,9 @@ import { randomUUID } from 'crypto';
 export class CreatePlanningUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(name: string, startDate: Date | null, weeks: number): string {
+  execute(userId: string, name: string, startDate: Date | null, weeks: number): string {
     const id = randomUUID();
-    const planning = Planning.create(id, name, startDate, weeks);
+    const planning = Planning.create(id, userId, name, startDate, weeks);
     
     this.planningRepository.save(planning);
     return id; // Devolvemos el ID generado

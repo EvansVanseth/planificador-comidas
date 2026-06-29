@@ -86,7 +86,21 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
     - [x] Paso 6: Creación de persistencia en archivo
         - [x] crear conversión y lectura de primitivas para entidades y agregados
 
-- [ ] Fase 3: Completar CRUD para plannings, ingredientes en despensa y comprados
+--- A partir de este punto : Uso de OpenCode para seguir programando ---
+
+- [ ] Fase 3: Completar domain
+    - [x] Paso 1: Crear VO y agregado para Bounded Context (Users) `domain/users/`
+        - [x] user-id.vo.ts + user-id.vo.spec.ts
+        - [x] user.aggregate.ts + user.aggregate.spec.ts
+    - [x] Paso 2: Ajustes varios para sostener applicación y infraestructura
+        - [x] Refactoricar Planning para usar IdUser
+        - [x] Refactoricar Planning para usar IdUser
+        - [x] Ajustado CLI y repositorios para el nuevo create con userId de Planning (Por ahora usaremos un mockIdUser)
+    - [x] Paso 3: Creación de otros enum, VO, entities y agregados de recipes
+        - [x] Conversión de TagDimension de VO a enum (+ test)
+        - [x] Ajuste de MealTime (se ha añadido test)
+
+
 - [ ] Fase 4: Crear dominio para recipes, ingredients y tags
 - [ ] Fase 5: Impementar CRUD para recipes, ingredients y tags
 - [ ] Fase 6: Crear dominio para usuarios y autenticación

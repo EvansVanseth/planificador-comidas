@@ -91,13 +91,14 @@ async function menuPrincipal(container: IContainer) {
 async function manejarCreacion(container: IContainer) {
   try {
     const answers = await prompts([
+      { type: 'text', name: 'userId', message: 'ID de usuario (UUID):', initial: '550e8400-e29b-41d4-a716-446655440000' },
       { type: 'text', name: 'name', message: 'Nombre:' },
       { type: 'number', name: 'weeks', message: 'Semanas:' }
     ], { 
       onCancel: () => { throw new AppError('Operación cancelada por el usuario'); }
     });
 
-    const id = container.createPlanning.execute(answers.name, null, answers.weeks);
+    const id = container.createPlanning.execute(answers.userId, answers.name, null, answers.weeks);
     console.log(`Planificación creada: ${id}`);
     
   } catch (error) {

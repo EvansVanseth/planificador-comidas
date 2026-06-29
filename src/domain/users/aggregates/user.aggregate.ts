@@ -1,19 +1,24 @@
-import { Id } from '@/domain/shared/value-objects/id.vo';
 import { Name } from '@/domain/shared/value-objects/name.vo';
+import { UserId } from '@/domain/users/value-objects/user-id.vo';
 
 const USER_NAME_FIELD = "user name";
 
+export type UserPrimitives = {
+  id: string;
+  name: string;
+};
+
 export class User {
-  private id: Id;
+  private id: UserId;
   private name: Name;
 
-  private constructor(id: Id, name: Name) {
+  private constructor(id: UserId, name: Name) {
     this.id = id;
     this.name = name;
   }
 
   public static create(id: string, name: string): User {
-    return new User(Id.create(id), Name.create(USER_NAME_FIELD, name));
+    return new User(UserId.create(id), Name.create(USER_NAME_FIELD, name));
   }
 
   public getId(): string {
@@ -28,14 +33,14 @@ export class User {
     this.name = Name.create(USER_NAME_FIELD, name);
   }
 
-  public toPrimitives(): Record<string, unknown> {
+  public toPrimitives(): UserPrimitives {
     return {
       id: this.id.value,
       name: this.name.value
     };
   }
 
-  public static fromPrimitives(data: { id: string; name: string }): User {
-    return new User(Id.create(data.id), Name.create(USER_NAME_FIELD, data.name));
+  public static fromPrimitives(data: UserPrimitives): User {
+    return new User(UserId.create(data.id), Name.create(USER_NAME_FIELD, data.name));
   }
 }

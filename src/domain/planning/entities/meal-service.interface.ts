@@ -5,3 +5,9 @@ export interface MealService {
   readonly recipeId: Id;
   readonly covers: CoversNumber;
 }
+
+export interface MealServicePrimitives {
+  time: string;
+  recipeId: string;
+  covers: number;
+}
