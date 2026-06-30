@@ -100,6 +100,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] Conversión de TagDimension de VO a enum (+ test)
         - [x] Ajuste de MealTime (se ha añadido test)
         - [x] tag.aggregate.ts + tag.aggregate.spec.ts
+        - [x] ingredient.aggregate.ts + ingregient.aggregate.spec.ts
 
 
 - [ ] Fase 4: Crear dominio para recipes, ingredients y tags
