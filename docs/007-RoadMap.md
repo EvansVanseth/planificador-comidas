@@ -104,6 +104,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] recipe-ingredient.vo.ts + recipe-ingregient.vo.spec.ts
         - [x] recipe.aggregate.ts (+spec) + base-servings.vo (+spec)
         - [x] refactor mealservice from enum to entity
+        - [x] planning-pantry-item.entity.ts (+spec)
 
 
 - [ ] Fase 4: Crear dominio para recipes, ingredients y tags
