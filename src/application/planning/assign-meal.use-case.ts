@@ -8,7 +8,7 @@ export class AssignMealUseCase {
   execute(planningId: string, orderDay: number, time: MealTime, recipeId: string, covers: number) {
     const planning = this.planningRepository.findById(planningId);
     if (planning === null) throw new AppError('El Id del planning no existe'); 
-    planning.assignMealToDay(orderDay, time, recipeId, covers);
+    planning.assignMealToDay(orderDay, time, covers, recipeId);
     this.planningRepository.save(planning);
   }
 }

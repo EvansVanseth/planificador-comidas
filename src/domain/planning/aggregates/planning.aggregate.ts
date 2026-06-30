@@ -108,13 +108,13 @@ export class Planning {
     this.days.set(day.getOrdenDia(), day);
   }
 
-  public assignMealToDay(ordenDia: number, time: MealTime, recipeId: string, covers: number): void {
+  public assignMealToDay(ordenDia: number, time: MealTime, covers: number, recipeId?: string): void {
     const day = this.days.get(ordenDia);
     if (!day) {
       throw new DomainError('No existe un día con ese orden');
     }
 
-    day.addMeal(time, recipeId, covers);
+    day.addMeal(time, covers, recipeId);
   }
 
   public removeDay(ordenDia: number): void {

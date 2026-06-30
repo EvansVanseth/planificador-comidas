@@ -1,11 +1,9 @@
 import { Id } from "@/domain/shared/value-objects/id.vo";
 import { DayOrder } from "../value-objects/day-order.vo";
 import { MealTime } from './meal-time.enum'
-import { MealService, MealServicePrimitives } from './meal-service.interface'
+import { MealService, MealServicePrimitives } from './meal-service.entity'
 import { DomainError } from "@/domain/shared/errors/domain-error";
-import { CoversNumber } from "../value-objects/covers-number.vo";
 
-// Para devolver un DTO de PlannedDay, que es un objeto plano que se puede serializar fácilmente
 export interface PlannedDayDTO {
   readonly id: string;
   readonly order: number;
@@ -32,28 +30,25 @@ export class PlannedDay {
     return new PlannedDay(Id.create(id), DayOrder.create(dia));
   }
 
-  // Id
   public getId() : string {
     return this.id.value;
   }
 
-  // OrdenDia
   public getOrdenDia() : number {
     return this.orden_dia.value;
   }  
 
-  // Meals
-  public addMeal(time: MealTime, recipeId: string, covers: number): void {
+  public addMeal(time: MealTime, covers: number, recipeId?: string, exclusions?: string[], preferences?: string[]): void {
     if (this.services.has(time)) {
       throw new DomainError("Ya hay un servicio asignado a esta hora");
     }
-    this.services.set(time, { recipeId: Id.create(recipeId), covers: CoversNumber.create(covers) });
+    this.services.set(time, MealService.create(covers, recipeId, exclusions, preferences));
   }
+
   public getMeal(time: MealTime): MealService | null {
     return this.services.get(time) ?? null;
   }
 
-  // DTO
   public toDTO(): PlannedDayDTO {
     const servicesDTO: Record<MealTime, MealService | null> = {
       [MealTime.BREAKFAST]: this.services.get(MealTime.BREAKFAST) ?? null,
@@ -68,14 +63,11 @@ export class PlannedDay {
     };
   }
 
-  // Primitivas
   public toPrimitives(): PlannedDayPrimitives {
-
     const serializedServices: MealServicePrimitives[] = Array.from(this.services.entries()).map(([time, service]) => {
       return {
+        ...service.toPrimitives(),
         time: time as string,
-        recipeId: service.recipeId.value, 
-        covers: service.covers.value      
       };
     });    
 
@@ -94,7 +86,8 @@ export class PlannedDay {
 
     if (data.services && Array.isArray(data.services)) {
       data.services.forEach((svc: MealServicePrimitives) => {
-        day.addMeal(svc.time as MealTime, svc.recipeId, svc.covers);
+        const service = MealService.fromPrimitives(svc);
+        day.services.set(svc.time as MealTime, service);
       });
     }
 

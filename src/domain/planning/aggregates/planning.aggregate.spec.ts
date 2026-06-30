@@ -104,7 +104,7 @@ describe('Planning (Aggregate)', () => {
   it('debería asignar una comida a un día de un Planning correctamente', () => {
     const planning = Planning.create(validId, validId, 'Mi planificación', null, 2);
     planning.addDay(validId, 1);
-    planning.assignMealToDay(1, MealTime.BREAKFAST, validId, 10);
+    planning.assignMealToDay(1, MealTime.BREAKFAST, 10, validId);
     const day = planning.getDay(1);
     expect(day).not.toBeNull();
     expect(Object.values(day!.services).filter((service) => service !== null).length).toBe(1);
@@ -139,7 +139,7 @@ describe('Planning (Aggregate)', () => {
   it('debe serializar a primitivas correctamente con días y comidas', () => {
     const planning = Planning.create(validId, validId, 'Mi planificación', new Date(2026, 5, 22), 1);
     planning.addDay('550e8400-e29b-41d4-a716-446655440001', 1);
-    planning.assignMealToDay(1, MealTime.BREAKFAST, validId, 2);
+    planning.assignMealToDay(1, MealTime.BREAKFAST, 2, validId);
 
     const primitives = planning.toPrimitives();
     expect(primitives.id).toBe(validId);
@@ -152,7 +152,9 @@ describe('Planning (Aggregate)', () => {
     expect(primitives.days[0].services[0]).toEqual({
       time: 'BREAKFAST',
       recipeId: validId,
-      covers: 2
+      covers: 2,
+      exclusions: [],
+      preferences: []
     });
   });
 
@@ -169,7 +171,9 @@ describe('Planning (Aggregate)', () => {
         services: [{
           time: 'LUNCH',
           recipeId: validId,
-          covers: 4
+          covers: 4,
+          exclusions: [],
+          preferences: []
         }]
       }]
     };
@@ -186,7 +190,7 @@ describe('Planning (Aggregate)', () => {
   it('debe mantener integridad en un roundtrip toPrimitives -> fromPrimitives -> toPrimitives', () => {
     const original = Planning.create(validId, validId, 'Roundtrip', new Date(2026, 5, 22), 1);
     original.addDay('550e8400-e29b-41d4-a716-446655440001', 1);
-    original.assignMealToDay(1, MealTime.DINNER, '550e8400-e29b-41d4-a716-446655440002', 3);
+    original.assignMealToDay(1, MealTime.DINNER, 3, '550e8400-e29b-41d4-a716-446655440002');
 
     const primitives = original.toPrimitives();
     const restored = Planning.fromPrimitives(primitives);

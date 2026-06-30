@@ -28,15 +28,26 @@ describe('PlannedDay (Entity)', () => {
 
   it('debe permitir añadir un servicio de comida', () => {
     const plannedDay = PlannedDay.create(validId, 1);
-    plannedDay.addMeal(MealTime.LUNCH, validId, 2);
-    expect(plannedDay.getMeal(MealTime.LUNCH)?.recipeId.value).toEqual(validId);
-    expect(plannedDay.getMeal(MealTime.LUNCH)?.covers.value).toEqual(2);
+    plannedDay.addMeal(MealTime.LUNCH, 2, validId);
+    const meal = plannedDay.getMeal(MealTime.LUNCH);
+    expect(meal).not.toBeNull();
+    expect(meal!.getRecipeId()).toBe(validId);
+    expect(meal!.getCovers()).toBe(2);
+  });
+
+  it('debe permitir añadir un servicio sin receta (pendiente de planificar)', () => {
+    const plannedDay = PlannedDay.create(validId, 1);
+    plannedDay.addMeal(MealTime.LUNCH, 4);
+    const meal = plannedDay.getMeal(MealTime.LUNCH);
+    expect(meal).not.toBeNull();
+    expect(meal!.getRecipeId()).toBeNull();
+    expect(meal!.getCovers()).toBe(4);
   });
 
   it('debe fallar al intentar añadir un servicio de comida a una hora ya ocupada', () => {
     const plannedDay = PlannedDay.create(validId, 1);
-    plannedDay.addMeal(MealTime.LUNCH, validId, 2);
-    expect(() => plannedDay.addMeal(MealTime.LUNCH, validId, 2)).toThrow(DomainError);
+    plannedDay.addMeal(MealTime.LUNCH, 2, validId);
+    expect(() => plannedDay.addMeal(MealTime.LUNCH, 2, validId)).toThrow(DomainError);
   });
 
 })
