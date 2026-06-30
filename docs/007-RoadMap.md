@@ -99,6 +99,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
     - [x] Paso 3: Creación de otros enum, VO, entities y agregados de recipes
         - [x] Conversión de TagDimension de VO a enum (+ test)
         - [x] Ajuste de MealTime (se ha añadido test)
+        - [x] tag.aggregate.ts + tag.aggregate.spec.ts
 
 
 - [ ] Fase 4: Crear dominio para recipes, ingredients y tags
