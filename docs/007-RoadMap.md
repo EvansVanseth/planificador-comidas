@@ -106,6 +106,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] refactor mealservice from enum to entity
         - [x] planning-pantry-item.entity.ts (+spec)
         - [x] planning-shopping-item.entity.ts (+spec)
+        - [x] refactor planning.aggregate.ts (added planning pantry and shopping items)
 
 
 - [ ] Fase 4: Crear dominio para recipes, ingredients y tags

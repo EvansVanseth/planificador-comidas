@@ -132,7 +132,9 @@ describe('Planning (Aggregate)', () => {
       name: 'Mi planificación',
       startdate: null,
       weeks: 1,
-      days: []
+      days: [],
+      pantryItems: [],
+      shoppingItems: []
     });
   });
 
@@ -175,7 +177,9 @@ describe('Planning (Aggregate)', () => {
           exclusions: [],
           preferences: []
         }]
-      }]
+      }],
+      pantryItems: [],
+      shoppingItems: []
     };
 
     const planning = Planning.fromPrimitives(data);
@@ -197,5 +201,102 @@ describe('Planning (Aggregate)', () => {
     const restoredPrimitives = restored.toPrimitives();
 
     expect(restoredPrimitives).toEqual(primitives);
+  });
+
+  const ingredientId1 = '550e8400-e29b-41d4-a716-446655440100';
+  const ingredientId2 = '550e8400-e29b-41d4-a716-446655440101';
+  const ingredientId3 = '550e8400-e29b-41d4-a716-446655440102';
+  const pantryItemId = '550e8400-e29b-41d4-a716-446655440103';
+  const pantryItemId2 = '550e8400-e29b-41d4-a716-446655440104';
+  const shoppingItemId = '550e8400-e29b-41d4-a716-446655440105';
+
+  // Pantry Items
+  it('debería añadir un item de despensa correctamente', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.addPantryItem(pantryItemId, ingredientId1);
+    expect(planning.getPantryItems()).toHaveLength(1);
+  });
+
+  it('debería fallar al añadir un item de despensa duplicado', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.addPantryItem(pantryItemId, ingredientId1);
+    expect(() => planning.addPantryItem(pantryItemId, ingredientId1)).toThrow(DomainError);
+  });
+
+  it('debería eliminar un item de despensa correctamente', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.addPantryItem(pantryItemId, ingredientId1);
+    planning.removePantryItem(ingredientId1);
+    expect(planning.getPantryItems()).toHaveLength(0);
+  });
+
+  it('debería marcar un item de despensa como disponible correctamente', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.addPantryItem(pantryItemId, ingredientId1);
+    planning.markPantryItemAsAvailable(ingredientId1);
+    const items = planning.getPantryItems();
+    expect(items[0].isAvailable()).toBe(true);
+  });
+
+  it('debería actualizar covers de un item de despensa correctamente', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.addPantryItem(pantryItemId, ingredientId1);
+    planning.updatePantryItemCovers(ingredientId1, 5);
+    const items = planning.getPantryItems();
+    expect(items[0].getCovers()).toBe(5);
+  });
+
+  // Shopping Items
+  it('debería añadir un item de compra correctamente', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.addShoppingItem(shoppingItemId, ingredientId1);
+    expect(planning.getShoppingItems()).toHaveLength(1);
+  });
+
+  it('debería fallar al añadir un item de compra duplicado', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.addShoppingItem(shoppingItemId, ingredientId1);
+    expect(() => planning.addShoppingItem(shoppingItemId, ingredientId1)).toThrow(DomainError);
+  });
+
+  it('debería eliminar un item de compra correctamente', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.addShoppingItem(shoppingItemId, ingredientId1);
+    planning.removeShoppingItem(ingredientId1);
+    expect(planning.getShoppingItems()).toHaveLength(0);
+  });
+
+  it('debería marcar un item de compra como completado correctamente', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.addShoppingItem(shoppingItemId, ingredientId1);
+    planning.markShoppingItemAsCompleted(ingredientId1);
+    const items = planning.getShoppingItems();
+    expect(items[0].isCompleted()).toBe(true);
+  });
+
+  it('debería marcar un item de compra como pendiente correctamente', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.addShoppingItem(shoppingItemId, ingredientId1);
+    planning.markShoppingItemAsCompleted(ingredientId1);
+    planning.markShoppingItemAsPending(ingredientId1);
+    const items = planning.getShoppingItems();
+    expect(items[0].isCompleted()).toBe(false);
+  });
+
+  it('debería mantener integridad roundtrip con pantry y shopping items', () => {
+    const original = Planning.create(validId, validId, 'Roundtrip', null, 1);
+    original.addPantryItem(pantryItemId, ingredientId1);
+    original.addPantryItem(pantryItemId2, ingredientId2);
+    original.markPantryItemAsAvailable(ingredientId1);
+    original.addShoppingItem(shoppingItemId, ingredientId3);
+    original.markShoppingItemAsCompleted(ingredientId3);
+
+    const primitives = original.toPrimitives();
+    const restored = Planning.fromPrimitives(primitives);
+    const restoredPrimitives = restored.toPrimitives();
+
+    expect(restoredPrimitives).toEqual(primitives);
+    expect(restored.getPantryItems()).toHaveLength(2);
+    expect(restored.getShoppingItems()).toHaveLength(1);
   });
 })

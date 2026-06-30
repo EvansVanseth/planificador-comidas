@@ -6,6 +6,8 @@ import { StartDate } from "../value-objects/start-date.vo";
 import { PlannedWeeks } from "../value-objects/planned-weeks.vo";
 import { PlannedDay, PlannedDayDTO, PlannedDayPrimitives } from "../entities/planned-day.entity";
 import { MealTime } from '../entities/meal-time.enum'
+import { PlanningPantryItem, PlanningPantryItemPrimitives } from "../entities/planning-pantry-item.entity";
+import { PlanningShoppingItem, PlanningShoppingItemPrimitives } from "../entities/planning-shopping-item.entity";
 
 const DIAS_SEMANA = 7;
 const PLANNING_NAME_NICK = "Planning name";
@@ -17,6 +19,8 @@ export type PlanningPrimitives = {
   startdate: string | null;
   weeks: number;
   days: PlannedDayPrimitives[];
+  pantryItems: PlanningPantryItemPrimitives[];
+  shoppingItems: PlanningShoppingItemPrimitives[];
 };
 
 export class Planning {
@@ -26,6 +30,8 @@ export class Planning {
   private startDate: StartDate;
   private weeks: PlannedWeeks;
   private days: Map<number, PlannedDay> = new Map();
+  private pantryItems: Map<string, PlanningPantryItem> = new Map();
+  private shoppingItems: Map<string, PlanningShoppingItem> = new Map();
 
   private constructor(id: Id, userId: UserId, name: Name, startDate: StartDate, weeks: PlannedWeeks) {
     this.id = id;
@@ -33,10 +39,6 @@ export class Planning {
     this.name = name;
     this.startDate = startDate;
     this.weeks = weeks;
-  }
-
-  public CountWeekDays(): number {
-    return this.weeks.value * DIAS_SEMANA;
   }
 
   public static create(id: string, userId: string, name: string, startDate: Date | null, weeks: number): Planning {
@@ -133,6 +135,80 @@ export class Planning {
     return day ? day.toDTO() : null;
   }
 
+  // Pantry Items
+  public addPantryItem(id: string, ingredientId: string): void {
+    if (this.pantryItems.has(ingredientId)) {
+      throw new DomainError('Ya existe un item de despensa para ese ingrediente');
+    }
+    this.pantryItems.set(ingredientId, PlanningPantryItem.create(id, ingredientId));
+  }
+
+  public removePantryItem(ingredientId: string): void {
+    if (!this.pantryItems.has(ingredientId)) {
+      throw new DomainError('No existe un item de despensa para ese ingrediente');
+    }
+    this.pantryItems.delete(ingredientId);
+  }
+
+  public markPantryItemAsAvailable(ingredientId: string): void {
+    const item = this.pantryItems.get(ingredientId);
+    if (!item) {
+      throw new DomainError('No existe un item de despensa para ese ingrediente');
+    }
+    item.markAsAvailable();
+  }
+
+  public updatePantryItemCovers(ingredientId: string, covers: number): void {
+    const item = this.pantryItems.get(ingredientId);
+    if (!item) {
+      throw new DomainError('No existe un item de despensa para ese ingrediente');
+    }
+    item.updateCovers(covers);
+  }
+
+  public getPantryItems(): PlanningPantryItem[] {
+    return Array.from(this.pantryItems.values());
+  }
+
+  // Shopping Items
+  public addShoppingItem(id: string, ingredientId: string): void {
+    if (this.shoppingItems.has(ingredientId)) {
+      throw new DomainError('Ya existe un item de compra para ese ingrediente');
+    }
+    this.shoppingItems.set(ingredientId, PlanningShoppingItem.create(id, ingredientId));
+  }
+
+  public removeShoppingItem(ingredientId: string): void {
+    if (!this.shoppingItems.has(ingredientId)) {
+      throw new DomainError('No existe un item de compra para ese ingrediente');
+    }
+    this.shoppingItems.delete(ingredientId);
+  }
+
+  public markShoppingItemAsCompleted(ingredientId: string): void {
+    const item = this.shoppingItems.get(ingredientId);
+    if (!item) {
+      throw new DomainError('No existe un item de compra para ese ingrediente');
+    }
+    item.markAsCompleted();
+  }
+
+  public markShoppingItemAsPending(ingredientId: string): void {
+    const item = this.shoppingItems.get(ingredientId);
+    if (!item) {
+      throw new DomainError('No existe un item de compra para ese ingrediente');
+    }
+    item.markAsPending();
+  }
+
+  public getShoppingItems(): PlanningShoppingItem[] {
+    return Array.from(this.shoppingItems.values());
+  }
+
+  public CountWeekDays(): number {
+    return this.weeks.value * DIAS_SEMANA;
+  }
+
   // Primitivas
   public toPrimitives(): PlanningPrimitives {
     const serializedDays = Array.from(this.days.values()).map(day => day.toPrimitives());
@@ -143,7 +219,9 @@ export class Planning {
       name: this.name.value,
       startdate: this.startDate.value ? this.startDate.value.toISOString() : null,
       weeks: this.weeks.value,
-      days: serializedDays
+      days: serializedDays,
+      pantryItems: Array.from(this.pantryItems.values()).map(item => item.toPrimitives()),
+      shoppingItems: Array.from(this.shoppingItems.values()).map(item => item.toPrimitives()),
     };
   }
 
@@ -163,6 +241,20 @@ export class Planning {
       data.days.forEach((dayData: any) => {
         const day = PlannedDay.fromPrimitives(dayData);
         planning.days.set(day.getOrdenDia(), day);
+      });
+    }
+
+    if (data.pantryItems && Array.isArray(data.pantryItems)) {
+      data.pantryItems.forEach((itemData: PlanningPantryItemPrimitives) => {
+        const item = PlanningPantryItem.fromPrimitives(itemData);
+        planning.pantryItems.set(item.getIngredientId(), item);
+      });
+    }
+
+    if (data.shoppingItems && Array.isArray(data.shoppingItems)) {
+      data.shoppingItems.forEach((itemData: PlanningShoppingItemPrimitives) => {
+        const item = PlanningShoppingItem.fromPrimitives(itemData);
+        planning.shoppingItems.set(item.getIngredientId(), item);
       });
     }
 
