@@ -123,6 +123,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] CRUD Recipes (recetas)
         - [x] CRUD Plannings (planificaciones)
 - [ ] Fase 5: CLI + FilePersistence
+        - [x] Refactorizar estructura de menus
         - [ ] Menu para manejar CRUD de Tags
         - [ ] Menu para manejar CRUD de Ingredients
         - [ ] Menu para manejar CRUD de Recipes

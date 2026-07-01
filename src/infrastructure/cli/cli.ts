@@ -1,8 +1,9 @@
 import prompts from 'prompts';
 import { createContainer, IContainer } from '../container';
-import { AppError } from '../../application/shared/errors/app-error';
-import { DomainError } from '../../domain/shared/errors/domain-error';
-import { Planning } from '../../domain/planning/aggregates/planning.aggregate';
+import { menuPlanificaciones } from './planning.menu';
+import { menuEtiquetas } from './tag.menu';
+import { menuIngredientes } from './ingredient.menu';
+import { menuRecetas } from './recipe.menu';
 
 async function run() {
   const welcomeMessage = '-----------------------------------------------\r\n' + 
@@ -29,56 +30,41 @@ async function run() {
 
   const container = createContainer(response.opcion); 
   
-  menuPrincipal(container);
-
-}
-
-async function mostrarMenuPrincipal() {
-  const response = await prompts({
-    type: 'select',
-    name: 'opcion',
-    message: '¿Que quieres hacer?',
-    choices: [
-      { title: 'Ver planificaciones', value: 'list' },
-      { title: 'Crear planificación', value: 'create' },
-      { title: 'Editar planificacion', value: 'edit' },
-      { title: 'Salir', value: 'exit' }
-    ]
-  });
-
-  return response.opcion;
+  await menuPrincipal(container);
 }
 
 function mostrarDespedida() {
-  console.log ('¡ Gracias por usar el Planificdor de comidas !');
+  console.log('¡ Gracias por usar el Planificdor de comidas !');
 }
 
 async function menuPrincipal(container: IContainer) {
   let continuar = true;
   while (continuar) {
-    const opcion = await mostrarMenuPrincipal();
+    const response = await prompts({
+      type: 'select',
+      name: 'opcion',
+      message: '¿Que modulo quieres gestionar?',
+      choices: [
+        { title: 'Etiquetas',        value: 'tags' },
+        { title: 'Ingredientes',     value: 'ingredients' },
+        { title: 'Recetas',          value: 'recipes' },
+        { title: 'Planificaciones',  value: 'plannings' },
+        { title: 'Salir',            value: 'exit' }
+      ]
+    });
 
-    switch (opcion) {
-      case 'list':
-        // Aqui listariamos las planificaciones existentes
-        console.log('--- Listado de planificaciones ---');
-        const plannings = container.listPlannings.execute();
-        console.log('----------------------------------');
-        if (plannings.length === 0) {
-          console.log ('No hay planificaciones creadas');
-        } else {
-          plannings.forEach((planning: Planning) => {
-            console.log (`(id: ${planning.getId()}) ${planning.getName()}: ${planning.getWeeks()} semanas`)
-          });
-        }
-        console.log('----------------------------------');
+    switch (response.opcion) {
+      case 'tags':
+        await menuEtiquetas(container);
         break;
-      case 'create':
-        await manejarCreacion(container);
+      case 'ingredients':
+        await menuIngredientes(container);
         break;
-      case 'edit':
-        // Aqui llamaríamos a AssignMealUseCase
-        console.log('Editanto el planning...');
+      case 'recipes':
+        await menuRecetas(container);
+        break;
+      case 'plannings':
+        await menuPlanificaciones(container);
         break;
       case 'exit':
         continuar = false;
@@ -86,28 +72,6 @@ async function menuPrincipal(container: IContainer) {
         break;
     }
   }
-}
-
-async function manejarCreacion(container: IContainer) {
-  try {
-    const answers = await prompts([
-      { type: 'text', name: 'userId', message: 'ID de usuario (UUID):', initial: '550e8400-e29b-41d4-a716-446655440000' },
-      { type: 'text', name: 'name', message: 'Nombre:' },
-      { type: 'number', name: 'weeks', message: 'Semanas:' }
-    ], { 
-      onCancel: () => { throw new AppError('Operación cancelada por el usuario'); }
-    });
-
-    const id = container.createPlanning.execute(answers.userId, answers.name, null, answers.weeks);
-    console.log(`Planificación creada: ${id}`);
-    
-  } catch (error) {
-    if (error instanceof DomainError) {
-      console.log(error.message);
-    } 
-    console.log('\n--- Creación cancelada ---');
-  }
-
 }
 
 run();
