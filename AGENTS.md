@@ -12,9 +12,9 @@
 ## Architecture (Clean / DDD)
 ```
 src/
-  domain/{planning,recipes,shared,users}/  — VOs, entities, aggregates
-  application/{planning}/                   — use cases
-  infrastructure/{cli,repositories}/        — CLI, repos, DI container
+  domain/{planning,recipes,shared,users,tags,ingredients}/  — VOs, entities, aggregates
+  application/{planning,tags,ingredients,recipes,shared}/    — use cases
+  infrastructure/{cli,repositories}/                         — CLI, repos, DI container
 ```
 
 ## Domain conventions
@@ -25,16 +25,35 @@ src/
 - `Name` VO in `shared/value-objects/` with 3-100 char range
 - `@/` alias → `./src/*`
 
+## Application conventions
+- Use cases accept repository via constructor injection (interface, not concrete class)
+- Each use case has a colocated `.spec.ts` test file
+- `AppError` base class in `shared/errors/` for application-layer errors
+- Update use cases accept partial input via typed `*Input` export (e.g. `UpdateTagInput`)
+- Repository must expose `findById`, `findAll`, `save`, `delete`
+
 ## Testing
 - Vitest with `.spec.ts` files colocated next to implementation
-- No special setup, no mocks needed so far (pure domain logic)
+- No special setup, no mocks — use InMemory repositories directly in tests
 - Pattern: TDD (write spec first, then implement)
 
 ## Persistence
-- `PlanningRepository` interface with `findById`, `findAll`, `save`
-- Two implementations: `InMemoryPlanningRepository` and `FilePlanningRepository` (JSON)
-- DI via container (`createContainer('memory' | 'file')`)
+- Each aggregate has its own repository interface + InMemory implementation
+- `PlanningRepository` also has a `FilePlanningRepository` (JSON file)
+- Repositories must implement: `findById`, `findAll`, `save`, `delete`
+- DI via container (`createContainer('memory' | 'file')`) — currently only Planning is wired
+
+## Aggregate mutations summary
+| Aggregate   | Mutations |
+|-------------|-----------|
+| Tag         | rename, reassignUser, changeDimension |
+| Ingredient  | rename, reassignUser |
+| Recipe      | rename, reassignUser, changeBaseServings, changePrepTime, updatePreparation, addTag, removeTag, addIngredient, removeIngredient |
+| Planning    | rename, reSchedule, changeWeeks, addDay, removeDay, assignMealToDay, addPantryItem, removePantryItem, markPantryItemAsAvailable, updatePantryItemCovers, addShoppingItem, removeShoppingItem, markShoppingItemAsCompleted, markShoppingItemAsPending |
 
 ## Known quirks
-- `StartDate.getDay()` is timezone-dependent; serialization via `toISOString()` can break roundtrips across UTC midnight. Use `null` when exact date roundtrip isn't needed.
+- `StartDate.getDay()` is timezone-dependent; `toISOString()` normalises to UTC, which can break roundtrips across midnight. The VO also enforces Monday (`getDay() === 1`).
 - No user auth in CLI yet — `userId` is prompted as UUID text
+- `PlanningPrimitives.userid` is lowercase-inconsistent (pre-existing, not corrected)
+- `NodeNext` module resolution requires `.js` extension in imports (handled by ts-node/tsconfig-paths)
+- Domain validation in `Recipe.create` enforces at least one tag per required dimension (MOMENTO_DIA, FORMATO, TIPO_PLATO); `removeTag` enforces the same constraint

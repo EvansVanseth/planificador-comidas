@@ -87,8 +87,18 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] crear conversión y lectura de primitivas para entidades y agregados
 
 --- A partir de este punto : Uso de OpenCode para seguir programando ---
+```
+    IA Agent: OpenCode (Build / Plan)
+    IA Model: DeepSeek V4 Flash Free
+    MCP:
+        - context7
+        - engram
+    Gentle-AI: Persona installed
+    InRepo: AGENTS.md 
+    Skills: Not used
+```
 
-- [ ] Fase 3: Completar domain
+- [x] Fase 3: Completar domain
     - [x] Paso 1: Crear VO y agregado para Bounded Context (Users) `domain/users/`
         - [x] user-id.vo.ts + user-id.vo.spec.ts
         - [x] user.aggregate.ts + user.aggregate.spec.ts
@@ -107,7 +117,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] planning-pantry-item.entity.ts (+spec)
         - [x] planning-shopping-item.entity.ts (+spec)
         - [x] refactor planning.aggregate.ts (added planning pantry and shopping items)
-- [ ] Fase 4: Casos de uso + InMemoryRepositories (para tests): Revisar agregados (puertas de acceso al dominio)
+- [x] Fase 4: Casos de uso + InMemoryRepositories (para tests): Revisar agregados (puertas de acceso al dominio)
         - [x] Listar, crear, modificar y eliminar (en adelante CRUD) Tags (etiquetas)
         - [x] CRUD Ingredients (ingredientes)
         - [x] CRUD Recipes (recetas)
