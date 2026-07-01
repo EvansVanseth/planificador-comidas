@@ -77,4 +77,27 @@ describe('Tag (Aggregate)', () => {
     const restored = Tag.fromPrimitives(primitives);
     expect(restored.toPrimitives()).toEqual(primitives);
   });
+
+  it('debe cambiar la dimensión de la etiqueta', () => {
+    const tag = Tag.create(validId, null, 'Test', TagDimension.MOMENTO_DIA);
+    tag.changeDimension(TagDimension.FORMATO);
+    expect(tag.getDimension()).toBe(TagDimension.FORMATO);
+  });
+
+  it('debe reasignar la etiqueta a un usuario', () => {
+    const tag = Tag.create(validId, null, 'Test', TagDimension.MOMENTO_DIA);
+    tag.reassignUser(validUserId);
+    expect(tag.getUserId()).toBe(validUserId);
+  });
+
+  it('debe reasignar la etiqueta a null (sistema)', () => {
+    const tag = Tag.create(validId, validUserId, 'Test', TagDimension.MOMENTO_DIA);
+    tag.reassignUser(null);
+    expect(tag.getUserId()).toBeNull();
+  });
+
+  it('debe rechazar userId inválido en reassignUser', () => {
+    const tag = Tag.create(validId, null, 'Test', TagDimension.MOMENTO_DIA);
+    expect(() => tag.reassignUser('no-uuid')).toThrow(DomainError);
+  });
 });

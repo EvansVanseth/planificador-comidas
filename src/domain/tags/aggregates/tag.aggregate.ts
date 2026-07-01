@@ -55,6 +55,14 @@ export class Tag {
     this.name = Name.create(TAG_NAME_FIELD, name);
   }
 
+  public changeDimension(dimension: TagDimension): void {
+    this.dimension = dimension;
+  }
+
+  public reassignUser(userId: string | null): void {
+    this.userId = userId !== null ? UserId.create(userId) : null;
+  }
+
   public toPrimitives(): TagPrimitives {
     return {
       id: this.id.value,
