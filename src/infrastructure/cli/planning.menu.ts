@@ -4,6 +4,8 @@ import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 import { Planning } from '../../domain/planning/aggregates/planning.aggregate';
 
+const ON_CANCEL = () => { throw new AppError('Operacion cancelada por el usuario'); };
+
 export async function menuPlanificaciones(container: IContainer) {
   let continuar = true;
   while (continuar) {
@@ -28,7 +30,7 @@ export async function menuPlanificaciones(container: IContainer) {
         await crearPlanificacion(container);
         break;
       case 'edit':
-        console.log('Editando la planificacion...');
+        await editarPlanificacion(container);
         break;
       case 'delete':
         await eliminarPlanificacion(container);
@@ -59,41 +61,71 @@ async function crearPlanificacion(container: IContainer) {
       { type: 'text', name: 'userId', message: 'ID de usuario (UUID):', initial: '550e8400-e29b-41d4-a716-446655440000' },
       { type: 'text', name: 'name', message: 'Nombre:' },
       { type: 'number', name: 'weeks', message: 'Semanas:' }
-    ], {
-      onCancel: () => { throw new AppError('Operacion cancelada por el usuario'); }
-    });
+    ], { onCancel: ON_CANCEL });
 
     const id = container.createPlanning.execute(answers.userId, answers.name, null, answers.weeks);
     console.log(`Planificacion creada: ${id}`);
 
   } catch (error) {
-    if (error instanceof DomainError) {
-      console.log(error.message);
-    }
+    if (error instanceof DomainError) console.log(error.message);
     console.log('\n--- Creacion cancelada ---');
   }
 }
 
-async function eliminarPlanificacion(container: IContainer) {
-  const plannings = container.listPlannings.execute();
-  if (plannings.length === 0) {
-    console.log('No hay planificaciones para eliminar');
-    return;
-  }
-
-  const response = await prompts({
-    type: 'select',
-    name: 'id',
-    message: 'Selecciona la planificacion a eliminar:',
-    choices: plannings.map(p => ({ title: `${p.getName()} (${p.getWeeks()} semanas)`, value: p.getId() })),
-  });
-
+async function editarPlanificacion(container: IContainer) {
   try {
-    container.deletePlanning.execute(response.id);
-    console.log('Planificacion eliminada correctamente');
+    const plannings = container.listPlannings.execute();
+    if (plannings.length === 0) {
+      console.log('No hay planificaciones para editar');
+      return;
+    }
+
+    const seleccion = await prompts({
+      type: 'select',
+      name: 'id',
+      message: 'Selecciona la planificacion a editar:',
+      choices: plannings.map(p => ({ title: `${p.getName()} (${p.getWeeks()} semanas)`, value: p.getId() })),
+    }, { onCancel: ON_CANCEL });
+
+    const cambios = await prompts([
+      { type: 'text', name: 'name', message: 'Nuevo nombre (dejar vacio para mantener):' },
+      { type: 'number', name: 'weeks', message: 'Nuevas semanas (0 para mantener):', initial: 0 },
+    ], { onCancel: ON_CANCEL });
+
+    const input: any = { id: seleccion.id };
+    if (cambios.name.trim()) input.name = cambios.name.trim();
+    if (cambios.weeks > 0) input.weeks = cambios.weeks;
+    container.updatePlanning.execute(input);
+    console.log('Planificacion actualizada correctamente');
+
   } catch (error) {
-    if (error instanceof AppError) {
+    if (error instanceof DomainError || error instanceof AppError) {
       console.log(error.message);
     }
+    console.log('\n--- Edicion cancelada ---');
+  }
+}
+
+async function eliminarPlanificacion(container: IContainer) {
+  try {
+    const plannings = container.listPlannings.execute();
+    if (plannings.length === 0) {
+      console.log('No hay planificaciones para eliminar');
+      return;
+    }
+
+    const response = await prompts({
+      type: 'select',
+      name: 'id',
+      message: 'Selecciona la planificacion a eliminar:',
+      choices: plannings.map(p => ({ title: `${p.getName()} (${p.getWeeks()} semanas)`, value: p.getId() })),
+    }, { onCancel: ON_CANCEL });
+
+    container.deletePlanning.execute(response.id);
+    console.log('Planificacion eliminada correctamente');
+
+  } catch (error) {
+    if (error instanceof AppError) console.log(error.message);
+    console.log('\n--- Operacion cancelada ---');
   }
 }

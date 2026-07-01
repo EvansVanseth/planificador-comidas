@@ -124,10 +124,32 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] CRUD Plannings (planificaciones)
 - [ ] Fase 5: CLI + FilePersistence
         - [x] Refactorizar estructura de menus
-        - [ ] Menu para manejar CRUD de Tags
-        - [ ] Menu para manejar CRUD de Ingredients
-        - [ ] Menu para manejar CRUD de Recipes
-        - [ ] Menu para manejar CRUD de Plannings (de este ya hay algo hecho)   
+        - [x] Menu para manejar CRUD de Tags
+        - [x] Menu para manejar CRUD de Ingredients
+        - [x] Menu para manejar CRUD de Recipes
+        - [x] Menu para manejar CRUD de Plannings (de este ya hay algo hecho)   
+        - [ ] Valorar métodos para añadir etiquetas de sistema y evitar que se puedan eliminar
+            **MOMENTO_DIA**: Deben coincidir con MealTime. Estas etiquetas añadidas a las recetas indican para qué momento del día pueden ser asignadas las recetas, pero deben estar limitadas a las opciones que ofrece la planificación. Pues PlannedDay dispone de un espacio para BREKFAST, uno para LUNCH y otro para DINNER.
+            Tenemos dos opciones de las que plantear opciones: permitir que al planificar se especifique qué etiquetas de momento día queremos para cada dia (PlannedDay debería disponer de un map para recibir esas etiquetas; es más flexible pero más dificil de programar) o no permitir la personalización de las etiquetas MOMENTO_DIA y que estén por sistema fijadas en BREAKFAST, LUNCH y DINNER. 
+            **FORMATO**: Solamente pueden existir dos por sistema sin personalización (Caliente / Frio).  
+            - [ ] Caliente (FORMATO)   
+            - [ ] Frio (FORMATO)   
+            **TIPO_PLATO**: La siguiente lista es de sistema, pero pueden añadirse más por parte del usuario (sin duplicados).
+            - [ ] Carne (TIPO_PLATO)   
+            - [ ] Pescado (TIPO_PLATO)   
+            - [ ] Legumbres (TIPO_PLATO)   
+            - [ ] Pasta (TIPO_PLATO)   
+            - [ ] Ensalada (TIPO_PLATO)   
+            - [ ] Arroz (TIPO_PLATO)   
+            - [ ] Dulce (TIPO_PLATO)   
+            **ESTILOS_VIDA**: La siguiente lista es de sistema, pero pueden añadirse más por parte del usuario (sin duplicados).
+            - [ ] Bajo en calorías (ESTILOS_VIDA)   
+            - [ ] Vegetariano (ESTILOS_VIDA)  
+            - [ ] Vegano (ESTILOS_VIDA)  
+        - [ ] Implementar persistencia en archivo para Etiquetas  
+        - [ ] Implementar persistencia en archivo para Ingredientes  
+        - [ ] Implementar persistencia en archivo para Recetas
+        - [ ] Implementar persistencia en archivo para Plannings (revisar estado)   
 - [ ] Fase 6: Crear vistas (Virtual views) proyectadas de una planificación
         - [ ] Vista NeededIngredients
         - [ ] Vista ShoppingList
