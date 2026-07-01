@@ -19,6 +19,14 @@ export class UpdateTagUseCase {
     }
 
     if (input.name !== undefined) {
+      const existing = this.tagRepository.findByNameAndDimension(
+        input.name,
+        input.dimension ?? tag.getDimension(),
+      );
+      if (existing && existing.getId() !== input.id) {
+        throw new AppError(`Ya existe una etiqueta con el nombre "${input.name}" en la dimensión ${input.dimension ?? tag.getDimension()}`);
+      }
+
       tag.rename(input.name);
     }
 

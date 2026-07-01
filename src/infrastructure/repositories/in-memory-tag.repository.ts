@@ -1,5 +1,6 @@
 import { TagRepository } from "@/infrastructure/repositories/tag-repository.interface";
 import { Tag } from "@/domain/tags/aggregates/tag.aggregate";
+import { TagDimension } from "@/domain/recipes/value-objects/tag-dimension.enum";
 
 export class InMemoryTagRepository implements TagRepository {
   private tags: Map<string, Tag> = new Map();
@@ -10,6 +11,13 @@ export class InMemoryTagRepository implements TagRepository {
 
   findAll(): Tag[] {
     return Array.from(this.tags.values());
+  }
+
+  findByNameAndDimension(name: string, dimension: TagDimension): Tag | null {
+    const normalized = name.toLowerCase().trim();
+    return this.findAll().find(
+      t => t.getName().toLowerCase().trim() === normalized && t.getDimension() === dimension
+    ) ?? null;
   }
 
   save(tag: Tag): void {

@@ -53,4 +53,28 @@ describe('InMemoryTagRepository', () => {
     const found = repo.findById(validId);
     expect(found!.getName()).toBe('Actualizado');
   });
+
+  it('debe buscar por nombre y dimensión', () => {
+    repo.save(Tag.create(validId, null, 'Desayuno', TagDimension.MOMENTO_DIA));
+    const found = repo.findByNameAndDimension('Desayuno', TagDimension.MOMENTO_DIA);
+    expect(found).not.toBeNull();
+    expect(found!.getId()).toBe(validId);
+  });
+
+  it('debe buscar ignorando mayúsculas', () => {
+    repo.save(Tag.create(validId, null, 'Desayuno', TagDimension.MOMENTO_DIA));
+    const found = repo.findByNameAndDimension('desayuno', TagDimension.MOMENTO_DIA);
+    expect(found).not.toBeNull();
+  });
+
+  it('debe devolver null si no coincide la dimensión', () => {
+    repo.save(Tag.create(validId, null, 'Desayuno', TagDimension.MOMENTO_DIA));
+    const found = repo.findByNameAndDimension('Desayuno', TagDimension.TIPO_PLATO);
+    expect(found).toBeNull();
+  });
+
+  it('debe devolver null si no existe el nombre', () => {
+    const found = repo.findByNameAndDimension('Inexistente', TagDimension.MOMENTO_DIA);
+    expect(found).toBeNull();
+  });
 });

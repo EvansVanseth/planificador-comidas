@@ -100,4 +100,18 @@ describe('Tag (Aggregate)', () => {
     const tag = Tag.create(validId, null, 'Test', TagDimension.MOMENTO_DIA);
     expect(() => tag.reassignUser('no-uuid')).toThrow(DomainError);
   });
+
+  it('debe rechazar crear una etiqueta FORMATO con userId', () => {
+    expect(() => Tag.create(validId, validUserId, 'Caliente', TagDimension.FORMATO)).toThrow(DomainError);
+  });
+
+  it('debe rechazar cambiar una etiqueta de usuario a FORMATO', () => {
+    const tag = Tag.create(validId, validUserId, 'Pasta', TagDimension.TIPO_PLATO);
+    expect(() => tag.changeDimension(TagDimension.FORMATO)).toThrow(DomainError);
+  });
+
+  it('debe rechazar asignar userId a una etiqueta FORMATO', () => {
+    const tag = Tag.create(validId, null, 'Caliente', TagDimension.FORMATO);
+    expect(() => tag.reassignUser(validUserId)).toThrow(DomainError);
+  });
 });

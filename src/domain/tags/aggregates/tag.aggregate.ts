@@ -27,6 +27,10 @@ export class Tag {
   }
 
   public static create(id: string, userId: string | null, name: string, dimension: TagDimension): Tag {
+    if (dimension === TagDimension.FORMATO && userId !== null) {
+      throw new DomainError('La dimensión FORMATO es exclusiva del sistema y no puede ser asignada a un usuario');
+    }
+
     return new Tag(
       Id.create(id),
       userId !== null ? UserId.create(userId) : null,
@@ -56,10 +60,18 @@ export class Tag {
   }
 
   public changeDimension(dimension: TagDimension): void {
+    if (dimension === TagDimension.FORMATO && this.userId !== null) {
+      throw new DomainError('No se puede cambiar una etiqueta de usuario a la dimensión FORMATO');
+    }
+
     this.dimension = dimension;
   }
 
   public reassignUser(userId: string | null): void {
+    if (this.dimension === TagDimension.FORMATO && userId !== null) {
+      throw new DomainError('No se puede asignar un usuario a una etiqueta de dimensión FORMATO');
+    }
+
     this.userId = userId !== null ? UserId.create(userId) : null;
   }
 
