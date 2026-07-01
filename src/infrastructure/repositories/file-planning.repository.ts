@@ -7,11 +7,15 @@ export class FilePlanningRepository implements PlanningRepository {
   private readonly filePath: string;
 
   constructor(fileName: string = 'plannings-db.json') {
-    this.filePath = path.resolve(process.cwd(), fileName);
+    this.filePath = path.resolve(process.cwd(), 'file-persistence', fileName);
     this.initializeFile();
   }
 
   private initializeFile(): void {
+    const dir = path.dirname(this.filePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
     if (!fs.existsSync(this.filePath)) {
       fs.writeFileSync(this.filePath, JSON.stringify([]), 'utf-8');
     }

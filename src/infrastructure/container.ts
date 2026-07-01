@@ -6,6 +6,7 @@ import { RecipeRepository } from '@/infrastructure/repositories/recipe-repositor
 //Repository implementations
 import { InMemoryPlanningRepository } from './repositories/in-memory-planning.repository';
 import { FilePlanningRepository } from './repositories/file-planning.repository';
+import { FileTagRepository } from './repositories/file-tag.repository';
 import { InMemoryTagRepository } from './repositories/in-memory-tag.repository';
 import { InMemoryIngredientRepository } from './repositories/in-memory-ingredient.repository';
 import { InMemoryRecipeRepository } from './repositories/in-memory-recipe.repository';
@@ -60,8 +61,7 @@ export interface IContainer {
 export const createContainer = (mode: RepositoryType = 'memory') => {
 
   let planningRepository: PlanningRepository;
-  const tagRepository: TagRepository = new InMemoryTagRepository();
-  seedSystemTags(tagRepository);
+  let tagRepository: TagRepository;
 
   const ingredientRepository: IngredientRepository = new InMemoryIngredientRepository();
   const recipeRepository: RecipeRepository = new InMemoryRecipeRepository();
@@ -69,12 +69,16 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
   switch (mode) {
     case 'file':
       planningRepository = new FilePlanningRepository('planning-data.json');
+      tagRepository = new FileTagRepository('tags-db.json');
       break;
     case 'memory':
     default:
       planningRepository = new InMemoryPlanningRepository();
+      tagRepository = new InMemoryTagRepository();
       break;
   }
+
+  seedSystemTags(tagRepository);
 
   return {
     // Planning

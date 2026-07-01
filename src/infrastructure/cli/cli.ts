@@ -21,9 +21,9 @@ async function run() {
       { title: 'Archivo (Persistentes)', value: 'file' },
       { title: 'Salir', value: 'exit' }
     ]
-  });
+  }, { onCancel: () => {} });
 
-  if (response.opcion === 'exit') {
+  if (!response?.opcion || response.opcion === 'exit') {
     mostrarDespedida();
     return;
   }
@@ -51,7 +51,9 @@ async function menuPrincipal(container: IContainer) {
         { title: 'Planificaciones',  value: 'plannings' },
         { title: 'Salir',            value: 'exit' }
       ]
-    });
+    }, { onCancel: () => {} });
+
+    if (!response?.opcion) continue;
 
     switch (response.opcion) {
       case 'tags':

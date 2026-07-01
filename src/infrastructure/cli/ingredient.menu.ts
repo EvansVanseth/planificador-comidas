@@ -3,7 +3,7 @@ import { IContainer } from '../container';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
-const ON_CANCEL = () => { throw new AppError('Operacion cancelada por el usuario'); };
+const ON_CANCEL = () => {};
 
 export async function menuIngredientes(container: IContainer) {
   let continuar = true;
@@ -19,7 +19,9 @@ export async function menuIngredientes(container: IContainer) {
         { title: 'Eliminar ingrediente', value: 'delete' },
         { title: 'Volver',              value: 'back' }
       ]
-    });
+    }, { onCancel: ON_CANCEL });
+
+    if (!response?.opcion) continue;
 
     switch (response.opcion) {
       case 'list':
@@ -57,6 +59,8 @@ async function crearIngrediente(container: IContainer) {
       { type: 'text', name: 'name', message: 'Nombre del ingrediente:' },
     ], { onCancel: ON_CANCEL });
 
+    if (!answers) return;
+
     const userId = '550e8400-e29b-41d4-a716-446655440000';
     const id = container.createIngredient.execute(userId, answers.name);
     console.log(`Ingrediente creado: ${id}`);
@@ -82,12 +86,15 @@ async function editarIngrediente(container: IContainer) {
       choices: ingredients.map(i => ({ title: i.name, value: i.id })),
     }, { onCancel: ON_CANCEL });
 
+    if (!seleccion?.id) return;
+
     const cambios = await prompts({
       type: 'text',
       name: 'name',
       message: 'Nuevo nombre (dejar vacio para mantener):',
     }, { onCancel: ON_CANCEL });
 
+    if (!cambios) return;
     if (!cambios.name.trim()) return;
     container.updateIngredient.execute({ id: seleccion.id, name: cambios.name.trim() });
     console.log('Ingrediente actualizado correctamente');
@@ -114,6 +121,8 @@ async function eliminarIngrediente(container: IContainer) {
       message: 'Selecciona el ingrediente a eliminar:',
       choices: ingredients.map(i => ({ title: i.name, value: i.id })),
     }, { onCancel: ON_CANCEL });
+
+    if (!seleccion?.id) return;
 
     container.deleteIngredient.execute(seleccion.id);
     console.log('Ingrediente eliminado correctamente');

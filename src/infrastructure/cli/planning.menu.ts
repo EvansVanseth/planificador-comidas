@@ -4,7 +4,7 @@ import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 import { Planning } from '../../domain/planning/aggregates/planning.aggregate';
 
-const ON_CANCEL = () => { throw new AppError('Operacion cancelada por el usuario'); };
+const ON_CANCEL = () => {};
 
 export async function menuPlanificaciones(container: IContainer) {
   let continuar = true;
@@ -20,7 +20,9 @@ export async function menuPlanificaciones(container: IContainer) {
         { title: 'Eliminar planificacion', value: 'delete' },
         { title: 'Volver',                 value: 'back' }
       ]
-    });
+    }, { onCancel: ON_CANCEL });
+
+    if (!response?.opcion) continue;
 
     switch (response.opcion) {
       case 'list':
@@ -63,6 +65,8 @@ async function crearPlanificacion(container: IContainer) {
       { type: 'number', name: 'weeks', message: 'Semanas:' }
     ], { onCancel: ON_CANCEL });
 
+    if (!answers) return;
+
     const id = container.createPlanning.execute(answers.userId, answers.name, null, answers.weeks);
     console.log(`Planificacion creada: ${id}`);
 
@@ -87,10 +91,14 @@ async function editarPlanificacion(container: IContainer) {
       choices: plannings.map(p => ({ title: `${p.getName()} (${p.getWeeks()} semanas)`, value: p.getId() })),
     }, { onCancel: ON_CANCEL });
 
+    if (!seleccion?.id) return;
+
     const cambios = await prompts([
       { type: 'text', name: 'name', message: 'Nuevo nombre (dejar vacio para mantener):' },
       { type: 'number', name: 'weeks', message: 'Nuevas semanas (0 para mantener):', initial: 0 },
     ], { onCancel: ON_CANCEL });
+
+    if (!cambios) return;
 
     const input: any = { id: seleccion.id };
     if (cambios.name.trim()) input.name = cambios.name.trim();
@@ -120,6 +128,8 @@ async function eliminarPlanificacion(container: IContainer) {
       message: 'Selecciona la planificacion a eliminar:',
       choices: plannings.map(p => ({ title: `${p.getName()} (${p.getWeeks()} semanas)`, value: p.getId() })),
     }, { onCancel: ON_CANCEL });
+
+    if (!response?.id) return;
 
     container.deletePlanning.execute(response.id);
     console.log('Planificacion eliminada correctamente');

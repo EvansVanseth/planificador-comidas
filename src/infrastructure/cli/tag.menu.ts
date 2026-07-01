@@ -3,7 +3,7 @@ import { IContainer } from '../container';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
-const ON_CANCEL = () => { throw new AppError('Operacion cancelada por el usuario'); };
+const ON_CANCEL = () => {};
 
 export async function menuEtiquetas(container: IContainer) {
   let continuar = true;
@@ -19,7 +19,9 @@ export async function menuEtiquetas(container: IContainer) {
         { title: 'Eliminar etiqueta', value: 'delete' },
         { title: 'Volver',            value: 'back' }
       ]
-    });
+    }, { onCancel: ON_CANCEL });
+
+    if (!response?.opcion) continue;
 
     switch (response.opcion) {
       case 'list':
@@ -69,6 +71,8 @@ async function crearEtiqueta(container: IContainer) {
       { type: 'confirm', name: 'isSystem', message: '¿Es etiqueta del sistema?', initial: true },
     ], { onCancel: ON_CANCEL });
 
+    if (!answers) return;
+
     const userId = answers.isSystem ? null : '550e8400-e29b-41d4-a716-446655440000';
     const id = container.createTag.execute(userId, answers.name, answers.dimension);
     console.log(`Etiqueta creada: ${id}`);
@@ -94,6 +98,8 @@ async function editarEtiqueta(container: IContainer) {
       choices: tags.map(t => ({ title: `${t.name} [${t.dimension}]`, value: t.id })),
     }, { onCancel: ON_CANCEL });
 
+    if (!seleccion?.id) return;
+
     const cambios = await prompts([
       { type: 'text', name: 'name', message: 'Nuevo nombre (dejar vacio para mantener):' },
       {
@@ -109,6 +115,8 @@ async function editarEtiqueta(container: IContainer) {
         ]
       },
     ], { onCancel: ON_CANCEL });
+
+    if (!cambios) return;
 
     const input: any = { id: seleccion.id };
     if (cambios.name.trim()) input.name = cambios.name.trim();
@@ -138,6 +146,8 @@ async function eliminarEtiqueta(container: IContainer) {
       message: 'Selecciona la etiqueta a eliminar:',
       choices: tags.map(t => ({ title: `${t.name} [${t.dimension}]`, value: t.id })),
     }, { onCancel: ON_CANCEL });
+
+    if (!seleccion?.id) return;
 
     container.deleteTag.execute(seleccion.id);
     console.log('Etiqueta eliminada correctamente');

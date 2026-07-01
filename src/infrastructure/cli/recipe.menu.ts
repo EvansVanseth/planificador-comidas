@@ -4,7 +4,7 @@ import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
 
-const ON_CANCEL = () => { throw new AppError('Operacion cancelada por el usuario'); };
+const ON_CANCEL = () => {};
 
 const DIMENSION_LABELS: Record<string, string> = {
   MOMENTO_DIA: 'Momento del dia',
@@ -27,7 +27,9 @@ export async function menuRecetas(container: IContainer) {
         { title: 'Eliminar receta', value: 'delete' },
         { title: 'Volver',          value: 'back' }
       ]
-    });
+    }, { onCancel: ON_CANCEL });
+
+    if (!response?.opcion) continue;
 
     switch (response.opcion) {
       case 'list':
@@ -73,6 +75,8 @@ async function crearReceta(container: IContainer) {
       { type: 'text', name: 'preparation', message: 'Preparacion (dejar vacio si no):' },
     ], { onCancel: ON_CANCEL });
 
+    if (!datos) return;
+
     const tagsConDim = tagsDisponibles.map(t => ({ id: t.id, name: t.name, dimension: t.dimension as TagDimension }));
     const requiredDims = ['MOMENTO_DIA', 'FORMATO', 'TIPO_PLATO'];
     const seleccionTags: { id: string; dimension: TagDimension }[] = [];
@@ -88,6 +92,7 @@ async function crearReceta(container: IContainer) {
         message: `Selecciona etiqueta de ${DIMENSION_LABELS[dim]}:`,
         choices: disponibles.map(t => ({ title: t.name, value: t.id })),
       }, { onCancel: ON_CANCEL });
+      if (!elegida?.id) return;
       seleccionTags.push({ id: elegida.id, dimension: dim as TagDimension });
     }
 
@@ -120,11 +125,15 @@ async function editarReceta(container: IContainer) {
       choices: recipes.map(r => ({ title: r.name, value: r.id })),
     }, { onCancel: ON_CANCEL });
 
+    if (!seleccion?.id) return;
+
     const cambios = await prompts([
       { type: 'text', name: 'name', message: 'Nuevo nombre (dejar vacio para mantener):' },
       { type: 'number', name: 'baseServings', message: 'Nuevos comensales base (0 para mantener):', initial: 0 },
       { type: 'number', name: 'prepTime', message: 'Nuevo tiempo (min, 0 para mantener):', initial: 0 },
     ], { onCancel: ON_CANCEL });
+
+    if (!cambios) return;
 
     const input: any = { id: seleccion.id };
     if (cambios.name.trim()) input.name = cambios.name.trim();
@@ -155,6 +164,8 @@ async function eliminarReceta(container: IContainer) {
       message: 'Selecciona la receta a eliminar:',
       choices: recipes.map(r => ({ title: r.name, value: r.id })),
     }, { onCancel: ON_CANCEL });
+
+    if (!seleccion?.id) return;
 
     container.deleteRecipe.execute(seleccion.id);
     console.log('Receta eliminada correctamente');
