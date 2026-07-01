@@ -28,6 +28,9 @@ import { ListRecipesUseCase } from '@/application/recipes/list-recipes.use-case'
 import { UpdateRecipeUseCase } from '@/application/recipes/update-recipe.use-case';
 import { DeleteRecipeUseCase } from '@/application/recipes/delete-recipe.use-case';
 
+// Init
+import { seedSystemTags } from '@/application/tags/seed-system-tags';
+
 export type RepositoryType = 'memory' | 'file';
 
 export interface IContainer {
@@ -58,6 +61,8 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
 
   let planningRepository: PlanningRepository;
   const tagRepository: TagRepository = new InMemoryTagRepository();
+  seedSystemTags(tagRepository);
+
   const ingredientRepository: IngredientRepository = new InMemoryIngredientRepository();
   const recipeRepository: RecipeRepository = new InMemoryRecipeRepository();
 
