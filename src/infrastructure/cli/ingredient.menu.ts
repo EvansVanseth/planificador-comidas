@@ -5,7 +5,7 @@ import { DomainError } from '../../domain/shared/errors/domain-error';
 
 const ON_CANCEL = () => {};
 
-export async function menuIngredientes(container: IContainer) {
+export async function menuIngredientes(container: IContainer, userId: string) {
   let continuar = true;
   while (continuar) {
     const response = await prompts({
@@ -28,7 +28,7 @@ export async function menuIngredientes(container: IContainer) {
         listarIngredientes(container);
         break;
       case 'create':
-        await crearIngrediente(container);
+        await crearIngrediente(container, userId);
         break;
       case 'edit':
         await editarIngrediente(container);
@@ -53,7 +53,7 @@ function listarIngredientes(container: IContainer) {
   ingredients.forEach(i => console.log(`(id: ${i.id}) ${i.name}`));
 }
 
-async function crearIngrediente(container: IContainer) {
+async function crearIngrediente(container: IContainer, userId: string) {
   try {
     const answers = await prompts([
       { type: 'text', name: 'name', message: 'Nombre del ingrediente:' },
@@ -61,7 +61,6 @@ async function crearIngrediente(container: IContainer) {
 
     if (!answers) return;
 
-    const userId = '550e8400-e29b-41d4-a716-446655440000';
     const id = container.createIngredient.execute(userId, answers.name);
     console.log(`Ingrediente creado: ${id}`);
 

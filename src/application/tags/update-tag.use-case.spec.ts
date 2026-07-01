@@ -18,7 +18,7 @@ describe('UpdateTagUseCase', () => {
     repo = new InMemoryTagRepository();
     useCase = new UpdateTagUseCase(repo);
 
-    const tag = Tag.create(validId, null, 'Original', TagDimension.MOMENTO_DIA);
+    const tag = Tag.create(validId, validUserId, 'Original', TagDimension.MOMENTO_DIA, true);
     repo.save(tag);
   });
 
@@ -32,11 +32,6 @@ describe('UpdateTagUseCase', () => {
     expect(repo.findById(validId)!.getUserId()).toBe(validUserId);
   });
 
-  it('debe actualizar el userId a null', () => {
-    useCase.execute({ id: validId, userId: null });
-    expect(repo.findById(validId)!.getUserId()).toBeNull();
-  });
-
   it('debe actualizar la dimensión', () => {
     useCase.execute({ id: validId, dimension: TagDimension.FORMATO });
     expect(repo.findById(validId)!.getDimension()).toBe(TagDimension.FORMATO);
@@ -47,12 +42,12 @@ describe('UpdateTagUseCase', () => {
   });
 
   it('debe rechazar renombrar a un nombre duplicado en la misma dimensión', () => {
-    repo.save(Tag.create(otherTagId, null, 'Existente', TagDimension.MOMENTO_DIA));
+    repo.save(Tag.create(otherTagId, validUserId, 'Existente', TagDimension.MOMENTO_DIA, true));
     expect(() => useCase.execute({ id: validId, name: 'Existente' })).toThrow(AppError);
   });
 
   it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', () => {
-    repo.save(Tag.create(otherTagId, null, 'Existente', TagDimension.MOMENTO_DIA));
+    repo.save(Tag.create(otherTagId, validUserId, 'Existente', TagDimension.MOMENTO_DIA, true));
     expect(() => useCase.execute({ id: validId, name: 'existente' })).toThrow(AppError);
   });
 
@@ -63,13 +58,13 @@ describe('UpdateTagUseCase', () => {
 
   it('debe rechazar cambiar una etiqueta de usuario a FORMATO', () => {
     const userTagId = '550e8400-e29b-41d4-a716-446655440010';
-    repo.save(Tag.create(userTagId, validUserId, 'Pasta', TagDimension.TIPO_PLATO));
+    repo.save(Tag.create(userTagId, validUserId, 'Pasta', TagDimension.TIPO_PLATO, false));
     expect(() => useCase.execute({ id: userTagId, dimension: TagDimension.FORMATO })).toThrow(DomainError);
   });
 
   it('debe rechazar asignar userId a una etiqueta FORMATO', () => {
     const formatTagId = '550e8400-e29b-41d4-a716-446655440020';
-    repo.save(Tag.create(formatTagId, null, 'Caliente', TagDimension.FORMATO));
+    repo.save(Tag.create(formatTagId, validUserId, 'Caliente', TagDimension.FORMATO, true));
     expect(() => useCase.execute({ id: formatTagId, userId: validUserId })).toThrow(DomainError);
   });
 });

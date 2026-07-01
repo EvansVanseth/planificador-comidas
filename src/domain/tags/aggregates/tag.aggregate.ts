@@ -8,34 +8,38 @@ const TAG_NAME_FIELD = 'tag name';
 
 export type TagPrimitives = {
   id: string;
-  userId: string | null;
+  userId: string;
   name: string;
   dimension: TagDimension;
+  isSystem: boolean;
 };
 
 export class Tag {
   private id: Id;
-  private userId: UserId | null;
+  private userId: UserId;
   private name: Name;
   private dimension: TagDimension;
+  private isSystem: boolean;
 
-  private constructor(id: Id, userId: UserId | null, name: Name, dimension: TagDimension) {
+  private constructor(id: Id, userId: UserId, name: Name, dimension: TagDimension, isSystem: boolean) {
     this.id = id;
     this.userId = userId;
     this.name = name;
     this.dimension = dimension;
+    this.isSystem = isSystem;
   }
 
-  public static create(id: string, userId: string | null, name: string, dimension: TagDimension): Tag {
-    if (dimension === TagDimension.FORMATO && userId !== null) {
-      throw new DomainError('La dimensión FORMATO es exclusiva del sistema y no puede ser asignada a un usuario');
+  public static create(id: string, userId: string, name: string, dimension: TagDimension, isSystem: boolean): Tag {
+    if (dimension === TagDimension.FORMATO && !isSystem) {
+      throw new DomainError('La dimensión FORMATO es exclusiva del sistema');
     }
 
     return new Tag(
       Id.create(id),
-      userId !== null ? UserId.create(userId) : null,
+      UserId.create(userId),
       Name.create(TAG_NAME_FIELD, name),
-      dimension
+      dimension,
+      isSystem,
     );
   }
 
@@ -43,8 +47,8 @@ export class Tag {
     return this.id.value;
   }
 
-  public getUserId(): string | null {
-    return this.userId?.value ?? null;
+  public getUserId(): string {
+    return this.userId.value;
   }
 
   public getName(): string {
@@ -55,32 +59,36 @@ export class Tag {
     return this.dimension;
   }
 
+  public isSystemTag(): boolean {
+    return this.isSystem;
+  }
+
   public rename(name: string): void {
     this.name = Name.create(TAG_NAME_FIELD, name);
   }
 
   public changeDimension(dimension: TagDimension): void {
-    if (dimension === TagDimension.FORMATO && this.userId !== null) {
+    if (dimension === TagDimension.FORMATO && !this.isSystem) {
       throw new DomainError('No se puede cambiar una etiqueta de usuario a la dimensión FORMATO');
     }
 
     this.dimension = dimension;
   }
 
-  public reassignUser(userId: string | null): void {
-    if (this.dimension === TagDimension.FORMATO && userId !== null) {
-      throw new DomainError('No se puede asignar un usuario a una etiqueta de dimensión FORMATO');
+  public reassignUser(userId: string): void {
+    if (this.dimension === TagDimension.FORMATO) {
+      throw new DomainError('No se puede asignar un usuario a una etiqueta FORMATO');
     }
-
-    this.userId = userId !== null ? UserId.create(userId) : null;
+    this.userId = UserId.create(userId);
   }
 
   public toPrimitives(): TagPrimitives {
     return {
       id: this.id.value,
-      userId: this.userId?.value ?? null,
+      userId: this.userId.value,
       name: this.name.value,
       dimension: this.dimension,
+      isSystem: this.isSystem,
     };
   }
 
@@ -91,9 +99,10 @@ export class Tag {
 
     return new Tag(
       Id.create(data.id),
-      data.userId !== null ? UserId.create(data.userId) : null,
+      UserId.create(data.userId),
       Name.create(TAG_NAME_FIELD, data.name),
-      data.dimension
+      data.dimension,
+      data.isSystem,
     );
   }
 }

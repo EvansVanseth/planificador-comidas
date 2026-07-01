@@ -7,6 +7,7 @@ import { AppError } from '../shared/errors/app-error';
 
 describe('DeleteTagUseCase', () => {
   const validId = '550e8400-e29b-41d4-a716-446655440000';
+  const validUserId = '550e8400-e29b-41d4-a716-446655440001';
 
   let useCase: DeleteTagUseCase;
   let repo: InMemoryTagRepository;
@@ -17,7 +18,7 @@ describe('DeleteTagUseCase', () => {
   });
 
   it('debe eliminar una etiqueta existente', () => {
-    const tag = Tag.create(validId, null, 'Test', TagDimension.MOMENTO_DIA);
+    const tag = Tag.create(validId, validUserId, 'Test', TagDimension.MOMENTO_DIA, true);
     repo.save(tag);
     useCase.execute(validId);
     expect(repo.findById(validId)).toBeNull();

@@ -26,7 +26,7 @@ describe('AssignMealUseCase', () => {
   });
 
   it('debe asignar una comida a un día correctamente', () => {
-    tagRepo.save(Tag.create(momentTagId, null, 'Almuerzo', TagDimension.MOMENTO_DIA));
+    tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
     planningRepo.save(planning);
@@ -52,7 +52,7 @@ describe('AssignMealUseCase', () => {
   });
 
   it('debe fallar si la tag no es de tipo MOMENTO_DIA', () => {
-    tagRepo.save(Tag.create(otherTagId, null, 'Asiático', TagDimension.TIPO_PLATO));
+    tagRepo.save(Tag.create(otherTagId, userId, 'Asiático', TagDimension.TIPO_PLATO, true));
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
     planningRepo.save(planning);

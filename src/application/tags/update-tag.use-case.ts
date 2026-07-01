@@ -5,7 +5,7 @@ import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum'
 export type UpdateTagInput = {
   id: string;
   name?: string;
-  userId?: string | null;
+  userId?: string;
   dimension?: TagDimension;
 };
 

@@ -27,8 +27,8 @@ describe('InMemoryTagRepository', () => {
   });
 
   it('debe listar todas las etiquetas', () => {
-    const tag1 = Tag.create(validId, null, 'Desayuno', TagDimension.MOMENTO_DIA);
-    const tag2 = Tag.create('550e8400-e29b-41d4-a716-446655440002', null, 'Cena', TagDimension.MOMENTO_DIA);
+    const tag1 = Tag.create(validId, validUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true);
+    const tag2 = Tag.create('550e8400-e29b-41d4-a716-446655440002', validUserId, 'Cena', TagDimension.MOMENTO_DIA, true);
     repo.save(tag1);
     repo.save(tag2);
     expect(repo.findAll()).toHaveLength(2);
@@ -39,14 +39,14 @@ describe('InMemoryTagRepository', () => {
   });
 
   it('debe eliminar una etiqueta por id', () => {
-    const tag = Tag.create(validId, null, 'Frío', TagDimension.FORMATO);
+    const tag = Tag.create(validId, validUserId, 'Frío', TagDimension.FORMATO, true);
     repo.save(tag);
     repo.delete(validId);
     expect(repo.findById(validId)).toBeNull();
   });
 
   it('debe actualizar una etiqueta existente al guardar con el mismo id', () => {
-    const tag = Tag.create(validId, null, 'Original', TagDimension.MOMENTO_DIA);
+    const tag = Tag.create(validId, validUserId, 'Original', TagDimension.MOMENTO_DIA, true);
     repo.save(tag);
     tag.rename('Actualizado');
     repo.save(tag);
@@ -55,20 +55,20 @@ describe('InMemoryTagRepository', () => {
   });
 
   it('debe buscar por nombre y dimensión', () => {
-    repo.save(Tag.create(validId, null, 'Desayuno', TagDimension.MOMENTO_DIA));
+    repo.save(Tag.create(validId, validUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true));
     const found = repo.findByNameAndDimension('Desayuno', TagDimension.MOMENTO_DIA);
     expect(found).not.toBeNull();
     expect(found!.getId()).toBe(validId);
   });
 
   it('debe buscar ignorando mayúsculas', () => {
-    repo.save(Tag.create(validId, null, 'Desayuno', TagDimension.MOMENTO_DIA));
+    repo.save(Tag.create(validId, validUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true));
     const found = repo.findByNameAndDimension('desayuno', TagDimension.MOMENTO_DIA);
     expect(found).not.toBeNull();
   });
 
   it('debe devolver null si no coincide la dimensión', () => {
-    repo.save(Tag.create(validId, null, 'Desayuno', TagDimension.MOMENTO_DIA));
+    repo.save(Tag.create(validId, validUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true));
     const found = repo.findByNameAndDimension('Desayuno', TagDimension.TIPO_PLATO);
     expect(found).toBeNull();
   });

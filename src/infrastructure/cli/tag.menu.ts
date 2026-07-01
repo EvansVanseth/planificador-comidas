@@ -5,7 +5,7 @@ import { DomainError } from '../../domain/shared/errors/domain-error';
 
 const ON_CANCEL = () => {};
 
-export async function menuEtiquetas(container: IContainer) {
+export async function menuEtiquetas(container: IContainer, userId: string) {
   let continuar = true;
   while (continuar) {
     const response = await prompts({
@@ -28,7 +28,7 @@ export async function menuEtiquetas(container: IContainer) {
         listarEtiquetas(container);
         break;
       case 'create':
-        await crearEtiqueta(container);
+        await crearEtiqueta(container, userId);
         break;
       case 'edit':
         await editarEtiqueta(container);
@@ -50,10 +50,10 @@ function listarEtiquetas(container: IContainer) {
     return;
   }
   console.log('--- Etiquetas ---');
-  tags.forEach(t => console.log(`(id: ${t.id}) ${t.name} [${t.dimension}]${t.userId ? '' : ' (sistema)'}`));
+  tags.forEach(t => console.log(`(id: ${t.id}) ${t.name} [${t.dimension}]${t.isSystem ? ' (sistema)' : ''}`));
 }
 
-async function crearEtiqueta(container: IContainer) {
+async function crearEtiqueta(container: IContainer, userId: string) {
   try {
     const answers = await prompts([
       { type: 'text', name: 'name', message: 'Nombre de la etiqueta:' },
@@ -68,13 +68,11 @@ async function crearEtiqueta(container: IContainer) {
           { title: 'Estilo de vida',  value: 'ESTILOS_VIDA' },
         ]
       },
-      { type: 'confirm', name: 'isSystem', message: '¿Es etiqueta del sistema?', initial: true },
     ], { onCancel: ON_CANCEL });
 
     if (!answers) return;
 
-    const userId = answers.isSystem ? null : '550e8400-e29b-41d4-a716-446655440000';
-    const id = container.createTag.execute(userId, answers.name, answers.dimension);
+    const id = container.createTag.execute(userId, answers.name, answers.dimension, false);
     console.log(`Etiqueta creada: ${id}`);
 
   } catch (error) {

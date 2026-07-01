@@ -13,7 +13,7 @@ const DIMENSION_LABELS: Record<string, string> = {
   ESTILOS_VIDA: 'Estilo de vida',
 };
 
-export async function menuRecetas(container: IContainer) {
+export async function menuRecetas(container: IContainer, userId: string) {
   let continuar = true;
   while (continuar) {
     const response = await prompts({
@@ -36,7 +36,7 @@ export async function menuRecetas(container: IContainer) {
         listarRecetas(container);
         break;
       case 'create':
-        await crearReceta(container);
+        await crearReceta(container, userId);
         break;
       case 'edit':
         await editarReceta(container);
@@ -65,7 +65,7 @@ function listarRecetas(container: IContainer) {
   });
 }
 
-async function crearReceta(container: IContainer) {
+async function crearReceta(container: IContainer, userId: string) {
   try {
     const tagsDisponibles = container.listTags.execute();
     const datos = await prompts([
@@ -96,7 +96,6 @@ async function crearReceta(container: IContainer) {
       seleccionTags.push({ id: elegida.id, dimension: dim as TagDimension });
     }
 
-    const userId = '550e8400-e29b-41d4-a716-446655440000';
     const id = container.createRecipe.execute(
       userId, datos.name, datos.baseServings, datos.prepTime, datos.preparation || null, [], seleccionTags,
     );

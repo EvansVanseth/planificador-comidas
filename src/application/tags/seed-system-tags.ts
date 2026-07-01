@@ -9,14 +9,11 @@ interface SystemTagSeed {
 }
 
 const SYSTEM_TAG_SEEDS: SystemTagSeed[] = [
-  // MOMENTO_DIA — seed + personalizables
   { name: 'Desayuno', dimension: TagDimension.MOMENTO_DIA },
   { name: 'Comida', dimension: TagDimension.MOMENTO_DIA },
   { name: 'Cena', dimension: TagDimension.MOMENTO_DIA },
-  // FORMATO — fijas de sistema
   { name: 'Caliente', dimension: TagDimension.FORMATO },
   { name: 'Frio', dimension: TagDimension.FORMATO },
-  // TIPO_PLATO — seed + personalizables
   { name: 'Carne', dimension: TagDimension.TIPO_PLATO },
   { name: 'Pescado', dimension: TagDimension.TIPO_PLATO },
   { name: 'Legumbres', dimension: TagDimension.TIPO_PLATO },
@@ -24,20 +21,19 @@ const SYSTEM_TAG_SEEDS: SystemTagSeed[] = [
   { name: 'Ensalada', dimension: TagDimension.TIPO_PLATO },
   { name: 'Arroz', dimension: TagDimension.TIPO_PLATO },
   { name: 'Dulce', dimension: TagDimension.TIPO_PLATO },
-  // ESTILOS_VIDA — seed + personalizables
   { name: 'Bajo en calorías', dimension: TagDimension.ESTILOS_VIDA },
   { name: 'Vegetariano', dimension: TagDimension.ESTILOS_VIDA },
   { name: 'Vegano', dimension: TagDimension.ESTILOS_VIDA },
 ];
 
-export function seedSystemTags(tagRepository: TagRepository): void {
+export function seedSystemTags(tagRepository: TagRepository, userId: string): void {
   const existing = tagRepository.findAll();
-  const hasSystemTags = existing.some(t => t.getUserId() === null);
+  const hasSystemTags = existing.some(t => t.getUserId() === userId && t.isSystemTag());
 
   if (hasSystemTags) return;
 
   for (const seed of SYSTEM_TAG_SEEDS) {
-    const tag = Tag.create(randomUUID(), null, seed.name, seed.dimension);
+    const tag = Tag.create(randomUUID(), userId, seed.name, seed.dimension, true);
     tagRepository.save(tag);
   }
 }

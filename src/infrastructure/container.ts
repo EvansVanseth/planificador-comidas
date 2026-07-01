@@ -13,6 +13,7 @@ import { InMemoryRecipeRepository } from './repositories/in-memory-recipe.reposi
 //Use-cases
 import { CreatePlanningUseCase } from '@/application/planning/create-planning.use-case';
 import { AssignMealUseCase } from '@/application/planning/assign-meal.use-case';
+import { seedSystemTags } from '@/application/tags/seed-system-tags';
 import { ListPlanningsUseCase } from '@/application/planning/list-plannings.use-case';
 import { UpdatePlanningUseCase } from '@/application/planning/update-planning.use-case';
 import { DeletePlanningUseCase } from '@/application/planning/delete-planning.use-case';
@@ -30,7 +31,7 @@ import { UpdateRecipeUseCase } from '@/application/recipes/update-recipe.use-cas
 import { DeleteRecipeUseCase } from '@/application/recipes/delete-recipe.use-case';
 
 // Init
-import { seedSystemTags } from '@/application/tags/seed-system-tags';
+
 
 export type RepositoryType = 'memory' | 'file';
 
@@ -58,7 +59,7 @@ export interface IContainer {
   deleteRecipe: DeleteRecipeUseCase;
 }
 
-export const createContainer = (mode: RepositoryType = 'memory') => {
+export const createContainer = (mode: RepositoryType = 'memory', userId?: string) => {
 
   let planningRepository: PlanningRepository;
   let tagRepository: TagRepository;
@@ -78,7 +79,9 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
       break;
   }
 
-  seedSystemTags(tagRepository);
+  if (userId) {
+    seedSystemTags(tagRepository, userId);
+  }
 
   return {
     // Planning

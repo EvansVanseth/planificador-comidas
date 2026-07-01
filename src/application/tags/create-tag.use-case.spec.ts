@@ -7,6 +7,8 @@ import { AppError } from '../shared/errors/app-error';
 import { DomainError } from '@/domain/shared/errors/domain-error';
 
 describe('CreateTagUseCase', () => {
+  const systemUserId = '550e8400-e29b-41d4-a716-446655449999';
+
   let useCase: CreateTagUseCase;
   let repo: InMemoryTagRepository;
 
@@ -16,13 +18,13 @@ describe('CreateTagUseCase', () => {
   });
 
   it('debe crear una etiqueta de sistema y devolver un id', () => {
-    const id = useCase.execute(null, 'Desayuno', TagDimension.MOMENTO_DIA);
+    const id = useCase.execute(systemUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true);
     expect(id).toBeDefined();
     expect(typeof id).toBe('string');
     const saved = repo.findById(id);
     expect(saved).not.toBeNull();
     expect(saved!.getName()).toBe('Desayuno');
-    expect(saved!.getUserId()).toBeNull();
+    expect(saved!.isSystemTag()).toBe(true);
   });
 
   it('debe crear una etiqueta de usuario y devolver un id', () => {
@@ -33,22 +35,22 @@ describe('CreateTagUseCase', () => {
   });
 
   it('debe rechazar nombre duplicado en la misma dimensión', () => {
-    useCase.execute(null, 'Pasta', TagDimension.TIPO_PLATO);
-    expect(() => useCase.execute(null, 'Pasta', TagDimension.TIPO_PLATO)).toThrow(AppError);
+    useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true);
+    expect(() => useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true)).toThrow(AppError);
   });
 
   it('debe rechazar nombre duplicado ignorando mayúsculas', () => {
-    useCase.execute(null, 'Pasta', TagDimension.TIPO_PLATO);
-    expect(() => useCase.execute(null, 'pasta', TagDimension.TIPO_PLATO)).toThrow(AppError);
+    useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true);
+    expect(() => useCase.execute(systemUserId, 'pasta', TagDimension.TIPO_PLATO, true)).toThrow(AppError);
   });
 
   it('debe permitir mismo nombre en distinta dimensión', () => {
-    useCase.execute(null, 'Pasta', TagDimension.TIPO_PLATO);
-    expect(() => useCase.execute(null, 'Pasta', TagDimension.MOMENTO_DIA)).not.toThrow();
+    useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true);
+    expect(() => useCase.execute(systemUserId, 'Pasta', TagDimension.MOMENTO_DIA, true)).not.toThrow();
   });
 
-  it('debe rechazar crear etiqueta FORMATO con userId', () => {
+  it('debe rechazar crear etiqueta FORMATO que no sea de sistema', () => {
     const userId = '550e8400-e29b-41d4-a716-446655440001';
-    expect(() => useCase.execute(userId, 'Caliente', TagDimension.FORMATO)).toThrow(DomainError);
+    expect(() => useCase.execute(userId, 'Caliente', TagDimension.FORMATO, false)).toThrow(DomainError);
   });
 });

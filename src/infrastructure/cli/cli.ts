@@ -28,16 +28,28 @@ async function run() {
     return;
   }
 
-  const container = createContainer(response.opcion); 
-  
-  await menuPrincipal(container);
+  const userIdPrompt = await prompts({
+    type: 'text',
+    name: 'userId',
+    message: 'Tu ID de usuario (UUID):',
+    initial: '550e8400-e29b-41d4-a716-446655440000',
+  }, { onCancel: () => {} });
+
+  if (!userIdPrompt?.userId) {
+    mostrarDespedida();
+    return;
+  }
+
+  const container = createContainer(response.opcion, userIdPrompt.userId);
+
+  await menuPrincipal(container, userIdPrompt.userId);
 }
 
 function mostrarDespedida() {
   console.log('¡ Gracias por usar el Planificdor de comidas !');
 }
 
-async function menuPrincipal(container: IContainer) {
+async function menuPrincipal(container: IContainer, userId: string) {
   let continuar = true;
   while (continuar) {
     const response = await prompts({
@@ -57,13 +69,13 @@ async function menuPrincipal(container: IContainer) {
 
     switch (response.opcion) {
       case 'tags':
-        await menuEtiquetas(container);
+        await menuEtiquetas(container, userId);
         break;
       case 'ingredients':
-        await menuIngredientes(container);
+        await menuIngredientes(container, userId);
         break;
       case 'recipes':
-        await menuRecetas(container);
+        await menuRecetas(container, userId);
         break;
       case 'plannings':
         await menuPlanificaciones(container);
