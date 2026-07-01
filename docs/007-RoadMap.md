@@ -108,8 +108,8 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] planning-shopping-item.entity.ts (+spec)
         - [x] refactor planning.aggregate.ts (added planning pantry and shopping items)
 - [ ] Fase 4: Casos de uso + InMemoryRepositories (para tests): Revisar agregados (puertas de acceso al dominio)
-        - [ ] Listar, crear, modificar y eliminar (en adelante CRUD) Tags (etiquetas)
-        - [ ] CRUD Ingredients (ingredientes)
+        - [x] Listar, crear, modificar y eliminar (en adelante CRUD) Tags (etiquetas)
+        - [x] CRUD Ingredients (ingredientes)
         - [ ] CRUD Recipes (recetas)
         - [ ] CRUD Plannings (planificaciones)
 - [ ] Fase 5: CLI + FilePersistence

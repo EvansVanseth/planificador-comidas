@@ -45,6 +45,10 @@ export class Ingredient {
     this.name = Name.create(INGREDIENT_NAME_FIELD, name);
   }
 
+  public reassignUser(userId: string): void {
+    this.userId = UserId.create(userId);
+  }
+
   public toPrimitives(): IngredientPrimitives {
     return {
       id: this.id.value,

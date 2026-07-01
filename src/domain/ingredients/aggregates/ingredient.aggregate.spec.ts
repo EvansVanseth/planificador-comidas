@@ -60,4 +60,16 @@ describe('Ingredient (Aggregate)', () => {
     const restored = Ingredient.fromPrimitives(primitives);
     expect(restored.toPrimitives()).toEqual(primitives);
   });
+
+  it('debe reasignar el usuario', () => {
+    const ingredient = Ingredient.create(validId, validUserId, 'Arroz');
+    const newUserId = '550e8400-e29b-41d4-a716-446655440002';
+    ingredient.reassignUser(newUserId);
+    expect(ingredient.getUserId()).toBe(newUserId);
+  });
+
+  it('debe rechazar userId inválido en reassignUser', () => {
+    const ingredient = Ingredient.create(validId, validUserId, 'Arroz');
+    expect(() => ingredient.reassignUser('no-uuid')).toThrow(DomainError);
+  });
 });
