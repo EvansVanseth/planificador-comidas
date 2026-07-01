@@ -1,13 +1,12 @@
 import { Id } from "@/domain/shared/value-objects/id.vo";
 import { DayOrder } from "../value-objects/day-order.vo";
-import { MealTime } from './meal-time.enum'
 import { MealService, MealServicePrimitives } from './meal-service.entity'
 import { DomainError } from "@/domain/shared/errors/domain-error";
 
 export interface PlannedDayDTO {
   readonly id: string;
   readonly order: number;
-  readonly services: Record<MealTime, MealService | null>;
+  readonly services: Record<string, MealService | null>;
 }
 
 export type PlannedDayPrimitives = {
@@ -19,7 +18,7 @@ export type PlannedDayPrimitives = {
 export class PlannedDay {
   private id: Id;
   private orden_dia: DayOrder;
-  private services: Map<MealTime, MealService> = new Map();
+  private services: Map<string, MealService> = new Map();
 
   public constructor (id: Id, orden_dia: DayOrder) {
     this.orden_dia = orden_dia;
@@ -38,23 +37,22 @@ export class PlannedDay {
     return this.orden_dia.value;
   }  
 
-  public addMeal(time: MealTime, covers: number, recipeId?: string, exclusions?: string[], preferences?: string[]): void {
-    if (this.services.has(time)) {
-      throw new DomainError("Ya hay un servicio asignado a esta hora");
+  public addMeal(momentTagId: string, covers: number, recipeId?: string, exclusions?: string[], preferences?: string[]): void {
+    if (this.services.has(momentTagId)) {
+      throw new DomainError('Ya hay un servicio asignado para este momento del día');
     }
-    this.services.set(time, MealService.create(covers, recipeId, exclusions, preferences));
+    this.services.set(momentTagId, MealService.create(covers, recipeId, exclusions, preferences));
   }
 
-  public getMeal(time: MealTime): MealService | null {
-    return this.services.get(time) ?? null;
+  public getMeal(momentTagId: string): MealService | null {
+    return this.services.get(momentTagId) ?? null;
   }
 
   public toDTO(): PlannedDayDTO {
-    const servicesDTO: Record<MealTime, MealService | null> = {
-      [MealTime.BREAKFAST]: this.services.get(MealTime.BREAKFAST) ?? null,
-      [MealTime.LUNCH]: this.services.get(MealTime.LUNCH) ?? null,
-      [MealTime.DINNER]: this.services.get(MealTime.DINNER) ?? null,
-    };
+    const servicesDTO: Record<string, MealService | null> = {};
+    for (const [tagId, service] of this.services.entries()) {
+      servicesDTO[tagId] = service;
+    }
 
     return {
       id: this.id.value,
@@ -87,7 +85,7 @@ export class PlannedDay {
     if (data.services && Array.isArray(data.services)) {
       data.services.forEach((svc: MealServicePrimitives) => {
         const service = MealService.fromPrimitives(svc);
-        day.services.set(svc.time as MealTime, service);
+        day.services.set(svc.time, service);
       });
     }
 

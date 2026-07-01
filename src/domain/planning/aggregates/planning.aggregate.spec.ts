@@ -2,10 +2,12 @@ import { describe, it, expect } from "vitest";
 import { Planning, PlanningPrimitives } from "./planning.aggregate";
 import { DomainError } from "@/domain/shared/errors/domain-error";
 import { OutRangeError } from "@/domain/shared/errors/ranges-error";
-import { MealTime } from "../entities/meal-time.enum";
 
 describe('Planning (Aggregate)', () => {
   const validId = '550e8400-e29b-41d4-a716-446655440000';
+  const breakfastTagId = '550e8400-e29b-41d4-a716-446655440110';
+  const lunchTagId = '550e8400-e29b-41d4-a716-446655440111';
+  const dinnerTagId = '550e8400-e29b-41d4-a716-446655440112';
 
    //Creación
   it('debería crear un Planning correctamente', () => {
@@ -104,7 +106,7 @@ describe('Planning (Aggregate)', () => {
   it('debería asignar una comida a un día de un Planning correctamente', () => {
     const planning = Planning.create(validId, validId, 'Mi planificación', null, 2);
     planning.addDay(validId, 1);
-    planning.assignMealToDay(1, MealTime.BREAKFAST, 10, validId);
+    planning.assignMealToDay(1, breakfastTagId, 10, validId);
     const day = planning.getDay(1);
     expect(day).not.toBeNull();
     expect(Object.values(day!.services).filter((service) => service !== null).length).toBe(1);
@@ -141,7 +143,7 @@ describe('Planning (Aggregate)', () => {
   it('debe serializar a primitivas correctamente con días y comidas', () => {
     const planning = Planning.create(validId, validId, 'Mi planificación', new Date(2026, 5, 22), 1);
     planning.addDay('550e8400-e29b-41d4-a716-446655440001', 1);
-    planning.assignMealToDay(1, MealTime.BREAKFAST, 2, validId);
+    planning.assignMealToDay(1, breakfastTagId, 2, validId);
 
     const primitives = planning.toPrimitives();
     expect(primitives.id).toBe(validId);
@@ -152,7 +154,7 @@ describe('Planning (Aggregate)', () => {
     expect(primitives.days[0].order).toBe(1);
     expect(primitives.days[0].services).toHaveLength(1);
     expect(primitives.days[0].services[0]).toEqual({
-      time: 'BREAKFAST',
+      time: breakfastTagId,
       recipeId: validId,
       covers: 2,
       exclusions: [],
@@ -171,7 +173,7 @@ describe('Planning (Aggregate)', () => {
         id: '550e8400-e29b-41d4-a716-446655440001',
         order: 1,
         services: [{
-          time: 'LUNCH',
+          time: lunchTagId,
           recipeId: validId,
           covers: 4,
           exclusions: [],
@@ -194,7 +196,7 @@ describe('Planning (Aggregate)', () => {
   it('debe mantener integridad en un roundtrip toPrimitives -> fromPrimitives -> toPrimitives', () => {
     const original = Planning.create(validId, validId, 'Roundtrip', new Date(2026, 5, 22), 1);
     original.addDay('550e8400-e29b-41d4-a716-446655440001', 1);
-    original.assignMealToDay(1, MealTime.DINNER, 3, '550e8400-e29b-41d4-a716-446655440002');
+    original.assignMealToDay(1, dinnerTagId, 3, '550e8400-e29b-41d4-a716-446655440002');
 
     const primitives = original.toPrimitives();
     const restored = Planning.fromPrimitives(primitives);

@@ -5,7 +5,6 @@ import { UserId } from "@/domain/users/value-objects/user-id.vo";
 import { StartDate } from "../value-objects/start-date.vo";
 import { PlannedWeeks } from "../value-objects/planned-weeks.vo";
 import { PlannedDay, PlannedDayDTO, PlannedDayPrimitives } from "../entities/planned-day.entity";
-import { MealTime } from '../entities/meal-time.enum'
 import { PlanningPantryItem, PlanningPantryItemPrimitives } from "../entities/planning-pantry-item.entity";
 import { PlanningShoppingItem, PlanningShoppingItemPrimitives } from "../entities/planning-shopping-item.entity";
 
@@ -110,13 +109,13 @@ export class Planning {
     this.days.set(day.getOrdenDia(), day);
   }
 
-  public assignMealToDay(ordenDia: number, time: MealTime, covers: number, recipeId?: string): void {
+  public assignMealToDay(ordenDia: number, momentTagId: string, covers: number, recipeId?: string): void {
     const day = this.days.get(ordenDia);
     if (!day) {
       throw new DomainError('No existe un día con ese orden');
     }
 
-    day.addMeal(time, covers, recipeId);
+    day.addMeal(momentTagId, covers, recipeId);
   }
 
   public removeDay(ordenDia: number): void {

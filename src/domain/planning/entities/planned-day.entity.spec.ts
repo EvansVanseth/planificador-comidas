@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest'
 import { PlannedDay } from './planned-day.entity'
-import { MealTime } from './meal-time.enum';
 import { DomainError } from '@/domain/shared/errors/domain-error';
 
 describe('PlannedDay (Entity)', () => {
   const validId = '550e8400-e29b-41d4-a716-446655440000';
-  
+  const lunchTagId = '550e8400-e29b-41d4-a716-446655440100';
+
   it('debe crearse correctamente con su orden', () => {
     const plannedDay = PlannedDay.create(validId, 1);
     expect(plannedDay.getOrdenDia()).toBe(1);
@@ -18,18 +18,14 @@ describe('PlannedDay (Entity)', () => {
     expect(dto).toEqual({
       id: validId,
       order: 1,
-      services: {
-        [MealTime.BREAKFAST]: null,
-        [MealTime.LUNCH]: null,
-        [MealTime.DINNER]: null
-      }
+      services: {}
     });
   })
 
   it('debe permitir añadir un servicio de comida', () => {
     const plannedDay = PlannedDay.create(validId, 1);
-    plannedDay.addMeal(MealTime.LUNCH, 2, validId);
-    const meal = plannedDay.getMeal(MealTime.LUNCH);
+    plannedDay.addMeal(lunchTagId, 2, validId);
+    const meal = plannedDay.getMeal(lunchTagId);
     expect(meal).not.toBeNull();
     expect(meal!.getRecipeId()).toBe(validId);
     expect(meal!.getCovers()).toBe(2);
@@ -37,17 +33,17 @@ describe('PlannedDay (Entity)', () => {
 
   it('debe permitir añadir un servicio sin receta (pendiente de planificar)', () => {
     const plannedDay = PlannedDay.create(validId, 1);
-    plannedDay.addMeal(MealTime.LUNCH, 4);
-    const meal = plannedDay.getMeal(MealTime.LUNCH);
+    plannedDay.addMeal(lunchTagId, 4);
+    const meal = plannedDay.getMeal(lunchTagId);
     expect(meal).not.toBeNull();
     expect(meal!.getRecipeId()).toBeNull();
     expect(meal!.getCovers()).toBe(4);
   });
 
-  it('debe fallar al intentar añadir un servicio de comida a una hora ya ocupada', () => {
+  it('debe fallar al intentar añadir un servicio de comida a un momento ya ocupado', () => {
     const plannedDay = PlannedDay.create(validId, 1);
-    plannedDay.addMeal(MealTime.LUNCH, 2, validId);
-    expect(() => plannedDay.addMeal(MealTime.LUNCH, 2, validId)).toThrow(DomainError);
+    plannedDay.addMeal(lunchTagId, 2, validId);
+    expect(() => plannedDay.addMeal(lunchTagId, 2, validId)).toThrow(DomainError);
   });
 
 })

@@ -77,7 +77,7 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     createPlanning: new CreatePlanningUseCase(planningRepository),
     updatePlanning: new UpdatePlanningUseCase(planningRepository),
     deletePlanning: new DeletePlanningUseCase(planningRepository),
-    assignMeal: new AssignMealUseCase(planningRepository),
+    assignMeal: new AssignMealUseCase(planningRepository, tagRepository),
     // Tags
     listTags: new ListTagsUseCase(tagRepository),
     createTag: new CreateTagUseCase(tagRepository),
