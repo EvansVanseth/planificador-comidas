@@ -17,8 +17,8 @@ describe('DeleteTagUseCase', () => {
     useCase = new DeleteTagUseCase(repo);
   });
 
-  it('debe eliminar una etiqueta existente', () => {
-    const tag = Tag.create(validId, validUserId, 'Test', TagDimension.MOMENTO_DIA, true);
+  it('debe eliminar una etiqueta de usuario existente', () => {
+    const tag = Tag.create(validId, validUserId, 'Test', TagDimension.MOMENTO_DIA, false);
     repo.save(tag);
     useCase.execute(validId);
     expect(repo.findById(validId)).toBeNull();
@@ -26,5 +26,12 @@ describe('DeleteTagUseCase', () => {
 
   it('debe lanzar error si la etiqueta no existe', () => {
     expect(() => useCase.execute(validId)).toThrow(AppError);
+  });
+
+  it('debe rechazar eliminar una etiqueta del sistema', () => {
+    const tag = Tag.create(validId, validUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true);
+    repo.save(tag);
+    expect(() => useCase.execute(validId)).toThrow(AppError);
+    expect(repo.findById(validId)).not.toBeNull();
   });
 });

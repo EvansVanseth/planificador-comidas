@@ -4,7 +4,7 @@ import { Planning } from '@/domain/planning/aggregates/planning.aggregate';
 export class ListPlanningsUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(): Planning[] {
-    return this.planningRepository.findAll();
+  execute(userId: string): Planning[] {
+    return this.planningRepository.findAllByUserId(userId);
   }
 }

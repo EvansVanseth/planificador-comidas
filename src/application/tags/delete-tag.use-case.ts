@@ -10,6 +10,10 @@ export class DeleteTagUseCase {
       throw new AppError(`Tag not found: ${id}`);
     }
 
+    if (tag.isSystemTag()) {
+      throw new AppError('No se puede eliminar una etiqueta del sistema');
+    }
+
     this.tagRepository.delete(id);
   }
 }

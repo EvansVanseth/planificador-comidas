@@ -68,7 +68,11 @@ export class Tag {
   }
 
   public changeDimension(dimension: TagDimension): void {
-    if (dimension === TagDimension.FORMATO && !this.isSystem) {
+    if (this.isSystem) {
+      throw new DomainError('No se puede cambiar la dimensión de una etiqueta del sistema');
+    }
+
+    if (dimension === TagDimension.FORMATO) {
       throw new DomainError('No se puede cambiar una etiqueta de usuario a la dimensión FORMATO');
     }
 

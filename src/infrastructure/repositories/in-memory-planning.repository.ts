@@ -12,6 +12,10 @@ export class InMemoryPlanningRepository implements PlanningRepository {
     return Array.from(this.plannings.values());
   }
 
+  findAllByUserId(userId: string): Planning[] {
+    return this.findAll().filter(p => p.getUserId() === userId);
+  }
+
   save(planning: Planning): void {
     this.plannings.set(planning.getId(), planning);
   }

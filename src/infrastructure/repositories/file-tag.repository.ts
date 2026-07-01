@@ -29,6 +29,10 @@ export class FileTagRepository implements TagRepository {
     return rawData.map(data => Tag.fromPrimitives(data));
   }
 
+  findAllByUserId(userId: string): Tag[] {
+    return this.findAll().filter(t => t.getUserId() === userId);
+  }
+
   findById(id: string): Tag | null {
     const tags = this.findAll();
     return tags.find(t => t.getId() === id) || null;

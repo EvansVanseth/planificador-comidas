@@ -25,16 +25,16 @@ export async function menuIngredientes(container: IContainer, userId: string) {
 
     switch (response.opcion) {
       case 'list':
-        listarIngredientes(container);
+        listarIngredientes(container, userId);
         break;
       case 'create':
         await crearIngrediente(container, userId);
         break;
       case 'edit':
-        await editarIngrediente(container);
+        await editarIngrediente(container, userId);
         break;
       case 'delete':
-        await eliminarIngrediente(container);
+        await eliminarIngrediente(container, userId);
         break;
       case 'back':
         continuar = false;
@@ -43,8 +43,8 @@ export async function menuIngredientes(container: IContainer, userId: string) {
   }
 }
 
-function listarIngredientes(container: IContainer) {
-  const ingredients = container.listIngredients.execute();
+function listarIngredientes(container: IContainer, userId: string) {
+  const ingredients = container.listIngredients.execute(userId);
   if (ingredients.length === 0) {
     console.log('No hay ingredientes');
     return;
@@ -70,9 +70,9 @@ async function crearIngrediente(container: IContainer, userId: string) {
   }
 }
 
-async function editarIngrediente(container: IContainer) {
+async function editarIngrediente(container: IContainer, userId: string) {
   try {
-    const ingredients = container.listIngredients.execute();
+    const ingredients = container.listIngredients.execute(userId);
     if (ingredients.length === 0) {
       console.log('No hay ingredientes para editar');
       return;
@@ -106,9 +106,9 @@ async function editarIngrediente(container: IContainer) {
   }
 }
 
-async function eliminarIngrediente(container: IContainer) {
+async function eliminarIngrediente(container: IContainer, userId: string) {
   try {
-    const ingredients = container.listIngredients.execute();
+    const ingredients = container.listIngredients.execute(userId);
     if (ingredients.length === 0) {
       console.log('No hay ingredientes para eliminar');
       return;

@@ -12,6 +12,10 @@ export class InMemoryIngredientRepository implements IngredientRepository {
     return Array.from(this.ingredients.values());
   }
 
+  findAllByUserId(userId: string): Ingredient[] {
+    return this.findAll().filter(i => i.getUserId() === userId);
+  }
+
   save(ingredient: Ingredient): void {
     this.ingredients.set(ingredient.getId(), ingredient);
   }

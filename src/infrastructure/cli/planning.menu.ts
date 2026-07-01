@@ -6,7 +6,7 @@ import { Planning } from '../../domain/planning/aggregates/planning.aggregate';
 
 const ON_CANCEL = () => {};
 
-export async function menuPlanificaciones(container: IContainer) {
+export async function menuPlanificaciones(container: IContainer, userId: string) {
   let continuar = true;
   while (continuar) {
     const response = await prompts({
@@ -26,16 +26,16 @@ export async function menuPlanificaciones(container: IContainer) {
 
     switch (response.opcion) {
       case 'list':
-        listarPlanificaciones(container);
+        listarPlanificaciones(container, userId);
         break;
       case 'create':
         await crearPlanificacion(container);
         break;
       case 'edit':
-        await editarPlanificacion(container);
+        await editarPlanificacion(container, userId);
         break;
       case 'delete':
-        await eliminarPlanificacion(container);
+        await eliminarPlanificacion(container, userId);
         break;
       case 'back':
         continuar = false;
@@ -44,9 +44,9 @@ export async function menuPlanificaciones(container: IContainer) {
   }
 }
 
-function listarPlanificaciones(container: IContainer) {
+function listarPlanificaciones(container: IContainer, userId: string) {
   console.log('--- Listado de planificaciones ---');
-  const plannings = container.listPlannings.execute();
+  const plannings = container.listPlannings.execute(userId);
   if (plannings.length === 0) {
     console.log('No hay planificaciones creadas');
   } else {
@@ -76,9 +76,9 @@ async function crearPlanificacion(container: IContainer) {
   }
 }
 
-async function editarPlanificacion(container: IContainer) {
+async function editarPlanificacion(container: IContainer, userId: string) {
   try {
-    const plannings = container.listPlannings.execute();
+    const plannings = container.listPlannings.execute(userId);
     if (plannings.length === 0) {
       console.log('No hay planificaciones para editar');
       return;
@@ -114,9 +114,9 @@ async function editarPlanificacion(container: IContainer) {
   }
 }
 
-async function eliminarPlanificacion(container: IContainer) {
+async function eliminarPlanificacion(container: IContainer, userId: string) {
   try {
-    const plannings = container.listPlannings.execute();
+    const plannings = container.listPlannings.execute(userId);
     if (plannings.length === 0) {
       console.log('No hay planificaciones para eliminar');
       return;

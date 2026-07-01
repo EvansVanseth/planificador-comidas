@@ -27,6 +27,10 @@ export class FilePlanningRepository implements PlanningRepository {
     return rawData.map(data => Planning.fromPrimitives(data));
   }
 
+  findAllByUserId(userId: string): Planning[] {
+    return this.findAll().filter(p => p.getUserId() === userId);
+  }
+
   findById(id: string): Planning | null {
     const plannings = this.findAll();
     return plannings.find(p => p.getId() === id) || null;

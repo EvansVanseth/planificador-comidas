@@ -25,16 +25,16 @@ export async function menuEtiquetas(container: IContainer, userId: string) {
 
     switch (response.opcion) {
       case 'list':
-        listarEtiquetas(container);
+        listarEtiquetas(container, userId);
         break;
       case 'create':
         await crearEtiqueta(container, userId);
         break;
       case 'edit':
-        await editarEtiqueta(container);
+        await editarEtiqueta(container, userId);
         break;
       case 'delete':
-        await eliminarEtiqueta(container);
+        await eliminarEtiqueta(container, userId);
         break;
       case 'back':
         continuar = false;
@@ -43,8 +43,8 @@ export async function menuEtiquetas(container: IContainer, userId: string) {
   }
 }
 
-function listarEtiquetas(container: IContainer) {
-  const tags = container.listTags.execute();
+function listarEtiquetas(container: IContainer, userId: string) {
+  const tags = container.listTags.execute(userId);
   if (tags.length === 0) {
     console.log('No hay etiquetas');
     return;
@@ -81,9 +81,9 @@ async function crearEtiqueta(container: IContainer, userId: string) {
   }
 }
 
-async function editarEtiqueta(container: IContainer) {
+async function editarEtiqueta(container: IContainer, userId: string) {
   try {
-    const tags = container.listTags.execute();
+    const tags = container.listTags.execute(userId);
     if (tags.length === 0) {
       console.log('No hay etiquetas para editar');
       return;
@@ -130,9 +130,9 @@ async function editarEtiqueta(container: IContainer) {
   }
 }
 
-async function eliminarEtiqueta(container: IContainer) {
+async function eliminarEtiqueta(container: IContainer, userId: string) {
   try {
-    const tags = container.listTags.execute();
+    const tags = container.listTags.execute(userId);
     if (tags.length === 0) {
       console.log('No hay etiquetas para eliminar');
       return;

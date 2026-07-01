@@ -78,7 +78,7 @@ async function menuPrincipal(container: IContainer, userId: string) {
         await menuRecetas(container, userId);
         break;
       case 'plannings':
-        await menuPlanificaciones(container);
+        await menuPlanificaciones(container, userId);
         break;
       case 'exit':
         continuar = false;

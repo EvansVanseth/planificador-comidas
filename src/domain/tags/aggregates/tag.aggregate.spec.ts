@@ -83,10 +83,15 @@ describe('Tag (Aggregate)', () => {
     expect(restored.toPrimitives()).toEqual(primitives);
   });
 
-  it('debe cambiar la dimensión de la etiqueta', () => {
+  it('debe cambiar la dimensión de una etiqueta de usuario', () => {
+    const tag = Tag.create(validId, validUserId, 'Test', TagDimension.MOMENTO_DIA, false);
+    tag.changeDimension(TagDimension.TIPO_PLATO);
+    expect(tag.getDimension()).toBe(TagDimension.TIPO_PLATO);
+  });
+
+  it('debe rechazar cambiar la dimensión de una etiqueta del sistema', () => {
     const tag = Tag.create(validId, validUserId, 'Test', TagDimension.MOMENTO_DIA, true);
-    tag.changeDimension(TagDimension.FORMATO);
-    expect(tag.getDimension()).toBe(TagDimension.FORMATO);
+    expect(() => tag.changeDimension(TagDimension.TIPO_PLATO)).toThrow(DomainError);
   });
 
   it('debe reasignar la etiqueta a un usuario', () => {

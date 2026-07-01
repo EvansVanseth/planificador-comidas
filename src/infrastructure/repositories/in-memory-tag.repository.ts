@@ -13,6 +13,10 @@ export class InMemoryTagRepository implements TagRepository {
     return Array.from(this.tags.values());
   }
 
+  findAllByUserId(userId: string): Tag[] {
+    return this.findAll().filter(t => t.getUserId() === userId);
+  }
+
   findByNameAndDimension(name: string, dimension: TagDimension): Tag | null {
     const normalized = name.toLowerCase().trim();
     return this.findAll().find(

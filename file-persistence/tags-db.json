@@ -1,0 +1,212 @@
+[
+  {
+    "id": "c15eaed9-5f5c-4893-ba96-635d54b765bc",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Desayuno",
+    "dimension": "MOMENTO_DIA",
+    "isSystem": true
+  },
+  {
+    "id": "134604e4-94ab-4cbe-8693-52c2948fdb1d",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Almuerzo",
+    "dimension": "MOMENTO_DIA",
+    "isSystem": true
+  },
+  {
+    "id": "9839fbde-44b1-42d6-a4d4-59a2c5b35558",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Cena",
+    "dimension": "MOMENTO_DIA",
+    "isSystem": true
+  },
+  {
+    "id": "e27aeafc-5bf0-4a64-b80a-d8224837cd4a",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Caliente",
+    "dimension": "FORMATO",
+    "isSystem": true
+  },
+  {
+    "id": "b125ac5a-2ea9-428d-9c64-57826540f9a4",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Frio",
+    "dimension": "FORMATO",
+    "isSystem": true
+  },
+  {
+    "id": "251f4e0f-dbf8-482f-9dbe-55daecb0aa54",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Carne",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "e70b09d8-89d6-4a75-b692-713c833634f1",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Pescado",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "46ebb4bc-b3ff-4437-9616-3c580e083b81",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Legumbres",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "26d1758d-2572-4b60-b179-ac7bf81b68ea",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Pasta",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "218f5f9c-0c2f-423e-a4cd-ecf244af123a",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Ensalada",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "dc86cf45-2e64-44e6-a1d9-6cac4bcd3b24",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Arroz",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "e256a0a0-f0f0-4862-957b-742097bdeced",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Dulce",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "61b1542f-8c5e-466e-8176-f2d963fb855d",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Bajo en calorías",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": true
+  },
+  {
+    "id": "b4bc6fd2-b240-44af-8a12-011d1f284b4b",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Vegetariano",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": true
+  },
+  {
+    "id": "eac690e3-3553-464c-bdb3-0f3a12b7d7fe",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Vegano",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": true
+  },
+  {
+    "id": "12f7d692-0aa0-4536-ba7f-ee35a8b5a24b",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Amorçar!!",
+    "dimension": "MOMENTO_DIA",
+    "isSystem": true
+  },
+  {
+    "id": "2868f275-64c4-41a6-a516-700e666381e3",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Comida",
+    "dimension": "MOMENTO_DIA",
+    "isSystem": true
+  },
+  {
+    "id": "9aca9ed4-d3d4-4c52-b3aa-e089a854ca6f",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Cena",
+    "dimension": "MOMENTO_DIA",
+    "isSystem": true
+  },
+  {
+    "id": "78e3a7c1-132b-4e26-b03b-1a5e38c32d20",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Caliente",
+    "dimension": "FORMATO",
+    "isSystem": true
+  },
+  {
+    "id": "3a5975a0-cec0-4aa7-ad86-b356e63638f3",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Frio",
+    "dimension": "FORMATO",
+    "isSystem": true
+  },
+  {
+    "id": "bb72d598-107e-4279-8d00-7c71a39c80aa",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Carne",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "2675f908-ce30-4c9e-858a-1d083f102cc6",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Pescado",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "57f20a09-ad08-43e7-a759-ad147afd88e8",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Legumbres",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "62438ae5-81eb-466d-85db-3c8cc4513007",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Pasta",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "9013cd2c-a4bc-4456-9c68-754f18a4112b",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Ensalada",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "92d1e9a0-15b7-4af5-9524-10cbbc1a9191",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Arroz",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "e5a80798-cf47-4fb3-a93b-3b29c54ed369",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Dulce",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true
+  },
+  {
+    "id": "5ff2c7d6-7085-490b-a8c8-b5858ac564b7",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Bajo en calorías",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": true
+  },
+  {
+    "id": "c786f696-8fa7-4f3a-8516-fa44af1ec0bc",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Vegetariano",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": true
+  },
+  {
+    "id": "c5d02eee-453c-4065-a199-165248c39ad2",
+    "userId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Vegano",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": true
+  }
+]

@@ -4,7 +4,7 @@ import { IngredientPrimitives } from '@/domain/ingredients/aggregates/ingredient
 export class ListIngredientsUseCase {
   constructor(private ingredientRepository: IngredientRepository) {}
 
-  execute(): IngredientPrimitives[] {
-    return this.ingredientRepository.findAll().map(i => i.toPrimitives());
+  execute(userId: string): IngredientPrimitives[] {
+    return this.ingredientRepository.findAllByUserId(userId).map(i => i.toPrimitives());
   }
 }

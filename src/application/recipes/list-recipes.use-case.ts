@@ -4,7 +4,7 @@ import { RecipePrimitives } from '@/domain/recipes/aggregates/recipe.aggregate';
 export class ListRecipesUseCase {
   constructor(private recipeRepository: RecipeRepository) {}
 
-  execute(): RecipePrimitives[] {
-    return this.recipeRepository.findAll().map(r => r.toPrimitives());
+  execute(userId: string): RecipePrimitives[] {
+    return this.recipeRepository.findAllByUserId(userId).map(r => r.toPrimitives());
   }
 }

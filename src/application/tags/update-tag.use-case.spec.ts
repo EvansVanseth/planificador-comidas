@@ -33,8 +33,10 @@ describe('UpdateTagUseCase', () => {
   });
 
   it('debe actualizar la dimensión', () => {
-    useCase.execute({ id: validId, dimension: TagDimension.FORMATO });
-    expect(repo.findById(validId)!.getDimension()).toBe(TagDimension.FORMATO);
+    const userTagId = '550e8400-e29b-41d4-a716-446655440030';
+    repo.save(Tag.create(userTagId, validUserId, 'Arroz', TagDimension.TIPO_PLATO, false));
+    useCase.execute({ id: userTagId, dimension: TagDimension.MOMENTO_DIA });
+    expect(repo.findById(userTagId)!.getDimension()).toBe(TagDimension.MOMENTO_DIA);
   });
 
   it('debe lanzar error si la etiqueta no existe', () => {

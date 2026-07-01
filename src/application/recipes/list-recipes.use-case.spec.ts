@@ -5,7 +5,8 @@ import { Recipe } from '@/domain/recipes/aggregates/recipe.aggregate';
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';
 
 describe('ListRecipesUseCase', () => {
-  const validUserId = '550e8400-e29b-41d4-a716-446655440001';
+  const userId = '550e8400-e29b-41d4-a716-446655440001';
+  const otherUserId = '550e8400-e29b-41d4-a716-446655440099';
   const defaultTags = [
     { id: '550e8400-e29b-41d4-a716-446655440010', dimension: TagDimension.MOMENTO_DIA },
     { id: '550e8400-e29b-41d4-a716-446655440011', dimension: TagDimension.FORMATO },
@@ -21,14 +22,21 @@ describe('ListRecipesUseCase', () => {
   });
 
   it('debe devolver lista vacía si no hay recetas', () => {
-    expect(useCase.execute()).toEqual([]);
+    expect(useCase.execute(userId)).toEqual([]);
   });
 
-  it('debe devolver todas las recetas como primitivas', () => {
-    const r1 = Recipe.create('550e8400-e29b-41d4-a716-446655440001', validUserId, 'Receta Uno', 2, 10, null, [], defaultTags);
+  it('debe devolver solo las recetas del usuario', () => {
+    const r1 = Recipe.create('550e8400-e29b-41d4-a716-446655440001', userId, 'Receta Uno', 2, 10, null, [], defaultTags);
     repo.save(r1);
-    const result = useCase.execute();
+    const result = useCase.execute(userId);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual(r1.toPrimitives());
+  });
+
+  it('no debe devolver recetas de otro usuario', () => {
+    const r1 = Recipe.create('550e8400-e29b-41d4-a716-446655440001', otherUserId, 'Receta Otro', 2, 10, null, [], defaultTags);
+    repo.save(r1);
+    const result = useCase.execute(userId);
+    expect(result).toHaveLength(0);
   });
 });

@@ -33,16 +33,16 @@ export async function menuRecetas(container: IContainer, userId: string) {
 
     switch (response.opcion) {
       case 'list':
-        listarRecetas(container);
+        listarRecetas(container, userId);
         break;
       case 'create':
         await crearReceta(container, userId);
         break;
       case 'edit':
-        await editarReceta(container);
+        await editarReceta(container, userId);
         break;
       case 'delete':
-        await eliminarReceta(container);
+        await eliminarReceta(container, userId);
         break;
       case 'back':
         continuar = false;
@@ -51,8 +51,8 @@ export async function menuRecetas(container: IContainer, userId: string) {
   }
 }
 
-function listarRecetas(container: IContainer) {
-  const recipes = container.listRecipes.execute();
+function listarRecetas(container: IContainer, userId: string) {
+  const recipes = container.listRecipes.execute(userId);
   if (recipes.length === 0) {
     console.log('No hay recetas');
     return;
@@ -67,7 +67,7 @@ function listarRecetas(container: IContainer) {
 
 async function crearReceta(container: IContainer, userId: string) {
   try {
-    const tagsDisponibles = container.listTags.execute();
+    const tagsDisponibles = container.listTags.execute(userId);
     const datos = await prompts([
       { type: 'text', name: 'name', message: 'Nombre de la receta:' },
       { type: 'number', name: 'baseServings', message: 'Comensales base:', initial: 2 },
@@ -109,9 +109,9 @@ async function crearReceta(container: IContainer, userId: string) {
   }
 }
 
-async function editarReceta(container: IContainer) {
+async function editarReceta(container: IContainer, userId: string) {
   try {
-    const recipes = container.listRecipes.execute();
+    const recipes = container.listRecipes.execute(userId);
     if (recipes.length === 0) {
       console.log('No hay recetas para editar');
       return;
@@ -149,9 +149,9 @@ async function editarReceta(container: IContainer) {
   }
 }
 
-async function eliminarReceta(container: IContainer) {
+async function eliminarReceta(container: IContainer, userId: string) {
   try {
-    const recipes = container.listRecipes.execute();
+    const recipes = container.listRecipes.execute(userId);
     if (recipes.length === 0) {
       console.log('No hay recetas para eliminar');
       return;
