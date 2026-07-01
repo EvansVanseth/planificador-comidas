@@ -110,8 +110,8 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 - [ ] Fase 4: Casos de uso + InMemoryRepositories (para tests): Revisar agregados (puertas de acceso al dominio)
         - [x] Listar, crear, modificar y eliminar (en adelante CRUD) Tags (etiquetas)
         - [x] CRUD Ingredients (ingredientes)
-        - [ ] CRUD Recipes (recetas)
-        - [ ] CRUD Plannings (planificaciones)
+        - [x] CRUD Recipes (recetas)
+        - [x] CRUD Plannings (planificaciones)
 - [ ] Fase 5: CLI + FilePersistence
         - [ ] Menu para manejar CRUD de Tags
         - [ ] Menu para manejar CRUD de Ingredients

@@ -4,4 +4,5 @@ export interface PlanningRepository {
   findById(Id: string): Planning | null;
   findAll(): Planning[];
   save(planning: Planning | null): void;
+  delete(id: string): void;
 }

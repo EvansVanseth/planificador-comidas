@@ -43,4 +43,14 @@ export class FilePlanningRepository implements PlanningRepository {
     
     fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
   }
+
+  delete(id: string): void {
+    const plannings = this.findAll();
+    const index = plannings.findIndex(p => p.getId() === id);
+    if (index === -1) return;
+
+    plannings.splice(index, 1);
+    const rawData = plannings.map(p => p.toPrimitives());
+    fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
+  }
 }

@@ -1,0 +1,22 @@
+import { RecipeRepository } from "@/infrastructure/repositories/recipe-repository.interface";
+import { Recipe } from "@/domain/recipes/aggregates/recipe.aggregate";
+
+export class InMemoryRecipeRepository implements RecipeRepository {
+  private recipes: Map<string, Recipe> = new Map();
+
+  findById(id: string): Recipe | null {
+    return this.recipes.get(id) || null;
+  }
+
+  findAll(): Recipe[] {
+    return Array.from(this.recipes.values());
+  }
+
+  save(recipe: Recipe): void {
+    this.recipes.set(recipe.getId(), recipe);
+  }
+
+  delete(id: string): void {
+    this.recipes.delete(id);
+  }
+}

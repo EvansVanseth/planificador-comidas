@@ -190,4 +190,11 @@ describe('Recipe (Aggregate)', () => {
     const restored = Recipe.fromPrimitives(primitives);
     expect(restored.toPrimitives()).toEqual(primitives);
   });
+
+  it('debe reasignar el usuario', () => {
+    const recipe = Recipe.create(validId, validUserId, 'Test', 2, 10, null, [], defaultTags);
+    const newUserId = '550e8400-e29b-41d4-a716-446655440002';
+    recipe.reassignUser(newUserId);
+    expect(recipe.getUserId()).toBe(newUserId);
+  });
 });

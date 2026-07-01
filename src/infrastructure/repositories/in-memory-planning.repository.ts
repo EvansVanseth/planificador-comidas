@@ -15,4 +15,8 @@ export class InMemoryPlanningRepository implements PlanningRepository {
   save(planning: Planning): void {
     this.plannings.set(planning.getId(), planning);
   }
+
+  delete(id: string): void {
+    this.plannings.delete(id);
+  }
 }

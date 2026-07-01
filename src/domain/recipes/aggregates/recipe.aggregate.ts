@@ -126,6 +126,10 @@ export class Recipe {
     this.name = Name.create(RECIPE_NAME_FIELD, name);
   }
 
+  public reassignUser(userId: string): void {
+    this.userId = UserId.create(userId);
+  }
+
   public updatePreparation(preparation: string | null): void {
     this.preparation = preparation?.trim() ?? null;
   }
