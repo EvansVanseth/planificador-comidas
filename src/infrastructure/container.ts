@@ -9,7 +9,9 @@ import { FilePlanningRepository } from './repositories/file-planning.repository'
 import { FileTagRepository } from './repositories/file-tag.repository';
 import { InMemoryTagRepository } from './repositories/in-memory-tag.repository';
 import { InMemoryIngredientRepository } from './repositories/in-memory-ingredient.repository';
+import { FileIngredientRepository } from './repositories/file-ingredient.repository';
 import { InMemoryRecipeRepository } from './repositories/in-memory-recipe.repository';
+import { FileRecipeRepository } from './repositories/file-recipe.repository';
 //Use-cases
 import { CreatePlanningUseCase } from '@/application/planning/create-planning.use-case';
 import { AssignMealUseCase } from '@/application/planning/assign-meal.use-case';
@@ -63,19 +65,22 @@ export const createContainer = (mode: RepositoryType = 'memory', userId?: string
 
   let planningRepository: PlanningRepository;
   let tagRepository: TagRepository;
-
-  const ingredientRepository: IngredientRepository = new InMemoryIngredientRepository();
-  const recipeRepository: RecipeRepository = new InMemoryRecipeRepository();
+  let ingredientRepository: IngredientRepository;
+  let recipeRepository: RecipeRepository;
 
   switch (mode) {
     case 'file':
       planningRepository = new FilePlanningRepository('planning-data.json');
       tagRepository = new FileTagRepository('tags-db.json');
+      ingredientRepository = new FileIngredientRepository('ingredients-db.json');
+      recipeRepository = new FileRecipeRepository('recipes-db.json');
       break;
     case 'memory':
     default:
       planningRepository = new InMemoryPlanningRepository();
       tagRepository = new InMemoryTagRepository();
+      ingredientRepository = new InMemoryIngredientRepository();
+      recipeRepository = new InMemoryRecipeRepository();
       break;
   }
 
