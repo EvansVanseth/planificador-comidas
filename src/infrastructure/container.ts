@@ -3,6 +3,7 @@ import { PlanningRepository } from '@/infrastructure/repositories/planning-repos
 import { TagRepository } from '@/infrastructure/repositories/tag-repository.interface';
 import { IngredientRepository } from '@/infrastructure/repositories/ingredient-repository.interface';
 import { RecipeRepository } from '@/infrastructure/repositories/recipe-repository.interface';
+import { UserRepository } from '@/infrastructure/repositories/user-repository.interface';
 //Repository implementations
 import { InMemoryPlanningRepository } from './repositories/in-memory-planning.repository';
 import { FilePlanningRepository } from './repositories/file-planning.repository';
@@ -12,6 +13,8 @@ import { InMemoryIngredientRepository } from './repositories/in-memory-ingredien
 import { FileIngredientRepository } from './repositories/file-ingredient.repository';
 import { InMemoryRecipeRepository } from './repositories/in-memory-recipe.repository';
 import { FileRecipeRepository } from './repositories/file-recipe.repository';
+import { InMemoryUserRepository } from './repositories/in-memory-user.repository';
+import { FileUserRepository } from './repositories/file-user.repository';
 //Use-cases
 import { CreatePlanningUseCase } from '@/application/planning/create-planning.use-case';
 import { AssignMealUseCase } from '@/application/planning/assign-meal.use-case';
@@ -45,6 +48,11 @@ import { UpdateRecipeUseCase } from '@/application/recipes/update-recipe.use-cas
 import { DeleteRecipeUseCase } from '@/application/recipes/delete-recipe.use-case';
 import { AddNewIngredientToRecipeUseCase } from '@/application/recipes/add-new-ingredient-to-recipe.use-case';
 import { AddNewTagToRecipeUseCase } from '@/application/recipes/add-new-tag-to-recipe.use-case';
+//User use-cases
+import { ListUsersUseCase } from '@/application/users/list-users.use-case';
+import { CreateUserUseCase } from '@/application/users/create-user.use-case';
+import { UpdateUserUseCase } from '@/application/users/update-user.use-case';
+import { DeleteUserUseCase } from '@/application/users/delete-user.use-case';
 
 // Init
 
@@ -87,14 +95,22 @@ export interface IContainer {
   deleteRecipe: DeleteRecipeUseCase;
   addNewIngredientToRecipe: AddNewIngredientToRecipeUseCase;
   addNewTagToRecipe: AddNewTagToRecipeUseCase;
+  // Users
+  listUsers: ListUsersUseCase;
+  createUser: CreateUserUseCase;
+  updateUser: UpdateUserUseCase;
+  deleteUser: DeleteUserUseCase;
+  // Seed helpers
+  seedTagsForUser: (userId: string) => void;
 }
 
-export const createContainer = (mode: RepositoryType = 'memory', userId?: string) => {
+export const createContainer = (mode: RepositoryType = 'memory') => {
 
   let planningRepository: PlanningRepository;
   let tagRepository: TagRepository;
   let ingredientRepository: IngredientRepository;
   let recipeRepository: RecipeRepository;
+  let userRepository: UserRepository;
 
   switch (mode) {
     case 'file':
@@ -102,6 +118,7 @@ export const createContainer = (mode: RepositoryType = 'memory', userId?: string
       tagRepository = new FileTagRepository('tags-db.json');
       ingredientRepository = new FileIngredientRepository('ingredients-db.json');
       recipeRepository = new FileRecipeRepository('recipes-db.json');
+      userRepository = new FileUserRepository('users-db.json');
       break;
     case 'memory':
     default:
@@ -109,14 +126,11 @@ export const createContainer = (mode: RepositoryType = 'memory', userId?: string
       tagRepository = new InMemoryTagRepository();
       ingredientRepository = new InMemoryIngredientRepository();
       recipeRepository = new InMemoryRecipeRepository();
+      userRepository = new InMemoryUserRepository();
       break;
   }
 
-  if (userId) {
-    seedSystemTags(tagRepository, userId);
-  }
-
-  return {
+  const container: IContainer = {
     // Planning
     listPlannings: new ListPlanningsUseCase(planningRepository),
     createPlanning: new CreatePlanningUseCase(planningRepository),
@@ -152,6 +166,13 @@ export const createContainer = (mode: RepositoryType = 'memory', userId?: string
     deleteRecipe: new DeleteRecipeUseCase(recipeRepository),
     addNewIngredientToRecipe: new AddNewIngredientToRecipeUseCase(recipeRepository, ingredientRepository),
     addNewTagToRecipe: new AddNewTagToRecipeUseCase(recipeRepository, tagRepository),
-  }
+    // Users
+    listUsers: new ListUsersUseCase(userRepository),
+    createUser: new CreateUserUseCase(userRepository),
+    updateUser: new UpdateUserUseCase(userRepository),
+    deleteUser: new DeleteUserUseCase(userRepository),
+    seedTagsForUser: (userId: string) => seedSystemTags(tagRepository, userId),
+  };
 
+  return container;
 };

@@ -1,7 +1,7 @@
 [
   {
     "id": "63d30f0a-3e1a-4e3f-9549-4f614158a86d",
-    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "userId": "2e89752f-20df-4620-b8af-e4e2d54697f0",
     "name": "Ensalada de verano",
     "baseServings": 2,
     "prepTime": 15,
@@ -45,7 +45,7 @@
   },
   {
     "id": "89d10706-ee2e-4722-a8d6-84b0b1dba2d0",
-    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "userId": "2e89752f-20df-4620-b8af-e4e2d54697f0",
     "name": "Un desgraciao",
     "baseServings": 1,
     "prepTime": 10,

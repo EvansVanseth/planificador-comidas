@@ -4,9 +4,12 @@ import { menuPlanificaciones } from './planning.menu';
 import { menuEtiquetas } from './tag.menu';
 import { menuIngredientes } from './ingredient.menu';
 import { menuRecetas } from './recipe.menu';
+import { menuUsuarios } from './user.menu';
+
+const ON_CANCEL = () => {};
 
 async function run() {
-  const welcomeMessage = '-----------------------------------------------\r\n' + 
+  const welcomeMessage = '-----------------------------------------------\r\n' +
                          '| Bienvenido al << Planificador de comidas >> |\r\n' +
                          '-----------------------------------------------\r\n' +
                          ' \r\n' +
@@ -21,28 +24,59 @@ async function run() {
       { title: 'Archivo (Persistentes)', value: 'file' },
       { title: 'Salir', value: 'exit' }
     ]
-  }, { onCancel: () => {} });
+  }, { onCancel: ON_CANCEL });
 
   if (!response?.opcion || response.opcion === 'exit') {
     mostrarDespedida();
     return;
   }
 
-  const userIdPrompt = await prompts({
-    type: 'text',
-    name: 'userId',
-    message: 'Tu ID de usuario (UUID):',
-    initial: '550e8400-e29b-41d4-a716-446655440000',
-  }, { onCancel: () => {} });
+  const container = createContainer(response.opcion);
 
-  if (!userIdPrompt?.userId) {
+  const userId = await seleccionarUsuario(container);
+  if (!userId) {
     mostrarDespedida();
     return;
   }
 
-  const container = createContainer(response.opcion, userIdPrompt.userId);
+  await menuPrincipal(container, userId);
+}
 
-  await menuPrincipal(container, userIdPrompt.userId);
+async function seleccionarUsuario(container: IContainer): Promise<string | null> {
+  const usuarios = container.listUsers.execute();
+
+  const choices = usuarios.map(u => ({ title: u.name, value: u.id }));
+  choices.push({ title: '(Crear nuevo usuario)', value: '__create__' });
+  choices.push({ title: 'Salir', value: '__exit__' });
+
+  const seleccion = await prompts({
+    type: 'select',
+    name: 'userId',
+    message: 'Selecciona un usuario:',
+    choices,
+  }, { onCancel: ON_CANCEL });
+
+  if (!seleccion?.userId || seleccion.userId === '__exit__') return null;
+
+  if (seleccion.userId === '__create__') {
+    const nuevo = await prompts({
+      type: 'text',
+      name: 'name',
+      message: 'Nombre del nuevo usuario:',
+    }, { onCancel: ON_CANCEL });
+
+    if (!nuevo?.name?.trim()) return null;
+
+    const newId = container.createUser.execute(nuevo.name.trim());
+    container.seedTagsForUser(newId);
+    console.log(`Bienvenido, ${nuevo.name.trim()}!`);
+    return newId;
+  }
+
+  const userName = usuarios.find(u => u.id === seleccion.userId)?.name ?? '';
+  container.seedTagsForUser(seleccion.userId);
+  console.log(`Bienvenido de nuevo, ${userName}!`);
+  return seleccion.userId;
 }
 
 function mostrarDespedida() {
@@ -61,9 +95,10 @@ async function menuPrincipal(container: IContainer, userId: string) {
         { title: 'Ingredientes',     value: 'ingredients' },
         { title: 'Recetas',          value: 'recipes' },
         { title: 'Planificaciones',  value: 'plannings' },
+        { title: 'Usuarios',         value: 'users' },
         { title: 'Salir',            value: 'exit' }
       ]
-    }, { onCancel: () => {} });
+    }, { onCancel: ON_CANCEL });
 
     if (!response?.opcion) continue;
 
@@ -79,6 +114,9 @@ async function menuPrincipal(container: IContainer, userId: string) {
         break;
       case 'plannings':
         await menuPlanificaciones(container, userId);
+        break;
+      case 'users':
+        await menuUsuarios(container);
         break;
       case 'exit':
         continuar = false;

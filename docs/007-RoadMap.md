@@ -118,62 +118,68 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] planning-shopping-item.entity.ts (+spec)
         - [x] refactor planning.aggregate.ts (added planning pantry and shopping items)
 - [x] Fase 4: Casos de uso + InMemoryRepositories (para tests): Revisar agregados (puertas de acceso al dominio)
-        - [x] Listar, crear, modificar y eliminar (en adelante CRUD) Tags (etiquetas)
-        - [x] CRUD Ingredients (ingredientes)
-        - [x] CRUD Recipes (recetas)
-        - [x] CRUD Plannings (planificaciones)
-- [ ] Fase 5: CLI + FilePersistence
-        - [x] Refactorizar estructura de menus
-        - [x] Menu para manejar CRUD de Tags
-        - [x] Menu para manejar CRUD de Ingredients
-        - [x] Menu para manejar CRUD de Recipes
-        - [x] Menu para manejar CRUD de Plannings (de este ya hay algo hecho)   
-        - [x] Valorar métodos para añadir etiquetas de sistema y evitar que se puedan eliminar
-            **MOMENTO_DIA**: Deben coincidir con MealTime. Estas etiquetas añadidas a las recetas indican para qué momento del día pueden ser asignadas las recetas, pero deben estar limitadas a las opciones que ofrece la planificación. Pues PlannedDay dispone de un espacio para BREKFAST, uno para LUNCH y otro para DINNER.
-            Tenemos dos opciones de las que plantear opciones: permitir que al planificar se especifique qué etiquetas de momento día queremos para cada dia (PlannedDay debería disponer de un map para recibir esas etiquetas; es más flexible pero más dificil de programar) o no permitir la personalización de las etiquetas MOMENTO_DIA y que estén por sistema fijadas en BREAKFAST, LUNCH y DINNER. 
-            **Se decide usar (Desayuno, comida y cena) como etiquetas de sistema con permiso para personalización extra.**
-            - [x] Desayuno (MOMENTO_DIA)   
-            - [x] Comida (MOMENTO_DIA)   
-            - [x] Cena (MOMENTO_DIA)   
-            **FORMATO**: Solamente pueden existir dos por sistema sin personalización (Caliente / Frio).  
-            - [x] Caliente (FORMATO)   
-            - [x] Frio (FORMATO)   
-            **TIPO_PLATO**: La siguiente lista es de sistema, pero pueden añadirse más por parte del usuario (sin duplicados).
-            - [x] Carne (TIPO_PLATO)   
-            - [x] Pescado (TIPO_PLATO)   
-            - [x] Legumbres (TIPO_PLATO)   
-            - [x] Pasta (TIPO_PLATO)   
-            - [x] Ensalada (TIPO_PLATO)   
-            - [x] Arroz (TIPO_PLATO)   
-            - [x] Dulce (TIPO_PLATO)   
-            **ESTILOS_VIDA**: La siguiente lista es de sistema, pero pueden añadirse más por parte del usuario (sin duplicados).
-            - [x] Bajo en calorías (ESTILOS_VIDA)   
-            - [x] Vegetariano (ESTILOS_VIDA)  
-            - [x] Vegano (ESTILOS_VIDA)  
-        - [x] Implementar persistencia en archivo para Etiquetas  
-        - [x] Implementar persistencia en archivo para Ingredientes  
-        - [x] Implementar persistencia en archivo para Recetas
-        - [x] Implementar persistencia en archivo para Plannings (revisar estado)   
+    - [x] Listar, crear, modificar y eliminar (en adelante CRUD) Tags (etiquetas)
+    - [x] CRUD Ingredients (ingredientes)
+    - [x] CRUD Recipes (recetas)
+    - [x] CRUD Plannings (planificaciones)
+- [X] Fase 5: CLI + FilePersistence
+    - [x] Refactorizar estructura de menus
+    - [x] Menu para manejar CRUD de Tags
+    - [x] Menu para manejar CRUD de Ingredients
+    - [x] Menu para manejar CRUD de Recipes
+    - [x] Menu para manejar CRUD de Plannings (de este ya hay algo hecho)   
+    - [x] Valorar métodos para añadir etiquetas de sistema y evitar que se puedan eliminar
+        **MOMENTO_DIA**: Deben coincidir con MealTime. Estas etiquetas añadidas a las recetas indican para qué momento del día pueden ser asignadas las recetas, pero deben estar limitadas a las opciones que ofrece la planificación. Pues PlannedDay dispone de un espacio para BREKFAST, uno para LUNCH y otro para DINNER.
+        Tenemos dos opciones de las que plantear opciones: permitir que al planificar se especifique qué etiquetas de momento día queremos para cada dia (PlannedDay debería disponer de un map para recibir esas etiquetas; es más flexible pero más dificil de programar) o no permitir la personalización de las etiquetas MOMENTO_DIA y que estén por sistema fijadas en BREAKFAST, LUNCH y DINNER. 
+        **Se decide usar (Desayuno, comida y cena) como etiquetas de sistema con permiso para personalización extra.**
+        - [x] Desayuno (MOMENTO_DIA)   
+        - [x] Comida (MOMENTO_DIA)   
+        - [x] Cena (MOMENTO_DIA)   
+        **FORMATO**: Solamente pueden existir dos por sistema sin personalización (Caliente / Frio).  
+        - [x] Caliente (FORMATO)   
+        - [x] Frio (FORMATO)   
+        **TIPO_PLATO**: La siguiente lista es de sistema, pero pueden añadirse más por parte del usuario (sin duplicados).
+        - [x] Carne (TIPO_PLATO)   
+        - [x] Pescado (TIPO_PLATO)   
+        - [x] Legumbres (TIPO_PLATO)   
+        - [x] Pasta (TIPO_PLATO)   
+        - [x] Ensalada (TIPO_PLATO)   
+        - [x] Arroz (TIPO_PLATO)   
+        - [x] Dulce (TIPO_PLATO)   
+        **ESTILOS_VIDA**: La siguiente lista es de sistema, pero pueden añadirse más por parte del usuario (sin duplicados).
+        - [x] Bajo en calorías (ESTILOS_VIDA)   
+        - [x] Vegetariano (ESTILOS_VIDA)  
+        - [x] Vegano (ESTILOS_VIDA)  
+    - [x] Implementar persistencia en archivo para Etiquetas  
+    - [x] Implementar persistencia en archivo para Ingredientes  
+    - [x] Implementar persistencia en archivo para Recetas
+    - [x] Implementar persistencia en archivo para Plannings (revisar estado)   
 - [ ] Fase 6: Nombres únicos
-        - [x] Los nombres de las etiquetas deben ser únicos para cada dimension
-        - [x] Los nombres de los ingredientes deben ser únicos 
-        - [x] Los nombres de las recetas deben ser únicos
-        - [x] Los nombres de las planificaciones deben ser únicos
-        - [x] Para los ingredientes debemos presentar al usuario ingredientes similares de forma que se evite duplicidades como Tomte, tomate, tomates, etc...
+    - [x] Los nombres de las etiquetas deben ser únicos para cada dimension
+    - [x] Los nombres de los ingredientes deben ser únicos 
+    - [x] Los nombres de las recetas deben ser únicos
+    - [x] Los nombres de las planificaciones deben ser únicos
+    - [x] Para los ingredientes debemos presentar al usuario ingredientes similares de forma que se evite duplicidades como Tomte, tomate, tomates, etc...
 - [x] Fase 7: Gestión de ingredientes y etiquetas de una receta
-        - [x] Añadir/Eliminar ingredientes existentes de una receta — vía `updateRecipe` con `addIngredients`/`removeIngredients`
-        - [x] Añadir/Eliminar etiquetas existentes de una receta — vía `updateRecipe` con `addTags`/`removeTags`
-        - [x] Añadir ingrediente nuevo a una receta — `AddNewIngredientToRecipeUseCase`
-        - [x] Añadir etiqueta nueva a una receta — `AddNewTagToRecipeUseCase`
-        - [x] Deben mantenerse unicos los ingredientes y las etiquetas por receta 
+    - [x] Añadir/Eliminar ingredientes existentes de una receta — vía `updateRecipe` con `addIngredients`/`removeIngredients`
+    - [x] Añadir/Eliminar etiquetas existentes de una receta — vía `updateRecipe` con `addTags`/`removeTags`
+    - [x] Añadir ingrediente nuevo a una receta — `AddNewIngredientToRecipeUseCase`
+    - [x] Añadir etiqueta nueva a una receta — `AddNewTagToRecipeUseCase`
+    - [x] Deben mantenerse unicos los ingredientes y las etiquetas por receta 
 - [x] Fase 8: Crear vistas (Virtual views) proyectadas de una planificación
-        - [x] Vista NeededIngredients — `GetNeededIngredientsUseCase`: agrupa ingredientes de todas las recetas asignadas, muestra nombre + nota de cantidad + recetas donde se usa
-        - [x] Vista ShoppingList — `GetShoppingListUseCase`: misma proyección con estado de despensa (disponible/no) y lista de compra (comprado/pendiente)
-        - [x] Agregar gestión de la despensa para la planificación
-        - [x] Agregar gestión de la lista de la compra para la planificación
+    - [x] Vista NeededIngredients — `GetNeededIngredientsUseCase`: agrupa ingredientes de todas las recetas asignadas, muestra nombre + nota de cantidad + recetas donde se usa
+    - [x] Vista ShoppingList — `GetShoppingListUseCase`: misma proyección con estado de despensa (disponible/no) y lista de compra (comprado/pendiente)
+    - [x] Agregar gestión de la despensa para la planificación
+    - [x] Agregar gestión de la lista de la compra para la planificación
 
-- [ ] Fase 9: Crear dominio para usuarios y autenticación
-- [ ] Fase 10: Preparar autenticación por CLI
+- [x] Fase 9: Crear dominio para usuarios y autenticación
+    - [x] UserRepository (interface + InMemory + File)
+    - [x] Use cases: create, list, update, delete
+    - [x] Tests TDD (10 tests nuevos)
+- [x] Fase 10: Preparar autenticación por CLI
+    - [x] user.menu.ts: listar, crear, editar, eliminar usuarios
+    - [x] Seleccionar usuario existente en el arranque (en lugar de UUID manual)
+    - [x] seedSystemTags se ejecuta al seleccionar/crear usuario
 
 - [ ] Fase X: Motor de autoplanificación
 - [ ] Fase X: Infraestructura de persistencia postgres en local
