@@ -54,13 +54,19 @@ function listarPlanificaciones(container: IContainer, userId: string) {
     console.log('No hay planificaciones');
     return;
   }
+  const allRecipes = container.listRecipes.execute(userId);
+  const recipeName = (id: string | null) => id ? (allRecipes.find(r => r.id === id)?.name ?? id) : null;
+
   console.log('--- Planificaciones ---');
   plannings.forEach(p => {
     const days = p.getDays();
     console.log(`\n(id: ${p.getId()}) ${p.getName()} — ${p.getWeeks()} semanas, ${days.length} dias`);
     days.forEach(d => {
       const meals = Object.values(d.toDTO().services).filter(s => s !== null);
-      const info = meals.map(m => `${m.getCovers()} comensales${m.getRecipeId() ? ' (con receta)' : ''}`).join(', ');
+      const info = meals.map(m => {
+        const name = recipeName(m.getRecipeId());
+        return `${m.getCovers()} comensales${name ? ` — ${name}` : ''}`;
+      }).join(', ');
       console.log(`  Dia ${d.getOrdenDia()}: ${meals.length} servicio(s) — ${info || 'vacio'}`);
     });
   });
@@ -169,6 +175,9 @@ async function gestionarDias(container: IContainer, userId: string) {
   if (!seleccion?.id) return;
   const planningId = seleccion.id;
 
+  const allRecipes = container.listRecipes.execute(userId);
+  const recipeName = (id: string | null) => id ? (allRecipes.find(r => r.id === id)?.name ?? id) : null;
+
   let continuar = true;
   while (continuar) {
     const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
@@ -181,7 +190,10 @@ async function gestionarDias(container: IContainer, userId: string) {
     } else {
       days.forEach(d => {
         const meals = Object.values(d.toDTO().services).filter(s => s !== null);
-        const info = meals.map(m => `${m.getCovers()} comensales${m.getRecipeId() ? ' (receta)' : ''}`).join(', ');
+        const info = meals.map(m => {
+          const name = recipeName(m.getRecipeId());
+          return `${m.getCovers()} comensales${name ? ` — ${name}` : ''}`;
+        }).join(', ');
         console.log(`  Dia ${d.getOrdenDia()}: ${meals.length} servicio(s) — ${info || 'vacio'}`);
       });
     }
@@ -191,6 +203,8 @@ async function gestionarDias(container: IContainer, userId: string) {
       name: 'value',
       message: 'Gestionar dias:',
       choices: [
+        { title: 'Ver ingredientes necesarios', value: 'needed-ingredients' },
+        { title: 'Ver lista de la compra',      value: 'shopping-list' },
         { title: 'Agregar dia',       value: 'add-day' },
         { title: 'Eliminar dia',      value: 'remove-day' },
         { title: 'Gestionar servicios de un dia', value: 'manage-meals' },
@@ -201,6 +215,12 @@ async function gestionarDias(container: IContainer, userId: string) {
     if (!opcion?.value) continue;
 
     switch (opcion.value) {
+      case 'needed-ingredients':
+        verIngredientesNecesarios(container, planningId);
+        break;
+      case 'shopping-list':
+        verListaCompra(container, planningId);
+        break;
       case 'add-day':
         await agregarDia(container, planningId, planning.getWeeks());
         break;
@@ -382,6 +402,48 @@ async function agregarOActualizarServicio(
     if (error instanceof DomainError || error instanceof AppError) {
       console.log('✗ ' + error.message);
     }
+  }
+}
+
+function verIngredientesNecesarios(container: IContainer, planningId: string) {
+  try {
+    const items = container.getNeededIngredients.execute(planningId);
+    if (items.length === 0) {
+      console.log('No hay ingredientes necesarios (sin recetas asignadas)');
+      return;
+    }
+    console.log('\n--- Ingredientes necesarios ---');
+    items.forEach(i => {
+      const recetas = i.recipeNames.join(', ');
+      console.log(`  ${i.ingredientName}${i.quantityNote ? ` (${i.quantityNote})` : ''} — ${i.totalCovers} comensales`);
+      console.log(`    Recetas: ${recetas}`);
+    });
+    console.log(`Total: ${items.length} ingredientes\n`);
+  } catch (error) {
+    if (error instanceof AppError) console.log('✗ ' + error.message);
+  }
+}
+
+function verListaCompra(container: IContainer, planningId: string) {
+  try {
+    const items = container.getShoppingList.execute(planningId);
+    if (items.length === 0) {
+      console.log('No hay ingredientes en la lista de la compra');
+      return;
+    }
+    console.log('\n--- Lista de la compra ---');
+    items.forEach(i => {
+      if (i.pantryAvailable) {
+        console.log(`  ${i.ingredientName}${i.quantityNote ? ` (${i.quantityNote})` : ''} — ${i.totalCovers} comensales [TENGO DE TODO]`);
+      } else if (i.neededAfterPantry <= 0) {
+        console.log(`  ${i.ingredientName}${i.quantityNote ? ` (${i.quantityNote})` : ''} — ${i.totalCovers} comensales [CUBIERTO]`);
+      } else {
+        console.log(`  ${i.ingredientName}${i.quantityNote ? ` (${i.quantityNote})` : ''} — necesario para ${i.totalCovers} comensales, tienes para ${i.pantryCovers} → COMPRAR PARA ${i.neededAfterPantry}`);
+      }
+    });
+    console.log(`Total: ${items.length} ingredientes\n`);
+  } catch (error) {
+    if (error instanceof AppError) console.log('✗ ' + error.message);
   }
 }
 

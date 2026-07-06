@@ -18,6 +18,8 @@ import { AssignMealUseCase } from '@/application/planning/assign-meal.use-case';
 import { AddDayToPlanningUseCase } from '@/application/planning/add-day-to-planning.use-case';
 import { RemoveDayFromPlanningUseCase } from '@/application/planning/remove-day-from-planning.use-case';
 import { RemoveMealFromDayUseCase } from '@/application/planning/remove-meal-from-day.use-case';
+import { GetNeededIngredientsUseCase } from '@/application/planning/get-needed-ingredients.use-case';
+import { GetShoppingListUseCase } from '@/application/planning/get-shopping-list.use-case';
 import { seedSystemTags } from '@/application/tags/seed-system-tags';
 import { ListPlanningsUseCase } from '@/application/planning/list-plannings.use-case';
 import { UpdatePlanningUseCase } from '@/application/planning/update-planning.use-case';
@@ -52,6 +54,8 @@ export interface IContainer {
   addDayToPlanning: AddDayToPlanningUseCase;
   removeDayFromPlanning: RemoveDayFromPlanningUseCase;
   removeMealFromDay: RemoveMealFromDayUseCase;
+  getNeededIngredients: GetNeededIngredientsUseCase;
+  getShoppingList: GetShoppingListUseCase;
   // Tags
   listTags: ListTagsUseCase;
   createTag: CreateTagUseCase;
@@ -108,6 +112,8 @@ export const createContainer = (mode: RepositoryType = 'memory', userId?: string
     addDayToPlanning: new AddDayToPlanningUseCase(planningRepository),
     removeDayFromPlanning: new RemoveDayFromPlanningUseCase(planningRepository),
     removeMealFromDay: new RemoveMealFromDayUseCase(planningRepository),
+    getNeededIngredients: new GetNeededIngredientsUseCase(planningRepository, recipeRepository, ingredientRepository),
+    getShoppingList: new GetShoppingListUseCase(planningRepository, recipeRepository, ingredientRepository),
     // Tags
     listTags: new ListTagsUseCase(tagRepository),
     createTag: new CreateTagUseCase(tagRepository),

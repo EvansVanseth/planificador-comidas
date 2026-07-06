@@ -48,11 +48,19 @@
       {
         "id": "b7655956-c006-4f27-b393-30e119f91963",
         "order": 4,
-        "services": []
+        "services": [
+          {
+            "time": "134604e4-94ab-4cbe-8693-52c2948fdb1d",
+            "recipeId": "63d30f0a-3e1a-4e3f-9549-4f614158a86d",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
       },
       {
-        "id": "610f6574-e39f-474f-8505-44b269790fb0",
-        "order": 5,
+        "id": "30337284-aa4e-4309-b573-7f493405e921",
+        "order": 8,
         "services": []
       }
     ],

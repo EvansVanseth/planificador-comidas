@@ -164,11 +164,12 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] Añadir/Eliminar ingredientes existentes de una receta — vía `updateRecipe` con `addIngredients`/`removeIngredients`
         - [x] Añadir/Eliminar etiquetas existentes de una receta — vía `updateRecipe` con `addTags`/`removeTags`
         - [x] Añadir ingrediente nuevo a una receta — `AddNewIngredientToRecipeUseCase`
-        - [x] Añadir etiqueta nueva a una receta — `AddNewTagToRecipeUseCase`
+        - [x
+        ] Añadir etiqueta nueva a una receta — `AddNewTagToRecipeUseCase`
         - [x] Deben mantenerse unicos los ingredientes y las etiquetas por receta 
-- [ ] Fase 8: Crear vistas (Virtual views) proyectadas de una planificación
-        - [ ] Vista NeededIngredients
-        - [ ] Vista ShoppingList
+- [x] Fase 8: Crear vistas (Virtual views) proyectadas de una planificación
+        - [x] Vista NeededIngredients — `GetNeededIngredientsUseCase`: agrupa ingredientes de todas las recetas asignadas, muestra nombre + nota de cantidad + recetas donde se usa
+        - [x] Vista ShoppingList — `GetShoppingListUseCase`: misma proyección con estado de despensa (disponible/no) y lista de compra (comprado/pendiente)
 
 - [ ] Fase 9: Crear dominio para usuarios y autenticación
 - [ ] Fase 10: Preparar autenticación por CLI
