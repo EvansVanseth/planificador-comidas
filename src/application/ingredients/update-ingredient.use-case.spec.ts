@@ -32,4 +32,21 @@ describe('UpdateIngredientUseCase', () => {
   it('debe lanzar error si el ingrediente no existe', () => {
     expect(() => useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'X' })).toThrow(AppError);
   });
+
+  it('debe rechazar renombrar a un nombre duplicado', () => {
+    const otherId = '550e8400-e29b-41d4-a716-446655440010';
+    repo.save(Ingredient.create(otherId, validUserId, 'Existente'));
+    expect(() => useCase.execute({ id: validId, name: 'Existente' })).toThrow(AppError);
+  });
+
+  it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', () => {
+    const otherId = '550e8400-e29b-41d4-a716-446655440010';
+    repo.save(Ingredient.create(otherId, validUserId, 'Existente'));
+    expect(() => useCase.execute({ id: validId, name: 'existente' })).toThrow(AppError);
+  });
+
+  it('debe permitir mantener el mismo nombre al actualizar', () => {
+    useCase.execute({ id: validId, name: 'Original' });
+    expect(repo.findById(validId)!.getName()).toBe('Original');
+  });
 });

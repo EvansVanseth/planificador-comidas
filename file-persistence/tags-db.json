@@ -208,5 +208,12 @@
     "name": "Vegano",
     "dimension": "ESTILOS_VIDA",
     "isSystem": true
+  },
+  {
+    "id": "77607361-da18-48aa-aee4-4e53674e649e",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Facil",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": false
   }
 ]

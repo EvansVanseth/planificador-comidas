@@ -67,4 +67,21 @@ describe('UpdateRecipeUseCase', () => {
   it('debe lanzar error si la receta no existe', () => {
     expect(() => useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'X' })).toThrow(AppError);
   });
+
+  it('debe rechazar renombrar a un nombre duplicado', () => {
+    const otherId = '550e8400-e29b-41d4-a716-446655440020';
+    repo.save(Recipe.create(otherId, validUserId, 'Existente', 2, 10, null, [], defaultTags));
+    expect(() => useCase.execute({ id: validId, name: 'Existente' })).toThrow(AppError);
+  });
+
+  it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', () => {
+    const otherId = '550e8400-e29b-41d4-a716-446655440020';
+    repo.save(Recipe.create(otherId, validUserId, 'Existente', 2, 10, null, [], defaultTags));
+    expect(() => useCase.execute({ id: validId, name: 'existente' })).toThrow(AppError);
+  });
+
+  it('debe permitir mantener el mismo nombre al actualizar', () => {
+    useCase.execute({ id: validId, name: 'Original' });
+    expect(repo.findById(validId)!.getName()).toBe('Original');
+  });
 });

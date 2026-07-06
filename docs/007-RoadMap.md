@@ -151,15 +151,26 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
             - [x] Vegetariano (ESTILOS_VIDA)  
             - [x] Vegano (ESTILOS_VIDA)  
         - [x] Implementar persistencia en archivo para Etiquetas  
-        - [ ] Implementar persistencia en archivo para Ingredientes  
-        - [ ] Implementar persistencia en archivo para Recetas
-        - [ ] Implementar persistencia en archivo para Plannings (revisar estado)   
-- [ ] Fase 6: Crear vistas (Virtual views) proyectadas de una planificación
+        - [x] Implementar persistencia en archivo para Ingredientes  
+        - [x] Implementar persistencia en archivo para Recetas
+        - [x] Implementar persistencia en archivo para Plannings (revisar estado)   
+- [ ] Fase 6: Nombres únicos
+        - [x] Los nombres de las etiquetas deben ser únicos para cada dimension
+        - [x] Los nombres de los ingredientes deben ser únicos 
+        - [x] Los nombres de las recetas deben ser únicos
+        - [x] Los nombres de las planificaciones deben ser únicos
+        - [x] Para los ingredientes debemos presentar al usuario ingredientes similares de forma que se evite duplicidades como Tomte, tomate, tomates, etc...
+- [ ] Fase 7: Gestión de ingredientes y etiquetas de una receta
+        - [ ] Añadir/Eliminar ingredientes existentes de una receta
+        - [ ] Añadir/Eliminar etiquetas existentes de una receta
+        - [ ] Añadir ingrediente nuevo a una receta (lo crea y lo añade)
+        - [ ] Añadir etiqueta nueva a una receta (la crea y la añade)
+- [ ] Fase 8: Crear vistas (Virtual views) proyectadas de una planificación
         - [ ] Vista NeededIngredients
         - [ ] Vista ShoppingList
 
-- [ ] Fase 7: Crear dominio para usuarios y autenticación
-- [ ] Fase 8: Preparar autenticación por CLI
+- [ ] Fase 9: Crear dominio para usuarios y autenticación
+- [ ] Fase 10: Preparar autenticación por CLI
 
 - [ ] Fase X: Motor de autoplanificación
 - [ ] Fase X: Infraestructura de persistencia postgres en local

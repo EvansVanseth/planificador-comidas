@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { CreateIngredientUseCase } from './create-ingredient.use-case';
 import { InMemoryIngredientRepository } from '../../infrastructure/repositories/in-memory-ingredient.repository';
+import { AppError } from '../shared/errors/app-error';
 
 describe('CreateIngredientUseCase', () => {
   const validUserId = '550e8400-e29b-41d4-a716-446655440001';
@@ -20,5 +21,15 @@ describe('CreateIngredientUseCase', () => {
     expect(saved).not.toBeNull();
     expect(saved!.getName()).toBe('Arroz Integral');
     expect(saved!.getUserId()).toBe(validUserId);
+  });
+
+  it('debe rechazar nombre duplicado', () => {
+    useCase.execute(validUserId, 'Arroz');
+    expect(() => useCase.execute(validUserId, 'Arroz')).toThrow(AppError);
+  });
+
+  it('debe rechazar nombre duplicado ignorando mayúsculas', () => {
+    useCase.execute(validUserId, 'Arroz');
+    expect(() => useCase.execute(validUserId, 'arroz')).toThrow(AppError);
   });
 });

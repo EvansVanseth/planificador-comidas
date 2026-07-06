@@ -31,6 +31,11 @@ export class FilePlanningRepository implements PlanningRepository {
     return this.findAll().filter(p => p.getUserId() === userId);
   }
 
+  findByName(name: string): Planning | null {
+    const normalized = name.toLowerCase().trim();
+    return this.findAll().find(p => p.getName().toLowerCase().trim() === normalized) ?? null;
+  }
+
   findById(id: string): Planning | null {
     const plannings = this.findAll();
     return plannings.find(p => p.getId() === id) || null;

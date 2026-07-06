@@ -31,6 +31,11 @@ export class FileRecipeRepository implements RecipeRepository {
     return this.findAll().filter(r => r.getUserId() === userId);
   }
 
+  findByName(name: string): Recipe | null {
+    const normalized = name.toLowerCase().trim();
+    return this.findAll().find(r => r.getName().toLowerCase().trim() === normalized) ?? null;
+  }
+
   findById(id: string): Recipe | null {
     const recipes = this.findAll();
     return recipes.find(r => r.getId() === id) || null;

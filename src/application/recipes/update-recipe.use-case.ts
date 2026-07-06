@@ -27,6 +27,10 @@ export class UpdateRecipeUseCase {
     }
 
     if (input.name !== undefined) {
+      const existing = this.recipeRepository.findByName(input.name);
+      if (existing && existing.getId() !== input.id) {
+        throw new AppError(`Ya existe una receta con el nombre "${input.name}"`);
+      }
       recipe.rename(input.name);
     }
 

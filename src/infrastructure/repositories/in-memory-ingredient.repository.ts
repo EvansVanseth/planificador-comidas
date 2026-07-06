@@ -16,6 +16,11 @@ export class InMemoryIngredientRepository implements IngredientRepository {
     return this.findAll().filter(i => i.getUserId() === userId);
   }
 
+  findByName(name: string): Ingredient | null {
+    const normalized = name.toLowerCase().trim();
+    return this.findAll().find(i => i.getName().toLowerCase().trim() === normalized) ?? null;
+  }
+
   save(ingredient: Ingredient): void {
     this.ingredients.set(ingredient.getId(), ingredient);
   }

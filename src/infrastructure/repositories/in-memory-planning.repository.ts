@@ -16,6 +16,11 @@ export class InMemoryPlanningRepository implements PlanningRepository {
     return this.findAll().filter(p => p.getUserId() === userId);
   }
 
+  findByName(name: string): Planning | null {
+    const normalized = name.toLowerCase().trim();
+    return this.findAll().find(p => p.getName().toLowerCase().trim() === normalized) ?? null;
+  }
+
   save(planning: Planning): void {
     this.plannings.set(planning.getId(), planning);
   }

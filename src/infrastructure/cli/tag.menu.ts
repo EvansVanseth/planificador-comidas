@@ -76,7 +76,9 @@ async function crearEtiqueta(container: IContainer, userId: string) {
     console.log(`Etiqueta creada: ${id}`);
 
   } catch (error) {
-    if (error instanceof DomainError) console.log(error.message);
+    if (error instanceof DomainError || error instanceof AppError) {
+      console.log('✗ ' + error.message);
+    }
     console.log('\n--- Creacion cancelada ---');
   }
 }
@@ -124,7 +126,7 @@ async function editarEtiqueta(container: IContainer, userId: string) {
 
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(error.message);
+      console.log('✗ ' + error.message);
     }
     console.log('\n--- Edicion cancelada ---');
   }
@@ -151,7 +153,7 @@ async function eliminarEtiqueta(container: IContainer, userId: string) {
     console.log('Etiqueta eliminada correctamente');
 
   } catch (error) {
-    if (error instanceof AppError) console.log(error.message);
+    if (error instanceof AppError) console.log('✗ ' + error.message);
     console.log('\n--- Operacion cancelada ---');
   }
 }

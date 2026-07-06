@@ -71,7 +71,9 @@ async function crearPlanificacion(container: IContainer) {
     console.log(`Planificacion creada: ${id}`);
 
   } catch (error) {
-    if (error instanceof DomainError) console.log(error.message);
+    if (error instanceof DomainError || error instanceof AppError) {
+      console.log('✗ ' + error.message);
+    }
     console.log('\n--- Creacion cancelada ---');
   }
 }
@@ -108,7 +110,7 @@ async function editarPlanificacion(container: IContainer, userId: string) {
 
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(error.message);
+      console.log('✗ ' + error.message);
     }
     console.log('\n--- Edicion cancelada ---');
   }
@@ -135,7 +137,9 @@ async function eliminarPlanificacion(container: IContainer, userId: string) {
     console.log('Planificacion eliminada correctamente');
 
   } catch (error) {
-    if (error instanceof AppError) console.log(error.message);
+    if (error instanceof DomainError || error instanceof AppError) {
+      console.log('✗ ' + error.message);
+    }
     console.log('\n--- Operacion cancelada ---');
   }
 }

@@ -18,6 +18,10 @@ export class UpdatePlanningUseCase {
     }
 
     if (input.name !== undefined) {
+      const existing = this.planningRepository.findByName(input.name);
+      if (existing && existing.getId() !== input.id) {
+        throw new AppError(`Ya existe una planificación con el nombre "${input.name}"`);
+      }
       planning.rename(input.name);
     }
 

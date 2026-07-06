@@ -1,0 +1,48 @@
+[
+  {
+    "id": "63d30f0a-3e1a-4e3f-9549-4f614158a86d",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Ensalada de verano",
+    "baseServings": 2,
+    "prepTime": 15,
+    "preparation": null,
+    "ingredients": [],
+    "tags": [
+      {
+        "id": "134604e4-94ab-4cbe-8693-52c2948fdb1d",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "b125ac5a-2ea9-428d-9c64-57826540f9a4",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "218f5f9c-0c2f-423e-a4cd-ecf244af123a",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "89d10706-ee2e-4722-a8d6-84b0b1dba2d0",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Un desgraciao",
+    "baseServings": 1,
+    "prepTime": 10,
+    "preparation": null,
+    "ingredients": [],
+    "tags": [
+      {
+        "id": "134604e4-94ab-4cbe-8693-52c2948fdb1d",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "b125ac5a-2ea9-428d-9c64-57826540f9a4",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "218f5f9c-0c2f-423e-a4cd-ecf244af123a",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  }
+]

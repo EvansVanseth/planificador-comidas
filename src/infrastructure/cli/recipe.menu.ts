@@ -103,7 +103,7 @@ async function crearReceta(container: IContainer, userId: string) {
 
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(error.message);
+      console.log('✗ ' + error.message);
     }
     console.log('\n--- Creacion cancelada ---');
   }
@@ -143,7 +143,7 @@ async function editarReceta(container: IContainer, userId: string) {
 
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(error.message);
+      console.log('✗ ' + error.message);
     }
     console.log('\n--- Edicion cancelada ---');
   }
@@ -170,7 +170,7 @@ async function eliminarReceta(container: IContainer, userId: string) {
     console.log('Receta eliminada correctamente');
 
   } catch (error) {
-    if (error instanceof AppError) console.log(error.message);
+    if (error instanceof AppError) console.log('✗ ' + error.message);
     console.log('\n--- Operacion cancelada ---');
   }
 }

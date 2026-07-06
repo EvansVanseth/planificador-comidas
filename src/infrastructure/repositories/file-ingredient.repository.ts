@@ -31,6 +31,11 @@ export class FileIngredientRepository implements IngredientRepository {
     return this.findAll().filter(i => i.getUserId() === userId);
   }
 
+  findByName(name: string): Ingredient | null {
+    const normalized = name.toLowerCase().trim();
+    return this.findAll().find(i => i.getName().toLowerCase().trim() === normalized) ?? null;
+  }
+
   findById(id: string): Ingredient | null {
     const ingredients = this.findAll();
     return ingredients.find(i => i.getId() === id) || null;

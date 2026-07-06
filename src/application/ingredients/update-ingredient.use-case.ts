@@ -17,6 +17,10 @@ export class UpdateIngredientUseCase {
     }
 
     if (input.name !== undefined) {
+      const existing = this.ingredientRepository.findByName(input.name);
+      if (existing && existing.getId() !== input.id) {
+        throw new AppError(`Ya existe un ingrediente con el nombre "${input.name}"`);
+      }
       ingredient.rename(input.name);
     }
 

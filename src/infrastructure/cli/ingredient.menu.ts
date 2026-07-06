@@ -61,13 +61,43 @@ async function crearIngrediente(container: IContainer, userId: string) {
 
     if (!answers) return;
 
+    const similares = findSimilarIngredients(container.listIngredients.execute(userId), answers.name);
+    if (similares.length > 0) {
+      console.log('⚠ Ingredientes similares existentes:');
+      similares.forEach(i => console.log(`  - ${i.name}`));
+      const confirmar = await prompts({
+        type: 'confirm',
+        name: 'value',
+        message: '¿Crear de todas formas?',
+        initial: false,
+      }, { onCancel: ON_CANCEL });
+      if (!confirmar?.value) {
+        console.log('Creacion cancelada');
+        return;
+      }
+    }
+
     const id = container.createIngredient.execute(userId, answers.name);
     console.log(`Ingrediente creado: ${id}`);
 
   } catch (error) {
-    if (error instanceof DomainError) console.log(error.message);
+    if (error instanceof DomainError || error instanceof AppError) console.log('✗ ' + error.message);
     console.log('\n--- Creacion cancelada ---');
   }
+}
+
+function findSimilarIngredients(
+  ingredients: { name: string }[],
+  name: string,
+): { name: string }[] {
+  const normalized = name.toLowerCase().trim();
+  return ingredients.filter(i => {
+    const normalizedName = i.name.toLowerCase().trim();
+    return normalizedName !== normalized && (
+      normalizedName.includes(normalized) ||
+      normalized.includes(normalizedName)
+    );
+  });
 }
 
 async function editarIngrediente(container: IContainer, userId: string) {
@@ -100,7 +130,7 @@ async function editarIngrediente(container: IContainer, userId: string) {
 
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(error.message);
+      console.log('✗ ' + error.message);
     }
     console.log('\n--- Edicion cancelada ---');
   }
@@ -127,7 +157,7 @@ async function eliminarIngrediente(container: IContainer, userId: string) {
     console.log('Ingrediente eliminado correctamente');
 
   } catch (error) {
-    if (error instanceof AppError) console.log(error.message);
+    if (error instanceof AppError) console.log('✗ ' + error.message);
     console.log('\n--- Operacion cancelada ---');
   }
 }
