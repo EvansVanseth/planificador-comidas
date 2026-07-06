@@ -8,6 +8,8 @@ export type ShoppingListEntry = NeededIngredientEntry & {
   pantryCovers: number;
   pantryAvailable: boolean;
   neededAfterPantry: number;
+  inShoppingList: boolean;
+  shoppingCompleted: boolean;
 };
 
 export class GetShoppingListUseCase {
@@ -56,8 +58,9 @@ export class GetShoppingListUseCase {
       ingredientNames.set(id, ing?.getName() ?? '?');
     }
 
-    // Cruzar con pantry de la planificación
+    // Cruzar con pantry y shopping list de la planificación
     const pantryByIngredient = new Map(planning.getPantryItems().map(p => [p.getIngredientId(), p]));
+    const shoppingByIngredient = new Map(planning.getShoppingItems().map(s => [s.getIngredientId(), s]));
 
     const result: ShoppingListEntry[] = [];
     for (const [ingredientId, recipes] of ingredientRecipes) {
@@ -65,6 +68,7 @@ export class GetShoppingListUseCase {
       const pantryItem = pantryByIngredient.get(ingredientId);
       const pantryAvailable = pantryItem?.isAvailable() ?? false;
       const pantryCovers = pantryItem?.getCovers() ?? 0;
+      const shopItem = shoppingByIngredient.get(ingredientId);
 
       const neededAfterPantry = pantryAvailable ? 0 : Math.max(0, totalCovers - pantryCovers);
 
@@ -77,6 +81,8 @@ export class GetShoppingListUseCase {
         pantryCovers,
         pantryAvailable,
         neededAfterPantry,
+        inShoppingList: !!shopItem,
+        shoppingCompleted: shopItem?.isCompleted() ?? false,
       });
     }
 

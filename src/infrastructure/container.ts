@@ -20,6 +20,13 @@ import { RemoveDayFromPlanningUseCase } from '@/application/planning/remove-day-
 import { RemoveMealFromDayUseCase } from '@/application/planning/remove-meal-from-day.use-case';
 import { GetNeededIngredientsUseCase } from '@/application/planning/get-needed-ingredients.use-case';
 import { GetShoppingListUseCase } from '@/application/planning/get-shopping-list.use-case';
+import { AddPantryItemUseCase } from '@/application/planning/add-pantry-item.use-case';
+import { RemovePantryItemUseCase } from '@/application/planning/remove-pantry-item.use-case';
+import { MarkPantryItemAvailableUseCase } from '@/application/planning/mark-pantry-item-available.use-case';
+import { UpdatePantryItemCoversUseCase } from '@/application/planning/update-pantry-item-covers.use-case';
+import { AddShoppingItemUseCase } from '@/application/planning/add-shopping-item.use-case';
+import { RemoveShoppingItemUseCase } from '@/application/planning/remove-shopping-item.use-case';
+import { ToggleShoppingItemUseCase } from '@/application/planning/toggle-shopping-item.use-case';
 import { seedSystemTags } from '@/application/tags/seed-system-tags';
 import { ListPlanningsUseCase } from '@/application/planning/list-plannings.use-case';
 import { UpdatePlanningUseCase } from '@/application/planning/update-planning.use-case';
@@ -56,6 +63,13 @@ export interface IContainer {
   removeMealFromDay: RemoveMealFromDayUseCase;
   getNeededIngredients: GetNeededIngredientsUseCase;
   getShoppingList: GetShoppingListUseCase;
+  addPantryItem: AddPantryItemUseCase;
+  removePantryItem: RemovePantryItemUseCase;
+  markPantryItemAvailable: MarkPantryItemAvailableUseCase;
+  updatePantryItemCovers: UpdatePantryItemCoversUseCase;
+  addShoppingItem: AddShoppingItemUseCase;
+  removeShoppingItem: RemoveShoppingItemUseCase;
+  toggleShoppingItem: ToggleShoppingItemUseCase;
   // Tags
   listTags: ListTagsUseCase;
   createTag: CreateTagUseCase;
@@ -114,6 +128,13 @@ export const createContainer = (mode: RepositoryType = 'memory', userId?: string
     removeMealFromDay: new RemoveMealFromDayUseCase(planningRepository),
     getNeededIngredients: new GetNeededIngredientsUseCase(planningRepository, recipeRepository, ingredientRepository),
     getShoppingList: new GetShoppingListUseCase(planningRepository, recipeRepository, ingredientRepository),
+    addPantryItem: new AddPantryItemUseCase(planningRepository),
+    removePantryItem: new RemovePantryItemUseCase(planningRepository),
+    markPantryItemAvailable: new MarkPantryItemAvailableUseCase(planningRepository),
+    updatePantryItemCovers: new UpdatePantryItemCoversUseCase(planningRepository),
+    addShoppingItem: new AddShoppingItemUseCase(planningRepository),
+    removeShoppingItem: new RemoveShoppingItemUseCase(planningRepository),
+    toggleShoppingItem: new ToggleShoppingItemUseCase(planningRepository),
     // Tags
     listTags: new ListTagsUseCase(tagRepository),
     createTag: new CreateTagUseCase(tagRepository),

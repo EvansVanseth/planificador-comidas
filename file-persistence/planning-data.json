@@ -64,8 +64,48 @@
         "services": []
       }
     ],
-    "pantryItems": [],
-    "shoppingItems": []
+    "pantryItems": [
+      {
+        "id": "a553879d-de45-4dfc-8292-a09edb0a51e1",
+        "ingredientId": "fe8e9d85-8e5f-4814-9ef4-65f11f609958",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "cc0d7479-1a86-469e-875f-4b8c15514203",
+        "ingredientId": "6801588f-f039-433e-be2d-8db925ffa212",
+        "available": false,
+        "covers": 4
+      },
+      {
+        "id": "b48a360f-1c7b-4e46-b0a1-ec858fd11293",
+        "ingredientId": "82883b15-c92f-441d-8914-4a31bcd30101",
+        "available": false,
+        "covers": 6
+      }
+    ],
+    "shoppingItems": [
+      {
+        "id": "a1163844-89dd-4e9f-adff-34f2483f42e9",
+        "ingredientId": "6e0a7401-d9db-4b04-b344-d785a3e1d0fd",
+        "completed": true
+      },
+      {
+        "id": "f75a8842-a4d0-4f6e-b917-ca3d48067bca",
+        "ingredientId": "fe8e9d85-8e5f-4814-9ef4-65f11f609958",
+        "completed": true
+      },
+      {
+        "id": "97eeb435-9b16-497c-96ea-585b55924134",
+        "ingredientId": "6801588f-f039-433e-be2d-8db925ffa212",
+        "completed": false
+      },
+      {
+        "id": "454f9f4b-a765-4865-9fc5-fe1eee26774e",
+        "ingredientId": "82883b15-c92f-441d-8914-4a31bcd30101",
+        "completed": false
+      }
+    ]
   },
   {
     "id": "ad77078d-94a1-4a89-9a7a-e939ddcd2c0a",
