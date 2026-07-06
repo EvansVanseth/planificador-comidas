@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { Recipe } from './recipe.aggregate';
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';
 import { DomainError } from '@/domain/shared/errors/domain-error';
+import { RecipeIngredient } from '@/domain/recipes/value-objects/recipe-ingredient.vo';
 
 describe('Recipe (Aggregate)', () => {
   const validId = '550e8400-e29b-41d4-a716-446655440000';
@@ -125,6 +126,14 @@ describe('Recipe (Aggregate)', () => {
   it('debe fallar al eliminar la única etiqueta MOMENTO_DIA', () => {
     const recipe = Recipe.create(validId, validUserId, 'Test', 2, 10, null, [], defaultTags);
     expect(() => recipe.removeTag(tagMomento)).toThrow(DomainError);
+  });
+
+  // --- Ingredientes ---
+
+  it('debe fallar al añadir un ingrediente duplicado', () => {
+    const recipe = Recipe.create(validId, validUserId, 'Test', 2, 10, null, [], defaultTags);
+    recipe.addIngredient(RecipeIngredient.create(tagMomento));
+    expect(() => recipe.addIngredient(RecipeIngredient.create(tagMomento))).toThrow(DomainError);
   });
 
   it('debe fallar al eliminar la única etiqueta FORMATO', () => {

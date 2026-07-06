@@ -174,6 +174,9 @@ export class Recipe {
   }
 
   public addIngredient(ingredient: RecipeIngredient): void {
+    if (this.ingredients.some(i => i.ingredientId === ingredient.ingredientId)) {
+      throw new DomainError('El ingrediente ya está asignado a la receta');
+    }
     this.ingredients.push(ingredient);
   }
 

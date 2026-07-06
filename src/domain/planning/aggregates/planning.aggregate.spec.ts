@@ -112,6 +112,30 @@ describe('Planning (Aggregate)', () => {
     expect(Object.values(day!.services).filter((service) => service !== null).length).toBe(1);
   });
 
+  it('debería actualizar el numero de comensales de un servicio existente', () => {
+    const planning = Planning.create(validId, validId, 'Mi planificación', null, 2);
+    planning.addDay(validId, 1);
+    planning.assignMealToDay(1, breakfastTagId, 10, validId);
+    planning.assignMealToDay(1, breakfastTagId, 4);
+    const day = planning.getDay(1);
+    expect(day!.services[breakfastTagId]!.getCovers()).toBe(4);
+  });
+
+  it('debería eliminar una comida de un día correctamente', () => {
+    const planning = Planning.create(validId, validId, 'Mi planificación', null, 2);
+    planning.addDay(validId, 1);
+    planning.assignMealToDay(1, breakfastTagId, 10, validId);
+    planning.removeMealFromDay(1, breakfastTagId);
+    const day = planning.getDay(1);
+    expect(Object.values(day!.services).filter(s => s !== null).length).toBe(0);
+  });
+
+  it('debería fallar al eliminar una comida que no existe en un día', () => {
+    const planning = Planning.create(validId, validId, 'Mi planificación', null, 2);
+    planning.addDay(validId, 1);
+    expect(() => planning.removeMealFromDay(1, breakfastTagId)).toThrow(DomainError);
+  });
+
   it('debería eliminar un día de un Planning correctamente', () => {
     const planning = Planning.create(validId, validId, 'Mi planificación', null, 2);
     planning.addDay(validId, 1);

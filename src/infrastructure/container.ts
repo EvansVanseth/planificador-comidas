@@ -15,6 +15,9 @@ import { FileRecipeRepository } from './repositories/file-recipe.repository';
 //Use-cases
 import { CreatePlanningUseCase } from '@/application/planning/create-planning.use-case';
 import { AssignMealUseCase } from '@/application/planning/assign-meal.use-case';
+import { AddDayToPlanningUseCase } from '@/application/planning/add-day-to-planning.use-case';
+import { RemoveDayFromPlanningUseCase } from '@/application/planning/remove-day-from-planning.use-case';
+import { RemoveMealFromDayUseCase } from '@/application/planning/remove-meal-from-day.use-case';
 import { seedSystemTags } from '@/application/tags/seed-system-tags';
 import { ListPlanningsUseCase } from '@/application/planning/list-plannings.use-case';
 import { UpdatePlanningUseCase } from '@/application/planning/update-planning.use-case';
@@ -31,6 +34,8 @@ import { CreateRecipeUseCase } from '@/application/recipes/create-recipe.use-cas
 import { ListRecipesUseCase } from '@/application/recipes/list-recipes.use-case';
 import { UpdateRecipeUseCase } from '@/application/recipes/update-recipe.use-case';
 import { DeleteRecipeUseCase } from '@/application/recipes/delete-recipe.use-case';
+import { AddNewIngredientToRecipeUseCase } from '@/application/recipes/add-new-ingredient-to-recipe.use-case';
+import { AddNewTagToRecipeUseCase } from '@/application/recipes/add-new-tag-to-recipe.use-case';
 
 // Init
 
@@ -44,6 +49,9 @@ export interface IContainer {
   updatePlanning: UpdatePlanningUseCase;
   deletePlanning: DeletePlanningUseCase;
   assignMeal: AssignMealUseCase;
+  addDayToPlanning: AddDayToPlanningUseCase;
+  removeDayFromPlanning: RemoveDayFromPlanningUseCase;
+  removeMealFromDay: RemoveMealFromDayUseCase;
   // Tags
   listTags: ListTagsUseCase;
   createTag: CreateTagUseCase;
@@ -59,6 +67,8 @@ export interface IContainer {
   createRecipe: CreateRecipeUseCase;
   updateRecipe: UpdateRecipeUseCase;
   deleteRecipe: DeleteRecipeUseCase;
+  addNewIngredientToRecipe: AddNewIngredientToRecipeUseCase;
+  addNewTagToRecipe: AddNewTagToRecipeUseCase;
 }
 
 export const createContainer = (mode: RepositoryType = 'memory', userId?: string) => {
@@ -95,6 +105,9 @@ export const createContainer = (mode: RepositoryType = 'memory', userId?: string
     updatePlanning: new UpdatePlanningUseCase(planningRepository),
     deletePlanning: new DeletePlanningUseCase(planningRepository),
     assignMeal: new AssignMealUseCase(planningRepository, tagRepository),
+    addDayToPlanning: new AddDayToPlanningUseCase(planningRepository),
+    removeDayFromPlanning: new RemoveDayFromPlanningUseCase(planningRepository),
+    removeMealFromDay: new RemoveMealFromDayUseCase(planningRepository),
     // Tags
     listTags: new ListTagsUseCase(tagRepository),
     createTag: new CreateTagUseCase(tagRepository),
@@ -110,6 +123,8 @@ export const createContainer = (mode: RepositoryType = 'memory', userId?: string
     createRecipe: new CreateRecipeUseCase(recipeRepository),
     updateRecipe: new UpdateRecipeUseCase(recipeRepository),
     deleteRecipe: new DeleteRecipeUseCase(recipeRepository),
+    addNewIngredientToRecipe: new AddNewIngredientToRecipeUseCase(recipeRepository, ingredientRepository),
+    addNewTagToRecipe: new AddNewTagToRecipeUseCase(recipeRepository, tagRepository),
   }
 
 };

@@ -48,6 +48,13 @@ export class PlannedDay {
     return this.services.get(momentTagId) ?? null;
   }
 
+  public removeMeal(momentTagId: string): void {
+    if (!this.services.has(momentTagId)) {
+      throw new DomainError('No hay un servicio asignado para este momento del día');
+    }
+    this.services.delete(momentTagId);
+  }
+
   public toDTO(): PlannedDayDTO {
     const servicesDTO: Record<string, MealService | null> = {};
     for (const [tagId, service] of this.services.entries()) {

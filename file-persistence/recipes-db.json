@@ -6,7 +6,24 @@
     "baseServings": 2,
     "prepTime": 15,
     "preparation": null,
-    "ingredients": [],
+    "ingredients": [
+      {
+        "ingredientId": "82883b15-c92f-441d-8914-4a31bcd30101",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "6801588f-f039-433e-be2d-8db925ffa212",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "6e0a7401-d9db-4b04-b344-d785a3e1d0fd",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "fe8e9d85-8e5f-4814-9ef4-65f11f609958",
+        "quantityNote": null
+      }
+    ],
     "tags": [
       {
         "id": "134604e4-94ab-4cbe-8693-52c2948fdb1d",
@@ -19,6 +36,10 @@
       {
         "id": "218f5f9c-0c2f-423e-a4cd-ecf244af123a",
         "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "9839fbde-44b1-42d6-a4d4-59a2c5b35558",
+        "dimension": "MOMENTO_DIA"
       }
     ]
   },
@@ -29,7 +50,16 @@
     "baseServings": 1,
     "prepTime": 10,
     "preparation": null,
-    "ingredients": [],
+    "ingredients": [
+      {
+        "ingredientId": "82883b15-c92f-441d-8914-4a31bcd30101",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "fe8e9d85-8e5f-4814-9ef4-65f11f609958",
+        "quantityNote": null
+      }
+    ],
     "tags": [
       {
         "id": "134604e4-94ab-4cbe-8693-52c2948fdb1d",

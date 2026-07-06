@@ -115,7 +115,23 @@ export class Planning {
       throw new DomainError('No existe un día con ese orden');
     }
 
-    day.addMeal(momentTagId, covers, recipeId);
+    const existing = day.getMeal(momentTagId);
+    if (existing) {
+      existing.changeCovers(covers);
+      if (recipeId !== undefined) {
+        existing.assignRecipe(recipeId);
+      }
+    } else {
+      day.addMeal(momentTagId, covers, recipeId);
+    }
+  }
+
+  public removeMealFromDay(ordenDia: number, momentTagId: string): void {
+    const day = this.days.get(ordenDia);
+    if (!day) {
+      throw new DomainError('No existe un día con ese orden');
+    }
+    day.removeMeal(momentTagId);
   }
 
   public removeDay(ordenDia: number): void {

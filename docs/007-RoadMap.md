@@ -160,11 +160,12 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
         - [x] Los nombres de las recetas deben ser únicos
         - [x] Los nombres de las planificaciones deben ser únicos
         - [x] Para los ingredientes debemos presentar al usuario ingredientes similares de forma que se evite duplicidades como Tomte, tomate, tomates, etc...
-- [ ] Fase 7: Gestión de ingredientes y etiquetas de una receta
-        - [ ] Añadir/Eliminar ingredientes existentes de una receta
-        - [ ] Añadir/Eliminar etiquetas existentes de una receta
-        - [ ] Añadir ingrediente nuevo a una receta (lo crea y lo añade)
-        - [ ] Añadir etiqueta nueva a una receta (la crea y la añade)
+- [x] Fase 7: Gestión de ingredientes y etiquetas de una receta
+        - [x] Añadir/Eliminar ingredientes existentes de una receta — vía `updateRecipe` con `addIngredients`/`removeIngredients`
+        - [x] Añadir/Eliminar etiquetas existentes de una receta — vía `updateRecipe` con `addTags`/`removeTags`
+        - [x] Añadir ingrediente nuevo a una receta — `AddNewIngredientToRecipeUseCase`
+        - [x] Añadir etiqueta nueva a una receta — `AddNewTagToRecipeUseCase`
+        - [x] Deben mantenerse unicos los ingredientes y las etiquetas por receta 
 - [ ] Fase 8: Crear vistas (Virtual views) proyectadas de una planificación
         - [ ] Vista NeededIngredients
         - [ ] Vista ShoppingList

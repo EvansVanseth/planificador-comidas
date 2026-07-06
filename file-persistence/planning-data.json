@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "id": "d6169156-95cf-48c5-baf2-284a15208f0d",
+    "userid": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Primer plan",
+    "startdate": null,
+    "weeks": 2,
+    "days": [
+      {
+        "id": "0c214e11-972e-4879-837d-503253ccc996",
+        "order": 1,
+        "services": [
+          {
+            "time": "134604e4-94ab-4cbe-8693-52c2948fdb1d",
+            "recipeId": "63d30f0a-3e1a-4e3f-9549-4f614158a86d",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "4c323d47-6490-4dce-853d-163c1bac13cf",
+        "order": 2,
+        "services": [
+          {
+            "time": "134604e4-94ab-4cbe-8693-52c2948fdb1d",
+            "recipeId": "89d10706-ee2e-4722-a8d6-84b0b1dba2d0",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "138482f0-e8ac-405b-a32a-fdb1185703a5",
+        "order": 3,
+        "services": [
+          {
+            "time": "134604e4-94ab-4cbe-8693-52c2948fdb1d",
+            "recipeId": "63d30f0a-3e1a-4e3f-9549-4f614158a86d",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "b7655956-c006-4f27-b393-30e119f91963",
+        "order": 4,
+        "services": []
+      },
+      {
+        "id": "610f6574-e39f-474f-8505-44b269790fb0",
+        "order": 5,
+        "services": []
+      }
+    ],
+    "pantryItems": [],
+    "shoppingItems": []
+  },
+  {
+    "id": "ad77078d-94a1-4a89-9a7a-e939ddcd2c0a",
+    "userid": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Segundo plan",
+    "startdate": null,
+    "weeks": 3,
+    "days": [],
+    "pantryItems": [],
+    "shoppingItems": []
+  }
+]
