@@ -1,5 +1,29 @@
 # AGENTS.md — Planificador de Comidas
 
+## Language
+The codebase and all generated artifacts (code, identifiers, comments, commit messages, docs) are in English.
+Communication with the user MUST be in Spanish unless the user explicitly switches.
+
+## RoadMap (authoritative guide)
+
+The file `docs/007-RoadMap.md` is the official project roadmap. It lists every phase, step, and task, separating completed from pending work.
+
+**Implementation rules:**
+- Follow the roadmap point by point, in the established order.
+- Do not skip phases or steps without consulting the user.
+- Each step must be completed (tests passing) before moving to the next.
+- When in doubt about requirements, design decisions, or expected behavior, consult the documentation in `docs/` (SRS, Domain Model, User Stories, MockUp, Technical Design).
+- If documents are ambiguous, ask the user.
+
+## Required skills
+
+As the project grows, skills (in `~/.config/opencode/skills/`) will be created to capture patterns and conventions for recurring tasks. The following are already identified:
+
+- **DDD**: Domain patterns (VO, Entity, Aggregate, DomainError), naming conventions, and structure.
+- **Application**: Use case patterns (constructor injection, `AppError`, `*Input` types, colocated `.spec.ts`).
+- **CLI**: Menu patterns with `prompts`, error handling, user selection flow.
+- Additional skills will emerge during development (planning engine, Postgres persistence, Next.js, etc.) and will be created on demand.
+
 ## Stack
 - TypeScript (NodeNext, ES2022), Vitest, prompts (CLI)
 
@@ -53,7 +77,7 @@ src/
 
 ## Known quirks
 - `StartDate.getDay()` is timezone-dependent; `toISOString()` normalises to UTC, which can break roundtrips across midnight. The VO also enforces Monday (`getDay() === 1`).
-- No user auth in CLI yet — `userId` is prompted as UUID text
+- No user auth in CLI yet — `userId` is prompted via user selection menu
 - `PlanningPrimitives.userid` is lowercase-inconsistent (pre-existing, not corrected)
 - `NodeNext` module resolution requires `.js` extension in imports (handled by ts-node/tsconfig-paths)
 - Domain validation in `Recipe.create` enforces at least one tag per required dimension (MOMENTO_DIA, FORMATO, TIPO_PLATO); `removeTag` enforces the same constraint
