@@ -1,3 +1,4 @@
+import { IContainer } from '../container';
 import { Planning } from '../../domain/planning/aggregates/planning.aggregate';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
 
@@ -24,4 +25,17 @@ export function mostrarPlanificacion(
 
     console.log(`  Dia ${d.getOrdenDia()}: ${mealEntries.length} servicio(s) — ${info || 'vacio'}`);
   });
+}
+
+export function listarPlanificaciones(container: IContainer, userId: string) {
+  const plannings = container.listPlannings.execute(userId);
+  if (plannings.length === 0) {
+    console.log('No hay planificaciones');
+    return;
+  }
+  const allRecipes = container.listRecipes.execute(userId);
+  const allTags = container.listTags.execute(userId);
+
+  console.log('--- Planificaciones ---');
+  plannings.forEach(p => mostrarPlanificacion(p, allRecipes, allTags));
 }
