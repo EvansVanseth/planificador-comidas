@@ -1,1 +1,101 @@
-[]
+[
+  {
+    "id": "b001ddac-5e78-4b2b-b62e-3b69266d0224",
+    "userid": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Mi primera planificación",
+    "startdate": null,
+    "weeks": 2,
+    "days": [
+      {
+        "id": "64305d9c-b7bf-4050-a802-9910ec238960",
+        "order": 1,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "3c7d27e2-9278-4507-999f-6922b40080cb",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "acffdefb-9f8f-434f-a350-620b7e4865b2",
+        "order": 2,
+        "services": []
+      },
+      {
+        "id": "71788126-b1dd-4923-a9e3-ea68c7a154e2",
+        "order": 3,
+        "services": []
+      },
+      {
+        "id": "ef8dddaa-4410-45d0-b9bc-c3efc9f4dd8c",
+        "order": 4,
+        "services": []
+      },
+      {
+        "id": "2c16b7f4-4887-4fbe-a9a9-6da8658c27a6",
+        "order": 5,
+        "services": []
+      },
+      {
+        "id": "d6d40eea-6435-453c-91e2-5b94e5577359",
+        "order": 8,
+        "services": []
+      },
+      {
+        "id": "f5cdbb2e-3be3-46f1-ae18-4b2b3587ee10",
+        "order": 9,
+        "services": []
+      },
+      {
+        "id": "231d9398-2817-43d7-8d37-5fee748853e2",
+        "order": 10,
+        "services": []
+      },
+      {
+        "id": "68e8f489-1c37-466a-bf46-3961bc2d0771",
+        "order": 11,
+        "services": []
+      },
+      {
+        "id": "87705187-c5a5-4581-a400-d077ef2268e8",
+        "order": 12,
+        "services": []
+      }
+    ],
+    "pantryItems": [],
+    "shoppingItems": []
+  },
+  {
+    "id": "caed9749-1fb7-4398-aa8d-3cb3ce1e07a5",
+    "userid": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Segunda planificación",
+    "startdate": null,
+    "weeks": 2,
+    "days": [],
+    "pantryItems": [],
+    "shoppingItems": []
+  },
+  {
+    "id": "9d253583-7f9b-4f24-8e7c-b117088dcefe",
+    "userid": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Planificación de refuerzo",
+    "startdate": null,
+    "weeks": 3,
+    "days": [],
+    "pantryItems": [],
+    "shoppingItems": []
+  },
+  {
+    "id": "2e3e126d-e95e-4e59-9b73-d1d363634a7a",
+    "userid": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Una muy larga",
+    "startdate": null,
+    "weeks": 8,
+    "days": [],
+    "pantryItems": [],
+    "shoppingItems": []
+  }
+]
