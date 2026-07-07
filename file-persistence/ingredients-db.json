@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "id": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Tomate"
+  },
+  {
+    "id": "40bc593a-1061-4e74-b279-2dd3edaf30fc",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Lechuga"
+  },
+  {
+    "id": "60ed4804-d771-4a94-8b28-56f440871543",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Zanahorias"
+  },
+  {
+    "id": "9919e806-941c-40ce-8881-e3fa5a79ee10",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Atún"
+  },
+  {
+    "id": "01a9cfb2-9e1c-42ca-91da-c080597d6e64",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Queso blanco"
+  },
+  {
+    "id": "811f1bbd-cd86-465a-97a9-fe54ea6fab76",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Pan tostado"
+  }
+]

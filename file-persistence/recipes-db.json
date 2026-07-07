@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "3c7d27e2-9278-4507-999f-6922b40080cb",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Ensalada de verano",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "40bc593a-1061-4e74-b279-2dd3edaf30fc",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "60ed4804-d771-4a94-8b28-56f440871543",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "9919e806-941c-40ce-8881-e3fa5a79ee10",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "071476e0-9b0d-4d26-b782-b7ec38b0804f",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+        "dimension": "MOMENTO_DIA"
+      }
+    ]
+  },
+  {
+    "id": "7101906f-6092-4299-ae1e-9cf73909a9f6",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Mulladoret de atún i tomaca",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "9919e806-941c-40ce-8881-e3fa5a79ee10",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "071476e0-9b0d-4d26-b782-b7ec38b0804f",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  }
+]

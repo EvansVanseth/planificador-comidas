@@ -112,10 +112,13 @@ async function editarIngrediente(container: IContainer, userId: string) {
       type: 'select',
       name: 'id',
       message: 'Selecciona el ingrediente a editar:',
-      choices: ingredients.map(i => ({ title: i.name, value: i.id })),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...ingredients.map(i => ({ title: i.name, value: i.id })),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!seleccion?.id) return;
+    if (!seleccion?.id || seleccion.id === '__cancel__') return;
 
     const cambios = await prompts({
       type: 'text',
@@ -148,10 +151,13 @@ async function eliminarIngrediente(container: IContainer, userId: string) {
       type: 'select',
       name: 'id',
       message: 'Selecciona el ingrediente a eliminar:',
-      choices: ingredients.map(i => ({ title: i.name, value: i.id })),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...ingredients.map(i => ({ title: i.name, value: i.id })),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!seleccion?.id) return;
+    if (!seleccion?.id || seleccion.id === '__cancel__') return;
 
     container.deleteIngredient.execute(seleccion.id);
     console.log('Ingrediente eliminado correctamente');

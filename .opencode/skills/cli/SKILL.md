@@ -90,27 +90,136 @@ catch (error) {
 - `DomainError` y `AppError` muestran ✗ con mensaje.
 - Siempre se imprime `'--- Operacion cancelada ---'` después (o `Creacion`, `Edicion` según contexto).
 
-## Submenús anidados
+## Editar: desglose en archivos separados
 
-Usan el mismo patrón `while + switch` dentro del mismo archivo:
+Cuando un menú incluye **editar**, la edición se extrae a un archivo aparte (`xxx-edit.menu.ts`) y se desglosa en un submenú:
+
+```
+Menú principal: [Listar] [Crear] [Editar] [Eliminar] [Volver]
+                        ↓
+                   xxx-edit.menu.ts  →  [Editar datos]
+                                         [Editar <lista A>]  ─→  xxx-a.menu.ts
+                                         [Editar <lista B>]  ─→  xxx-b.menu.ts
+                                         [Volver]
+```
+
+Cada `editar <lista>` se extrae a su propio archivo (`xxx-a.menu.ts`, `xxx-b.menu.ts`).
+
+### recipe-edit.menu.ts (orquestador)
 
 ```ts
-async function gestionarIngredientes(container: IContainer, recipeId: string, userId: string) {
-  let continuar = true;
+import { gestionarX } from './recipe-x.menu';
+import { gestionarY } from './recipe-y.menu';
+import { mostrarReceta } from './recipe-display';
+
+export async function editarReceta(container: IContainer, userId: string) {
+  // seleccionar receta...
+
   while (continuar) {
-    switch (response.opcion) {
-      case 'add-existing': ...
-      case 'add-new': ...
-      case 'remove': ...
-      case 'back': continuar = false;
+    // refrescar datos + mostrar
+    const recipe = container.listRecipes.execute(userId).find(r => r.id === recipeId);
+    const allIngredients = container.listIngredients.execute(userId);
+    const allTags = container.listTags.execute(userId);
+    mostrarReceta(recipe, allIngredients, allTags);
+
+    const opcion = await prompts({
+      type: 'select', name: 'value',
+      message: 'Editar — ¿Que quieres hacer?',
+      choices: [
+        { title: 'Editar datos',         value: 'edit-data' },
+        { title: 'Editar ingredientes',  value: 'edit-ingredients' },
+        { title: 'Editar etiquetas',     value: 'edit-tags' },
+        { title: 'Volver',               value: 'back' },
+      ],
+    }, { onCancel: ON_CANCEL });
+
+    switch (opcion.value) {
+      case 'edit-data':         await editarDatos(container, recipeId); break;
+      case 'edit-ingredients':  await gestionarIngredientes(container, userId, recipeId); break;
+      case 'edit-tags':         await gestionarEtiquetas(container, userId, recipeId); break;
+      case 'back':              continuar = false; break;
     }
   }
 }
 ```
 
-Caso real: `gestionarDias` → `gestionarServicios` → `gestionarDespensa` / `gestionarListaCompra`.
+- La función exportada **no recibe** `DIMENSION_LABELS` ni constantes de presentación.
+- Antes del menú se refrescan y muestran los datos actuales.
+- `'edit-data'` edita campos simples en el mismo archivo como función privada.
+
+### xxx-ingredients.menu.ts / xxx-tags.menu.ts (submenús de listado)
+
+```ts
+export async function gestionarXxx(container: IContainer, userId: string, recipeId: string) {
+  while (continuar) {
+    const opcion = await prompts({
+      type: 'select', name: 'value',
+      message: 'Gestionar Xxx:',
+      choices: [
+        { title: 'Agregar existente',  value: 'add-existing' },
+        { title: 'Crear y agregar',    value: 'add-new' },
+        { title: 'Quitar',            value: 'remove' },
+        { title: 'Volver',            value: 'back' },
+      ],
+    }, { onCancel: ON_CANCEL });
+
+    switch (opcion.value) {
+      case 'add-existing': await agregarExistente(...); break;
+      case 'add-new':      await agregarNuevo(...);      break;
+      case 'remove':       await quitar(...);             break;
+      case 'back':         continuar = false;             break;
+    }
+
+    if (opcion.value !== 'back') {
+      // refrescar presentación tras cada mutación
+      const recipe = container.listRecipes.execute(userId).find(r => r.id === recipeId);
+      if (recipe) {
+        mostrarReceta(recipe, container.listIngredients.execute(userId), container.listTags.execute(userId));
+      }
+    }
+  }
+}
+```
+
+- Tras cada mutación (`add-existing`, `add-new`, `remove`), se refresca y muestra el elemento actualizado.
+- Las funciones helper (`agregarExistente`, `agregarNuevo`, `quitar`) son privadas en el mismo archivo.
+- `'back'` no refresca — solo sale del loop.
+
+## Presentación: archivo separado
+
+Cada agregado que se muestra repetidamente (editar, listar, post-mutación) tiene un **archivo de presentación**:
+
+```
+xxx-display.ts  →  export function mostrarXxx(item, ...context): void
+                   export const CONSTANTES = { ... };
+```
+
+Ejemplo (`recipe-display.ts`):
+
+```ts
+import { RecipePrimitives } from '../../domain/...';
+
+export function mostrarReceta(
+  recipe: RecipePrimitives,
+  allIngredients: IngredientItem[],
+  allTags: TagItem[],
+) {
+  console.log(`\n${recipe.name}`);
+  console.log(`  ID: ${recipe.id} — ${recipe.baseServings} comensales, ${recipe.prepTime} min`);
+  // ... tags por dimensión, ingredientes, etc.
+}
+
+export const DIMENSION_LABELS = { MOMENTO_DIA: 'Momento del dia', ... };
+```
+
+- Es la **única fuente** de constantes de presentación (etiquetas de dimensión, órdenes, formatos).
+- Los menús importan `mostrarX` y las constantes desde este archivo.
+- Cero duplicación — ni `recipe.menu.ts`, `recipe-edit.menu.ts`, `recipe-ingredients.menu.ts` ni `recipe-tags.menu.ts` definen sus propias constantes de display.
 
 ## Helpers comunes
 
 - **`findSimilarIngredients`** (ingredient.menu.ts): busca ingredientes existentes para evitar duplicados.
 - **`buildChoicesFromList`**: mapea `XxxPrimitives[]` a `{ title, value, description }` para `prompts`.
+
+## Casos reales
+- `recipe.menu.ts` → `recipe-edit.menu.ts` → `recipe-ingredients.menu.ts`, `recipe-tags.menu.ts`. Presentación: `recipe-display.ts`.
