@@ -46,6 +46,16 @@ Prerrequisito indispensable para el motor de autoplanificación. El Domain Model
 - [x] Paso 4: Actualizar `assignMeal` para que valide exclusiones (2 tests añadidos)
     - [x] Añadido `RecipeRepository` a `AssignMealUseCase`
     - [x] Valida que la receta no tenga tags en la lista de exclusión del servicio
+- [x] Paso 5: Refactorizar estructura de menús CLI (extracción a archivos individuales)
+    - [x] Extraer cada acción CRUD a su propio archivo (`*-create.menu.ts`, `*-edit.menu.ts`, `*-delete.menu.ts`, `*-display.ts`)
+    - [x] Aplicar patrón a usuarios, ingredientes, etiquetas, recetas y planificaciones
+    - [x] Añadir `(Cancelar)` como primer ítem en todo `select` de selección de recurso
+    - [x] Desgranar `planning-edit.menu.ts` y `planning-days.menu.ts` en 12 archivos individuales
+- [x] Paso 6: Unificar flujo de ingredientes necesarios, despensa y lista de la compra
+    - [x] `planning-needed-pantry.menu.ts`: muestra ingredientes necesarios + permite gestionar despensa (¿tienes de todo? / ¿para cuántos comensales tienes?)
+    - [x] `planning-shopping-toggle.menu.ts`: lista solo lo que falta comprar con toggle comprado/pendiente por ingrediente
+    - [x] Eliminar submenú antiguo "Despensa y compra" (3 archivos)
+    - [x] Menú de editar planificación queda con 4 opciones: Editar datos, Gestionar días, Ingredientes necesarios y despensa, Lista de la compra
 
 ### Fase 12: Bulk editing de días
 

@@ -76,7 +76,7 @@
         "id": "dd84d13a-18a9-476d-a035-26ac964decf3",
         "ingredientId": "40bc593a-1061-4e74-b279-2dd3edaf30fc",
         "available": false,
-        "covers": 0
+        "covers": 1
       },
       {
         "id": "c3a36a23-a56a-43bb-9e51-1ccb43f8f36f",
@@ -101,6 +101,11 @@
         "id": "ddb6583f-a56f-462c-82af-287c2ee4ce23",
         "ingredientId": "40bc593a-1061-4e74-b279-2dd3edaf30fc",
         "completed": false
+      },
+      {
+        "id": "d1b8106c-3695-4ff3-b81a-0e74797b5f29",
+        "ingredientId": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
+        "completed": true
       }
     ]
   },

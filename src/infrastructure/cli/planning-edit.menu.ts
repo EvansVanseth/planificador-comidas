@@ -3,7 +3,8 @@ import { IContainer } from '../container';
 import { mostrarPlanificacion } from './planning-display';
 import { editarDatosPlanificacion } from './planning-edit-data.menu';
 import { gestionarDias } from './planning-days.menu';
-import { gestionarCompra } from './planning-shopping.menu';
+import { gestionarNeededYPantry } from './planning-needed-pantry.menu';
+import { gestionarListaCompraUnificada } from './planning-shopping-toggle.menu';
 
 const ON_CANCEL = () => {};
 
@@ -44,8 +45,9 @@ export async function editarPlanificacion(container: IContainer, userId: string)
       choices: [
         { title: 'Editar datos',         value: 'edit-data' },
         { title: 'Gestionar dias',       value: 'manage-days' },
-        { title: 'Despensa y compra',    value: 'shopping' },
-        { title: 'Volver',               value: 'back' },
+        { title: 'Ingredientes necesarios y despensa', value: 'needed-pantry' },
+        { title: 'Lista de la compra',                 value: 'shopping-toggle' },
+        { title: 'Volver',                             value: 'back' },
       ],
     }, { onCancel: ON_CANCEL });
 
@@ -58,8 +60,11 @@ export async function editarPlanificacion(container: IContainer, userId: string)
       case 'manage-days':
         await gestionarDias(container, userId, planningId);
         break;
-      case 'shopping':
-        await gestionarCompra(container, userId, planningId);
+      case 'needed-pantry':
+        await gestionarNeededYPantry(container, userId, planningId);
+        break;
+      case 'shopping-toggle':
+        await gestionarListaCompraUnificada(container, userId, planningId);
         break;
       case 'back':
         continuar = false;
