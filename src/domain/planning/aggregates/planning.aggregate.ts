@@ -4,7 +4,7 @@ import { Name } from "@/domain/shared/value-objects/name.vo";
 import { UserId } from "@/domain/users/value-objects/user-id.vo";
 import { StartDate } from "../value-objects/start-date.vo";
 import { PlannedWeeks } from "../value-objects/planned-weeks.vo";
-import { PlannedDay, PlannedDayDTO, PlannedDayPrimitives } from "../entities/planned-day.entity";
+import { PlannedDay, PlannedDayDTO, PlannedDayPrimitives, ServiceUpdateInput } from "../entities/planned-day.entity";
 import { PlanningPantryItem, PlanningPantryItemPrimitives } from "../entities/planning-pantry-item.entity";
 import { PlanningShoppingItem, PlanningShoppingItemPrimitives } from "../entities/planning-shopping-item.entity";
 
@@ -145,6 +145,16 @@ export class Planning {
       throw new DomainError('No existe un día con ese orden');
     }
     this.days.delete(ordenDia);
+  }
+
+  public bulkUpdateServices(days: number[], updates: ServiceUpdateInput): void {
+    for (const dayOrder of days) {
+      const day = this.days.get(dayOrder);
+      if (!day) {
+        throw new DomainError(`No existe un dia con orden ${dayOrder}`);
+      }
+      day.updateAllServices(updates);
+    }
   }
 
   getDays(): PlannedDay[] {

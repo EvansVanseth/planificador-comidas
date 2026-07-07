@@ -4,6 +4,7 @@ import { mostrarPlanificacion } from './planning-display';
 import { agregarDia } from './planning-day-add.menu';
 import { eliminarDia } from './planning-day-remove.menu';
 import { gestionarServicios } from './planning-services.menu';
+import { editarEnLote } from './planning-bulk-update.menu';
 
 const ON_CANCEL = () => {};
 
@@ -21,10 +22,11 @@ export async function gestionarDias(container: IContainer, userId: string, plann
       name: 'value',
       message: 'Gestionar dias:',
       choices: [
-        { title: 'Agregar dia',    value: 'add-day' },
-        { title: 'Editar dia',     value: 'manage-meals' },
-        { title: 'Eliminar dia',   value: 'remove-day' },
-        { title: 'Volver',         value: 'back' },
+        { title: 'Agregar dia',        value: 'add-day' },
+        { title: 'Editar dia',         value: 'manage-meals' },
+        { title: 'Editar en lote',     value: 'bulk-edit' },
+        { title: 'Eliminar dia',       value: 'remove-day' },
+        { title: 'Volver',             value: 'back' },
       ],
     }, { onCancel: ON_CANCEL });
 
@@ -36,6 +38,9 @@ export async function gestionarDias(container: IContainer, userId: string, plann
         break;
       case 'manage-meals':
         await gestionarServicios(container, userId, planningId, days);
+        break;
+      case 'bulk-edit':
+        await editarEnLote(container, userId, planningId);
         break;
       case 'remove-day':
         await eliminarDia(container, planningId, days);

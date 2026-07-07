@@ -22,7 +22,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 - [x] Fase 1 a 10: Implementación completa del dominio, CLI, persistencia, CRUD, vistas proyectadas y gestión de usuarios
 
 ```
-Estado actual: 317 tests, 52 ficheros de test, todo verde.
+Estado actual: 328 tests, 53 ficheros de test, todo verde.
 ```
 
 ## Próximas fases
@@ -56,16 +56,17 @@ Prerrequisito indispensable para el motor de autoplanificación. El Domain Model
     - [x] `planning-shopping-toggle.menu.ts`: lista solo lo que falta comprar con toggle comprado/pendiente por ingrediente
     - [x] Eliminar submenú antiguo "Despensa y compra" (3 archivos)
     - [x] Menú de editar planificación queda con 4 opciones: Editar datos, Gestionar días, Ingredientes necesarios y despensa, Lista de la compra
-
 ### Fase 12: Bulk editing de días
 
-Permite al usuario configurar comensales, exclusiones y preferencias de varios días a la vez, usando un selector rápido por semana completa.
+Permite al usuario configurar comensales, exclusiones y preferencias de varios días
+a la vez, usando un selector por multiselect de días.
 
-- [ ] Paso 1: `BulkUpdateDaysUseCase`
-    - [ ] Input: planningId, rango de días (semana/días concretos), covers, exclusions, preferences
-    - [ ] Aplica los mismos valores a todos los servicios de los días seleccionados
-- [ ] Paso 2: Añadir opción "Editar en lote" al menú de gestión de días del CLI
-- [ ] Paso 3: Tests del use case
+- [x] Paso 1: `BulkUpdateDaysUseCase`
+    - [x] Input: planningId, days: DayOrder[], covers?, exclusions?, preferences?
+    - [x] Aplica los mismos valores a todos los servicios de los días seleccionados
+- [x] Paso 2: Añadir opción "Editar en lote" al menú de gestión de días del CLI
+    - [x] `planning-bulk-update.menu.ts` con multiselect de días, confirm ask para covers/exclusiones/preferencias
+- [x] Paso 3: Tests del use case (7 tests: covers, exclusions, preferences, parcial, combinado, planning no existe, dia no existe)
 
 ### Fase 13: Duplicar planificación
 

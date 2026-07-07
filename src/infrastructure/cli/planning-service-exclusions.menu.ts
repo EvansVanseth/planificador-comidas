@@ -1,5 +1,6 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
+import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -37,7 +38,9 @@ export async function gestionarExclusiones(
     if (!elegido?.tagId || elegido.tagId === '__cancel__') return;
     const momentTagId = elegido.tagId;
 
-    const allUserTags = container.listTags.execute(userId);
+    const allUserTags = container.listTags.execute(userId).filter(
+      t => t.dimension !== TagDimension.MOMENTO_DIA
+    );
     const currentExclusions = meals.find(([id]) => id === momentTagId)?.[1]?.getExclusions() ?? [];
 
     const seleccion = await prompts({

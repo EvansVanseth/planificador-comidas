@@ -15,6 +15,12 @@ export type PlannedDayPrimitives = {
   services: MealServicePrimitives[];
 };
 
+export type ServiceUpdateInput = {
+  covers?: number;
+  exclusions?: string[];
+  preferences?: string[];
+};
+
 export class PlannedDay {
   private id: Id;
   private orden_dia: DayOrder;
@@ -53,6 +59,20 @@ export class PlannedDay {
       throw new DomainError('No hay un servicio asignado para este momento del día');
     }
     this.services.delete(momentTagId);
+  }
+
+  public updateAllServices(updates: ServiceUpdateInput): void {
+    for (const service of this.services.values()) {
+      if (updates.covers !== undefined) {
+        service.changeCovers(updates.covers);
+      }
+      if (updates.exclusions !== undefined) {
+        service.setExclusions(updates.exclusions);
+      }
+      if (updates.preferences !== undefined) {
+        service.setPreferences(updates.preferences);
+      }
+    }
   }
 
   public toDTO(): PlannedDayDTO {
