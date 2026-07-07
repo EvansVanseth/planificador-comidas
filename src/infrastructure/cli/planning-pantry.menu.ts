@@ -43,8 +43,8 @@ export async function gestionarDespensa(container: IContainer, userId: string, p
           .filter(n => !pantry.some(pp => pp.getIngredientId() === n.ingredientId))
           .map(n => ({ title: n.ingredientName, value: n.ingredientId }));
         if (choices.length === 0) { console.log('Todos los ingredientes ya estan en la despensa'); break; }
-        const resp = await prompts({ type: 'select', name: 'id', message: 'Ingrediente:', choices }, { onCancel: ON_CANCEL });
-        if (resp?.id) {
+        const resp = await prompts({ type: 'select', name: 'id', message: 'Ingrediente:', choices: [{ title: '(Cancelar)', value: '__cancel__' }, ...choices] }, { onCancel: ON_CANCEL });
+        if (resp?.id && resp.id !== '__cancel__') {
           container.addPantryItem.execute(planningId, resp.id);
           console.log('Agregado a la despensa');
         }
@@ -54,12 +54,15 @@ export async function gestionarDespensa(container: IContainer, userId: string, p
         if (pantry.length === 0) { console.log('No hay items en la despensa'); break; }
         const resp = await prompts({
           type: 'select', name: 'id', message: 'Marcar como "tengo de todo":',
-          choices: pantry.map(item => {
-            const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
-            return { title: ing?.name ?? item.getIngredientId(), value: item.getIngredientId() };
-          }),
+          choices: [
+            { title: '(Cancelar)', value: '__cancel__' },
+            ...pantry.map(item => {
+              const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
+              return { title: ing?.name ?? item.getIngredientId(), value: item.getIngredientId() };
+            }),
+          ],
         }, { onCancel: ON_CANCEL });
-        if (resp?.id) {
+        if (resp?.id && resp.id !== '__cancel__') {
           container.markPantryItemAvailable.execute(planningId, resp.id);
           console.log('Marcado como "tengo de todo"');
         }
@@ -69,12 +72,15 @@ export async function gestionarDespensa(container: IContainer, userId: string, p
         if (pantry.length === 0) { console.log('No hay items en la despensa'); break; }
         const resp = await prompts({
           type: 'select', name: 'id', message: 'Actualizar comensales que cubre:',
-          choices: pantry.map(item => {
-            const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
-            return { title: ing?.name ?? item.getIngredientId(), value: item.getIngredientId() };
-          }),
+          choices: [
+            { title: '(Cancelar)', value: '__cancel__' },
+            ...pantry.map(item => {
+              const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
+              return { title: ing?.name ?? item.getIngredientId(), value: item.getIngredientId() };
+            }),
+          ],
         }, { onCancel: ON_CANCEL });
-        if (!resp?.id) break;
+        if (!resp?.id || resp.id === '__cancel__') break;
         const covers = await prompts({ type: 'number', name: 'value', message: 'Comensales que cubre en despensa:', validate: (v: number) => v >= 0 }, { onCancel: ON_CANCEL });
         if (covers !== undefined) {
           container.updatePantryItemCovers.execute(planningId, resp.id, covers.value);
@@ -86,12 +92,15 @@ export async function gestionarDespensa(container: IContainer, userId: string, p
         if (pantry.length === 0) { console.log('No hay items en la despensa'); break; }
         const resp = await prompts({
           type: 'select', name: 'id', message: 'Quitar de la despensa:',
-          choices: pantry.map(item => {
-            const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
-            return { title: ing?.name ?? item.getIngredientId(), value: item.getIngredientId() };
-          }),
+          choices: [
+            { title: '(Cancelar)', value: '__cancel__' },
+            ...pantry.map(item => {
+              const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
+              return { title: ing?.name ?? item.getIngredientId(), value: item.getIngredientId() };
+            }),
+          ],
         }, { onCancel: ON_CANCEL });
-        if (resp?.id) {
+        if (resp?.id && resp.id !== '__cancel__') {
           container.removePantryItem.execute(planningId, resp.id);
           console.log('Quitado de la despensa');
         }

@@ -16,10 +16,13 @@ export async function eliminarPlanificacion(container: IContainer, userId: strin
       type: 'select',
       name: 'id',
       message: 'Selecciona la planificacion a eliminar:',
-      choices: plannings.map(p => ({ title: `${p.getName()} (${p.getWeeks()} semanas)`, value: p.getId() })),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...plannings.map(p => ({ title: `${p.getName()} (${p.getWeeks()} semanas)`, value: p.getId() })),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!response?.id) return;
+    if (!response?.id || response.id === '__cancel__') return;
 
     container.deletePlanning.execute(response.id);
     console.log('Planificacion eliminada');

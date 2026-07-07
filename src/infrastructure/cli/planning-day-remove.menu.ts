@@ -16,10 +16,13 @@ export async function eliminarDia(container: IContainer, planningId: string, day
       type: 'select',
       name: 'orden',
       message: 'Selecciona dia a eliminar:',
-      choices: days.map(d => ({ title: `Dia ${d.getOrdenDia()}`, value: d.getOrdenDia() })),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...days.map(d => ({ title: `Dia ${d.getOrdenDia()}`, value: d.getOrdenDia() })),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!elegido) return;
+    if (!elegido || elegido.orden === '__cancel__') return;
 
     container.removeDayFromPlanning.execute(planningId, elegido.orden);
     console.log(`Dia ${elegido.orden} eliminado`);

@@ -55,13 +55,54 @@
         "services": []
       },
       {
-        "id": "68e8f489-1c37-466a-bf46-3961bc2d0771",
+        "id": "015e7d63-3c30-406c-8cb0-c6eb9f67425a",
         "order": 11,
+        "services": []
+      },
+      {
+        "id": "94563f9f-bf23-451d-b743-3150003c20db",
+        "order": 12,
         "services": []
       }
     ],
-    "pantryItems": [],
-    "shoppingItems": []
+    "pantryItems": [
+      {
+        "id": "ab25b672-3e5c-44a0-a847-f5b9f16aed0e",
+        "ingredientId": "9919e806-941c-40ce-8881-e3fa5a79ee10",
+        "available": false,
+        "covers": 0
+      },
+      {
+        "id": "dd84d13a-18a9-476d-a035-26ac964decf3",
+        "ingredientId": "40bc593a-1061-4e74-b279-2dd3edaf30fc",
+        "available": false,
+        "covers": 0
+      },
+      {
+        "id": "c3a36a23-a56a-43bb-9e51-1ccb43f8f36f",
+        "ingredientId": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
+        "available": false,
+        "covers": 0
+      },
+      {
+        "id": "76b5bc4d-33d5-4e69-becc-d2bf51fb86fb",
+        "ingredientId": "60ed4804-d771-4a94-8b28-56f440871543",
+        "available": false,
+        "covers": 0
+      }
+    ],
+    "shoppingItems": [
+      {
+        "id": "c84439ec-33e9-4ef4-81b3-167e7f82187b",
+        "ingredientId": "9919e806-941c-40ce-8881-e3fa5a79ee10",
+        "completed": false
+      },
+      {
+        "id": "ddb6583f-a56f-462c-82af-287c2ee4ce23",
+        "ingredientId": "40bc593a-1061-4e74-b279-2dd3edaf30fc",
+        "completed": false
+      }
+    ]
   },
   {
     "id": "caed9749-1fb7-4398-aa8d-3cb3ce1e07a5",
@@ -84,7 +125,7 @@
     "shoppingItems": []
   },
   {
-    "id": "2e3e126d-e95e-4e59-9b73-d1d363634a7a",
+    "id": "97311bbd-86c8-4d71-b844-ebdc83dbb657",
     "userid": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Una muy larga",
     "startdate": null,

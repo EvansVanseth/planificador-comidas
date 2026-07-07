@@ -23,15 +23,18 @@ export async function gestionarExclusiones(
       type: 'select',
       name: 'tagId',
       message: 'Selecciona el servicio:',
-      choices: meals.map(([tagId, meal]) => {
-        const tag = allTags.find((t: any) => t.id === tagId);
-        const tagName = tag ? tag.name : tagId;
-        const excls = meal!.getExclusions().length;
-        return { title: `${tagName} (${excls} exclusiones)`, value: tagId };
-      }),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...meals.map(([tagId, meal]) => {
+          const tag = allTags.find((t: any) => t.id === tagId);
+          const tagName = tag ? tag.name : tagId;
+          const excls = meal!.getExclusions().length;
+          return { title: `${tagName} (${excls} exclusiones)`, value: tagId };
+        }),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!elegido?.tagId) return;
+    if (!elegido?.tagId || elegido.tagId === '__cancel__') return;
     const momentTagId = elegido.tagId;
 
     const allUserTags = container.listTags.execute(userId);

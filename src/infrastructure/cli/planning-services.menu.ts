@@ -19,10 +19,13 @@ export async function gestionarServicios(container: IContainer, userId: string, 
     type: 'select',
     name: 'orden',
     message: 'Selecciona el dia:',
-    choices: days.map(d => ({ title: `Dia ${d.getOrdenDia()}`, value: d.getOrdenDia() })),
+    choices: [
+      { title: '(Cancelar)', value: '__cancel__' },
+      ...days.map(d => ({ title: `Dia ${d.getOrdenDia()}`, value: d.getOrdenDia() })),
+    ],
   }, { onCancel: ON_CANCEL });
 
-  if (!elegido) return;
+  if (!elegido || elegido.orden === '__cancel__') return;
   const ordenDia = elegido.orden;
 
   let continuar = true;

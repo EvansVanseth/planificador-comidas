@@ -23,10 +23,13 @@ export async function agregarServicio(
       type: 'select',
       name: 'id',
       message: 'Momento del dia:',
-      choices: momentTags.map(t => ({ title: t.name, value: t.id })),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...momentTags.map(t => ({ title: t.name, value: t.id })),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!tagElegida?.id) return;
+    if (!tagElegida?.id || tagElegida.id === '__cancel__') return;
 
     const coversResp = await prompts({
       type: 'number',

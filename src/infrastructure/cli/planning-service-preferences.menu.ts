@@ -23,15 +23,18 @@ export async function gestionarPreferencias(
       type: 'select',
       name: 'tagId',
       message: 'Selecciona el servicio:',
-      choices: meals.map(([tagId, meal]) => {
-        const tag = allTags.find((t: any) => t.id === tagId);
-        const tagName = tag ? tag.name : tagId;
-        const pref = meal!.getPreferences().length;
-        return { title: `${tagName} (${pref} preferencias)`, value: tagId };
-      }),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...meals.map(([tagId, meal]) => {
+          const tag = allTags.find((t: any) => t.id === tagId);
+          const tagName = tag ? tag.name : tagId;
+          const pref = meal!.getPreferences().length;
+          return { title: `${tagName} (${pref} preferencias)`, value: tagId };
+        }),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!elegido?.tagId) return;
+    if (!elegido?.tagId || elegido.tagId === '__cancel__') return;
     const momentTagId = elegido.tagId;
 
     const allUserTags = container.listTags.execute(userId);

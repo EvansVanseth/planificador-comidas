@@ -16,10 +16,13 @@ export async function eliminarUsuario(container: IContainer) {
       type: 'select',
       name: 'id',
       message: 'Selecciona el usuario a eliminar:',
-      choices: users.map(u => ({ title: u.name, value: u.id })),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...users.map(u => ({ title: u.name, value: u.id })),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!seleccion?.id) return;
+    if (!seleccion?.id || seleccion.id === '__cancel__') return;
 
     container.deleteUser.execute(seleccion.id);
     console.log('Usuario eliminado correctamente');

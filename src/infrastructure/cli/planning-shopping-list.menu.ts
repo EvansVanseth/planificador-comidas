@@ -40,8 +40,8 @@ export async function gestionarListaCompra(container: IContainer, userId: string
           .filter(n => !shopping.some(s => s.getIngredientId() === n.ingredientId))
           .map(n => ({ title: n.ingredientName, value: n.ingredientId }));
         if (choices.length === 0) { console.log('Todos los ingredientes ya estan en la lista'); break; }
-        const resp = await prompts({ type: 'select', name: 'id', message: 'Ingrediente:', choices }, { onCancel: ON_CANCEL });
-        if (resp?.id) {
+        const resp = await prompts({ type: 'select', name: 'id', message: 'Ingrediente:', choices: [{ title: '(Cancelar)', value: '__cancel__' }, ...choices] }, { onCancel: ON_CANCEL });
+        if (resp?.id && resp.id !== '__cancel__') {
           container.addShoppingItem.execute(planningId, resp.id);
           console.log('Agregado a la lista de compra');
         }
@@ -52,12 +52,15 @@ export async function gestionarListaCompra(container: IContainer, userId: string
         if (pendientes.length === 0) { console.log('No hay items pendientes'); break; }
         const resp = await prompts({
           type: 'select', name: 'id', message: 'Marcar como comprado:',
-          choices: pendientes.map(item => {
-            const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
-            return { title: ing?.name ?? item.getIngredientId(), value: item.getIngredientId() };
-          }),
+          choices: [
+            { title: '(Cancelar)', value: '__cancel__' },
+            ...pendientes.map(item => {
+              const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
+              return { title: ing?.name ?? item.getIngredientId(), value: item.getIngredientId() };
+            }),
+          ],
         }, { onCancel: ON_CANCEL });
-        if (resp?.id) {
+        if (resp?.id && resp.id !== '__cancel__') {
           container.toggleShoppingItem.execute(planningId, resp.id, true);
           console.log('Marcado como comprado');
         }
@@ -68,12 +71,15 @@ export async function gestionarListaCompra(container: IContainer, userId: string
         if (comprados.length === 0) { console.log('No hay items comprados'); break; }
         const resp = await prompts({
           type: 'select', name: 'id', message: 'Marcar como pendiente:',
-          choices: comprados.map(item => {
-            const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
-            return { title: ing?.name ?? item.getIngredientId(), value: item.getIngredientId() };
-          }),
+          choices: [
+            { title: '(Cancelar)', value: '__cancel__' },
+            ...comprados.map(item => {
+              const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
+              return { title: ing?.name ?? item.getIngredientId(), value: item.getIngredientId() };
+            }),
+          ],
         }, { onCancel: ON_CANCEL });
-        if (resp?.id) {
+        if (resp?.id && resp.id !== '__cancel__') {
           container.toggleShoppingItem.execute(planningId, resp.id, false);
           console.log('Marcado como pendiente');
         }
@@ -83,12 +89,15 @@ export async function gestionarListaCompra(container: IContainer, userId: string
         if (shopping.length === 0) { console.log('No hay items en la lista'); break; }
         const resp = await prompts({
           type: 'select', name: 'id', message: 'Quitar de la lista:',
-          choices: shopping.map(item => {
-            const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
-            return { title: `${ing?.name ?? item.getIngredientId()} (${item.isCompleted() ? 'comprado' : 'pendiente'})`, value: item.getIngredientId() };
-          }),
+          choices: [
+            { title: '(Cancelar)', value: '__cancel__' },
+            ...shopping.map(item => {
+              const ing = container.listIngredients.execute(userId).find(i => i.id === item.getIngredientId());
+              return { title: `${ing?.name ?? item.getIngredientId()} (${item.isCompleted() ? 'comprado' : 'pendiente'})`, value: item.getIngredientId() };
+            }),
+          ],
         }, { onCancel: ON_CANCEL });
-        if (resp?.id) {
+        if (resp?.id && resp.id !== '__cancel__') {
           container.removeShoppingItem.execute(planningId, resp.id);
           console.log('Quitado de la lista');
         }

@@ -24,16 +24,19 @@ export async function modificarServicio(
       type: 'select',
       name: 'tagId',
       message: 'Selecciona el servicio a modificar:',
-      choices: meals.map(([tagId, meal]) => {
-        const tag = momentTags.find((t: any) => t.id === tagId);
-        const tagName = tag ? tag.name : tagId;
-        const recipe = meal!.getRecipeId() ? recipes.find((r: any) => r.id === meal!.getRecipeId()) : null;
-        const recipeName = recipe ? recipe.name : (meal!.getRecipeId() ? '?' : 'ninguna');
-        return { title: `${tagName} — ${meal!.getCovers()} comensales, ${recipeName}`, value: tagId };
-      }),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...meals.map(([tagId, meal]) => {
+          const tag = momentTags.find((t: any) => t.id === tagId);
+          const tagName = tag ? tag.name : tagId;
+          const recipe = meal!.getRecipeId() ? recipes.find((r: any) => r.id === meal!.getRecipeId()) : null;
+          const recipeName = recipe ? recipe.name : (meal!.getRecipeId() ? '?' : 'ninguna');
+          return { title: `${tagName} — ${meal!.getCovers()} comensales, ${recipeName}`, value: tagId };
+        }),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!elegido?.tagId) return;
+    if (!elegido?.tagId || elegido.tagId === '__cancel__') return;
 
     const coversResp = await prompts({
       type: 'number',
