@@ -4,14 +4,32 @@ Librería: [`prompts`](https://github.com/terkelg/prompts). Todos los menús en 
 
 ## ON_CANCEL
 
+`prompts` solo dispara `onCancel` con Ctrl+C. **ESC no dispara `onCancel`** y puede dejar el terminal en raw mode, rompiendo prompts posteriores.
+
 ```ts
 const ON_CANCEL = () => {};
 ```
-Se pasa en cada llamada a `prompts()`. Si el usuario hace Ctrl+C, `prompts` devuelve `undefined`. Cada menú chequea:
+Se pasa en cada llamada a `prompts()`. Si el usuario hace Ctrl+C, `prompts` devuelve `undefined`.
+
+## Cancelar explícito (patrón `__cancel__`)
+
+Para evitar el bloqueo por ESC, todo selector `select` que no tenga opción de salida debe incluir un item `(Cancelar)` como primera opción:
 
 ```ts
-if (!response?.opcion) continue;
+const seleccion = await prompts({
+  type: 'select',
+  name: 'id',
+  message: 'Selecciona...:',
+  choices: [
+    { title: '(Cancelar)', value: '__cancel__' },
+    ...items.map(i => ({ title: i.name, value: i.id })),
+  ],
+}, { onCancel: ON_CANCEL });
+
+if (!seleccion?.id || seleccion.id === '__cancel__') return;
 ```
+
+**Regla**: toda función que presente un selector `select` al usuario debe tener un camino de salida explícito (un `'back'` en el loop del menú o un `'(Cancelar)'` en selectores individuales).
 
 ## Menu loop
 

@@ -90,6 +90,14 @@ export class MealService {
     this.preferences.delete(tagId);
   }
 
+  public setExclusions(tagIds: string[]): void {
+    this.exclusions = new Set(tagIds.map(id => Id.create(id).value));
+  }
+
+  public setPreferences(tagIds: string[]): void {
+    this.preferences = new Set(tagIds.map(id => Id.create(id).value));
+  }
+
   public toPrimitives(): MealServicePrimitives {
     return {
       time: '',

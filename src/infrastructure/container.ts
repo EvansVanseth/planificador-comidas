@@ -21,6 +21,8 @@ import { AssignMealUseCase } from '@/application/planning/assign-meal.use-case';
 import { AddDayToPlanningUseCase } from '@/application/planning/add-day-to-planning.use-case';
 import { RemoveDayFromPlanningUseCase } from '@/application/planning/remove-day-from-planning.use-case';
 import { RemoveMealFromDayUseCase } from '@/application/planning/remove-meal-from-day.use-case';
+import { SetMealExclusionsUseCase } from '@/application/planning/set-meal-exclusions.use-case';
+import { SetMealPreferencesUseCase } from '@/application/planning/set-meal-preferences.use-case';
 import { GetNeededIngredientsUseCase } from '@/application/planning/get-needed-ingredients.use-case';
 import { GetShoppingListUseCase } from '@/application/planning/get-shopping-list.use-case';
 import { AddPantryItemUseCase } from '@/application/planning/add-pantry-item.use-case';
@@ -69,6 +71,8 @@ export interface IContainer {
   addDayToPlanning: AddDayToPlanningUseCase;
   removeDayFromPlanning: RemoveDayFromPlanningUseCase;
   removeMealFromDay: RemoveMealFromDayUseCase;
+  setMealExclusions: SetMealExclusionsUseCase;
+  setMealPreferences: SetMealPreferencesUseCase;
   getNeededIngredients: GetNeededIngredientsUseCase;
   getShoppingList: GetShoppingListUseCase;
   addPantryItem: AddPantryItemUseCase;
@@ -136,7 +140,9 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     createPlanning: new CreatePlanningUseCase(planningRepository),
     updatePlanning: new UpdatePlanningUseCase(planningRepository),
     deletePlanning: new DeletePlanningUseCase(planningRepository),
-    assignMeal: new AssignMealUseCase(planningRepository, tagRepository),
+    assignMeal: new AssignMealUseCase(planningRepository, tagRepository, recipeRepository),
+    setMealExclusions: new SetMealExclusionsUseCase(planningRepository),
+    setMealPreferences: new SetMealPreferencesUseCase(planningRepository),
     addDayToPlanning: new AddDayToPlanningUseCase(planningRepository),
     removeDayFromPlanning: new RemoveDayFromPlanningUseCase(planningRepository),
     removeMealFromDay: new RemoveMealFromDayUseCase(planningRepository),

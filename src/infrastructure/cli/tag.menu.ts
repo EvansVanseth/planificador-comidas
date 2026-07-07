@@ -62,13 +62,15 @@ async function crearEtiqueta(container: IContainer, userId: string) {
         name: 'dimension',
         message: 'Dimension:',
         choices: [
-          { title: 'Momento del dia', value: 'MOMENTO_DIA' },
-          { title: 'Formato',         value: 'FORMATO' },
-          { title: 'Tipo de plato',   value: 'TIPO_PLATO' },
-          { title: 'Estilo de vida',  value: 'ESTILOS_VIDA' },
+          { title: '(Cancelar)',       value: '__cancel__' },
+          { title: 'Momento del dia',  value: 'MOMENTO_DIA' },
+          { title: 'Tipo de plato',    value: 'TIPO_PLATO' },
+          { title: 'Estilo de vida',   value: 'ESTILOS_VIDA' },
         ]
       },
     ], { onCancel: ON_CANCEL });
+
+    if (!answers || answers.dimension === '__cancel__') return;
 
     if (!answers) return;
 
@@ -95,32 +97,42 @@ async function editarEtiqueta(container: IContainer, userId: string) {
       type: 'select',
       name: 'id',
       message: 'Selecciona la etiqueta a editar:',
-      choices: tags.map(t => ({ title: `${t.name} [${t.dimension}]`, value: t.id })),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...tags.map(t => ({ title: `${t.name} [${t.dimension}]${t.isSystem ? ' (sistema)' : ''}`, value: t.id })),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!seleccion?.id) return;
+    if (!seleccion?.id || seleccion.id === '__cancel__') return;
 
-    const cambios = await prompts([
+    const selectedTag = tags.find(t => t.id === seleccion.id);
+    const isSystemTag = selectedTag?.isSystem ?? false;
+
+    const preguntas: any[] = [
       { type: 'text', name: 'name', message: 'Nuevo nombre (dejar vacio para mantener):' },
-      {
+    ];
+
+    if (!isSystemTag) {
+      preguntas.push({
         type: 'select',
         name: 'dimension',
         message: 'Nueva dimension:',
         choices: [
           { title: '(Sin cambios)',       value: '__skip__' },
           { title: 'Momento del dia',     value: 'MOMENTO_DIA' },
-          { title: 'Formato',             value: 'FORMATO' },
           { title: 'Tipo de plato',       value: 'TIPO_PLATO' },
           { title: 'Estilo de vida',      value: 'ESTILOS_VIDA' },
         ]
-      },
-    ], { onCancel: ON_CANCEL });
+      });
+    }
+
+    const cambios = await prompts(preguntas, { onCancel: ON_CANCEL });
 
     if (!cambios) return;
 
     const input: any = { id: seleccion.id };
     if (cambios.name.trim()) input.name = cambios.name.trim();
-    if (cambios.dimension !== '__skip__') input.dimension = cambios.dimension;
+    if (!isSystemTag && cambios.dimension !== '__skip__') input.dimension = cambios.dimension;
     container.updateTag.execute(input);
     console.log('Etiqueta actualizada correctamente');
 
@@ -134,9 +146,9 @@ async function editarEtiqueta(container: IContainer, userId: string) {
 
 async function eliminarEtiqueta(container: IContainer, userId: string) {
   try {
-    const tags = container.listTags.execute(userId);
+    const tags = container.listTags.execute(userId).filter(t => !t.isSystem);
     if (tags.length === 0) {
-      console.log('No hay etiquetas para eliminar');
+      console.log('No hay etiquetas de usuario para eliminar');
       return;
     }
 
@@ -144,10 +156,13 @@ async function eliminarEtiqueta(container: IContainer, userId: string) {
       type: 'select',
       name: 'id',
       message: 'Selecciona la etiqueta a eliminar:',
-      choices: tags.map(t => ({ title: `${t.name} [${t.dimension}]`, value: t.id })),
+      choices: [
+        { title: '(Cancelar)', value: '__cancel__' },
+        ...tags.map(t => ({ title: `${t.name} [${t.dimension}]`, value: t.id })),
+      ],
     }, { onCancel: ON_CANCEL });
 
-    if (!seleccion?.id) return;
+    if (!seleccion?.id || seleccion.id === '__cancel__') return;
 
     container.deleteTag.execute(seleccion.id);
     console.log('Etiqueta eliminada correctamente');

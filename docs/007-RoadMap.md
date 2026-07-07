@@ -22,7 +22,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 - [x] Fase 1 a 10: Implementación completa del dominio, CLI, persistencia, CRUD, vistas proyectadas y gestión de usuarios
 
 ```
-Estado actual: 290 tests, 49 ficheros de test, todo verde.
+Estado actual: 317 tests, 52 ficheros de test, todo verde.
 ```
 
 ## Próximas fases
@@ -31,17 +31,21 @@ Estado actual: 290 tests, 49 ficheros de test, todo verde.
 
 Prerrequisito indispensable para el motor de autoplanificación. El Domain Model especifica que cada `MealService` debe tener listas de exclusión y preferencia (Set de Tag IDs), pero actualmente no existen.
 
-- [ ] Paso 1: Añadir `exclusions` y `preferences` a `MealService`
-    - [ ] Modificar `MealService` entity: campos `exclusions: Set<string>` y `preferences: Set<string>`
-    - [ ] Actualizar primitivas de `MealService` (toDTO / fromDTO)
-    - [ ] Actualizar `PlannedDay` para exponer estos campos en su DTO
-    - [ ] Actualizar `Planning` aggregate para propagar cambios
-    - [ ] Tests unitarios de la entidad modificada
-- [ ] Paso 2: Nuevos use cases para gestionar exclusiones y preferencias
-    - [ ] `SetMealExclusionsUseCase` — asigna exclusiones a un servicio concreto
-    - [ ] `SetMealPreferencesUseCase` — asigna preferencias a un servicio concreto
-- [ ] Paso 3: Submenú en CLI para gestionar exclusiones y preferencias por día/servicio
-- [ ] Paso 4: Actualizar `assignMeal` para que valide exclusiones (no permitir asignar receta con etiquetas excluidas)
+- [x] Paso 1: Añadir `exclusions` y `preferences` a `MealService`
+    - [x] ~~Modificar `MealService` entity~~ (ya existía desde Fase 5)
+    - [x] ~~Actualizar primitivas de `MealService`~~ (ya existía desde Fase 5)
+    - [x] ~~Actualizar `PlannedDay` para exponer estos campos en su DTO~~ (ya existía desde Fase 5)
+    - [x] Actualizar `Planning.assignMealToDay` para propagar `exclusions`/`preferences`
+    - [x] Tests unitarios de `MealService` (15 tests de entity)
+- [x] Paso 2: Nuevos use cases para gestionar exclusiones y preferencias
+    - [x] `SetMealExclusionsUseCase` — asigna exclusiones a un servicio concreto (5 tests)
+    - [x] `SetMealPreferencesUseCase` — asigna preferencias a un servicio concreto (5 tests)
+- [x] Paso 3: Submenú en CLI para gestionar exclusiones y preferencias por día/servicio
+    - [x] Opciones "Gestionar exclusiones" y "Gestionar preferencias" en el menú de servicios
+    - [x] Selector multiselect con tags pre-seleccionadas
+- [x] Paso 4: Actualizar `assignMeal` para que valide exclusiones (2 tests añadidos)
+    - [x] Añadido `RecipeRepository` a `AssignMealUseCase`
+    - [x] Valida que la receta no tenga tags en la lista de exclusión del servicio
 
 ### Fase 12: Bulk editing de días
 
