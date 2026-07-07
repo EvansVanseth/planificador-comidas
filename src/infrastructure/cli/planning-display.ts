@@ -1,4 +1,5 @@
 import { IContainer } from '../container';
+import { AppError } from '../../application/shared/errors/app-error';
 import { Planning } from '../../domain/planning/aggregates/planning.aggregate';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
 
@@ -25,6 +26,49 @@ export function mostrarPlanificacion(
 
     console.log(`  Dia ${d.getOrdenDia()}: ${mealEntries.length} servicio(s) — ${info || 'vacio'}`);
   });
+}
+
+export function verIngredientesNecesarios(container: IContainer, planningId: string) {
+  try {
+    const items = container.getNeededIngredients.execute(planningId);
+    if (items.length === 0) {
+      console.log('No hay ingredientes necesarios (sin recetas asignadas)');
+      return;
+    }
+    console.log('\n--- Ingredientes necesarios ---');
+    items.forEach(i => {
+      const recetas = i.recipeNames.join(', ');
+      console.log(`  ${i.ingredientName}${i.quantityNote ? ` (${i.quantityNote})` : ''} — ${i.totalCovers} comensales`);
+      console.log(`    Recetas: ${recetas}`);
+    });
+    console.log(`Total: ${items.length} ingredientes\n`);
+  } catch (error) {
+    if (error instanceof AppError) console.log('✗ ' + error.message);
+  }
+}
+
+export function verListaCompra(container: IContainer, planningId: string) {
+  try {
+    const items = container.getShoppingList.execute(planningId);
+    if (items.length === 0) {
+      console.log('No hay ingredientes en la lista de la compra');
+      return;
+    }
+    console.log('\n--- Lista de la compra ---');
+    items.forEach(i => {
+      const tag = i.shoppingCompleted ? ' [COMPRADO]' : i.inShoppingList ? '' : '';
+      if (i.pantryAvailable) {
+        console.log(`  ${i.ingredientName}${i.quantityNote ? ` (${i.quantityNote})` : ''} — ${i.totalCovers} comensales [TENGO DE TODO]${tag}`);
+      } else if (i.neededAfterPantry <= 0) {
+        console.log(`  ${i.ingredientName}${i.quantityNote ? ` (${i.quantityNote})` : ''} — ${i.totalCovers} comensales [CUBIERTO]${tag}`);
+      } else {
+        console.log(`  ${i.ingredientName}${i.quantityNote ? ` (${i.quantityNote})` : ''} — necesario para ${i.totalCovers} comensales, tienes para ${i.pantryCovers} → COMPRAR PARA ${i.neededAfterPantry}${tag}`);
+      }
+    });
+    console.log(`Total: ${items.length} ingredientes\n`);
+  } catch (error) {
+    if (error instanceof AppError) console.log('✗ ' + error.message);
+  }
 }
 
 export function listarPlanificaciones(container: IContainer, userId: string) {
