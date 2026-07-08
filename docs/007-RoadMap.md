@@ -22,7 +22,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 - [x] Fase 1 a 10: Implementación completa del dominio, CLI, persistencia, CRUD, vistas proyectadas y gestión de usuarios
 
 ```
-Estado actual: 328 tests, 53 ficheros de test, todo verde.
+Estado actual: 344 tests, 57 ficheros de test, todo verde.
 ```
 
 ## Próximas fases
@@ -67,6 +67,25 @@ a la vez, usando un selector por multiselect de días.
 - [x] Paso 2: Añadir opción "Editar en lote" al menú de gestión de días del CLI
     - [x] `planning-bulk-update.menu.ts` con multiselect de días, confirm ask para covers/exclusiones/preferencias
 - [x] Paso 3: Tests del use case (7 tests: covers, exclusions, preferences, parcial, combinado, planning no existe, dia no existe)
+- [x] Paso 4: Validación MOMENTO_DIA en exclusiones y preferencias
+    - [x] Use cases filtran etiquetas MOMENTO_DIA via TagRepository
+    - [x] CLI filtra MOMENTO_DIA de los selectores multiselect
+- [x] Paso 5: Creación en lote de días
+    - [x] `Planning.addDays()` en aggregate (validación atómica)
+    - [x] `BulkCreateDaysUseCase` (4 tests)
+    - [x] `planning-day-bulk-add.menu.ts` — opción "Todos los días" o rango personalizado
+- [x] Paso 6: Eliminación en lote de días
+    - [x] `Planning.removeDays()` en aggregate (validación atómica)
+    - [x] `BulkRemoveDaysUseCase` (3 tests)
+    - [x] `planning-day-bulk-remove.menu.ts` — multiselect con confirmación
+- [x] Paso 7: Asignación en lote de servicios
+    - [x] `Planning.assignMealToDays()` en aggregate (validación atómica, upsert)
+    - [x] `BulkAssignMealUseCase` con validación de TagRepository y RecipeRepository (5 tests)
+    - [x] `planning-service-bulk-add.menu.ts` — multiselect días + momento + covers + receta
+- [x] Paso 8: Eliminación en lote de servicios
+    - [x] `Planning.removeMealFromDays()` en aggregate (validación atómica)
+    - [x] `BulkRemoveMealUseCase` (4 tests)
+    - [x] `planning-service-bulk-remove.menu.ts` — seleccionar momento + multiselect días
 
 ### Fase 13: Duplicar planificación
 

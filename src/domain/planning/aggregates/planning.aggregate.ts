@@ -157,6 +157,57 @@ export class Planning {
     }
   }
 
+  public addDays(entries: { id: string; ordenDia: number }[]): void {
+    for (const entry of entries) {
+      if (this.days.has(entry.ordenDia)) {
+        throw new DomainError(`Ya existe un día con orden ${entry.ordenDia}`);
+      }
+      if (entry.ordenDia > this.CountWeekDays()) {
+        throw new DomainError(`El día ${entry.ordenDia} está fuera del rango [1-${this.CountWeekDays()}]`);
+      }
+    }
+    for (const entry of entries) {
+      this.days.set(entry.ordenDia, PlannedDay.create(entry.id, entry.ordenDia));
+    }
+  }
+
+  public removeDays(orders: number[]): void {
+    for (const order of orders) {
+      if (!this.days.has(order)) {
+        throw new DomainError(`No existe un día con orden ${order}`);
+      }
+    }
+    for (const order of orders) {
+      this.days.delete(order);
+    }
+  }
+
+  public assignMealToDays(days: number[], momentTagId: string, covers: number, recipeId?: string): void {
+    for (const dayOrder of days) {
+      if (!this.days.has(dayOrder)) {
+        throw new DomainError(`No existe un día con orden ${dayOrder}`);
+      }
+    }
+    for (const dayOrder of days) {
+      this.days.get(dayOrder)!.addMeal(momentTagId, covers, recipeId);
+    }
+  }
+
+  public removeMealFromDays(days: number[], momentTagId: string): void {
+    for (const dayOrder of days) {
+      const day = this.days.get(dayOrder);
+      if (!day) {
+        throw new DomainError(`No existe un día con orden ${dayOrder}`);
+      }
+      if (!day.getMeal(momentTagId)) {
+        throw new DomainError(`No hay un servicio asignado para el momento del día en el día ${dayOrder}`);
+      }
+    }
+    for (const dayOrder of days) {
+      this.days.get(dayOrder)!.removeMeal(momentTagId);
+    }
+  }
+
   getDays(): PlannedDay[] {
     return Array.from(this.days.values());
   }

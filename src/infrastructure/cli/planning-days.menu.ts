@@ -2,7 +2,9 @@ import prompts from 'prompts';
 import { IContainer } from '../container';
 import { mostrarPlanificacion } from './planning-display';
 import { agregarDia } from './planning-day-add.menu';
+import { agregarDiasEnLote } from './planning-day-bulk-add.menu';
 import { eliminarDia } from './planning-day-remove.menu';
+import { eliminarDiasEnLote } from './planning-day-bulk-remove.menu';
 import { gestionarServicios } from './planning-services.menu';
 import { editarEnLote } from './planning-bulk-update.menu';
 
@@ -22,11 +24,13 @@ export async function gestionarDias(container: IContainer, userId: string, plann
       name: 'value',
       message: 'Gestionar dias:',
       choices: [
-        { title: 'Agregar dia',        value: 'add-day' },
-        { title: 'Editar dia',         value: 'manage-meals' },
-        { title: 'Editar en lote',     value: 'bulk-edit' },
-        { title: 'Eliminar dia',       value: 'remove-day' },
-        { title: 'Volver',             value: 'back' },
+        { title: 'Agregar dia',           value: 'add-day' },
+        { title: 'Agregar dias en lote',  value: 'bulk-add' },
+        { title: 'Editar dia',            value: 'manage-meals' },
+        { title: 'Editar en lote',        value: 'bulk-edit' },
+        { title: 'Eliminar dia',          value: 'remove-day' },
+        { title: 'Eliminar varios dias',  value: 'bulk-remove' },
+        { title: 'Volver',                value: 'back' },
       ],
     }, { onCancel: ON_CANCEL });
 
@@ -36,6 +40,9 @@ export async function gestionarDias(container: IContainer, userId: string, plann
       case 'add-day':
         await agregarDia(container, planningId, planning.getWeeks());
         break;
+      case 'bulk-add':
+        await agregarDiasEnLote(container, planningId, planning.getWeeks());
+        break;
       case 'manage-meals':
         await gestionarServicios(container, userId, planningId, days);
         break;
@@ -44,6 +51,9 @@ export async function gestionarDias(container: IContainer, userId: string, plann
         break;
       case 'remove-day':
         await eliminarDia(container, planningId, days);
+        break;
+      case 'bulk-remove':
+        await eliminarDiasEnLote(container, planningId, days);
         break;
       case 'back':
         continuar = false;

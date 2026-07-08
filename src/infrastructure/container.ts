@@ -24,6 +24,10 @@ import { RemoveMealFromDayUseCase } from '@/application/planning/remove-meal-fro
 import { SetMealExclusionsUseCase } from '@/application/planning/set-meal-exclusions.use-case';
 import { SetMealPreferencesUseCase } from '@/application/planning/set-meal-preferences.use-case';
 import { BulkUpdateDaysUseCase } from '@/application/planning/bulk-update-days.use-case';
+import { BulkCreateDaysUseCase } from '@/application/planning/bulk-create-days.use-case';
+import { BulkRemoveDaysUseCase } from '@/application/planning/bulk-remove-days.use-case';
+import { BulkAssignMealUseCase } from '@/application/planning/bulk-assign-meal.use-case';
+import { BulkRemoveMealUseCase } from '@/application/planning/bulk-remove-meal.use-case';
 import { GetNeededIngredientsUseCase } from '@/application/planning/get-needed-ingredients.use-case';
 import { GetShoppingListUseCase } from '@/application/planning/get-shopping-list.use-case';
 import { AddPantryItemUseCase } from '@/application/planning/add-pantry-item.use-case';
@@ -75,6 +79,10 @@ export interface IContainer {
   setMealExclusions: SetMealExclusionsUseCase;
   setMealPreferences: SetMealPreferencesUseCase;
   bulkUpdateDays: BulkUpdateDaysUseCase;
+  bulkCreateDays: BulkCreateDaysUseCase;
+  bulkRemoveDays: BulkRemoveDaysUseCase;
+  bulkAssignMeal: BulkAssignMealUseCase;
+  bulkRemoveMeal: BulkRemoveMealUseCase;
   getNeededIngredients: GetNeededIngredientsUseCase;
   getShoppingList: GetShoppingListUseCase;
   addPantryItem: AddPantryItemUseCase;
@@ -146,6 +154,10 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     setMealExclusions: new SetMealExclusionsUseCase(planningRepository, tagRepository),
     setMealPreferences: new SetMealPreferencesUseCase(planningRepository, tagRepository),
     bulkUpdateDays: new BulkUpdateDaysUseCase(planningRepository, tagRepository),
+    bulkCreateDays: new BulkCreateDaysUseCase(planningRepository),
+    bulkRemoveDays: new BulkRemoveDaysUseCase(planningRepository),
+    bulkAssignMeal: new BulkAssignMealUseCase(planningRepository, tagRepository, recipeRepository),
+    bulkRemoveMeal: new BulkRemoveMealUseCase(planningRepository),
     addDayToPlanning: new AddDayToPlanningUseCase(planningRepository),
     removeDayFromPlanning: new RemoveDayFromPlanningUseCase(planningRepository),
     removeMealFromDay: new RemoveMealFromDayUseCase(planningRepository),
