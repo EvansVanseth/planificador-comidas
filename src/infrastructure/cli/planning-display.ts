@@ -8,7 +8,7 @@ export function mostrarPlanificacion(
   allRecipes: { id: string; name: string }[],
   allTags: { id: string; name: string; dimension: string }[],
 ) {
-  const days = planning.getDays();
+  const days = planning.getDays().sort((a, b) => a.getOrdenDia() - b.getOrdenDia());
   const recipeName = (id: string | null) => id ? (allRecipes.find(r => r.id === id)?.name ?? id) : null;
   const momentTags = allTags.filter(t => t.dimension === TagDimension.MOMENTO_DIA);
 

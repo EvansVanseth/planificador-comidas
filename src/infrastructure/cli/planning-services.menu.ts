@@ -2,10 +2,8 @@ import prompts from 'prompts';
 import { IContainer } from '../container';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
 import { agregarServicio } from './planning-service-add.menu';
-import { agregarServicioEnLote } from './planning-service-bulk-add.menu';
 import { modificarServicio } from './planning-service-edit.menu';
 import { eliminarServicio } from './planning-service-remove.menu';
-import { eliminarServicioEnLote } from './planning-service-bulk-remove.menu';
 import { gestionarExclusiones } from './planning-service-exclusions.menu';
 import { gestionarPreferencias } from './planning-service-preferences.menu';
 
@@ -23,24 +21,11 @@ export async function gestionarServicios(container: IContainer, userId: string, 
     message: 'Selecciona el dia:',
     choices: [
       { title: '(Cancelar)', value: '__cancel__' },
-      { title: '≫ Agregar servicio en lote', value: '__bulk-add' },
-      { title: '≫ Eliminar servicio en lote', value: '__bulk-remove' },
       ...days.map(d => ({ title: `Dia ${d.getOrdenDia()}`, value: d.getOrdenDia() })),
     ],
   }, { onCancel: ON_CANCEL });
 
   if (!elegido || elegido.orden === '__cancel__') return;
-
-  if (elegido.orden === '__bulk-add') {
-    await agregarServicioEnLote(container, userId, planningId, days);
-    return;
-  }
-
-  if (elegido.orden === '__bulk-remove') {
-    await eliminarServicioEnLote(container, userId, planningId, days);
-    return;
-  }
-
   const ordenDia = elegido.orden;
 
   let continuar = true;

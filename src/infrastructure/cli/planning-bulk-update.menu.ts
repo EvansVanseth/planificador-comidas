@@ -12,7 +12,7 @@ export async function editarEnLote(container: IContainer, userId: string, planni
     const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
     if (!planning) { console.log('Planificacion no encontrada'); return; }
 
-    const days = planning.getDays();
+    const days = planning.getDays().sort((a, b) => a.getOrdenDia() - b.getOrdenDia());
     if (days.length === 0) {
       console.log('No hay dias. Agrega un dia primero.');
       return;
