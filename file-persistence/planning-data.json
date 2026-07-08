@@ -3,7 +3,7 @@
     "id": "b001ddac-5e78-4b2b-b62e-3b69266d0224",
     "userid": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Mi primera planificación",
-    "startdate": null,
+    "startdate": "2026-07-06T16:20:15.956Z",
     "weeks": 2,
     "days": [
       {
@@ -197,7 +197,58 @@
     "name": "Segunda planificación",
     "startdate": null,
     "weeks": 2,
-    "days": [],
+    "days": [
+      {
+        "id": "dcdcb9e3-427e-4225-8a35-beaf2a51b44a",
+        "order": 1,
+        "services": []
+      },
+      {
+        "id": "d592bcc0-ec03-47c9-83d3-c38b71df555c",
+        "order": 2,
+        "services": []
+      },
+      {
+        "id": "6487b74d-772c-4449-904e-0bc2f42fef9f",
+        "order": 3,
+        "services": []
+      },
+      {
+        "id": "dda8d8f1-18ca-43b3-900c-f30c4406854d",
+        "order": 4,
+        "services": []
+      },
+      {
+        "id": "9eb9a73b-90a8-46b4-99af-fe5de4ace219",
+        "order": 5,
+        "services": []
+      },
+      {
+        "id": "41546ef4-cd26-4022-922b-4bfbaeb86380",
+        "order": 8,
+        "services": []
+      },
+      {
+        "id": "b3812794-0f60-4ea5-ad91-a599d8abd282",
+        "order": 9,
+        "services": []
+      },
+      {
+        "id": "94c0fcf9-bf81-4815-bd1f-94f6d8bdce51",
+        "order": 10,
+        "services": []
+      },
+      {
+        "id": "e8138b26-2056-40c4-adb6-4954f6e443e6",
+        "order": 11,
+        "services": []
+      },
+      {
+        "id": "f5ffd429-2f87-4ade-a70a-afd87cd848a9",
+        "order": 12,
+        "services": []
+      }
+    ],
     "pantryItems": [],
     "shoppingItems": []
   },

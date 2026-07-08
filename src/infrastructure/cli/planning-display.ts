@@ -3,6 +3,14 @@ import { AppError } from '../../application/shared/errors/app-error';
 import { Planning } from '../../domain/planning/aggregates/planning.aggregate';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
 
+function formatDate(d: Date): string {
+  const locale = 'es-ES';
+  const dayName = d.toLocaleDateString(locale, { weekday: 'short' });
+  const dayNum = d.toLocaleDateString(locale, { day: 'numeric' });
+  const month = d.toLocaleDateString(locale, { month: 'numeric' });
+  return `${dayName} ${dayNum}/${month}`;
+}
+
 export function mostrarPlanificacion(
   planning: Planning,
   allRecipes: { id: string; name: string }[],
@@ -11,8 +19,10 @@ export function mostrarPlanificacion(
   const days = planning.getDays().sort((a, b) => a.getOrdenDia() - b.getOrdenDia());
   const recipeName = (id: string | null) => id ? (allRecipes.find(r => r.id === id)?.name ?? id) : null;
   const momentTags = allTags.filter(t => t.dimension === TagDimension.MOMENTO_DIA);
+  const startDate = planning.getStartDate();
 
-  console.log(`\n(id: ${planning.getId()}) ${planning.getName()} — ${planning.getWeeks()} semanas, ${days.length} dias`);
+  const dateInfo = startDate ? ` — Inicio: ${formatDate(startDate)}` : ' (sin fecha)';
+  console.log(`\n(id: ${planning.getId()}) ${planning.getName()} — ${planning.getWeeks()} semanas, ${days.length} dias${dateInfo}`);
   days.forEach(d => {
     const services = d.toDTO().services;
     const mealEntries = Object.entries(services).filter(([_, s]) => s !== null) as [string, NonNullable<typeof services[string]>][];
@@ -24,7 +34,8 @@ export function mostrarPlanificacion(
       return `${tagName}: ${meal.getCovers()} comensales${name ? ` — ${name}` : ''}`;
     }).join(', ');
 
-    console.log(`  Dia ${d.getOrdenDia()}: ${mealEntries.length} servicio(s) — ${info || 'vacio'}`);
+    const dayDate = startDate ? ` (${formatDate(new Date(startDate.getTime() + (d.getOrdenDia() - 1) * 86400000))})` : '';
+    console.log(`  Dia ${d.getOrdenDia()}${dayDate}: ${mealEntries.length} servicio(s) — ${info || 'vacio'}`);
   });
 }
 

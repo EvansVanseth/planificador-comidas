@@ -55,7 +55,7 @@ export async function editarPlanificacion(container: IContainer, userId: string)
 
     switch (opcion.value) {
       case 'edit-data':
-        await editarDatosPlanificacion(container, planningId);
+        await editarDatosPlanificacion(container, planningId, userId);
         break;
       case 'manage-days':
         await gestionarDias(container, userId, planningId);
