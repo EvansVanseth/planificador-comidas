@@ -85,16 +85,6 @@
         ]
       },
       {
-        "id": "381d7415-b21d-41d7-9318-3d678ee480d6",
-        "order": 6,
-        "services": []
-      },
-      {
-        "id": "3e0a351c-1a10-40b1-bcfa-887cdd8b84a1",
-        "order": 7,
-        "services": []
-      },
-      {
         "id": "762a2d6a-01bf-415e-9d61-cd26656e7952",
         "order": 8,
         "services": []
@@ -117,16 +107,6 @@
       {
         "id": "e4f62629-74c0-412d-a89e-77b5f733d61f",
         "order": 12,
-        "services": []
-      },
-      {
-        "id": "618729d8-70cc-4303-9b2f-7f11353887e3",
-        "order": 13,
-        "services": []
-      },
-      {
-        "id": "24873ef6-33d6-4a55-991e-3885bf825722",
-        "order": 14,
         "services": []
       },
       {

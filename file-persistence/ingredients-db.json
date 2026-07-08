@@ -33,5 +33,15 @@
     "id": "69294c0c-0d2c-45cc-b4e6-0818fcbe5a8a",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Yogurt griego"
+  },
+  {
+    "id": "f827ec38-93ac-440f-a7b4-ab66e54e5fd6",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Patata"
+  },
+  {
+    "id": "ec02440d-654c-4048-ac47-3340f5211a62",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Chocolate"
   }
 ]

@@ -114,3 +114,13 @@ Modificar el script de inicio para que compile las rutas antes de iniciar
   "cli": "ts-node -r tsconfig-paths/register src/cli.ts"
 }
 ```
+
+## instalamos picocolors
+``` bash
+npm install picocolors
+```
+
+## instalamos tsx para ejecución de la terminal
+``` bash
+npm install -D tsx (local)
+```
