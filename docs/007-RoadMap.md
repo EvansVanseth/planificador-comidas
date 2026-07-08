@@ -87,7 +87,19 @@ a la vez, usando un selector por multiselect de días.
     - [x] `BulkRemoveMealUseCase` (4 tests)
     - [x] `planning-service-bulk-remove.menu.ts` — seleccionar momento + multiselect días
 
-### Fase 13: Duplicar planificación
+### Fase 13: Reestructuración de menús de días
+
+Unifica las operaciones individuales y en lote de días/servicios en un único menú "Editar dias" con acciones que se aplican a todos los días seleccionados.
+
+- [x] Paso 1: Fusionar menús de días y servicios en "Editar dias"
+    - [x] Eliminar opciones "Editar dia", "Editar en lote", "Agregar servicio en lote", "Eliminar servicio en lote", "Eliminar dia"
+    - [x] Renombrar opciones: "Agregar dia" → "Agregar un dia", "Agregar dias en lote" → "Agregar varios dias", "Eliminar varios dias" → "Eliminar dias"
+    - [x] Nueva opción "Editar dias" con multiselect de días + menú de acciones (Agregar/Modificar/Eliminar servicio, Exclusiones, Preferencias)
+    - [x] Reutilizar bulk use cases existentes para aplicar acciones sobre todos los días seleccionados
+- [x] Paso 2: Ordenar días por ordenDia en todos los selectores de días (editar, eliminar, batch)
+- [x] Paso 3: Mostrar días seleccionados con formato detallado (servicios, exclusiones y preferencias por comensal)
+
+### Fase 14: Duplicar planificación
 
 Permite copiar una planificación existente para usarla como plantilla.
 
@@ -99,7 +111,7 @@ Permite copiar una planificación existente para usarla como plantilla.
 - [ ] Paso 2: Añadir opción "Duplicar" al menú de planificaciones en CLI
 - [ ] Paso 3: Tests del use case
 
-### Fase 14: Motor de autoplanificación
+### Fase 16: Motor de autoplanificación
 
 El core del producto. Algoritmo que, dadas una planificación con exclusiones, preferencias y un balance frío/caliente, asigna recetas automáticamente a los servicios vacíos.
 
@@ -124,7 +136,7 @@ El core del producto. Algoritmo que, dadas una planificación con exclusiones, p
 - [ ] Paso 5: Comando "Autoplanificar" en el menú de planificaciones del CLI
     - [ ] Ejecuta el motor, muestra resumen de asignaciones, permite aceptar o rechazar
 
-### Fase 15: Fusión de ingredientes (Merge)
+### Fase 17: Fusión de ingredientes (Merge)
 
 Permite al usuario unificar ingredientes duplicados ("huevo" → "huevos") actualizando todas las referencias en recetas de forma atómica.
 
@@ -135,7 +147,7 @@ Permite al usuario unificar ingredientes duplicados ("huevo" → "huevos") actua
 - [ ] Paso 2: Añadir opción "Fusionar ingredientes" al menú de ingredientes en CLI
 - [ ] Paso 3: Tests del use case
 
-### Fase 16: ^^ Versión WEB Desktop (Next.js)
+### Fase 18: ^^ Versión WEB Desktop (Next.js)
 
 Migración de la CLI a interfaz web basada en los mockups aprobados por la usuaria. Todo el dominio existente se reutiliza tal cual.
 
@@ -156,18 +168,18 @@ Migración de la CLI a interfaz web basada en los mockups aprobados por la usuar
     - [ ] Formulario de creación/edición con autocompletado de ingredientes (RF-01.3)
     - [ ] Eliminación con advertencia de uso en planificaciones (HU-03.4)
 - [ ] Paso 6: ^^ Pantalla de ingredientes maestros (HU-02.1, HU-02.2)
-    - [ ] CRUD + fusión de ingredientes (de Fase 15)
+    - [ ] CRUD + fusión de ingredientes (de Fase 17)
 - [ ] Paso 7: ^^ Pantalla de etiquetas (HU-04.1 a HU-04.3)
 - [ ] Paso 8: ^^ Pantalla de planificaciones (HU-05.1 a HU-05.5)
     - [ ] Historial + creación + duplicación
     - [ ] Editor detallado con vista semanal tipo grilla
     - [ ] Configuración de comensales, exclusiones, preferencias (bulk edit)
-    - [ ] Botón "Autoplanificar" (de Fase 14)
+    - [ ] Botón "Autoplanificar" (de Fase 16)
 - [ ] Paso 9: ^^ Vista de ingredientes necesarios (HU-06.3)
 - [ ] Paso 10: ^^ Vista de lista de la compra con checkboxes (HU-06.4)
     - [ ] Accesibilidad táctil: 44x44 px, contraste 4.5:1, aria-live
 
-### Fase 17: ^^ Versión WEB Mobile (responsive)
+### Fase 19: ^^ Versión WEB Mobile (responsive)
 
 Optimización de la UI existente para contexto móvil, siguiendo los mockups.
 
@@ -175,7 +187,7 @@ Optimización de la UI existente para contexto móvil, siguiendo los mockups.
 - [ ] Paso 2: Optimizar lista de la compra para uso en supermercado (checkboxes grandes, swipe, contraste solar)
 - [ ] Paso 3: Probar accesibilidad WCAG 2.1 AA (lectores de pantalla, target size, contraste)
 
-### Fase 18: ^^ Infraestructura de persistencia Postgres
+### Fase 20: ^^ Infraestructura de persistencia Postgres
 
 - [ ] Paso 1: Docker Compose para Postgres local (del diseño técnico)
 - [ ] Paso 2: Configurar Prisma ORM con `schema.prisma` mapeando el Domain Model
@@ -183,7 +195,7 @@ Optimización de la UI existente para contexto móvil, siguiendo los mockups.
 - [ ] Paso 4: Migrar seed de etiquetas de sistema a Prisma
 - [ ] Paso 5: Tests de integración con base de datos real
 
-### Fase 19: ^^ Despliegue en cloud + seguridad
+### Fase 21: ^^ Despliegue en cloud + seguridad
 
 - [ ] Paso 1: Conectar Supabase Postgres (producción)
 - [ ] Paso 2: Políticas RLS (Row-Level Security) para aislamiento multitenant
@@ -193,7 +205,7 @@ Optimización de la UI existente para contexto móvil, siguiendo los mockups.
 - [ ] Paso 6: Tests E2E opcionales (Playwright)
 - [ ] Paso 7: Revisión de seguridad estricta y robustez
 
-### Fase 20: Preparación académica final
+### Fase 22: Preparación académica final
 
 - [ ] Documentación del proyecto
 - [ ] Memoria del TFM

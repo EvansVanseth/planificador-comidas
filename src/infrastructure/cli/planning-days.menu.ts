@@ -3,12 +3,8 @@ import { IContainer } from '../container';
 import { mostrarPlanificacion } from './planning-display';
 import { agregarDia } from './planning-day-add.menu';
 import { agregarDiasEnLote } from './planning-day-bulk-add.menu';
-import { eliminarDia } from './planning-day-remove.menu';
 import { eliminarDiasEnLote } from './planning-day-bulk-remove.menu';
-import { gestionarServicios } from './planning-services.menu';
-import { agregarServicioEnLote } from './planning-service-bulk-add.menu';
-import { eliminarServicioEnLote } from './planning-service-bulk-remove.menu';
-import { editarEnLote } from './planning-bulk-update.menu';
+import { editarDias } from './planning-bulk-update.menu';
 
 const ON_CANCEL = () => {};
 
@@ -26,15 +22,11 @@ export async function gestionarDias(container: IContainer, userId: string, plann
       name: 'value',
       message: 'Gestionar dias:',
       choices: [
-        { title: 'Agregar dia',                  value: 'add-day' },
-        { title: 'Agregar dias en lote',         value: 'bulk-add' },
-        { title: 'Editar dia',                   value: 'manage-meals' },
-        { title: 'Editar en lote',               value: 'bulk-edit' },
-        { title: 'Agregar servicio en lote',     value: 'bulk-add-meal' },
-        { title: 'Eliminar servicio en lote',    value: 'bulk-remove-meal' },
-        { title: 'Eliminar dia',                 value: 'remove-day' },
-        { title: 'Eliminar varios dias',         value: 'bulk-remove' },
-        { title: 'Volver',                       value: 'back' },
+        { title: 'Agregar un dia',          value: 'add-day' },
+        { title: 'Agregar varios dias',     value: 'bulk-add' },
+        { title: 'Editar dias',             value: 'edit-days' },
+        { title: 'Eliminar dias',           value: 'bulk-remove' },
+        { title: 'Volver',                  value: 'back' },
       ],
     }, { onCancel: ON_CANCEL });
 
@@ -47,20 +39,8 @@ export async function gestionarDias(container: IContainer, userId: string, plann
       case 'bulk-add':
         await agregarDiasEnLote(container, planningId, planning.getWeeks());
         break;
-      case 'manage-meals':
-        await gestionarServicios(container, userId, planningId, days);
-        break;
-      case 'bulk-edit':
-        await editarEnLote(container, userId, planningId);
-        break;
-      case 'bulk-add-meal':
-        await agregarServicioEnLote(container, userId, planningId, days);
-        break;
-      case 'bulk-remove-meal':
-        await eliminarServicioEnLote(container, userId, planningId, days);
-        break;
-      case 'remove-day':
-        await eliminarDia(container, planningId, days);
+      case 'edit-days':
+        await editarDias(container, userId, planningId);
         break;
       case 'bulk-remove':
         await eliminarDiasEnLote(container, planningId, days);
