@@ -1,6 +1,5 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 import { gestionarIngredientes } from './recipe-ingredients.menu';
@@ -90,8 +89,8 @@ async function editarDatosReceta(container: IContainer, recipeId: string) {
     container.updateRecipe.execute(input);
     } catch (error) {
       if (error instanceof DomainError || error instanceof AppError) {
-        console.log(theme.error(error.message));
+        console.log('✗ ' + error.message);
       }
-      console.log(theme.header('\n--- Edicion cancelada ---'));
+      console.log('\n--- Edicion cancelada ---');
   }
 }

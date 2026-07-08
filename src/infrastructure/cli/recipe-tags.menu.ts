@@ -1,6 +1,5 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
@@ -76,10 +75,11 @@ async function agregarEtiquetaExistente(container: IContainer, userId: string, r
       id: recipeId,
       addTags: [{ id: elegida.id, dimension: tag.dimension as TagDimension }],
     });
-    console.log(theme.success('Etiqueta agregada a la receta'));
+    console.log('✓ Etiqueta agregada a la receta');
+
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(theme.error(error.message));
+      console.log('✗ ' + error.message);
     }
   }
 }
@@ -107,10 +107,10 @@ async function agregarNuevaEtiqueta(container: IContainer, userId: string, recip
       datos.name.trim(),
       datos.dimension as TagDimension,
     );
-    console.log(theme.success('Etiqueta creada y agregada a la receta'));
+    console.log('✓ Etiqueta creada y agregada a la receta');
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(theme.error(error.message));
+      console.log('✗ ' + error.message);
     }
   }
 }
@@ -144,10 +144,10 @@ async function quitarEtiqueta(container: IContainer, userId: string, recipeId: s
     if (!elegida?.id || elegida.id === '__cancel__') return;
 
     container.updateRecipe.execute({ id: recipeId, removeTags: [elegida.id] });
-    console.log(theme.success('Etiqueta quitada de la receta'));
+    console.log('✓ Etiqueta quitada de la receta');
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(theme.error(error.message));
+      console.log('✗ ' + error.message);
     }
   }
 }

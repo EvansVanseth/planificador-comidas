@@ -43,5 +43,15 @@
     "id": "ec02440d-654c-4048-ac47-3340f5211a62",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Chocolate"
+  },
+  {
+    "id": "71ebe1d6-efd0-4234-a023-a04cc6cfd8cc",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Quinoa"
+  },
+  {
+    "id": "b2f9a068-2fdc-4adb-881c-13979cda7166",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Aguacate"
   }
 ]

@@ -1,6 +1,5 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -52,10 +51,10 @@ export async function agregarDiasEnLote(container: IContainer, planningId: strin
     if (orders.length === 0) return;
 
     container.bulkCreateDays.execute({ planningId, orders });
-    console.log(theme.success(`${orders.length} dia(s) agregado(s): ${orders.join(', ')}`));
+    console.log('✓ ' + `${orders.length} dia(s) agregado(s): ${orders.join(', ')}`);
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(theme.error(error.message));
+      console.log('✗ ' + error.message);
     }
   }
 }

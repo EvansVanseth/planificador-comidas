@@ -1,5 +1,4 @@
 import { IContainer } from '../container';
-import { theme } from './cli-theme';
 import { RecipePrimitives } from '../../domain/recipes/aggregates/recipe.aggregate';
 
 const DIMENSION_LABELS: Record<string, string> = {
@@ -58,6 +57,6 @@ export function listarRecetas(container: IContainer, userId: string) {
   const allIngredients = container.listIngredients.execute(userId);
   const allTags = container.listTags.execute(userId);
 
-  console.log(theme.header('--- Recetas ---'));
+  console.log('--- Recetas ---');
   recipes.forEach(r => mostrarReceta(r, allIngredients, allTags));
 }

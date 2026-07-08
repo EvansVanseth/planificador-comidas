@@ -1,6 +1,5 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -45,10 +44,10 @@ export async function crearIngrediente(container: IContainer, userId: string) {
     }
 
     const id = container.createIngredient.execute(userId, answers.name);
-    console.log(theme.success(`Ingrediente creado: ${id}`));
+    console.log('✓ ' + `Ingrediente creado: ${id}`);
 
   } catch (error) {
-    if (error instanceof DomainError || error instanceof AppError) console.log(theme.error(error.message));
-    console.log(theme.header('\n--- Creacion cancelada ---'));
+    if (error instanceof DomainError || error instanceof AppError) console.log('✗ ' + error.message);
+    console.log('\n--- Creacion cancelada ---');
   }
 }

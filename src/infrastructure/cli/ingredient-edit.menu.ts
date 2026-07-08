@@ -1,6 +1,5 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -35,12 +34,12 @@ export async function editarIngrediente(container: IContainer, userId: string) {
     if (!cambios) return;
     if (!cambios.name.trim()) return;
     container.updateIngredient.execute({ id: seleccion.id, name: cambios.name.trim() });
-    console.log(theme.success('Ingrediente actualizado correctamente'));
+    console.log('✓ Ingrediente actualizado correctamente');
 
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(theme.error(error.message));
+      console.log('✗ ' + error.message);
     }
-    console.log(theme.header('\n--- Edicion cancelada ---'));
+    console.log('\n--- Edicion cancelada ---');
   }
 }

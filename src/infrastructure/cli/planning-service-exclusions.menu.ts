@@ -1,7 +1,6 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -59,10 +58,10 @@ export async function gestionarExclusiones(
     if (!seleccion?.tags) return;
 
     container.setMealExclusions.execute(planningId, ordenDia, momentTagId, seleccion.tags);
-    console.log(theme.success(`Exclusiones actualizadas (${seleccion.tags.length} etiquetas)`));
+    console.log('✓ ' + `Exclusiones actualizadas (${seleccion.tags.length} etiquetas)`);
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(theme.error(error.message));
+      console.log('✗ ' + error.message);
     }
   }
 }

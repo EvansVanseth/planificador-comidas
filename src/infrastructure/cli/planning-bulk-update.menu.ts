@@ -2,7 +2,6 @@ import prompts from 'prompts';
 import { IContainer } from '../container';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
 import { mostrarPlanificacion } from './planning-display';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -43,7 +42,7 @@ export async function editarDias(container: IContainer, userId: string, planning
       const nonMomentTags = allTags.filter(t => t.dimension !== TagDimension.MOMENTO_DIA);
       const allRecipes = container.listRecipes.execute(userId);
 
-      console.log(theme.header(`\n--- Editando ${orders.length} dia(s) ---`));
+      console.log(`\n--- Editando ${orders.length} dia(s) ---`);
       const recipeNameMap = new Map(allRecipes.map(r => [r.id, r.name]));
       const tagNameMap = new Map(allTags.map(t => [t.id, t.name]));
       orders.forEach(orden => {
@@ -124,7 +123,7 @@ export async function editarDias(container: IContainer, userId: string, planning
             }
 
             container.bulkAssignMeal.execute({ planningId, days: orders, momentTagId: momentResp.id, covers: coversResp.value, recipeId });
-            console.log(theme.success(`Servicio asignado a ${orders.length} dia(s)`));
+            console.log('✓ ' + `Servicio asignado a ${orders.length} dia(s)`);
             break;
           }
 
@@ -161,7 +160,7 @@ export async function editarDias(container: IContainer, userId: string, planning
             if (recipeResp?.id) recipeId = recipeResp.id;
 
             container.bulkAssignMeal.execute({ planningId, days: orders, momentTagId: momentResp.id, covers: coversResp.value, recipeId });
-            console.log(theme.success(`Servicio modificado en ${orders.length} dia(s)`));
+            console.log('✓ ' + `Servicio modificado en ${orders.length} dia(s)`);
             break;
           }
 
@@ -186,7 +185,7 @@ export async function editarDias(container: IContainer, userId: string, planning
             if (!confirmar?.value) break;
 
             container.bulkRemoveMeal.execute({ planningId, days: orders, momentTagId: momentResp.id });
-            console.log(theme.success(`Servicio eliminado de ${orders.length} dia(s)`));
+            console.log('✓ ' + `Servicio eliminado de ${orders.length} dia(s)`);
             break;
           }
 
@@ -212,7 +211,7 @@ export async function editarDias(container: IContainer, userId: string, planning
             if (!confirmar?.value) break;
 
             container.bulkUpdateDays.execute({ planningId, days: orders, exclusions: exclResp.tags });
-            console.log(theme.success(`Exclusiones actualizadas en ${orders.length} dia(s)`));
+            console.log('✓ ' + `Exclusiones actualizadas en ${orders.length} dia(s)`);
             break;
           }
 
@@ -238,19 +237,19 @@ export async function editarDias(container: IContainer, userId: string, planning
             if (!confirmar?.value) break;
 
             container.bulkUpdateDays.execute({ planningId, days: orders, preferences: prefResp.tags });
-            console.log(theme.success(`Preferencias actualizadas en ${orders.length} dia(s)`));
+            console.log('✓ ' + `Preferencias actualizadas en ${orders.length} dia(s)`);
             break;
           }
         }
       } catch (error) {
         if (error instanceof DomainError || error instanceof AppError) {
-          console.log(theme.error(error.message));
+          console.log('✗ ' + error.message);
         }
       }
     }
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(theme.error(error.message));
+      console.log('✗ ' + error.message);
     }
   }
 }

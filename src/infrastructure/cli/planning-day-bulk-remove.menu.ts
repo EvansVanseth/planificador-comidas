@@ -1,6 +1,5 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -36,10 +35,10 @@ export async function eliminarDiasEnLote(container: IContainer, planningId: stri
     if (!confirmar?.value) return;
 
     container.bulkRemoveDays.execute({ planningId, orders: seleccion.orders });
-    console.log(theme.success(`Dia(s) eliminado(s): ${seleccion.orders.join(', ')}`));
+    console.log('✓ ' + `Dia(s) eliminado(s): ${seleccion.orders.join(', ')}`);
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(theme.error(error.message));
+      console.log('✗ ' + error.message);
     }
   }
 }

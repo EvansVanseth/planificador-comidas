@@ -1,6 +1,5 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 
 const ON_CANCEL = () => {};
@@ -22,7 +21,7 @@ export async function gestionarNeededYPantry(container: IContainer, userId: stri
 
     const needed: NeededItem[] = container.getNeededIngredients.execute(planningId);
 
-    console.log(theme.header('\n--- Ingredientes necesarios y despensa ---'));
+    console.log('\n--- Ingredientes necesarios y despensa ---');
     if (needed.length === 0) {
       console.log('  (sin recetas asignadas — no hay ingredientes necesarios)');
     } else {
@@ -86,9 +85,9 @@ export async function gestionarNeededYPantry(container: IContainer, userId: stri
     if (respTiene.value) {
       try {
         container.markPantryItemAvailable.execute(planningId, ingredientId);
-        console.log(theme.success('Marcado como "tengo de todo"'));
+        console.log('✓ Marcado como "tengo de todo"');
       } catch (error) {
-        if (error instanceof AppError) console.log(theme.error(error.message));
+        if (error instanceof AppError) console.log('✗ ' + error.message);
       }
     } else {
       const respCovers = await prompts({
@@ -104,14 +103,14 @@ export async function gestionarNeededYPantry(container: IContainer, userId: stri
       try {
         if (pantryItem) {
           container.updatePantryItemCovers.execute(planningId, ingredientId, respCovers.value);
-          console.log(theme.success(`Cobertura actualizada: ${respCovers.value} comensales`));
+          console.log('✓ ' + `Cobertura actualizada: ${respCovers.value} comensales`);
         } else {
           container.addPantryItem.execute(planningId, ingredientId);
           container.updatePantryItemCovers.execute(planningId, ingredientId, respCovers.value);
-          console.log(theme.success(`Agregado a despensa: ${respCovers.value} comensales`));
+          console.log('✓ ' + `Agregado a despensa: ${respCovers.value} comensales`);
         }
       } catch (error) {
-        if (error instanceof AppError) console.log(theme.error(error.message));
+        if (error instanceof AppError) console.log('✗ ' + error.message);
       }
     }
   }

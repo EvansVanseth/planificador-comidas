@@ -1,5 +1,4 @@
 import { IContainer } from '../container';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { Planning } from '../../domain/planning/aggregates/planning.aggregate';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
@@ -36,7 +35,7 @@ export function verIngredientesNecesarios(container: IContainer, planningId: str
       console.log('No hay ingredientes necesarios (sin recetas asignadas)');
       return;
     }
-    console.log(theme.header('\n--- Ingredientes necesarios ---'));
+    console.log('\n--- Ingredientes necesarios ---');
     items.forEach(i => {
       const recetas = i.recipeNames.join(', ');
       console.log(`  ${i.ingredientName}${i.quantityNote ? ` (${i.quantityNote})` : ''} — ${i.totalCovers} comensales`);
@@ -44,7 +43,7 @@ export function verIngredientesNecesarios(container: IContainer, planningId: str
     });
     console.log(`Total: ${items.length} ingredientes\n`);
   } catch (error) {
-    if (error instanceof AppError) console.log(theme.error(error.message));
+    if (error instanceof AppError) console.log('✗ ' + error.message);
   }
 }
 
@@ -55,7 +54,7 @@ export function verListaCompra(container: IContainer, planningId: string) {
       console.log('No hay ingredientes en la lista de la compra');
       return;
     }
-    console.log(theme.header('\n--- Lista de la compra ---'));
+    console.log('\n--- Lista de la compra ---');
     items.forEach(i => {
       const tag = i.shoppingCompleted ? ' [COMPRADO]' : i.inShoppingList ? '' : '';
       if (i.pantryAvailable) {
@@ -68,7 +67,7 @@ export function verListaCompra(container: IContainer, planningId: string) {
     });
     console.log(`Total: ${items.length} ingredientes\n`);
   } catch (error) {
-    if (error instanceof AppError) console.log(theme.error(error.message));
+    if (error instanceof AppError) console.log('✗ ' + error.message);
   }
 }
 
@@ -81,6 +80,7 @@ export function listarPlanificaciones(container: IContainer, userId: string) {
   const allRecipes = container.listRecipes.execute(userId);
   const allTags = container.listTags.execute(userId);
 
-  console.log(theme.header('--- Planificaciones ---'));
+  console.log('--- Planificaciones ---');
+
   plannings.forEach(p => mostrarPlanificacion(p, allRecipes, allTags));
 }

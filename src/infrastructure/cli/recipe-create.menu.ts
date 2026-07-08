@@ -1,6 +1,5 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
-import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
@@ -44,12 +43,12 @@ export async function crearReceta(container: IContainer, userId: string) {
     const id = container.createRecipe.execute(
       userId, datos.name, datos.baseServings, datos.prepTime, datos.preparation || null, [], seleccionTags,
     );
-    console.log(theme.success(`Receta creada: ${id}`));
+    console.log('✓ ' + `Receta creada: ${id}`);
 
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log(theme.error(error.message));
+      console.log('✗ ' + error.message);
     }
-    console.log(theme.header('\n--- Creacion cancelada ---'));
+    console.log('\n--- Creacion cancelada ---');
   }
 }
