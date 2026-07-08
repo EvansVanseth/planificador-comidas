@@ -13,10 +13,17 @@ export class DuplicatePlanningUseCase {
     const primitives = original.toPrimitives();
     const newId = randomUUID();
 
+    let clonedName = `${primitives.name} (Copia)`;
+    let counter = 2;
+    while (this.planningRepository.findByName(clonedName)) {
+      clonedName = `${primitives.name} (Copia ${counter})`;
+      counter++;
+    }
+
     const cloned: PlanningPrimitives = {
       ...primitives,
       id: newId,
-      name: `${primitives.name} (Copia)`,
+      name: clonedName,
       startdate: null,
       days: primitives.days.map(day => ({
         ...day,

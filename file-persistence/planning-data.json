@@ -2,10 +2,10 @@
   {
     "id": "b001ddac-5e78-4b2b-b62e-3b69266d0224",
     "userid": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Mi primera planificación",
+    "name": "Balanceada",
     "startdate": "2026-07-06T16:20:15.956Z",
     "weeks": 2,
-    "hotColdBalance": 80,
+    "hotColdBalance": 50,
     "days": [
       {
         "id": "64305d9c-b7bf-4050-a802-9910ec238960",
@@ -13,7 +13,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "310d0fbe-ea93-4ab5-b8bc-b105827ec9ed",
             "covers": 2,
             "exclusions": [
               "fb490465-763a-400f-8037-4c615669d667"
@@ -28,7 +28,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "3c7d27e2-9278-4507-999f-6922b40080cb",
             "covers": 2,
             "exclusions": [
               "fb490465-763a-400f-8037-4c615669d667"
@@ -43,7 +43,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "0aa69320-75fc-4c73-bae4-f0615d649792",
             "covers": 2,
             "exclusions": [
               "fb490465-763a-400f-8037-4c615669d667"
@@ -58,7 +58,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "de7ccb30-5fbd-4d8d-949f-d8fc02723b36",
             "covers": 2,
             "exclusions": [],
             "preferences": []
@@ -71,7 +71,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "4815e2e4-cb08-4e4d-8ea4-78e993ce9cb3",
             "covers": 2,
             "exclusions": [],
             "preferences": []
@@ -84,7 +84,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "7101906f-6092-4299-ae1e-9cf73909a9f6",
             "covers": 2,
             "exclusions": [],
             "preferences": []
@@ -97,7 +97,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "43eca919-ef16-4e59-bdf6-42f886d02c76",
             "covers": 2,
             "exclusions": [],
             "preferences": []
@@ -110,7 +110,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "b27e88f1-461e-43fd-92d0-73a33b27f96c",
             "covers": 2,
             "exclusions": [],
             "preferences": []
@@ -123,7 +123,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "3657db52-d4aa-48b0-8046-e4ab338b1652",
             "covers": 2,
             "exclusions": [
               "fb490465-763a-400f-8037-4c615669d667"
@@ -138,7 +138,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "7a3ff4cd-6d90-4f2d-9505-d34843c999c6",
             "covers": 2,
             "exclusions": [
               "fb490465-763a-400f-8037-4c615669d667"
@@ -193,86 +193,306 @@
     ]
   },
   {
-    "id": "caed9749-1fb7-4398-aa8d-3cb3ce1e07a5",
+    "id": "d9f777ef-b63b-48e3-9215-af4e502a7af2",
     "userid": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Segunda planificación",
+    "name": "Platos frios",
     "startdate": null,
     "weeks": 2,
-    "hotColdBalance": 50,
+    "hotColdBalance": 0,
     "days": [
       {
-        "id": "dcdcb9e3-427e-4225-8a35-beaf2a51b44a",
+        "id": "8d9954e2-287b-49c4-91d3-e6c16c953e9d",
         "order": 1,
-        "services": []
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667"
+            ],
+            "preferences": []
+          }
+        ]
       },
       {
-        "id": "d592bcc0-ec03-47c9-83d3-c38b71df555c",
-        "order": 2,
-        "services": []
-      },
-      {
-        "id": "6487b74d-772c-4449-904e-0bc2f42fef9f",
+        "id": "11e20ca2-5cbb-4da9-b337-b3dde45d592d",
         "order": 3,
-        "services": []
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667"
+            ],
+            "preferences": []
+          }
+        ]
       },
       {
-        "id": "dda8d8f1-18ca-43b3-900c-f30c4406854d",
-        "order": 4,
-        "services": []
-      },
-      {
-        "id": "9eb9a73b-90a8-46b4-99af-fe5de4ace219",
+        "id": "fb250bac-3de9-4d4e-bd02-221cffd167a2",
         "order": 5,
-        "services": []
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667"
+            ],
+            "preferences": []
+          }
+        ]
       },
       {
-        "id": "41546ef4-cd26-4022-922b-4bfbaeb86380",
+        "id": "c0e189bc-e5b0-4569-b0ce-50b46adca880",
         "order": 8,
-        "services": []
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
       },
       {
-        "id": "b3812794-0f60-4ea5-ad91-a599d8abd282",
+        "id": "707e541d-6e76-4569-9eb8-c3b021ab9748",
         "order": 9,
-        "services": []
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
       },
       {
-        "id": "94c0fcf9-bf81-4815-bd1f-94f6d8bdce51",
+        "id": "b850b705-6791-47fb-88d1-e7ccb7e1144a",
         "order": 10,
-        "services": []
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
       },
       {
-        "id": "e8138b26-2056-40c4-adb6-4954f6e443e6",
+        "id": "6cdd3d31-cd13-4184-bfee-ee3a26d85d3b",
         "order": 11,
-        "services": []
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
       },
       {
-        "id": "f5ffd429-2f87-4ade-a70a-afd87cd848a9",
+        "id": "909e4b3a-c57e-4cd9-8bee-c375602c45d8",
         "order": 12,
-        "services": []
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "2b7d5cef-77ad-4b2b-b5ef-b6bf06a8c597",
+        "order": 2,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667"
+            ],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "a7a80b04-25eb-47c3-bc33-016a9aa2a0da",
+        "order": 4,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667"
+            ],
+            "preferences": []
+          }
+        ]
       }
     ],
     "pantryItems": [],
     "shoppingItems": []
   },
   {
-    "id": "9d253583-7f9b-4f24-8e7c-b117088dcefe",
+    "id": "625f39cc-1428-4917-b1df-c7fabef0eba6",
     "userid": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Planificación de refuerzo",
+    "name": "Platos calientes",
     "startdate": null,
-    "weeks": 3,
-    "hotColdBalance": 50,
-    "days": [],
-    "pantryItems": [],
-    "shoppingItems": []
-  },
-  {
-    "id": "97311bbd-86c8-4d71-b844-ebdc83dbb657",
-    "userid": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Una muy larga",
-    "startdate": null,
-    "weeks": 8,
-    "hotColdBalance": 50,
-    "days": [],
+    "weeks": 2,
+    "hotColdBalance": 100,
+    "days": [
+      {
+        "id": "11f95dc5-17ac-4476-bbf1-23f4c2628aa5",
+        "order": 1,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667"
+            ],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "d18db3d7-c582-4128-a5c3-2494f72a644d",
+        "order": 3,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667"
+            ],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "c90a5d88-c84f-4cc1-8914-20926ccaf20e",
+        "order": 5,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667"
+            ],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "3880000e-717b-40d8-b8a9-6e82b8fc60d1",
+        "order": 8,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "52125fdb-d496-4f05-bcb1-322584ccb554",
+        "order": 9,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "252efef3-be61-40f5-a362-d5ad76a822b3",
+        "order": 10,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "910704db-f28d-4778-9d4d-3326430b9cd7",
+        "order": 11,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "64192290-bd72-4a45-9cb5-9ec3f049845a",
+        "order": 12,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "d74d2242-3490-47e0-9359-b2744995f0d3",
+        "order": 2,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667"
+            ],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "bb76ad04-9b72-4fc7-933f-c7aff4c7f1f0",
+        "order": 4,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667"
+            ],
+            "preferences": []
+          }
+        ]
+      }
+    ],
     "pantryItems": [],
     "shoppingItems": []
   }

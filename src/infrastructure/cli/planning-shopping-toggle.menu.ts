@@ -11,7 +11,7 @@ export async function gestionarListaCompraUnificada(container: IContainer, userI
     const pantry = planning.getPantryItems();
     const shopping = planning.getShoppingItems();
 
-    const needed: { ingredientId: string; ingredientName: string; totalCovers: number }[]
+    const needed: { ingredientId: string; ingredientName: string; totalCovers: number; recipeNames: string[] }[]
       = container.getNeededIngredients.execute(planningId);
 
     const aComprar = needed.filter(n => {
@@ -28,6 +28,7 @@ export async function gestionarListaCompraUnificada(container: IContainer, userI
         ingredientId: n.ingredientId,
         ingredientName: n.ingredientName,
         totalCovers: n.totalCovers,
+        recipeNames: n.recipeNames,
         neededCovers,
         inShoppingList: !!shoppingItem,
         completed: shoppingItem?.isCompleted() ?? false,
@@ -47,7 +48,8 @@ export async function gestionarListaCompraUnificada(container: IContainer, userI
 
     aComprar.forEach(a => {
       const estado = a.inShoppingList ? (a.completed ? '[COMPRADO]' : '[PENDIENTE]') : '[NO AGREGADO]';
-      console.log(`  ${a.ingredientName} — COMPRAR ${a.neededCovers} comensales ${estado}`);
+      const recetas = a.recipeNames?.length ? ` (${a.recipeNames.join(', ')})` : '';
+      console.log(`  ${a.ingredientName} — COMPRAR ${a.neededCovers} com.${recetas} ${estado}`);
     });
 
     const elegido = await prompts({
@@ -58,7 +60,8 @@ export async function gestionarListaCompraUnificada(container: IContainer, userI
         { title: '(Volver)', value: '__back__' },
         ...aComprar.map(a => {
           const estado = a.inShoppingList ? (a.completed ? '[COMPRADO]' : '[PENDIENTE]') : '[NO AGREGADO]';
-          return { title: `${a.ingredientName} — COMPRAR ${a.neededCovers} comensales ${estado}`, value: a.ingredientId };
+          const recetas = a.recipeNames?.length ? ` (${a.recipeNames.join(', ')})` : '';
+          return { title: `${a.ingredientName} — COMPRAR ${a.neededCovers} com.${recetas} ${estado}`, value: a.ingredientId };
         }),
       ],
     }, { onCancel: ON_CANCEL });

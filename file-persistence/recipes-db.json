@@ -878,7 +878,24 @@
     "baseServings": 2,
     "prepTime": 30,
     "preparation": null,
-    "ingredients": [],
+    "ingredients": [
+      {
+        "ingredientId": "a3941c89-939f-49a4-b6cf-8b967e42f4de",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "67afefdd-67c7-4387-a933-7fb3f574106c",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "88a5e3aa-3d1f-46c0-bc6e-bb4261cbd92e",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
+        "quantityNote": null
+      }
+    ],
     "tags": [
       {
         "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
@@ -913,7 +930,24 @@
     "baseServings": 2,
     "prepTime": 30,
     "preparation": null,
-    "ingredients": [],
+    "ingredients": [
+      {
+        "ingredientId": "f827ec38-93ac-440f-a7b4-ab66e54e5fd6",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "3d214450-7323-4af7-b9ea-149d4a304f43",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "cc452620-5d15-4859-bdd1-158cdbfd485b",
+        "quantityNote": null
+      }
+    ],
     "tags": [
       {
         "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",

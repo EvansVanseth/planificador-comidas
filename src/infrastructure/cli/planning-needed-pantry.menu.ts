@@ -42,7 +42,8 @@ export async function gestionarNeededYPantry(container: IContainer, userId: stri
         } else {
           status = '[sin info en despensa]';
         }
-        console.log(`  ${n.ingredientName} — ${n.totalCovers} comensales ${status}`);
+        const recetas = n.recipeNames?.length ? ` (${n.recipeNames.join(', ')})` : '';
+        console.log(`  ${n.ingredientName} — ${n.totalCovers} com.${recetas} ${status}`);
       });
     }
 
