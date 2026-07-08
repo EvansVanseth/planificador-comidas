@@ -53,5 +53,140 @@
     "id": "b2f9a068-2fdc-4adb-881c-13979cda7166",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Aguacate"
+  },
+  {
+    "id": "ec42b393-1809-41de-b295-78806b27ac7e",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Arroz blanco"
+  },
+  {
+    "id": "7c5adf43-1353-4c37-8653-a08c55d9ddbe",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Lentejas"
+  },
+  {
+    "id": "ba48f61c-b4f6-49db-9c01-80b6ddfbcbe0",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Macarrones"
+  },
+  {
+    "id": "67afefdd-67c7-4387-a933-7fb3f574106c",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Taquitos de jamón"
+  },
+  {
+    "id": "3b41fbd5-636e-4005-8ac9-dc1ea184921c",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Guisantes"
+  },
+  {
+    "id": "3dceb0f4-6e82-4db6-9f74-f18b0166104c",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Pollo"
+  },
+  {
+    "id": "21b7de56-bb51-4903-b1d0-2f053d1fbd77",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Arroz chino mercadona"
+  },
+  {
+    "id": "cdb68976-2fdb-4b4f-8d14-fa37374d31f9",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Espaguetis"
+  },
+  {
+    "id": "a3941c89-939f-49a4-b6cf-8b967e42f4de",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Garbanzos"
+  },
+  {
+    "id": "3d214450-7323-4af7-b9ea-149d4a304f43",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Queso feta"
+  },
+  {
+    "id": "05aeb740-e094-4f73-8c86-7205e16cadf4",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Hamburguesa"
+  },
+  {
+    "id": "4cc8aff3-c2d7-438a-a63a-a682d6cc57f6",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Chorizo"
+  },
+  {
+    "id": "d57b2ee9-a63d-4f24-a1cc-797f5bf4e37e",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Cebolla"
+  },
+  {
+    "id": "dabde102-7194-431d-8012-0be46751e37f",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Tallarines"
+  },
+  {
+    "id": "52cb082c-a28e-4f70-b2f4-d377df93aa33",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Salmón"
+  },
+  {
+    "id": "b65ca5a3-1264-49ac-b48d-d1b1c1edf4d9",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Crema de verdures (mercadona)"
+  },
+  {
+    "id": "c9581bbd-6fcc-4c13-882d-4f9d69309c66",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Rabes de calamar"
+  },
+  {
+    "id": "26d73de4-2d3b-428b-aee9-d2ae94dcd8ae",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Curry"
+  },
+  {
+    "id": "2ff39fd8-a3be-4ef5-b244-0a2ee032f976",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Tomate frito"
+  },
+  {
+    "id": "2a1c53d7-96f3-4de2-9a86-f55b4afe20fa",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Huevo"
+  },
+  {
+    "id": "4ba81f07-3fb5-4c63-a911-5243e0e53221",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Aceitunas"
+  },
+  {
+    "id": "d7a9793a-fb52-48c3-97bf-629730a57f8a",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Merluza"
+  },
+  {
+    "id": "a0ca2c0c-c808-409d-8c42-58edd643c8c9",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Huevo duro"
+  },
+  {
+    "id": "ae5b76d3-eb2d-4657-9d61-91f26ed05f9f",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Pimiento verde"
+  },
+  {
+    "id": "cc452620-5d15-4859-bdd1-158cdbfd485b",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Cebolla morada"
+  },
+  {
+    "id": "b86342af-d5c9-4608-81ba-16afd8d73d85",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Pepino"
+  },
+  {
+    "id": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Aceitunas negras"
   }
 ]

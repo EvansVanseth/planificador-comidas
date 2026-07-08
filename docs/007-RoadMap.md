@@ -22,7 +22,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 - [x] Fase 1 a 10: Implementación completa del dominio, CLI, persistencia, CRUD, vistas proyectadas y gestión de usuarios
 
 ```
-Estado actual: 370 tests, 60 ficheros de test, todo verde. CLI sin picocolors (no funciona en Windows con tsx).
+Estado actual: 378 tests, 61 ficheros de test, todo verde. CLI sin picocolors (no funciona en Windows con tsx).
 ```
 
 ## Próximas fases
@@ -155,12 +155,14 @@ El core del producto. Algoritmo que, dadas una planificación con exclusiones, p
 
 Permite al usuario unificar ingredientes duplicados ("huevo" → "huevos") actualizando todas las referencias en recetas de forma atómica.
 
-- [ ] Paso 1: `MergeIngredientsUseCase`
-    - [ ] Input: sourceIngredientId, targetIngredientId
-    - [ ] Reemplaza sourceIngredientId por targetIngredientId en todas las recetas del usuario
-    - [ ] Elimina el ingrediente fuente del repositorio
-- [ ] Paso 2: Añadir opción "Fusionar ingredientes" al menú de ingredientes en CLI
-- [ ] Paso 3: Tests del use case
+- [x] Paso 1: `MergeIngredientsUseCase`
+    - [x] Reemplaza sourceIngredientId por targetIngredientId en todas las recetas del usuario (preserva quantityNote)
+    - [x] Si la receta ya tiene el destino, elimina la referencia fuente sin duplicar
+    - [x] Valida: origen ≠ destino, ambos existen, mismo usuario
+    - [x] Elimina el ingrediente fuente del repositorio
+- [x] Paso 2: Añadir opción "Fusionar ingredientes" al menú de ingredientes en CLI
+    - [x] Diálogo: seleccionar origen → seleccionar destino → preview de recetas afectadas → confirmar
+- [x] Paso 3: Tests del use case (8 tests: fusión, receta con ambos, múltiples recetas, errores de validación, sin recetas afectadas)
 
 ### Fase 18: ^^ Versión WEB Desktop (Next.js)
 

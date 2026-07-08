@@ -82,5 +82,805 @@
         "dimension": "TIPO_PLATO"
       }
     ]
+  },
+  {
+    "id": "310d0fbe-ea93-4ab5-b8bc-b105827ec9ed",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Dentilles en arrós",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "ec42b393-1809-41de-b295-78806b27ac7e",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "7c5adf43-1353-4c37-8653-a08c55d9ddbe",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "2a2e5153-61b4-410f-b45f-35359e69cb6b",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "71119878-0dc2-4109-84ab-36125c8e2ab7",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "4815e2e4-cb08-4e4d-8ea4-78e993ce9cb3",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Macarrons en jamón",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "ba48f61c-b4f6-49db-9c01-80b6ddfbcbe0",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "67afefdd-67c7-4387-a933-7fb3f574106c",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "fb490465-763a-400f-8037-4c615669d667",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "4d704678-63f2-4a7f-9b26-298b8ff4baa7",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "43eca919-ef16-4e59-bdf6-42f886d02c76",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Peçols i pollastre",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "3b41fbd5-636e-4005-8ac9-dc1ea184921c",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "3dceb0f4-6e82-4db6-9f74-f18b0166104c",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "2a2e5153-61b4-410f-b45f-35359e69cb6b",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "fb490465-763a-400f-8037-4c615669d667",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "0aa69320-75fc-4c73-bae4-f0615d649792",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Arroç xino",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "21b7de56-bb51-4903-b1d0-2f053d1fbd77",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "71119878-0dc2-4109-84ab-36125c8e2ab7",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "7a3ff4cd-6d90-4f2d-9505-d34843c999c6",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Espaggetti en atún",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "cdb68976-2fdb-4b4f-8d14-fa37374d31f9",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "9919e806-941c-40ce-8881-e3fa5a79ee10",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "071476e0-9b0d-4d26-b782-b7ec38b0804f",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "4d704678-63f2-4a7f-9b26-298b8ff4baa7",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      }
+    ]
+  },
+  {
+    "id": "d476a51e-46cd-487b-8b41-fa993af1951a",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Cigrons en feta",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "a3941c89-939f-49a4-b6cf-8b967e42f4de",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "3d214450-7323-4af7-b9ea-149d4a304f43",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "2a2e5153-61b4-410f-b45f-35359e69cb6b",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "ee05d182-e070-48ea-82f8-27c30a95823b",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Hamburguesa en peçols",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "05aeb740-e094-4f73-8c86-7205e16cadf4",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "3b41fbd5-636e-4005-8ac9-dc1ea184921c",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "fb490465-763a-400f-8037-4c615669d667",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "2a2e5153-61b4-410f-b45f-35359e69cb6b",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "3657db52-d4aa-48b0-8046-e4ab338b1652",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Ensalada de pasta",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "ba48f61c-b4f6-49db-9c01-80b6ddfbcbe0",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "01a9cfb2-9e1c-42ca-91da-c080597d6e64",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "4d704678-63f2-4a7f-9b26-298b8ff4baa7",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "7fdbec34-48fb-4321-adfa-92217b8749e7",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Dentilles",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "7c5adf43-1353-4c37-8653-a08c55d9ddbe",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "4cc8aff3-c2d7-438a-a63a-a682d6cc57f6",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "d57b2ee9-a63d-4f24-a1cc-797f5bf4e37e",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "fb490465-763a-400f-8037-4c615669d667",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "2a2e5153-61b4-410f-b45f-35359e69cb6b",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "42ecef19-d726-4844-b1f9-162a117b284f",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Tallarins en salmón",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "dabde102-7194-431d-8012-0be46751e37f",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "52cb082c-a28e-4f70-b2f4-d377df93aa33",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "071476e0-9b0d-4d26-b782-b7ec38b0804f",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "4d704678-63f2-4a7f-9b26-298b8ff4baa7",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "19b91d6a-8e13-4cbc-ab9c-ceeea11ba20f",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Crema de verdures amb rabes de calamar",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "b65ca5a3-1264-49ac-b48d-d1b1c1edf4d9",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "c9581bbd-6fcc-4c13-882d-4f9d69309c66",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "071476e0-9b0d-4d26-b782-b7ec38b0804f",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "846b40d0-a46f-420d-afd0-c65f2ff21793",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Arroç amb curry",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "ec42b393-1809-41de-b295-78806b27ac7e",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "26d73de4-2d3b-428b-aee9-d2ae94dcd8ae",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "71119878-0dc2-4109-84ab-36125c8e2ab7",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "ef739eb7-812e-40b3-a40c-c7867f053920",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Arroç cubana",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "ec42b393-1809-41de-b295-78806b27ac7e",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "2ff39fd8-a3be-4ef5-b244-0a2ee032f976",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "2a1c53d7-96f3-4de2-9a86-f55b4afe20fa",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "71119878-0dc2-4109-84ab-36125c8e2ab7",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "a555c44e-6e6d-47ca-8f2a-8e8752c8ed0a",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Ensalada amb peix empanat",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "40bc593a-1061-4e74-b279-2dd3edaf30fc",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "60ed4804-d771-4a94-8b28-56f440871543",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "4ba81f07-3fb5-4c63-a911-5243e0e53221",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "d7a9793a-fb52-48c3-97bf-629730a57f8a",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "071476e0-9b0d-4d26-b782-b7ec38b0804f",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "b27e88f1-461e-43fd-92d0-73a33b27f96c",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Ensalada campera",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "f827ec38-93ac-440f-a7b4-ab66e54e5fd6",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "a0ca2c0c-c808-409d-8c42-58edd643c8c9",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "9919e806-941c-40ce-8881-e3fa5a79ee10",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "ae5b76d3-eb2d-4657-9d61-91f26ed05f9f",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "cc452620-5d15-4859-bdd1-158cdbfd485b",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "071476e0-9b0d-4d26-b782-b7ec38b0804f",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "39a47444-b2f9-4d44-af59-71e239b6c89f",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Ensalada griega",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "b86342af-d5c9-4608-81ba-16afd8d73d85",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "cc452620-5d15-4859-bdd1-158cdbfd485b",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "ae5b76d3-eb2d-4657-9d61-91f26ed05f9f",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "3d214450-7323-4af7-b9ea-149d4a304f43",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "f895593e-3b39-4b8b-be6e-395f0f599da1",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Ensalada de cigrons amb llima",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [
+      {
+        "ingredientId": "a3941c89-939f-49a4-b6cf-8b967e42f4de",
+        "quantityNote": null
+      }
+    ],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "2a2e5153-61b4-410f-b45f-35359e69cb6b",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "de7ccb30-5fbd-4d8d-949f-d8fc02723b36",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Ensalada de pasta con pollo",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "fb490465-763a-400f-8037-4c615669d667",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "4d704678-63f2-4a7f-9b26-298b8ff4baa7",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "81760191-58fe-45f5-b0bc-4c1312ab51ad",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Ensalada de lentejas texmex",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "fb490465-763a-400f-8037-4c615669d667",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "2a2e5153-61b4-410f-b45f-35359e69cb6b",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "b8a62e23-a65f-42aa-8df4-aa951f13c67c",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Ensalada de cigrons, formatge y jamón",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "fb490465-763a-400f-8037-4c615669d667",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "2a2e5153-61b4-410f-b45f-35359e69cb6b",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "dbeba650-ca10-4d13-be8c-546b5fa9ad27",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Ensalada de patatas, feta y aceitunas",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [],
+    "tags": [
+      {
+        "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
   }
 ]

@@ -53,6 +53,7 @@ import { CreateIngredientUseCase } from '@/application/ingredients/create-ingred
 import { ListIngredientsUseCase } from '@/application/ingredients/list-ingredients.use-case';
 import { UpdateIngredientUseCase } from '@/application/ingredients/update-ingredient.use-case';
 import { DeleteIngredientUseCase } from '@/application/ingredients/delete-ingredient.use-case';
+import { MergeIngredientsUseCase } from '@/application/ingredients/merge-ingredients.use-case';
 import { CreateRecipeUseCase } from '@/application/recipes/create-recipe.use-case';
 import { ListRecipesUseCase } from '@/application/recipes/list-recipes.use-case';
 import { UpdateRecipeUseCase } from '@/application/recipes/update-recipe.use-case';
@@ -108,6 +109,7 @@ export interface IContainer {
   createIngredient: CreateIngredientUseCase;
   updateIngredient: UpdateIngredientUseCase;
   deleteIngredient: DeleteIngredientUseCase;
+  mergeIngredients: MergeIngredientsUseCase;
   // Recipes
   listRecipes: ListRecipesUseCase;
   createRecipe: CreateRecipeUseCase;
@@ -189,6 +191,7 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     createIngredient: new CreateIngredientUseCase(ingredientRepository),
     updateIngredient: new UpdateIngredientUseCase(ingredientRepository),
     deleteIngredient: new DeleteIngredientUseCase(ingredientRepository),
+    mergeIngredients: new MergeIngredientsUseCase(ingredientRepository, recipeRepository),
     // Recipes
     listRecipes: new ListRecipesUseCase(recipeRepository),
     createRecipe: new CreateRecipeUseCase(recipeRepository),

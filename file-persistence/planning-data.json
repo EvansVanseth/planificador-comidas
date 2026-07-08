@@ -5,7 +5,7 @@
     "name": "Mi primera planificación",
     "startdate": "2026-07-06T16:20:15.956Z",
     "weeks": 2,
-    "hotColdBalance": 20,
+    "hotColdBalance": 80,
     "days": [
       {
         "id": "64305d9c-b7bf-4050-a802-9910ec238960",

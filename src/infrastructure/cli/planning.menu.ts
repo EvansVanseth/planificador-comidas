@@ -5,7 +5,7 @@ import { crearPlanificacion } from './planning-create.menu';
 import { editarPlanificacion } from './planning-edit.menu';
 import { eliminarPlanificacion } from './planning-delete.menu';
 import { duplicarPlanificacion } from './planning-duplicate.menu';
-import { autoPlanificar } from './planning-auto-schedule.menu';
+
 
 const ON_CANCEL = () => {};
 
@@ -20,7 +20,6 @@ export async function menuPlanificaciones(container: IContainer, userId: string)
         { title: 'Ver planificaciones',    value: 'list' },
         { title: 'Crear planificacion',      value: 'create' },
         { title: 'Duplicar planificacion',  value: 'duplicate' },
-        { title: 'Autoplanificar',          value: 'autoplan' },
         { title: 'Editar planificacion',    value: 'edit' },
         { title: 'Eliminar planificacion', value: 'delete' },
         { title: 'Volver',                  value: 'back' }
@@ -38,9 +37,6 @@ export async function menuPlanificaciones(container: IContainer, userId: string)
         break;
       case 'duplicate':
         await duplicarPlanificacion(container, userId);
-        break;
-      case 'autoplan':
-        await autoPlanificar(container, userId);
         break;
       case 'edit':
         await editarPlanificacion(container, userId);

@@ -4,6 +4,7 @@ import { listarIngredientes } from './ingredient-display';
 import { crearIngrediente } from './ingredient-create.menu';
 import { editarIngrediente } from './ingredient-edit.menu';
 import { eliminarIngrediente } from './ingredient-delete.menu';
+import { fusionarIngredientes } from './ingredient-merge.menu';
 
 const ON_CANCEL = () => {};
 
@@ -17,8 +18,9 @@ export async function menuIngredientes(container: IContainer, userId: string) {
       choices: [
         { title: 'Listar ingredientes', value: 'list' },
         { title: 'Crear ingrediente',   value: 'create' },
-        { title: 'Editar ingrediente',  value: 'edit' },
-        { title: 'Eliminar ingrediente', value: 'delete' },
+        { title: 'Editar ingrediente',   value: 'edit' },
+        { title: 'Fusionar ingredientes', value: 'merge' },
+        { title: 'Eliminar ingrediente',  value: 'delete' },
         { title: 'Volver',              value: 'back' }
       ]
     }, { onCancel: ON_CANCEL });
@@ -31,6 +33,9 @@ export async function menuIngredientes(container: IContainer, userId: string) {
         break;
       case 'create':
         await crearIngrediente(container, userId);
+        break;
+      case 'merge':
+        await fusionarIngredientes(container, userId);
         break;
       case 'edit':
         await editarIngrediente(container, userId);

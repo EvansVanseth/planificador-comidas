@@ -7,6 +7,7 @@ import { AppError } from '../shared/errors/app-error';
 export type AutoScheduleInput = {
   planningId: string;
   userId: string;
+  dryRun?: boolean;
 };
 
 export class AutoScheduleUseCase {
@@ -53,15 +54,16 @@ export class AutoScheduleUseCase {
       hotColdBalance: planning.getHotColdBalance(),
     });
 
-    for (const a of result.assignments) {
-      const dto = planning.getDay(a.dayOrder);
-      if (!dto) continue;
-      const svc = dto.services[a.momentTagId];
-      if (!svc) continue;
-      planning.assignMealToDay(a.dayOrder, a.momentTagId, svc.getCovers(), a.recipeId);
+    if (!input.dryRun) {
+      for (const a of result.assignments) {
+        const dto = planning.getDay(a.dayOrder);
+        if (!dto) continue;
+        const svc = dto.services[a.momentTagId];
+        if (!svc) continue;
+        planning.assignMealToDay(a.dayOrder, a.momentTagId, svc.getCovers(), a.recipeId);
+      }
+      this.planningRepository.save(planning);
     }
-
-    this.planningRepository.save(planning);
     return result;
   }
 }
