@@ -1,5 +1,6 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
+import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -25,10 +26,10 @@ export async function eliminarDia(container: IContainer, planningId: string, day
     if (!elegido || elegido.orden === '__cancel__') return;
 
     container.removeDayFromPlanning.execute(planningId, elegido.orden);
-    console.log(`Dia ${elegido.orden} eliminado`);
+    console.log(theme.success(`Dia ${elegido.orden} eliminado`));
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log('✗ ' + error.message);
+      console.log(theme.error(error.message));
     }
   }
 }

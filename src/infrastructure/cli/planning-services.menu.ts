@@ -1,5 +1,6 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
+import { theme } from './cli-theme';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
 import { agregarServicio } from './planning-service-add.menu';
 import { modificarServicio } from './planning-service-edit.menu';
@@ -38,7 +39,7 @@ export async function gestionarServicios(container: IContainer, userId: string, 
     const allTags = container.listTags.execute(userId).filter(t => t.dimension === TagDimension.MOMENTO_DIA);
     const allRecipes = container.listRecipes.execute(userId);
 
-    console.log(`\n--- Dia ${ordenDia} ---`);
+    console.log(theme.header(`\n--- Dia ${ordenDia} ---`));
     if (meals.length === 0) {
       console.log('  (sin servicios)');
     } else {

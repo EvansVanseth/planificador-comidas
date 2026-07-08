@@ -1,5 +1,6 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
+import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 import { mostrarReceta } from './recipe-display';
@@ -79,10 +80,10 @@ async function agregarIngredienteExistente(container: IContainer, userId: string
       id: recipeId,
       addIngredients: [{ ingredientId: elegido.id, quantityNote: note?.value?.trim() || null }],
     });
-    console.log('Ingrediente agregado a la receta');
+    console.log(theme.success('Ingrediente agregado a la receta'));
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log('✗ ' + error.message);
+      console.log(theme.error(error.message));
     }
   }
 }
@@ -102,10 +103,10 @@ async function agregarNuevoIngrediente(container: IContainer, userId: string, re
       datos.name.trim(),
       datos.note?.trim() || undefined,
     );
-    console.log('Ingrediente creado y agregado a la receta');
+    console.log(theme.success('Ingrediente creado y agregado a la receta'));
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log('✗ ' + error.message);
+      console.log(theme.error(error.message));
     }
   }
 }
@@ -139,10 +140,10 @@ async function quitarIngrediente(container: IContainer, userId: string, recipeId
     if (!elegido?.id || elegido.id === '__cancel__') return;
 
     container.updateRecipe.execute({ id: recipeId, removeIngredients: [elegido.id] });
-    console.log('Ingrediente quitado de la receta');
+    console.log(theme.success('Ingrediente quitado de la receta'));
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log('✗ ' + error.message);
+      console.log(theme.error(error.message));
     }
   }
 }

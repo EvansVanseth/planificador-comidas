@@ -1,5 +1,6 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
+import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -56,10 +57,10 @@ export async function agregarServicio(
     }
 
     container.assignMeal.execute(planningId, ordenDia, tagElegida.id, recipeId ?? '', covers);
-    console.log('Servicio agregado');
+    console.log(theme.success('Servicio agregado'));
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log('✗ ' + error.message);
+      console.log(theme.error(error.message));
     }
   }
 }

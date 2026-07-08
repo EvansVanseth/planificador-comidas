@@ -22,7 +22,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 - [x] Fase 1 a 10: Implementación completa del dominio, CLI, persistencia, CRUD, vistas proyectadas y gestión de usuarios
 
 ```
-Estado actual: 344 tests, 57 ficheros de test, todo verde.
+Estado actual: 344 tests, 57 ficheros de test, todo verde. CLI con colores via picocolors.
 ```
 
 ## Próximas fases

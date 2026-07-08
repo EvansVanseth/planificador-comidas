@@ -1,5 +1,6 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
+import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -36,12 +37,12 @@ export async function editarUsuario(container: IContainer) {
     const input: any = { id: seleccion.id };
     if (cambios.name.trim()) input.name = cambios.name.trim();
     container.updateUser.execute(input);
-    console.log('Usuario actualizado correctamente');
+    console.log(theme.success('Usuario actualizado correctamente'));
 
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log('✗ ' + error.message);
+      console.log(theme.error(error.message));
     }
-    console.log('\n--- Edicion cancelada ---');
+    console.log(theme.header('\n--- Edicion cancelada ---'));
   }
 }

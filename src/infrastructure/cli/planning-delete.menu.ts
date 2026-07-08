@@ -1,5 +1,6 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
+import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 
 const ON_CANCEL = () => {};
@@ -25,10 +26,10 @@ export async function eliminarPlanificacion(container: IContainer, userId: strin
     if (!response?.id || response.id === '__cancel__') return;
 
     container.deletePlanning.execute(response.id);
-    console.log('Planificacion eliminada');
+    console.log(theme.success('Planificacion eliminada'));
 
   } catch (error) {
-    if (error instanceof AppError) console.log('✗ ' + error.message);
-    console.log('\n--- Operacion cancelada ---');
+    if (error instanceof AppError) console.log(theme.error(error.message));
+    console.log(theme.header('\n--- Operacion cancelada ---'));
   }
 }

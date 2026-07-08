@@ -1,6 +1,7 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
+import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -56,10 +57,10 @@ export async function eliminarServicioEnLote(container: IContainer, userId: stri
       days: seleccionDias.orders,
       momentTagId: momentResp.id,
     });
-    console.log(`Servicio eliminado de ${seleccionDias.orders.length} dia(s)`);
+    console.log(theme.success(`Servicio eliminado de ${seleccionDias.orders.length} dia(s)`));
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log('✗ ' + error.message);
+      console.log(theme.error(error.message));
     }
   }
 }

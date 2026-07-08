@@ -1,5 +1,6 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
+import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -29,10 +30,10 @@ export async function eliminarServicio(container: IContainer, planningId: string
     if (!elegido?.tagId || elegido.tagId === '__cancel__') return;
 
     container.removeMealFromDay.execute(planningId, ordenDia, elegido.tagId);
-    console.log('Servicio eliminado');
+    console.log(theme.success('Servicio eliminado'));
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log('✗ ' + error.message);
+      console.log(theme.error(error.message));
     }
   }
 }

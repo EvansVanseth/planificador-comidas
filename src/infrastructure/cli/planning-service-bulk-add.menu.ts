@@ -1,6 +1,7 @@
 import prompts from 'prompts';
 import { IContainer } from '../container';
 import { TagDimension } from '../../domain/recipes/value-objects/tag-dimension.enum';
+import { theme } from './cli-theme';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 
@@ -83,10 +84,10 @@ export async function agregarServicioEnLote(container: IContainer, userId: strin
       covers: coversResp.value,
       recipeId,
     });
-    console.log(`Servicio agregado a ${seleccionDias.orders.length} dia(s)`);
+    console.log(theme.success(`Servicio agregado a ${seleccionDias.orders.length} dia(s)`));
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
-      console.log('✗ ' + error.message);
+      console.log(theme.error(error.message));
     }
   }
 }

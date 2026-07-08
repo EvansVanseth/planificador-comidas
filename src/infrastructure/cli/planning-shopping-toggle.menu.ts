@@ -1,4 +1,5 @@
 import prompts from 'prompts';
+import { theme } from './cli-theme';
 import { IContainer } from '../container';
 
 const ON_CANCEL = () => {};
@@ -34,7 +35,7 @@ export async function gestionarListaCompraUnificada(container: IContainer, userI
       };
     });
 
-    console.log('\n--- Lista de la compra ---');
+    console.log(theme.header('\n--- Lista de la compra ---'));
     if (aComprar.length === 0) {
       console.log('  (no hay ingredientes que comprar — todo cubierto)');
       const volver = await prompts({
@@ -73,10 +74,10 @@ export async function gestionarListaCompraUnificada(container: IContainer, userI
 
     if (!item.inShoppingList) {
       container.addShoppingItem.execute(planningId, item.ingredientId);
-      console.log(`${item.ingredientName} agregado a la lista como pendiente`);
+      console.log(theme.success(`${item.ingredientName} agregado a la lista como pendiente`));
     } else {
       container.toggleShoppingItem.execute(planningId, item.ingredientId, !item.completed);
-      console.log(`${item.ingredientName} marcado como ${item.completed ? 'pendiente' : 'comprado'}`);
+      console.log(theme.success(`${item.ingredientName} marcado como ${item.completed ? 'pendiente' : 'comprado'}`));
     }
   }
 }
