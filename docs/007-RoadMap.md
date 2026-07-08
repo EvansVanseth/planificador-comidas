@@ -22,7 +22,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 - [x] Fase 1 a 10: Implementación completa del dominio, CLI, persistencia, CRUD, vistas proyectadas y gestión de usuarios
 
 ```
-Estado actual: 357 tests, 60 ficheros de test, todo verde. CLI sin picocolors (no funciona en Windows con tsx).
+Estado actual: 370 tests, 60 ficheros de test, todo verde. CLI sin picocolors (no funciona en Windows con tsx).
 ```
 
 ## Próximas fases
@@ -136,9 +136,15 @@ El core del producto. Algoritmo que, dadas una planificación con exclusiones, p
     - [x] Test: balance frío/caliente dentro del rango
     - [x] Test: diversidad de tipo de plato
     - [x] Test: respeta asignaciones manuales previas (use case test con FakePlanner)
-- [ ] Paso 4: Añadir selector de tendencia frío/caliente a la planificación
-    - [ ] Campo `hotColdBalance: number` (0–100) en Planning aggregate
-    - [ ] Primitivas y CLI para configurarlo
+- [x] Paso 4: Añadir selector de tendencia frío/caliente a la planificación
+    - [x] Campo `hotColdBalance: number` (0–100) en Planning aggregate (default 50)
+    - [x] `PlanningPrimitives` con `hotColdBalance?: number` (backward compat)
+    - [x] `fromPrimitives` tolera JSON antiguos sin el campo
+    - [x] `CreatePlanningUseCase` acepta `hotColdBalance` opcional
+    - [x] `UpdatePlanningUseCase` puede cambiar `hotColdBalance`
+    - [x] CLI creación: prompt para balance
+    - [x] CLI edición: confirm + prompt para balance
+    - [x] `AutoScheduleUseCase` lee balance del aggregate
 - [ ] Paso 5: Comando "Autoplanificar" en el menú de planificaciones del CLI
     - [ ] Ejecuta el motor, muestra resumen de asignaciones, permite aceptar o rechazar
 

@@ -17,6 +17,7 @@ export type PlanningPrimitives = {
   name: string;
   startdate: string | null;
   weeks: number;
+  hotColdBalance?: number;
   days: PlannedDayPrimitives[];
   pantryItems: PlanningPantryItemPrimitives[];
   shoppingItems: PlanningShoppingItemPrimitives[];
@@ -28,25 +29,28 @@ export class Planning {
   private name: Name;
   private startDate: StartDate;
   private weeks: PlannedWeeks;
+  private hotColdBalance: number;
   private days: Map<number, PlannedDay> = new Map();
   private pantryItems: Map<string, PlanningPantryItem> = new Map();
   private shoppingItems: Map<string, PlanningShoppingItem> = new Map();
 
-  private constructor(id: Id, userId: UserId, name: Name, startDate: StartDate, weeks: PlannedWeeks) {
+  private constructor(id: Id, userId: UserId, name: Name, startDate: StartDate, weeks: PlannedWeeks, hotColdBalance: number) {
     this.id = id;
     this.userId = userId;
     this.name = name;
     this.startDate = startDate;
     this.weeks = weeks;
+    this.hotColdBalance = hotColdBalance;
   }
 
-  public static create(id: string, userId: string, name: string, startDate: Date | null, weeks: number): Planning {
+  public static create(id: string, userId: string, name: string, startDate: Date | null, weeks: number, hotColdBalance?: number): Planning {
     return new Planning(
       Id.create(id),
       UserId.create(userId),
       Name.create(PLANNING_NAME_NICK, name),
       StartDate.create(startDate),
-      PlannedWeeks.create(weeks)
+      PlannedWeeks.create(weeks),
+      hcb(hotColdBalance),
     );
   }
 
@@ -86,13 +90,25 @@ export class Planning {
   public changeWeeks(weeks: number): void {
     const newPlannedWeeks = PlannedWeeks.create(weeks);
     const newCountWeekDays = newPlannedWeeks.value * DIAS_SEMANA;
-    
+
     this.days.forEach((day) => {
       if (day.getOrdenDia() > newCountWeekDays) {
         throw new DomainError(`No se puede cambiar el número de semanas a ${weeks} porque hay días planificados fuera del rango de semanas planificadas [1-${newCountWeekDays}]. Se sugiere eliminar primero los días planificados más allá de las semanas deseadas antes de cambiar el número de semanas.`);
       }
-    }); 
+    });
     this.weeks = PlannedWeeks.create(weeks);
+  }
+
+  // HotColdBalance
+  public getHotColdBalance(): number {
+    return this.hotColdBalance;
+  }
+
+  public changeHotColdBalance(balance: number): void {
+    if (!Number.isInteger(balance) || balance < 0 || balance > 100) {
+      throw new DomainError(`El balance frío/caliente debe ser un número entero entre 0 y 100 (recibido: ${balance})`);
+    }
+    this.hotColdBalance = balance;
   }
 
   // Days
@@ -312,6 +328,7 @@ export class Planning {
       name: this.name.value,
       startdate: this.startDate.value ? this.startDate.value.toISOString() : null,
       weeks: this.weeks.value,
+      hotColdBalance: this.hotColdBalance,
       days: serializedDays,
       pantryItems: Array.from(this.pantryItems.values()).map(item => item.toPrimitives()),
       shoppingItems: Array.from(this.shoppingItems.values()).map(item => item.toPrimitives()),
@@ -327,7 +344,8 @@ export class Planning {
       UserId.create(data.userid),
       Name.create(PLANNING_NAME_NICK, data.name),
       StartDate.create(parsedDate),
-      PlannedWeeks.create(data.weeks)
+      PlannedWeeks.create(data.weeks),
+      hcb(data.hotColdBalance),
     );
 
     if (data.days && Array.isArray(data.days)) {
@@ -355,4 +373,11 @@ export class Planning {
   }
 
 
+}
+
+function hcb(value: unknown): number {
+  if (value == null) return 50;
+  const n = Number(value);
+  if (!Number.isInteger(n) || n < 0 || n > 100) return 50;
+  return n;
 }

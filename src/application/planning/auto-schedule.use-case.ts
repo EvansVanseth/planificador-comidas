@@ -7,7 +7,6 @@ import { AppError } from '../shared/errors/app-error';
 export type AutoScheduleInput = {
   planningId: string;
   userId: string;
-  hotColdBalance: number;
 };
 
 export class AutoScheduleUseCase {
@@ -51,7 +50,7 @@ export class AutoScheduleUseCase {
       slots,
       recipes,
       hotTagIds: hotTags,
-      hotColdBalance: input.hotColdBalance,
+      hotColdBalance: planning.getHotColdBalance(),
     });
 
     for (const a of result.assignments) {

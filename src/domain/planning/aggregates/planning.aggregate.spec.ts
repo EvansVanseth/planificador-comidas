@@ -158,6 +158,7 @@ describe('Planning (Aggregate)', () => {
       name: 'Mi planificación',
       startdate: null,
       weeks: 1,
+      hotColdBalance: 50,
       days: [],
       pantryItems: [],
       shoppingItems: []
@@ -324,5 +325,50 @@ describe('Planning (Aggregate)', () => {
     expect(restoredPrimitives).toEqual(primitives);
     expect(restored.getPantryItems()).toHaveLength(2);
     expect(restored.getShoppingItems()).toHaveLength(1);
+  });
+
+  // HotColdBalance
+  it('debe tener hotColdBalance 50 por defecto', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    expect(planning.getHotColdBalance()).toBe(50);
+  });
+
+  it('debe aceptar hotColdBalance en create', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1, 75);
+    expect(planning.getHotColdBalance()).toBe(75);
+  });
+
+  it('debe cambiar hotColdBalance', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    planning.changeHotColdBalance(30);
+    expect(planning.getHotColdBalance()).toBe(30);
+  });
+
+  it('debe rechazar hotColdBalance fuera de rango', () => {
+    const planning = Planning.create(validId, validId, 'Test', null, 1);
+    expect(() => planning.changeHotColdBalance(-1)).toThrow(DomainError);
+    expect(() => planning.changeHotColdBalance(101)).toThrow(DomainError);
+  });
+
+  it('debe tolerar fromPrimitives sin hotColdBalance', () => {
+    const primitives: PlanningPrimitives = {
+      id: validId, userid: validId,
+      name: 'Test', startdate: null,
+      weeks: 1, days: [],
+      pantryItems: [], shoppingItems: [],
+    };
+    const planning = Planning.fromPrimitives(primitives);
+    expect(planning.getHotColdBalance()).toBe(50);
+  });
+
+  it('debe restaurar hotColdBalance desde primitivas', () => {
+    const primitives: PlanningPrimitives = {
+      id: validId, userid: validId,
+      name: 'Test', startdate: null,
+      weeks: 1, hotColdBalance: 80, days: [],
+      pantryItems: [], shoppingItems: [],
+    };
+    const planning = Planning.fromPrimitives(primitives);
+    expect(planning.getHotColdBalance()).toBe(80);
   });
 })

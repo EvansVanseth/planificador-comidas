@@ -5,7 +5,6 @@ import { InMemoryRecipeRepository } from '../../infrastructure/repositories/in-m
 import { InMemoryTagRepository } from '../../infrastructure/repositories/in-memory-tag.repository';
 import { Planning } from '@/domain/planning/aggregates/planning.aggregate';
 import { Recipe } from '@/domain/recipes/aggregates/recipe.aggregate';
-import { Tag } from '@/domain/tags/aggregates/tag.aggregate';
 import { AutoPlanner, PlannerInput, PlannerResult } from './ports/auto-planner.interface';
 import { AppError } from '../shared/errors/app-error';
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';
@@ -70,7 +69,7 @@ describe('AutoScheduleUseCase', () => {
 
     recipeRepo.save(buildRecipe(RECIPE_1, 'Tortilla', DESAYUNO_TAG, CALIENTE_TAG, CARNE_TAG));
 
-    const result = useCase.execute({ planningId: PLANNING_ID, userId: USER_ID, hotColdBalance: 50 });
+    const result = useCase.execute({ planningId: PLANNING_ID, userId: USER_ID });
 
     expect(result.assignments).toHaveLength(2);
     expect(result.unassigned).toHaveLength(0);
@@ -87,12 +86,12 @@ describe('AutoScheduleUseCase', () => {
     planning.assignMealToDay(1, DESAYUNO_TAG, 2, RECIPE_1);
     planningRepo.save(planning);
 
-    const result = useCase.execute({ planningId: PLANNING_ID, userId: USER_ID, hotColdBalance: 50 });
+    const result = useCase.execute({ planningId: PLANNING_ID, userId: USER_ID });
     expect(result.assignments).toHaveLength(0);
     expect(result.unassigned).toHaveLength(0);
   });
 
   it('debe lanzar error si la planificacion no existe', () => {
-    expect(() => useCase.execute({ planningId: 'unknown', userId: USER_ID, hotColdBalance: 50 })).toThrow(AppError);
+    expect(() => useCase.execute({ planningId: 'unknown', userId: USER_ID })).toThrow(AppError);
   });
 });

@@ -6,6 +6,7 @@ export type UpdatePlanningInput = {
   name?: string;
   startDate?: Date | null;
   weeks?: number;
+  hotColdBalance?: number;
 };
 
 export class UpdatePlanningUseCase {
@@ -31,6 +32,10 @@ export class UpdatePlanningUseCase {
 
     if (input.weeks !== undefined) {
       planning.changeWeeks(input.weeks);
+    }
+
+    if (input.hotColdBalance !== undefined) {
+      planning.changeHotColdBalance(input.hotColdBalance);
     }
 
     this.planningRepository.save(planning);

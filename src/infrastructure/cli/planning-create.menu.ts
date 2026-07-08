@@ -10,6 +10,7 @@ export async function crearPlanificacion(container: IContainer, userId: string) 
     const answers = await prompts([
       { type: 'text', name: 'name', message: 'Nombre:' },
       { type: 'number', name: 'weeks', message: 'Semanas:' },
+      { type: 'number', name: 'hotColdBalance', message: 'Balance frio/caliente (0-100, 50=mitad):', initial: 50, min: 0, max: 100 },
       {
         type: 'confirm',
         name: 'hasStartDate',
@@ -32,7 +33,7 @@ export async function crearPlanificacion(container: IContainer, userId: string) 
       if (dateResp?.value) startDate = dateResp.value;
     }
 
-    const id = container.createPlanning.execute(userId, answers.name, startDate, answers.weeks);
+    const id = container.createPlanning.execute(userId, answers.name, startDate, answers.weeks, answers.hotColdBalance);
     console.log('✓ ' + `Planificacion creada: ${id}`);
 
   } catch (error) {
