@@ -12,6 +12,7 @@ export type TagPrimitives = {
   name: string;
   dimension: TagDimension;
   isSystem: boolean;
+  systemKey?: string | null;
 };
 
 export class Tag {
@@ -20,16 +21,18 @@ export class Tag {
   private name: Name;
   private dimension: TagDimension;
   private isSystem: boolean;
+  private systemKey: string | null;
 
-  private constructor(id: Id, userId: UserId, name: Name, dimension: TagDimension, isSystem: boolean) {
+  private constructor(id: Id, userId: UserId, name: Name, dimension: TagDimension, isSystem: boolean, systemKey: string | null) {
     this.id = id;
     this.userId = userId;
     this.name = name;
     this.dimension = dimension;
     this.isSystem = isSystem;
+    this.systemKey = systemKey;
   }
 
-  public static create(id: string, userId: string, name: string, dimension: TagDimension, isSystem: boolean): Tag {
+  public static create(id: string, userId: string, name: string, dimension: TagDimension, isSystem: boolean, systemKey?: string | null): Tag {
     if (dimension === TagDimension.FORMATO && !isSystem) {
       throw new DomainError('La dimensión FORMATO es exclusiva del sistema');
     }
@@ -40,6 +43,7 @@ export class Tag {
       Name.create(TAG_NAME_FIELD, name),
       dimension,
       isSystem,
+      systemKey ?? null,
     );
   }
 
@@ -63,7 +67,14 @@ export class Tag {
     return this.isSystem;
   }
 
+  public getSystemKey(): string | null {
+    return this.systemKey;
+  }
+
   public rename(name: string): void {
+    if (this.systemKey) {
+      throw new DomainError(`No se puede renombrar la etiqueta de sistema "${this.systemKey}"`);
+    }
     this.name = Name.create(TAG_NAME_FIELD, name);
   }
 
@@ -93,6 +104,7 @@ export class Tag {
       name: this.name.value,
       dimension: this.dimension,
       isSystem: this.isSystem,
+      systemKey: this.systemKey,
     };
   }
 
@@ -107,6 +119,7 @@ export class Tag {
       Name.create(TAG_NAME_FIELD, data.name),
       data.dimension,
       data.isSystem,
+      data.systemKey ?? null,
     );
   }
 }

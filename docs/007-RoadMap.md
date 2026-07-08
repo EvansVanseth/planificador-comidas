@@ -22,7 +22,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 - [x] Fase 1 a 10: Implementación completa del dominio, CLI, persistencia, CRUD, vistas proyectadas y gestión de usuarios
 
 ```
-Estado actual: 348 tests, 58 ficheros de test, todo verde. CLI sin picocolors (no funciona en Windows con tsx).
+Estado actual: 357 tests, 60 ficheros de test, todo verde. CLI sin picocolors (no funciona en Windows con tsx).
 ```
 
 ## Próximas fases
@@ -115,21 +115,27 @@ Permite copiar una planificación existente para usarla como plantilla.
 
 El core del producto. Algoritmo que, dadas una planificación con exclusiones, preferencias y un balance frío/caliente, asigna recetas automáticamente a los servicios vacíos.
 
-- [ ] Paso 1: ^^ Diseñar algoritmo de planificación
-    - [ ] Estrategia de resolución: greedy vs backtracking vs constraint satisfaction
-    - [ ] Criterios hard: exclusiones, no repetir receta, MOMENTO_DIA coincidente
-    - [ ] Criterios soft: preferencias, balance frío/caliente, diversidad de TIPO_PLATO
-- [ ] Paso 2: Implementar `AutoScheduleUseCase` en `application/planning/`
-    - [ ] Obtener recetas candidatas del usuario filtradas por tags del servicio
-    - [ ] Asignar receta a cada servicio vacío respetando constraints
-    - [ ] Distribuir frío/caliente según selector de tendencia (0%–100%)
-    - [ ] Evitar repetición de recetas y de TIPO_PLATO dentro del rango planificado
-- [ ] Paso 3: Tests exhaustivos del algoritmo
-    - [ ] Test: exclusión hard se respeta siempre
-    - [ ] Test: no repite receta
-    - [ ] Test: balance frío/caliente dentro del rango
-    - [ ] Test: diversidad de tipo de plato
-    - [ ] Test: respeta asignaciones manuales previas
+- [x] Paso 1: ^^ Diseñar algoritmo de planificación
+    - [x] Estrategia de resolución: greedy vs backtracking vs constraint satisfaction → greedy
+    - [x] Criterios hard: exclusiones, no repetir receta, MOMENTO_DIA coincidente
+    - [x] Criterios soft: preferencias, balance frío/caliente, diversidad de TIPO_PLATO
+- [ ] Paso 1b: ^^ Añadir `systemKey` a Tag para identificar etiquetas de sistema de forma estable
+    - [x] Campo `systemKey: string | null` en Tag aggregate + `TagPrimitives`
+    - [x] Tag.rename() bloqueado si tiene systemKey
+    - [x] Seed actualizado con systemKey en todas las etiquetas de sistema
+    - [x] `fromPrimitives` tolera JSON antiguos sin systemKey (`?? null`)
+    - [x] AutoScheduleUseCase busca por `systemKey === 'CALIENTE'` en vez de por nombre
+- [x] Paso 2: Implementar `AutoScheduleUseCase` en `application/planning/`
+    - [x] Obtener recetas candidatas del usuario filtradas por tags del servicio
+    - [x] Asignar receta a cada servicio vacío respetando constraints
+    - [x] Distribuir frío/caliente según selector de tendencia (0%–100%)
+    - [x] Evitar repetición de recetas y de TIPO_PLATO dentro del rango planificado
+- [x] Paso 3: Tests exhaustivos del algoritmo
+    - [x] Test: exclusión hard se respeta siempre
+    - [x] Test: no repite receta
+    - [x] Test: balance frío/caliente dentro del rango
+    - [x] Test: diversidad de tipo de plato
+    - [x] Test: respeta asignaciones manuales previas (use case test con FakePlanner)
 - [ ] Paso 4: Añadir selector de tendencia frío/caliente a la planificación
     - [ ] Campo `hotColdBalance: number` (0–100) en Planning aggregate
     - [ ] Primitivas y CLI para configurarlo

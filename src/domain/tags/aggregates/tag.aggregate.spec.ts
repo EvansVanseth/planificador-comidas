@@ -51,6 +51,7 @@ describe('Tag (Aggregate)', () => {
       name: 'Vegetariano',
       dimension: TagDimension.ESTILOS_VIDA,
       isSystem: false,
+      systemKey: null,
     });
   });
 
@@ -63,6 +64,7 @@ describe('Tag (Aggregate)', () => {
       name: 'Frío',
       dimension: TagDimension.FORMATO,
       isSystem: true,
+      systemKey: null,
     });
   });
 
@@ -123,5 +125,48 @@ describe('Tag (Aggregate)', () => {
   it('debe rechazar asignar userId a una etiqueta FORMATO', () => {
     const tag = Tag.create(validId, validUserId, 'Caliente', TagDimension.FORMATO, true);
     expect(() => tag.reassignUser(anotherUserId)).toThrow(DomainError);
+  });
+
+  it('debe almacenar y devolver systemKey', () => {
+    const tag = Tag.create(validId, validUserId, 'Caliente', TagDimension.FORMATO, true, 'CALIENTE');
+    expect(tag.getSystemKey()).toBe('CALIENTE');
+  });
+
+  it('debe tener systemKey null por defecto', () => {
+    const tag = Tag.create(validId, validUserId, 'Test', TagDimension.TIPO_PLATO, false);
+    expect(tag.getSystemKey()).toBeNull();
+  });
+
+  it('debe rechazar rename si tiene systemKey', () => {
+    const tag = Tag.create(validId, validUserId, 'Caliente', TagDimension.FORMATO, true, 'CALIENTE');
+    expect(() => tag.rename('Plato caliente')).toThrow(DomainError);
+  });
+
+  it('debe permitir rename si no tiene systemKey aunque sea sistema', () => {
+    const tag = Tag.create(validId, validUserId, 'Vegano', TagDimension.ESTILOS_VIDA, true);
+    tag.rename('Veggie');
+    expect(tag.getName()).toBe('Veggie');
+  });
+
+  it('debe serializar systemKey en primitivas', () => {
+    const tag = Tag.create(validId, validUserId, 'Frío', TagDimension.FORMATO, true, 'FRIO');
+    expect(tag.toPrimitives()).toMatchObject({ systemKey: 'FRIO' });
+  });
+
+  it('debe restaurar systemKey desde primitivas', () => {
+    const tag = Tag.create(validId, validUserId, 'Frío', TagDimension.FORMATO, true, 'FRIO');
+    const restored = Tag.fromPrimitives(tag.toPrimitives());
+    expect(restored.getSystemKey()).toBe('FRIO');
+  });
+
+  it('debe tolerar primitivas antiguas sin systemKey', () => {
+    const restored = Tag.fromPrimitives({
+      id: validId,
+      userId: validUserId,
+      name: 'Frío',
+      dimension: TagDimension.FORMATO,
+      isSystem: true,
+    });
+    expect(restored.getSystemKey()).toBeNull();
   });
 });
