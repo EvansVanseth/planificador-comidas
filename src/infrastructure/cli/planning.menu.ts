@@ -4,6 +4,7 @@ import { listarPlanificaciones } from './planning-display';
 import { crearPlanificacion } from './planning-create.menu';
 import { editarPlanificacion } from './planning-edit.menu';
 import { eliminarPlanificacion } from './planning-delete.menu';
+import { duplicarPlanificacion } from './planning-duplicate.menu';
 
 const ON_CANCEL = () => {};
 
@@ -16,10 +17,11 @@ export async function menuPlanificaciones(container: IContainer, userId: string)
       message: 'Planificaciones — ¿Que quieres hacer?',
       choices: [
         { title: 'Ver planificaciones',    value: 'list' },
-        { title: 'Crear planificacion',    value: 'create' },
+        { title: 'Crear planificacion',     value: 'create' },
+        { title: 'Duplicar planificacion', value: 'duplicate' },
         { title: 'Editar planificacion',   value: 'edit' },
         { title: 'Eliminar planificacion', value: 'delete' },
-        { title: 'Volver',                 value: 'back' }
+        { title: 'Volver',                  value: 'back' }
       ]
     }, { onCancel: ON_CANCEL });
 
@@ -31,6 +33,9 @@ export async function menuPlanificaciones(container: IContainer, userId: string)
         break;
       case 'create':
         await crearPlanificacion(container, userId);
+        break;
+      case 'duplicate':
+        await duplicarPlanificacion(container, userId);
         break;
       case 'edit':
         await editarPlanificacion(container, userId);

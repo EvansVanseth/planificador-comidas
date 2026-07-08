@@ -28,6 +28,7 @@ import { BulkCreateDaysUseCase } from '@/application/planning/bulk-create-days.u
 import { BulkRemoveDaysUseCase } from '@/application/planning/bulk-remove-days.use-case';
 import { BulkAssignMealUseCase } from '@/application/planning/bulk-assign-meal.use-case';
 import { BulkRemoveMealUseCase } from '@/application/planning/bulk-remove-meal.use-case';
+import { DuplicatePlanningUseCase } from '@/application/planning/duplicate-planning.use-case';
 import { GetNeededIngredientsUseCase } from '@/application/planning/get-needed-ingredients.use-case';
 import { GetShoppingListUseCase } from '@/application/planning/get-shopping-list.use-case';
 import { AddPantryItemUseCase } from '@/application/planning/add-pantry-item.use-case';
@@ -72,6 +73,7 @@ export interface IContainer {
   createPlanning: CreatePlanningUseCase;
   updatePlanning: UpdatePlanningUseCase;
   deletePlanning: DeletePlanningUseCase;
+  duplicatePlanning: DuplicatePlanningUseCase;
   assignMeal: AssignMealUseCase;
   addDayToPlanning: AddDayToPlanningUseCase;
   removeDayFromPlanning: RemoveDayFromPlanningUseCase;
@@ -150,6 +152,7 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     createPlanning: new CreatePlanningUseCase(planningRepository),
     updatePlanning: new UpdatePlanningUseCase(planningRepository),
     deletePlanning: new DeletePlanningUseCase(planningRepository),
+    duplicatePlanning: new DuplicatePlanningUseCase(planningRepository),
     assignMeal: new AssignMealUseCase(planningRepository, tagRepository, recipeRepository),
     setMealExclusions: new SetMealExclusionsUseCase(planningRepository, tagRepository),
     setMealPreferences: new SetMealPreferencesUseCase(planningRepository, tagRepository),

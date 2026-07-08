@@ -22,7 +22,7 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 - [x] Fase 1 a 10: Implementación completa del dominio, CLI, persistencia, CRUD, vistas proyectadas y gestión de usuarios
 
 ```
-Estado actual: 344 tests, 57 ficheros de test, todo verde. CLI con colores via picocolors.
+Estado actual: 348 tests, 58 ficheros de test, todo verde. CLI sin picocolors (no funciona en Windows con tsx).
 ```
 
 ## Próximas fases
@@ -103,13 +103,13 @@ Unifica las operaciones individuales y en lote de días/servicios en un único m
 
 Permite copiar una planificación existente para usarla como plantilla.
 
-- [ ] Paso 1: `DuplicatePlanningUseCase`
-    - [ ] Clona Planning + PlannedDays + MealServices con nuevos IDs
-    - [ ] No clona pantry/shopping items (empieza limpio)
-    - [ ] `startDate = null` (actúa como plantilla)
-    - [ ] Hereda el nombre con sufijo " (Copia)"
-- [ ] Paso 2: Añadir opción "Duplicar" al menú de planificaciones en CLI
-- [ ] Paso 3: Tests del use case
+- [x] Paso 1: `DuplicatePlanningUseCase`
+    - [x] Clona Planning + PlannedDays + MealServices con nuevos IDs
+    - [x] No clona pantry/shopping items (empieza limpio)
+    - [x] `startDate = null` (actúa como plantilla)
+    - [x] Hereda el nombre con sufijo " (Copia)"
+- [x] Paso 2: Añadir opción "Duplicar" al menú de planificaciones en CLI
+- [x] Paso 3: Tests del use case
 
 ### Fase 16: Motor de autoplanificación
 
