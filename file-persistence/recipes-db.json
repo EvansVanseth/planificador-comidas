@@ -726,6 +726,22 @@
       {
         "ingredientId": "a3941c89-939f-49a4-b6cf-8b967e42f4de",
         "quantityNote": null
+      },
+      {
+        "ingredientId": "ae5b76d3-eb2d-4657-9d61-91f26ed05f9f",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "b93372fa-c286-4078-aea8-f83c21597368",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "2104a047-c8f4-40ad-a561-3a2eabebe58b",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "b2f9a068-2fdc-4adb-881c-13979cda7166",
+        "quantityNote": null
       }
     ],
     "tags": [
@@ -758,7 +774,24 @@
     "baseServings": 2,
     "prepTime": 30,
     "preparation": null,
-    "ingredients": [],
+    "ingredients": [
+      {
+        "ingredientId": "ba48f61c-b4f6-49db-9c01-80b6ddfbcbe0",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "67e994e8-c52e-4a77-a845-241ae1c700cc",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "3dceb0f4-6e82-4db6-9f74-f18b0166104c",
+        "quantityNote": null
+      }
+    ],
     "tags": [
       {
         "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
@@ -793,7 +826,24 @@
     "baseServings": 2,
     "prepTime": 30,
     "preparation": null,
-    "ingredients": [],
+    "ingredients": [
+      {
+        "ingredientId": "7c5adf43-1353-4c37-8653-a08c55d9ddbe",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "2104a047-c8f4-40ad-a561-3a2eabebe58b",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "3dceb0f4-6e82-4db6-9f74-f18b0166104c",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "b2f9a068-2fdc-4adb-881c-13979cda7166",
+        "quantityNote": null
+      }
+    ],
     "tags": [
       {
         "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",

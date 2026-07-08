@@ -5,6 +5,8 @@ export class ListIngredientsUseCase {
   constructor(private ingredientRepository: IngredientRepository) {}
 
   execute(userId: string): IngredientPrimitives[] {
-    return this.ingredientRepository.findAllByUserId(userId).map(i => i.toPrimitives());
+    return this.ingredientRepository.findAllByUserId(userId)
+      .map(i => i.toPrimitives())
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
 }

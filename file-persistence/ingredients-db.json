@@ -188,5 +188,20 @@
     "id": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Aceitunas negras"
+  },
+  {
+    "id": "b93372fa-c286-4078-aea8-f83c21597368",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Pimiento rojo"
+  },
+  {
+    "id": "2104a047-c8f4-40ad-a561-3a2eabebe58b",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Maiz dulce"
+  },
+  {
+    "id": "67e994e8-c52e-4a77-a845-241ae1c700cc",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Mozzarella"
   }
 ]

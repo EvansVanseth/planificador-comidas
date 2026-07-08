@@ -2,22 +2,9 @@ import prompts from 'prompts';
 import { IContainer } from '../container';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
+import { findSimilarIngredients } from './shared/ingredient-utils';
 
 const ON_CANCEL = () => {};
-
-function findSimilarIngredients(
-  ingredients: { name: string }[],
-  name: string,
-): { name: string }[] {
-  const normalized = name.toLowerCase().trim();
-  return ingredients.filter(i => {
-    const normalizedName = i.name.toLowerCase().trim();
-    return normalizedName !== normalized && (
-      normalizedName.includes(normalized) ||
-      normalized.includes(normalizedName)
-    );
-  });
-}
 
 export async function crearIngrediente(container: IContainer, userId: string) {
   try {

@@ -3,6 +3,7 @@ import { IContainer } from '../container';
 import { AppError } from '../../application/shared/errors/app-error';
 import { DomainError } from '../../domain/shared/errors/domain-error';
 import { mostrarReceta } from './recipe-display';
+import { findSimilarIngredients } from './shared/ingredient-utils';
 
 const ON_CANCEL = () => {};
 
@@ -96,6 +97,22 @@ async function agregarNuevoIngrediente(container: IContainer, userId: string, re
     ], { onCancel: ON_CANCEL });
 
     if (!datos?.name?.trim()) return;
+
+    const similares = findSimilarIngredients(container.listIngredients.execute(userId), datos.name.trim());
+    if (similares.length > 0) {
+      console.log('⚠ Ingredientes similares existentes:');
+      similares.forEach(i => console.log(`  - ${i.name}`));
+      const confirmar = await prompts({
+        type: 'confirm',
+        name: 'value',
+        message: '¿Crear de todas formas?',
+        initial: false,
+      }, { onCancel: ON_CANCEL });
+      if (!confirmar?.value) {
+        console.log('Creacion cancelada');
+        return;
+      }
+    }
 
     container.addNewIngredientToRecipe.execute(
       userId,
