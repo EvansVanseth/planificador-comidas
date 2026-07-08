@@ -145,8 +145,11 @@ El core del producto. Algoritmo que, dadas una planificación con exclusiones, p
     - [x] CLI creación: prompt para balance
     - [x] CLI edición: confirm + prompt para balance
     - [x] `AutoScheduleUseCase` lee balance del aggregate
-- [ ] Paso 5: Comando "Autoplanificar" en el menú de planificaciones del CLI
-    - [ ] Ejecuta el motor, muestra resumen de asignaciones, permite aceptar o rechazar
+- [x] Paso 5: Comando "Autoplanificar" en el menú de planificaciones del CLI
+    - [x] Opción "Autoplanificar" en menú de planificaciones
+    - [x] Selección de planificación + confirmación antes de ejecutar
+    - [x] Muestra resumen: asignaciones (día, momento, receta) y no asignados (día, momento, razón)
+    - [x] Cableado en container con GreedyPlanner
 
 ### Fase 17: Fusión de ingredientes (Merge)
 

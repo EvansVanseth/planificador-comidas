@@ -5,6 +5,7 @@ import { menuEtiquetas } from './tag.menu';
 import { menuIngredientes } from './ingredient.menu';
 import { menuRecetas } from './recipe.menu';
 import { menuUsuarios } from './user.menu';
+import { resolveSystemTagsMenu } from './resolve-system-tags.menu';
 
 const ON_CANCEL = () => {};
 
@@ -69,12 +70,14 @@ async function seleccionarUsuario(container: IContainer): Promise<string | null>
 
     const newId = container.createUser.execute(nuevo.name.trim());
     container.seedTagsForUser(newId);
+    await resolveSystemTagsMenu(container, newId);
     console.log(`Bienvenido, ${nuevo.name.trim()}!`);
     return newId;
   }
 
   const userName = usuarios.find(u => u.id === seleccion.userId)?.name ?? '';
   container.seedTagsForUser(seleccion.userId);
+  await resolveSystemTagsMenu(container, seleccion.userId);
   console.log(`Bienvenido de nuevo, ${userName}!`);
   return seleccion.userId;
 }

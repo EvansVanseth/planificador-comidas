@@ -4,111 +4,127 @@
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Esmorçar",
     "dimension": "MOMENTO_DIA",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "DESAYUNO"
   },
   {
     "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Dinar",
     "dimension": "MOMENTO_DIA",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "COMIDA"
   },
   {
     "id": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Sopar",
     "dimension": "MOMENTO_DIA",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "CENA"
   },
   {
     "id": "acf7a55e-0a1b-455f-bc1c-29325c93bd8d",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Calent",
     "dimension": "FORMATO",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "CALIENTE"
   },
   {
     "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Gelat",
     "dimension": "FORMATO",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "FRIO"
   },
   {
     "id": "fb490465-763a-400f-8037-4c615669d667",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Carn",
     "dimension": "TIPO_PLATO",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "CARNE"
   },
   {
     "id": "071476e0-9b0d-4d26-b782-b7ec38b0804f",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Peix",
     "dimension": "TIPO_PLATO",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "PESCADO"
   },
   {
     "id": "2a2e5153-61b4-410f-b45f-35359e69cb6b",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Llegums",
     "dimension": "TIPO_PLATO",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "LEGUMBRES"
   },
   {
     "id": "4d704678-63f2-4a7f-9b26-298b8ff4baa7",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Pasta",
     "dimension": "TIPO_PLATO",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "PASTA"
   },
   {
     "id": "25551620-f3de-4df3-9d7d-0f69348c3b05",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Ensalada",
     "dimension": "TIPO_PLATO",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "ENSALADA"
   },
   {
     "id": "71119878-0dc2-4109-84ab-36125c8e2ab7",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Arroç",
     "dimension": "TIPO_PLATO",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "ARROZ"
   },
   {
     "id": "42028ef5-a677-4897-8926-1639a72c4ad5",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Dulce",
     "dimension": "TIPO_PLATO",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "DULCE"
   },
   {
     "id": "8b1acc37-cc14-46af-9ff9-7178f333426d",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Bajo en calorías",
     "dimension": "ESTILOS_VIDA",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "BAJO_CALORIAS"
   },
   {
     "id": "4736a8fc-d4e4-41b9-b242-01314a9ec826",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Vegetariano",
     "dimension": "ESTILOS_VIDA",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "VEGETARIANO"
   },
   {
     "id": "a744d376-8ab7-47ec-9c48-00915c5bad0d",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Vegano",
     "dimension": "ESTILOS_VIDA",
-    "isSystem": true
+    "isSystem": true,
+    "systemKey": "VEGANO"
   },
   {
     "id": "4650870a-01be-4bf5-9eac-111f14309fff",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Berenar",
     "dimension": "MOMENTO_DIA",
-    "isSystem": false
+    "isSystem": false,
+    "systemKey": null
   }
 ]

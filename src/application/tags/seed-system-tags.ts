@@ -3,13 +3,13 @@ import { TagRepository } from '@/infrastructure/repositories/tag-repository.inte
 import { Tag } from '@/domain/tags/aggregates/tag.aggregate'
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum'
 
-interface SystemTagSeed {
+export interface SystemTagSeed {
   name: string;
   dimension: TagDimension;
   systemKey: string;
 }
 
-const SYSTEM_TAG_SEEDS: SystemTagSeed[] = [
+export const SYSTEM_TAG_SEEDS: SystemTagSeed[] = [
   { name: 'Desayuno', dimension: TagDimension.MOMENTO_DIA, systemKey: 'DESAYUNO' },
   { name: 'Comida', dimension: TagDimension.MOMENTO_DIA, systemKey: 'COMIDA' },
   { name: 'Cena', dimension: TagDimension.MOMENTO_DIA, systemKey: 'CENA' },
@@ -29,12 +29,30 @@ const SYSTEM_TAG_SEEDS: SystemTagSeed[] = [
 
 export function seedSystemTags(tagRepository: TagRepository, userId: string): void {
   const existing = tagRepository.findAll();
+
+  // Create missing system tags
   const hasSystemTags = existing.some(t => t.getUserId() === userId && t.isSystemTag());
+  if (!hasSystemTags) {
+    for (const seed of SYSTEM_TAG_SEEDS) {
+      const tag = Tag.create(randomUUID(), userId, seed.name, seed.dimension, true, seed.systemKey);
+      tagRepository.save(tag);
+    }
+    return;
+  }
 
-  if (hasSystemTags) return;
+  // Migrate: patch existing system tags that are missing systemKey
+  const userSystemTags = existing.filter(t => t.getUserId() === userId && t.isSystemTag());
+  for (const tag of userSystemTags) {
+    if (tag.getSystemKey() !== null) continue;
 
-  for (const seed of SYSTEM_TAG_SEEDS) {
-    const tag = Tag.create(randomUUID(), userId, seed.name, seed.dimension, true, seed.systemKey);
-    tagRepository.save(tag);
+    const match = SYSTEM_TAG_SEEDS.find(
+      s => s.name.toLowerCase() === tag.getName().toLowerCase()
+        && s.dimension === tag.getDimension()
+    );
+    if (match) {
+      // Re-create the tag with systemKey set
+      const migrated = Tag.create(tag.getId(), tag.getUserId(), tag.getName(), tag.getDimension(), true, match.systemKey);
+      tagRepository.save(migrated);
+    }
   }
 }

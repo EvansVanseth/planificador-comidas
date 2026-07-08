@@ -21,8 +21,10 @@ export function mostrarPlanificacion(
   const momentTags = allTags.filter(t => t.dimension === TagDimension.MOMENTO_DIA);
   const startDate = planning.getStartDate();
 
+  const hcb = planning.getHotColdBalance();
+  const balanceInfo = hcb === 50 ? '' : `, balance: ${hcb}% caliente`;
   const dateInfo = startDate ? ` — Inicio: ${formatDate(startDate)}` : ' (sin fecha)';
-  console.log(`\n(id: ${planning.getId()}) ${planning.getName()} — ${planning.getWeeks()} semanas, ${days.length} dias${dateInfo}`);
+  console.log(`\n(id: ${planning.getId()}) ${planning.getName()} — ${planning.getWeeks()} semanas, ${days.length} dias${balanceInfo}${dateInfo}`);
   days.forEach(d => {
     const services = d.toDTO().services;
     const mealEntries = Object.entries(services).filter(([_, s]) => s !== null) as [string, NonNullable<typeof services[string]>][];

@@ -5,6 +5,7 @@
     "name": "Mi primera planificación",
     "startdate": "2026-07-06T16:20:15.956Z",
     "weeks": 2,
+    "hotColdBalance": 20,
     "days": [
       {
         "id": "64305d9c-b7bf-4050-a802-9910ec238960",
@@ -197,6 +198,7 @@
     "name": "Segunda planificación",
     "startdate": null,
     "weeks": 2,
+    "hotColdBalance": 50,
     "days": [
       {
         "id": "dcdcb9e3-427e-4225-8a35-beaf2a51b44a",
@@ -258,6 +260,7 @@
     "name": "Planificación de refuerzo",
     "startdate": null,
     "weeks": 3,
+    "hotColdBalance": 50,
     "days": [],
     "pantryItems": [],
     "shoppingItems": []
@@ -268,6 +271,7 @@
     "name": "Una muy larga",
     "startdate": null,
     "weeks": 8,
+    "hotColdBalance": 50,
     "days": [],
     "pantryItems": [],
     "shoppingItems": []

@@ -29,6 +29,8 @@ import { BulkRemoveDaysUseCase } from '@/application/planning/bulk-remove-days.u
 import { BulkAssignMealUseCase } from '@/application/planning/bulk-assign-meal.use-case';
 import { BulkRemoveMealUseCase } from '@/application/planning/bulk-remove-meal.use-case';
 import { DuplicatePlanningUseCase } from '@/application/planning/duplicate-planning.use-case';
+import { AutoScheduleUseCase } from '@/application/planning/auto-schedule.use-case';
+import { GreedyPlanner } from '@/infrastructure/planner/greedy-planner';
 import { GetNeededIngredientsUseCase } from '@/application/planning/get-needed-ingredients.use-case';
 import { GetShoppingListUseCase } from '@/application/planning/get-shopping-list.use-case';
 import { AddPantryItemUseCase } from '@/application/planning/add-pantry-item.use-case';
@@ -38,6 +40,7 @@ import { UpdatePantryItemCoversUseCase } from '@/application/planning/update-pan
 import { AddShoppingItemUseCase } from '@/application/planning/add-shopping-item.use-case';
 import { RemoveShoppingItemUseCase } from '@/application/planning/remove-shopping-item.use-case';
 import { ToggleShoppingItemUseCase } from '@/application/planning/toggle-shopping-item.use-case';
+import { Tag } from '@/domain/tags/aggregates/tag.aggregate';
 import { seedSystemTags } from '@/application/tags/seed-system-tags';
 import { ListPlanningsUseCase } from '@/application/planning/list-plannings.use-case';
 import { UpdatePlanningUseCase } from '@/application/planning/update-planning.use-case';
@@ -74,6 +77,7 @@ export interface IContainer {
   updatePlanning: UpdatePlanningUseCase;
   deletePlanning: DeletePlanningUseCase;
   duplicatePlanning: DuplicatePlanningUseCase;
+  autoSchedule: AutoScheduleUseCase;
   assignMeal: AssignMealUseCase;
   addDayToPlanning: AddDayToPlanningUseCase;
   removeDayFromPlanning: RemoveDayFromPlanningUseCase;
@@ -118,6 +122,7 @@ export interface IContainer {
   deleteUser: DeleteUserUseCase;
   // Seed helpers
   seedTagsForUser: (userId: string) => void;
+  setSystemKey: (tagId: string, systemKey: string) => void;
 }
 
 export const createContainer = (mode: RepositoryType = 'memory') => {
@@ -153,6 +158,7 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     updatePlanning: new UpdatePlanningUseCase(planningRepository),
     deletePlanning: new DeletePlanningUseCase(planningRepository),
     duplicatePlanning: new DuplicatePlanningUseCase(planningRepository),
+    autoSchedule: new AutoScheduleUseCase(planningRepository, recipeRepository, tagRepository, new GreedyPlanner()),
     assignMeal: new AssignMealUseCase(planningRepository, tagRepository, recipeRepository),
     setMealExclusions: new SetMealExclusionsUseCase(planningRepository, tagRepository),
     setMealPreferences: new SetMealPreferencesUseCase(planningRepository, tagRepository),
@@ -196,6 +202,12 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     updateUser: new UpdateUserUseCase(userRepository),
     deleteUser: new DeleteUserUseCase(userRepository),
     seedTagsForUser: (userId: string) => seedSystemTags(tagRepository, userId),
+    setSystemKey: (tagId: string, systemKey: string) => {
+      const tag = tagRepository.findById(tagId);
+      if (!tag) throw new AppError(`Tag no encontrada: ${tagId}`);
+      const migrated = Tag.create(tag.getId(), tag.getUserId(), tag.getName(), tag.getDimension(), true, systemKey);
+      tagRepository.save(migrated);
+    },
   };
 
   return container;
