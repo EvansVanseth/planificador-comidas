@@ -182,14 +182,25 @@ export class Planning {
     }
   }
 
-  public assignMealToDays(days: number[], momentTagId: string, covers: number, recipeId?: string): void {
+  public assignMealToDays(days: number[], momentTagId: string, covers: number, recipeId?: string, clearRecipe?: boolean): void {
     for (const dayOrder of days) {
       if (!this.days.has(dayOrder)) {
         throw new DomainError(`No existe un día con orden ${dayOrder}`);
       }
     }
     for (const dayOrder of days) {
-      this.days.get(dayOrder)!.addMeal(momentTagId, covers, recipeId);
+      const day = this.days.get(dayOrder)!;
+      const existing = day.getMeal(momentTagId);
+      if (existing) {
+        existing.changeCovers(covers);
+        if (recipeId !== undefined) {
+          existing.assignRecipe(recipeId);
+        } else if (clearRecipe) {
+          existing.unassignRecipe();
+        }
+      } else {
+        day.addMeal(momentTagId, covers, recipeId);
+      }
     }
   }
 

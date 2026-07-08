@@ -37,6 +37,9 @@ export async function editarDias(container: IContainer, userId: string, planning
 
     let continuar = true;
     while (continuar) {
+      const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
+      if (!planning) { console.log('Planificacion no encontrada'); return; }
+
       const allTags = container.listTags.execute(userId);
       const momentTags = allTags.filter(t => t.dimension === TagDimension.MOMENTO_DIA);
       const nonMomentTags = allTags.filter(t => t.dimension !== TagDimension.MOMENTO_DIA);
@@ -147,19 +150,22 @@ export async function editarDias(container: IContainer, userId: string, planning
             }, { onCancel: ON_CANCEL });
             if (coversResp === undefined) break;
 
-            let recipeId: string | undefined;
             const recipeResp = await prompts({
               type: 'select',
               name: 'id',
-              message: 'Nueva receta (opcional):',
+              message: 'Receta:',
               choices: [
-                { title: '(ninguna)', value: '' },
+                { title: '(sin cambios)', value: '__unchanged__' },
+                { title: '(quitar receta)', value: '__clear__' },
                 ...allRecipes.map(r => ({ title: r.name, value: r.id })),
               ],
             }, { onCancel: ON_CANCEL });
-            if (recipeResp?.id) recipeId = recipeResp.id;
+            if (!recipeResp?.id) break;
 
-            container.bulkAssignMeal.execute({ planningId, days: orders, momentTagId: momentResp.id, covers: coversResp.value, recipeId });
+            const recipeId = recipeResp.id === '__unchanged__' ? undefined : recipeResp.id === '__clear__' ? undefined : recipeResp.id;
+            const clearRecipe = recipeResp.id === '__clear__';
+
+            container.bulkAssignMeal.execute({ planningId, days: orders, momentTagId: momentResp.id, covers: coversResp.value, recipeId, clearRecipe });
             console.log('✓ ' + `Servicio modificado en ${orders.length} dia(s)`);
             break;
           }

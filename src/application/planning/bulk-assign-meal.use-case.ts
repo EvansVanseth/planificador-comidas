@@ -10,6 +10,7 @@ export type BulkAssignMealInput = {
   momentTagId: string;
   covers: number;
   recipeId?: string;
+  clearRecipe?: boolean;
 };
 
 export class BulkAssignMealUseCase {
@@ -29,12 +30,15 @@ export class BulkAssignMealUseCase {
       throw new AppError('La etiqueta no es de tipo MOMENTO_DIA');
     }
 
+    if (input.clearRecipe && input.recipeId) {
+      throw new AppError('No se puede asignar y quitar receta a la vez');
+    }
     if (input.recipeId) {
       const recipe = this.recipeRepository.findById(input.recipeId);
       if (!recipe) throw new AppError('La receta no existe');
     }
 
-    planning.assignMealToDays(input.days, input.momentTagId, input.covers, input.recipeId);
+    planning.assignMealToDays(input.days, input.momentTagId, input.covers, input.recipeId, input.clearRecipe);
     this.planningRepository.save(planning);
   }
 }
