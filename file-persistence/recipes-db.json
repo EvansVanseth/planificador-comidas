@@ -966,5 +966,28 @@
         "dimension": "TIPO_PLATO"
       }
     ]
+  },
+  {
+    "id": "10c734df-7350-4339-b87a-1299bce78baf",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Bocata de salami",
+    "baseServings": 2,
+    "prepTime": 10,
+    "preparation": null,
+    "ingredients": [],
+    "tags": [
+      {
+        "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "fb490465-763a-400f-8037-4c615669d667",
+        "dimension": "TIPO_PLATO"
+      },
+      {
+        "id": "de4ab7f6-c265-4cae-be38-5f690121098f",
+        "dimension": "MOMENTO_DIA"
+      }
+    ]
   }
 ]

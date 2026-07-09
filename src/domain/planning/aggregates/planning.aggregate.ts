@@ -247,6 +247,16 @@ export class Planning {
     return count;
   }
 
+  public removeServicesByMomentTag(momentTagId: string): number {
+    let count = 0;
+    for (const day of this.days.values()) {
+      if (day.removeServiceIfExists(momentTagId)) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   getDay(ordenDia: number): PlannedDayDTO | null {
     const day = this.days.get(ordenDia);
     return day ? day.toDTO() : null;

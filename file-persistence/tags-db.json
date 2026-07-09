@@ -118,13 +118,5 @@
     "dimension": "ESTILOS_VIDA",
     "isSystem": true,
     "systemKey": "VEGANO"
-  },
-  {
-    "id": "4650870a-01be-4bf5-9eac-111f14309fff",
-    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Berenar",
-    "dimension": "MOMENTO_DIA",
-    "isSystem": false,
-    "systemKey": null
   }
 ]
