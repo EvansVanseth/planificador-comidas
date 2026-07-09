@@ -197,14 +197,14 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     listRecipes: new ListRecipesUseCase(recipeRepository),
     createRecipe: new CreateRecipeUseCase(recipeRepository),
     updateRecipe: new UpdateRecipeUseCase(recipeRepository),
-    deleteRecipe: new DeleteRecipeUseCase(recipeRepository),
+    deleteRecipe: new DeleteRecipeUseCase(recipeRepository, planningRepository),
     addNewIngredientToRecipe: new AddNewIngredientToRecipeUseCase(recipeRepository, ingredientRepository),
     addNewTagToRecipe: new AddNewTagToRecipeUseCase(recipeRepository, tagRepository),
     // Users
     listUsers: new ListUsersUseCase(userRepository),
     createUser: new CreateUserUseCase(userRepository),
     updateUser: new UpdateUserUseCase(userRepository),
-    deleteUser: new DeleteUserUseCase(userRepository),
+    deleteUser: new DeleteUserUseCase(userRepository, tagRepository, ingredientRepository, recipeRepository, planningRepository),
     seedTagsForUser: (userId: string) => seedSystemTags(tagRepository, userId),
     setSystemKey: (tagId: string, systemKey: string) => {
       const tag = tagRepository.findById(tagId);

@@ -23,9 +23,45 @@ export async function eliminarReceta(container: IContainer, userId: string) {
     }, { onCancel: ON_CANCEL });
 
     if (!seleccion?.id || seleccion.id === '__cancel__') return;
+    const recipeId = seleccion.id;
+    const recipeName = recipes.find(r => r.id === recipeId)?.name ?? recipeId;
 
-    container.deleteRecipe.execute(seleccion.id);
+    const plannings = container.listPlannings.execute(userId);
+    let planningsWithRecipe = 0;
+    for (const planning of plannings) {
+      for (const day of planning.getDays()) {
+        const dto = day.toDTO();
+        for (const service of Object.values(dto.services)) {
+          if (service?.getRecipeId() === recipeId) {
+            planningsWithRecipe++;
+            break;
+          }
+        }
+        if (planningsWithRecipe > 0) break;
+      }
+    }
+
+    if (planningsWithRecipe > 0) {
+      console.log(`\nLa receta "${recipeName}" está asignada en ${planningsWithRecipe} planificación(es)`);
+
+      const confirm = await prompts({
+        type: 'confirm',
+        name: 'value',
+        message: '¿Desasignar la receta de los servicios y eliminarla?',
+        initial: false,
+      }, { onCancel: ON_CANCEL });
+
+      if (!confirm?.value) {
+        console.log('Operación cancelada');
+        return;
+      }
+    }
+
+    const result = container.deleteRecipe.execute(recipeId);
     console.log('✓ Receta eliminada correctamente');
+    if (result.planningsAffected > 0) {
+      console.log(`  - Desasignada de ${result.planningsAffected} planificación(es)`);
+    }
 
   } catch (error) {
     if (error instanceof AppError) console.log('✗ ' + error.message);

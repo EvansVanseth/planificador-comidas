@@ -61,6 +61,17 @@ export class PlannedDay {
     this.services.delete(momentTagId);
   }
 
+  public unassignRecipeFromAllServices(recipeId: string): number {
+    let count = 0;
+    for (const service of this.services.values()) {
+      if (service.getRecipeId() === recipeId) {
+        service.unassignRecipe();
+        count++;
+      }
+    }
+    return count;
+  }
+
   public removeServiceIfExists(momentTagId: string): boolean {
     if (this.services.has(momentTagId)) {
       this.services.delete(momentTagId);

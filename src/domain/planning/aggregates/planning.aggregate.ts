@@ -247,6 +247,14 @@ export class Planning {
     return count;
   }
 
+  public unassignRecipeFromAllServices(recipeId: string): number {
+    let count = 0;
+    for (const day of this.days.values()) {
+      count += day.unassignRecipeFromAllServices(recipeId);
+    }
+    return count;
+  }
+
   public removeServicesByMomentTag(momentTagId: string): number {
     let count = 0;
     for (const day of this.days.values()) {

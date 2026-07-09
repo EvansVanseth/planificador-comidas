@@ -23,9 +23,39 @@ export async function eliminarUsuario(container: IContainer) {
     }, { onCancel: ON_CANCEL });
 
     if (!seleccion?.id || seleccion.id === '__cancel__') return;
+    const userId = seleccion.id;
+    const userName = users.find(u => u.id === userId)?.name ?? userId;
 
-    container.deleteUser.execute(seleccion.id);
+    const tags = container.listTags.execute(userId);
+    const ingredients = container.listIngredients.execute(userId);
+    const recipes = container.listRecipes.execute(userId);
+    const plannings = container.listPlannings.execute(userId);
+
+    console.log(`\n⚠️  Se eliminará el usuario "${userName}" y TODOS sus datos:`);
+    console.log(`  - ${tags.length} etiqueta(s)`);
+    console.log(`  - ${ingredients.length} ingrediente(s)`);
+    console.log(`  - ${recipes.length} receta(s)`);
+    console.log(`  - ${plannings.length} planificación(es)`);
+    console.log('');
+
+    const confirm = await prompts({
+      type: 'confirm',
+      name: 'value',
+      message: '¿Estás seguro? Esta operación no se puede deshacer.',
+      initial: false,
+    }, { onCancel: ON_CANCEL });
+
+    if (!confirm?.value) {
+      console.log('Operación cancelada');
+      return;
+    }
+
+    const result = container.deleteUser.execute(userId);
     console.log('✓ Usuario eliminado correctamente');
+    if (result.tagsDeleted > 0) console.log(`  - ${result.tagsDeleted} etiqueta(s) eliminada(s)`);
+    if (result.ingredientsDeleted > 0) console.log(`  - ${result.ingredientsDeleted} ingrediente(s) eliminado(s)`);
+    if (result.recipesDeleted > 0) console.log(`  - ${result.recipesDeleted} receta(s) eliminada(s)`);
+    if (result.planningsDeleted > 0) console.log(`  - ${result.planningsDeleted} planificación(es) eliminada(s)`);
 
   } catch (error) {
     if (error instanceof AppError) console.log('✗ ' + error.message);
