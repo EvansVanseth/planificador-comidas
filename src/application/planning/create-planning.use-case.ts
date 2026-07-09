@@ -1,4 +1,4 @@
-import { PlanningRepository } from '../../infrastructure/repositories/planning-repository.interface';
+import { PlanningRepository } from '../../domain/planning/repositories/planning-repository.interface';
 import { Planning } from '@/domain/planning/aggregates/planning.aggregate';
 import { AppError } from '../shared/errors/app-error';
 import { randomUUID } from 'crypto';

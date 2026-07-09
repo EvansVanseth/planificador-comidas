@@ -1,4 +1,4 @@
-import { RecipeRepository } from '../../infrastructure/repositories/recipe-repository.interface';
+import { RecipeRepository } from '../../domain/recipes/repositories/recipe-repository.interface';
 import { AppError } from '../shared/errors/app-error';
 
 export class DeleteRecipeUseCase {

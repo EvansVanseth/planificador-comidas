@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { PlanningRepository } from "@/infrastructure/repositories/planning-repository.interface";
+import { PlanningRepository } from "@/domain/planning/repositories/planning-repository.interface";
 import { Planning } from "@/domain/planning/aggregates/planning.aggregate";
 
 export class FilePlanningRepository implements PlanningRepository {

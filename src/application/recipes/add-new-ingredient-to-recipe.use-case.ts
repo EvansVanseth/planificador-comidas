@@ -1,5 +1,5 @@
-import { RecipeRepository } from '../../infrastructure/repositories/recipe-repository.interface';
-import { IngredientRepository } from '../../infrastructure/repositories/ingredient-repository.interface';
+import { RecipeRepository } from '../../domain/recipes/repositories/recipe-repository.interface';
+import { IngredientRepository } from '../../domain/ingredients/repositories/ingredient-repository.interface';
 import { Ingredient } from '@/domain/ingredients/aggregates/ingredient.aggregate';
 import { RecipeIngredient } from '@/domain/recipes/value-objects/recipe-ingredient.vo';
 import { AppError } from '../shared/errors/app-error';

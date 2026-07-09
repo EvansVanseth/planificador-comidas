@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { TagRepository } from './tag-repository.interface';
+import { TagRepository } from '@/domain/tags/repositories/tag-repository.interface';
 import { Tag } from '@/domain/tags/aggregates/tag.aggregate';
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';
 import { TagPrimitives } from '@/domain/tags/aggregates/tag.aggregate';

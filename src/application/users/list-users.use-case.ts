@@ -1,4 +1,4 @@
-import { UserRepository } from '../../infrastructure/repositories/user-repository.interface';
+import { UserRepository } from '../../domain/users/repositories/user-repository.interface';
 import { UserPrimitives } from '@/domain/users/aggregates/user.aggregate';
 
 export class ListUsersUseCase {

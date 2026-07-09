@@ -14,7 +14,7 @@ describe('InMemoryTagRepository', () => {
   });
 
   it('debe guardar y recuperar una etiqueta por id', () => {
-    const tag = Tag.create(validId, validUserId, 'Vegano', TagDimension.ESTILOS_VIDA);
+    const tag = Tag.create(validId, validUserId, 'Vegano', TagDimension.ESTILOS_VIDA, false);
     repo.save(tag);
     const found = repo.findById(validId);
     expect(found).not.toBeNull();

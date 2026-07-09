@@ -1,11 +1,11 @@
 import prompts from 'prompts';
 import { createContainer, IContainer } from '../container';
-import { menuPlanificaciones } from './planning.menu';
-import { menuEtiquetas } from './tag.menu';
-import { menuIngredientes } from './ingredient.menu';
-import { menuRecetas } from './recipe.menu';
-import { menuUsuarios } from './user.menu';
-import { resolveSystemTagsMenu } from './resolve-system-tags.menu';
+import { menuPlanificaciones } from './planning/planning.menu';
+import { menuEtiquetas } from './tags/tag.menu';
+import { menuIngredientes } from './ingredients/ingredient.menu';
+import { menuRecetas } from './recipes/recipe.menu';
+import { menuUsuarios } from './users/user.menu';
+import { resolveSystemTagsMenu } from './tags/resolve-system-tags.menu';
 
 const ON_CANCEL = () => {};
 

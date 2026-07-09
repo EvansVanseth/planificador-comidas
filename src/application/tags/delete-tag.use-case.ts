@@ -1,4 +1,4 @@
-import { TagRepository } from '../../infrastructure/repositories/tag-repository.interface';
+import { TagRepository } from '../../domain/tags/repositories/tag-repository.interface';
 import { AppError } from '../shared/errors/app-error';
 
 export class DeleteTagUseCase {

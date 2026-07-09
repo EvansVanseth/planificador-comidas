@@ -1,6 +1,6 @@
-import { PlanningRepository } from '../../infrastructure/repositories/planning-repository.interface';
-import { RecipeRepository } from '../../infrastructure/repositories/recipe-repository.interface';
-import { TagRepository } from '../../infrastructure/repositories/tag-repository.interface';
+import { PlanningRepository } from '../../domain/planning/repositories/planning-repository.interface';
+import { RecipeRepository } from '../../domain/recipes/repositories/recipe-repository.interface';
+import { TagRepository } from '../../domain/tags/repositories/tag-repository.interface';
 import { AutoPlanner, PlannerResult } from './ports/auto-planner.interface';
 import { AppError } from '../shared/errors/app-error';
 

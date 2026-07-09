@@ -1,4 +1,4 @@
-import { RecipeRepository } from '../../infrastructure/repositories/recipe-repository.interface';
+import { RecipeRepository } from '../../domain/recipes/repositories/recipe-repository.interface';
 import { TagPrimitive } from '@/domain/recipes/aggregates/recipe.aggregate';
 import { RecipeIngredient, RecipeIngredientPrimitives } from '@/domain/recipes/value-objects/recipe-ingredient.vo';
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';

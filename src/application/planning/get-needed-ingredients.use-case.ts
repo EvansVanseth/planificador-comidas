@@ -1,6 +1,6 @@
-import { PlanningRepository } from '../../infrastructure/repositories/planning-repository.interface';
-import { RecipeRepository } from '../../infrastructure/repositories/recipe-repository.interface';
-import { IngredientRepository } from '../../infrastructure/repositories/ingredient-repository.interface';
+import { PlanningRepository } from '../../domain/planning/repositories/planning-repository.interface';
+import { RecipeRepository } from '../../domain/recipes/repositories/recipe-repository.interface';
+import { IngredientRepository } from '../../domain/ingredients/repositories/ingredient-repository.interface';
 import { AppError } from '../shared/errors/app-error';
 
 export type NeededIngredientEntry = {

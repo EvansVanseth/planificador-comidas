@@ -1,4 +1,4 @@
-import { TagRepository } from '../../infrastructure/repositories/tag-repository.interface';
+import { TagRepository } from '../../domain/tags/repositories/tag-repository.interface';
 import { TagPrimitives } from '@/domain/tags/aggregates/tag.aggregate';
 
 export class ListTagsUseCase {

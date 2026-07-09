@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { IngredientRepository } from './ingredient-repository.interface';
+import { IngredientRepository } from '@/domain/ingredients/repositories/ingredient-repository.interface';
 import { Ingredient, IngredientPrimitives } from '@/domain/ingredients/aggregates/ingredient.aggregate';
 
 export class FileIngredientRepository implements IngredientRepository {

@@ -1,4 +1,4 @@
-import { RecipeRepository } from "@/infrastructure/repositories/recipe-repository.interface";
+import { RecipeRepository } from "@/domain/recipes/repositories/recipe-repository.interface";
 import { Recipe } from "@/domain/recipes/aggregates/recipe.aggregate";
 
 export class InMemoryRecipeRepository implements RecipeRepository {

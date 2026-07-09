@@ -1,4 +1,4 @@
-import { UserRepository } from "./user-repository.interface";
+import { UserRepository } from "@/domain/users/repositories/user-repository.interface";
 import { User } from "@/domain/users/aggregates/user.aggregate";
 
 export class InMemoryUserRepository implements UserRepository {

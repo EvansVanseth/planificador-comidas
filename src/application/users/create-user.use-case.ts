@@ -1,4 +1,4 @@
-import { UserRepository } from '../../infrastructure/repositories/user-repository.interface';
+import { UserRepository } from '../../domain/users/repositories/user-repository.interface';
 import { User } from '@/domain/users/aggregates/user.aggregate';
 import { AppError } from '../shared/errors/app-error';
 import { randomUUID } from 'crypto';

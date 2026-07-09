@@ -1,9 +1,9 @@
 // Repository interfaces
-import { PlanningRepository } from '@/infrastructure/repositories/planning-repository.interface';
-import { TagRepository } from '@/infrastructure/repositories/tag-repository.interface';
-import { IngredientRepository } from '@/infrastructure/repositories/ingredient-repository.interface';
-import { RecipeRepository } from '@/infrastructure/repositories/recipe-repository.interface';
-import { UserRepository } from '@/infrastructure/repositories/user-repository.interface';
+import { PlanningRepository } from '@/domain/planning/repositories/planning-repository.interface';
+import { TagRepository } from '@/domain/tags/repositories/tag-repository.interface';
+import { IngredientRepository } from '@/domain/ingredients/repositories/ingredient-repository.interface';
+import { RecipeRepository } from '@/domain/recipes/repositories/recipe-repository.interface';
+import { UserRepository } from '@/domain/users/repositories/user-repository.interface';
 //Repository implementations
 import { InMemoryPlanningRepository } from './repositories/in-memory-planning.repository';
 import { FilePlanningRepository } from './repositories/file-planning.repository';
@@ -61,6 +61,7 @@ import { DeleteRecipeUseCase } from '@/application/recipes/delete-recipe.use-cas
 import { AddNewIngredientToRecipeUseCase } from '@/application/recipes/add-new-ingredient-to-recipe.use-case';
 import { AddNewTagToRecipeUseCase } from '@/application/recipes/add-new-tag-to-recipe.use-case';
 //User use-cases
+import { AppError } from '@/application/shared/errors/app-error';
 import { ListUsersUseCase } from '@/application/users/list-users.use-case';
 import { CreateUserUseCase } from '@/application/users/create-user.use-case';
 import { UpdateUserUseCase } from '@/application/users/update-user.use-case';

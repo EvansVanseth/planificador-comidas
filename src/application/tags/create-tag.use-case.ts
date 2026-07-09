@@ -1,4 +1,4 @@
-import { TagRepository } from '../../infrastructure/repositories/tag-repository.interface';
+import { TagRepository } from '../../domain/tags/repositories/tag-repository.interface';
 import { Tag } from '@/domain/tags/aggregates/tag.aggregate';
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';
 import { AppError } from '../shared/errors/app-error';

@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { RecipeRepository } from './recipe-repository.interface';
+import { RecipeRepository } from '@/domain/recipes/repositories/recipe-repository.interface';
 import { Recipe, RecipePrimitives } from '@/domain/recipes/aggregates/recipe.aggregate';
 
 export class FileRecipeRepository implements RecipeRepository {

@@ -1,4 +1,4 @@
-import { IngredientRepository } from '../../infrastructure/repositories/ingredient-repository.interface';
+import { IngredientRepository } from '../../domain/ingredients/repositories/ingredient-repository.interface';
 import { AppError } from '../shared/errors/app-error';
 
 export class DeleteIngredientUseCase {
