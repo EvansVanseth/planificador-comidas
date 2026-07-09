@@ -61,6 +61,14 @@ export class PlannedDay {
     this.services.delete(momentTagId);
   }
 
+  public removeServiceIfExists(momentTagId: string): boolean {
+    if (this.services.has(momentTagId)) {
+      this.services.delete(momentTagId);
+      return true;
+    }
+    return false;
+  }
+
   public removeTagFromServices(tagId: string): number {
     let count = 0;
     for (const service of this.services.values()) {

@@ -37,7 +37,7 @@ export async function eliminarEtiqueta(container: IContainer, userId: string) {
         recipesWithTag.forEach(r => console.log(`    · ${r.name}`));
       }
       if (planningCount > 0) {
-        console.log(`  - ${planningCount} planificación(es) la referencian en servicios`);
+        console.log(`  - Referenciada en servicios de ${planningCount} planificación(es)`);
       }
 
       const confirm = await prompts({
@@ -59,10 +59,10 @@ export async function eliminarEtiqueta(container: IContainer, userId: string) {
       console.log(`  - Eliminada de ${result.recipesAffected} receta(s)`);
     }
     if (result.planningsAffected > 0) {
-      console.log(`  - Limpiada de ${result.planningsAffected} planificación(es)`);
+      console.log(`  - ${result.planningsAffected} planificación(es) afectada(s)`);
     }
-    if (result.recipesSkipped > 0) {
-      console.log(`  - ${result.recipesSkipped} receta(s) no modificadas (dimensión requerida)`);
+    if (result.servicesRemoved > 0) {
+      console.log(`  - ${result.servicesRemoved} servicio(s) eliminado(s) de planificaciones`);
     }
 
   } catch (error) {

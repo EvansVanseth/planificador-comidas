@@ -1,12 +1,19 @@
 import { TagRepository } from '../../domain/tags/repositories/tag-repository.interface';
 import { RecipeRepository } from '../../domain/recipes/repositories/recipe-repository.interface';
 import { PlanningRepository } from '../../domain/planning/repositories/planning-repository.interface';
+import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';
 import { AppError } from '../shared/errors/app-error';
+
+const REQUIRED_DIMS: TagDimension[] = [
+  TagDimension.MOMENTO_DIA,
+  TagDimension.FORMATO,
+  TagDimension.TIPO_PLATO,
+];
 
 export type DeleteTagResult = {
   recipesAffected: number;
   planningsAffected: number;
-  recipesSkipped: number;
+  servicesRemoved: number;
 };
 
 export class DeleteTagUseCase {
@@ -22,27 +29,61 @@ export class DeleteTagUseCase {
     if (tag.isSystemTag()) throw new AppError('No se puede eliminar una etiqueta del sistema');
 
     const userId = tag.getUserId();
-    let recipesAffected = 0;
-    let recipesSkipped = 0;
-    let planningsAffected = 0;
+    const tagDimension = tag.getDimension();
+    const isRequired = REQUIRED_DIMS.includes(tagDimension);
+    const isMomentTag = tagDimension === TagDimension.MOMENTO_DIA;
 
+    // Check recipes — blocked if this tag is the last of a required dimension
     const recipes = this.recipeRepository.findAllByUserId(userId);
+    const blockedRecipes: string[] = [];
+    const removableRecipes: typeof recipes = [];
+
     for (const recipe of recipes) {
-      if (recipe.getTagIds().includes(id)) {
-        try {
-          recipe.removeTag(id);
-          this.recipeRepository.save(recipe);
-          recipesAffected++;
-        } catch {
-          recipesSkipped++;
+      if (!recipe.getTagIds().includes(id)) continue;
+
+      if (isRequired) {
+        const primitives = recipe.toPrimitives();
+        const sameDimensionCount = primitives.tags.filter(t => t.dimension === tagDimension).length;
+        if (sameDimensionCount <= 1) {
+          blockedRecipes.push(primitives.name);
+          continue;
         }
       }
+
+      recipe.removeTag(id);
+      removableRecipes.push(recipe);
     }
 
+    if (blockedRecipes.length > 0) {
+      throw new AppError(
+        `No se puede eliminar la etiqueta: está siendo usada como única etiqueta de dimensión requerida en las siguientes recetas: ${blockedRecipes.join(', ')}. Asigna otra etiqueta primero.`
+      );
+    }
+
+    for (const recipe of removableRecipes) {
+      this.recipeRepository.save(recipe);
+    }
+
+    // Clean up planning services
     const plannings = this.planningRepository.findAllByUserId(userId);
+    let planningsAffected = 0;
+    let servicesRemoved = 0;
+
     for (const planning of plannings) {
-      const count = planning.removeTagFromServices(id);
-      if (count > 0) {
+      let planningChanged = false;
+
+      if (isMomentTag) {
+        const removed = planning.removeServicesByMomentTag(id);
+        if (removed > 0) {
+          servicesRemoved += removed;
+          planningChanged = true;
+        }
+      }
+
+      const refsCleaned = planning.removeTagFromServices(id);
+      if (refsCleaned > 0) planningChanged = true;
+
+      if (planningChanged) {
         this.planningRepository.save(planning);
         planningsAffected++;
       }
@@ -50,6 +91,6 @@ export class DeleteTagUseCase {
 
     this.tagRepository.delete(id);
 
-    return { recipesAffected, planningsAffected, recipesSkipped };
+    return { recipesAffected: removableRecipes.length, planningsAffected, servicesRemoved };
   }
 }

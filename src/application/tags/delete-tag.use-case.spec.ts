@@ -15,7 +15,7 @@ const defaultTags: TagPrimitive[] = [
   { id: '550e8400-e29b-41d4-a716-446655440102', dimension: TagDimension.TIPO_PLATO },
 ];
 
-const tagADimension = TagDimension.ESTILOS_VIDA;
+const nonRequiredDim = TagDimension.ESTILOS_VIDA;
 
 describe('DeleteTagUseCase', () => {
   const tagId = '550e8400-e29b-41d4-a716-446655440000';
@@ -34,7 +34,7 @@ describe('DeleteTagUseCase', () => {
   });
 
   it('debe eliminar una etiqueta de usuario existente', () => {
-    const tag = Tag.create(tagId, userId, 'Test', tagADimension, false);
+    const tag = Tag.create(tagId, userId, 'Test', nonRequiredDim, false);
     tagRepo.save(tag);
 
     const result = useCase.execute(tagId);
@@ -42,6 +42,7 @@ describe('DeleteTagUseCase', () => {
     expect(tagRepo.findById(tagId)).toBeNull();
     expect(result.recipesAffected).toBe(0);
     expect(result.planningsAffected).toBe(0);
+    expect(result.servicesRemoved).toBe(0);
   });
 
   it('debe lanzar error si la etiqueta no existe', () => {
@@ -57,32 +58,29 @@ describe('DeleteTagUseCase', () => {
   });
 
   it('debe limpiar la etiqueta de las recetas que la usan', () => {
-    const tag = Tag.create(tagId, userId, 'Test', tagADimension, false);
+    const tag = Tag.create(tagId, userId, 'Test', nonRequiredDim, false);
     tagRepo.save(tag);
 
     const recipeId1 = '550e8400-e29b-41d4-a716-446655440010';
     const recipeId2 = '550e8400-e29b-41d4-a716-446655440011';
-    const recipeTags1: TagPrimitive[] = [
+    const recipeTags: TagPrimitive[] = [
       ...defaultTags,
-      { id: tagId, dimension: tagADimension },
+      { id: tagId, dimension: nonRequiredDim },
     ];
-    const recipe1 = Recipe.create(recipeId1, userId, 'Receta 1', 4, 30, 'Preparacion', [], recipeTags1);
+    const recipe1 = Recipe.create(recipeId1, userId, 'Receta 1', 4, 30, 'Preparacion', [], recipeTags);
     recipeRepo.save(recipe1);
-
-    const recipe2 = Recipe.create(recipeId2, userId, 'Receta 2', 2, 15, null, [], recipeTags1);
+    const recipe2 = Recipe.create(recipeId2, userId, 'Receta 2', 2, 15, null, [], recipeTags);
     recipeRepo.save(recipe2);
 
     const result = useCase.execute(tagId);
 
     expect(result.recipesAffected).toBe(2);
-    const saved1 = recipeRepo.findById(recipeId1)!;
-    expect(saved1.getTagIds()).not.toContain(tagId);
-    const saved2 = recipeRepo.findById(recipeId2)!;
-    expect(saved2.getTagIds()).not.toContain(tagId);
+    expect(recipeRepo.findById(recipeId1)!.getTagIds()).not.toContain(tagId);
+    expect(recipeRepo.findById(recipeId2)!.getTagIds()).not.toContain(tagId);
     expect(tagRepo.findById(tagId)).toBeNull();
   });
 
-  it('debe saltarse recetas donde la etiqueta es la unica de su dimension requerida', () => {
+  it('debe bloquear la eliminacion si la etiqueta es la unica de una dimension requerida', () => {
     const momentoId = '550e8400-e29b-41d4-a716-446655440050';
     const tagMomento = Tag.create(momentoId, userId, 'MiMomento', TagDimension.MOMENTO_DIA, false);
     tagRepo.save(tagMomento);
@@ -95,17 +93,34 @@ describe('DeleteTagUseCase', () => {
     ]);
     recipeRepo.save(recipe);
 
-    const result = useCase.execute(momentoId);
-
-    expect(result.recipesAffected).toBe(0);
-    expect(result.recipesSkipped).toBe(1);
-    expect(tagRepo.findById(momentoId)).toBeNull();
-    const saved = recipeRepo.findById(recipeId)!;
-    expect(saved.getTagIds()).toContain(momentoId);
+    expect(() => useCase.execute(momentoId)).toThrow(AppError);
+    expect(tagRepo.findById(momentoId)).not.toBeNull();
+    expect(recipeRepo.findById(recipeId)!.getTagIds()).toContain(momentoId);
   });
 
-  it('debe limpiar la etiqueta de las planificaciones que la referencian', () => {
-    const tag = Tag.create(tagId, userId, 'Test', tagADimension, false);
+  it('debe eliminar servicios de planificacion completos si la etiqueta es MOMENTO_DIA', () => {
+    const momentoId = '550e8400-e29b-41d4-a716-446655440050';
+    const tagMomento = Tag.create(momentoId, userId, 'MiMomento', TagDimension.MOMENTO_DIA, false);
+    tagRepo.save(tagMomento);
+
+    const planningId = '550e8400-e29b-41d4-a716-446655440010';
+    const planning = Planning.create(planningId, userId, 'Semana', null, 1);
+    planning.addDay('550e8400-e29b-41d4-a716-446655440020', 1);
+    planning.assignMealToDay(1, momentoId, 4);
+    planningRepo.save(planning);
+
+    const result = useCase.execute(momentoId);
+
+    expect(result.servicesRemoved).toBe(1);
+    expect(result.planningsAffected).toBe(1);
+    const updated = planningRepo.findById(planningId)!;
+    const day = updated.getDay(1);
+    expect(day!.services[momentoId]).toBeUndefined();
+    expect(tagRepo.findById(momentoId)).toBeNull();
+  });
+
+  it('debe limpiar referencias en planificaciones para etiquetas no MOMENTO_DIA', () => {
+    const tag = Tag.create(tagId, userId, 'Test', nonRequiredDim, false);
     tagRepo.save(tag);
 
     const planningId = '550e8400-e29b-41d4-a716-446655440010';
@@ -116,6 +131,7 @@ describe('DeleteTagUseCase', () => {
 
     const result = useCase.execute(tagId);
 
+    expect(result.servicesRemoved).toBe(0);
     expect(result.planningsAffected).toBe(1);
     const updated = planningRepo.findById(planningId)!;
     const day = updated.getDay(1);
