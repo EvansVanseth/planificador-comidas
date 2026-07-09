@@ -191,7 +191,7 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     listIngredients: new ListIngredientsUseCase(ingredientRepository),
     createIngredient: new CreateIngredientUseCase(ingredientRepository),
     updateIngredient: new UpdateIngredientUseCase(ingredientRepository),
-    deleteIngredient: new DeleteIngredientUseCase(ingredientRepository),
+    deleteIngredient: new DeleteIngredientUseCase(ingredientRepository, recipeRepository, planningRepository),
     mergeIngredients: new MergeIngredientsUseCase(ingredientRepository, recipeRepository),
     // Recipes
     listRecipes: new ListRecipesUseCase(recipeRepository),
