@@ -966,5 +966,51 @@
         "dimension": "TIPO_PLATO"
       }
     ]
+  },
+  {
+    "id": "60bc05b9-8d99-4eb5-8fb8-14baab5c8e13",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "qwe",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [],
+    "tags": [
+      {
+        "id": "ba09df2a-682b-470e-b7a9-646a01566169",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "6b19fc40-d9d8-4c31-8962-0549616dc1e6",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "0fca3daf-451b-4a23-9a98-1e512e640fb2",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
+  },
+  {
+    "id": "d787a3ef-37ea-41f0-915e-65e838d480b0",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "qweasd",
+    "baseServings": 2,
+    "prepTime": 30,
+    "preparation": null,
+    "ingredients": [],
+    "tags": [
+      {
+        "id": "ba09df2a-682b-470e-b7a9-646a01566169",
+        "dimension": "MOMENTO_DIA"
+      },
+      {
+        "id": "6b19fc40-d9d8-4c31-8962-0549616dc1e6",
+        "dimension": "FORMATO"
+      },
+      {
+        "id": "0fca3daf-451b-4a23-9a98-1e512e640fb2",
+        "dimension": "TIPO_PLATO"
+      }
+    ]
   }
 ]

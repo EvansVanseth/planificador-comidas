@@ -118,5 +118,125 @@
     "dimension": "ESTILOS_VIDA",
     "isSystem": true,
     "systemKey": "VEGANO"
+  },
+  {
+    "id": "ba09df2a-682b-470e-b7a9-646a01566169",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Desayuno",
+    "dimension": "MOMENTO_DIA",
+    "isSystem": true,
+    "systemKey": "DESAYUNO"
+  },
+  {
+    "id": "7bcf8def-8620-4ed0-af06-de2015d39531",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Comida",
+    "dimension": "MOMENTO_DIA",
+    "isSystem": true,
+    "systemKey": "COMIDA"
+  },
+  {
+    "id": "5d847886-db2e-46c8-9ad6-1c85ca7cbc57",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Cena",
+    "dimension": "MOMENTO_DIA",
+    "isSystem": true,
+    "systemKey": "CENA"
+  },
+  {
+    "id": "6b19fc40-d9d8-4c31-8962-0549616dc1e6",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Caliente",
+    "dimension": "FORMATO",
+    "isSystem": true,
+    "systemKey": "CALIENTE"
+  },
+  {
+    "id": "1d218326-ea3d-4ae8-ad39-58f65ff2c235",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Frio",
+    "dimension": "FORMATO",
+    "isSystem": true,
+    "systemKey": "FRIO"
+  },
+  {
+    "id": "0fca3daf-451b-4a23-9a98-1e512e640fb2",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Carne",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true,
+    "systemKey": "CARNE"
+  },
+  {
+    "id": "b6de7e87-c122-42b7-994a-6e63265d7e42",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Pescado",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true,
+    "systemKey": "PESCADO"
+  },
+  {
+    "id": "65248469-b49b-4287-b14f-c63953ea671c",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Legumbres",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true,
+    "systemKey": "LEGUMBRES"
+  },
+  {
+    "id": "e5ff7f16-ab4c-48f1-be91-8286ac754340",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Pasta",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true,
+    "systemKey": "PASTA"
+  },
+  {
+    "id": "b2d03115-607d-4ff1-9f4a-705a173ab8c3",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Ensalada",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true,
+    "systemKey": "ENSALADA"
+  },
+  {
+    "id": "89d513e8-64ff-43e5-9501-0ea477538643",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Arroz",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true,
+    "systemKey": "ARROZ"
+  },
+  {
+    "id": "616bf9bb-cb7a-4e3d-b26c-3e418c9b94cc",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Dulce",
+    "dimension": "TIPO_PLATO",
+    "isSystem": true,
+    "systemKey": "DULCE"
+  },
+  {
+    "id": "dbd5e034-822b-40e3-b84b-de1e6a717508",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Bajo en calorías",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": true,
+    "systemKey": "BAJO_CALORIAS"
+  },
+  {
+    "id": "43340de8-41d9-47e3-8797-76f3d5054b4c",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Vegetariano",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": true,
+    "systemKey": "VEGETARIANO"
+  },
+  {
+    "id": "cd46139d-cfe0-4d0f-ae60-7c5fb8d09daf",
+    "userId": "31ce5372-598d-441c-b077-0c3e29787bf5",
+    "name": "Vegano",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": true,
+    "systemKey": "VEGANO"
   }
 ]
