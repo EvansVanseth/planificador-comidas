@@ -61,6 +61,21 @@ export class PlannedDay {
     this.services.delete(momentTagId);
   }
 
+  public removeTagFromServices(tagId: string): number {
+    let count = 0;
+    for (const service of this.services.values()) {
+      if (service.getExclusions().includes(tagId)) {
+        service.removeExclusion(tagId);
+        count++;
+      }
+      if (service.getPreferences().includes(tagId)) {
+        service.removePreference(tagId);
+        count++;
+      }
+    }
+    return count;
+  }
+
   public updateAllServices(updates: ServiceUpdateInput): void {
     for (const service of this.services.values()) {
       if (updates.covers !== undefined) {

@@ -186,7 +186,7 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     listTags: new ListTagsUseCase(tagRepository),
     createTag: new CreateTagUseCase(tagRepository),
     updateTag: new UpdateTagUseCase(tagRepository),
-    deleteTag: new DeleteTagUseCase(tagRepository),
+    deleteTag: new DeleteTagUseCase(tagRepository, recipeRepository, planningRepository),
     // Ingredients
     listIngredients: new ListIngredientsUseCase(ingredientRepository),
     createIngredient: new CreateIngredientUseCase(ingredientRepository),

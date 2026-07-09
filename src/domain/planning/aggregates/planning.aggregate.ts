@@ -239,6 +239,14 @@ export class Planning {
     return Array.from(this.days.values());
   }
 
+  public removeTagFromServices(tagId: string): number {
+    let count = 0;
+    for (const day of this.days.values()) {
+      count += day.removeTagFromServices(tagId);
+    }
+    return count;
+  }
+
   getDay(ordenDia: number): PlannedDayDTO | null {
     const day = this.days.get(ordenDia);
     return day ? day.toDTO() : null;
