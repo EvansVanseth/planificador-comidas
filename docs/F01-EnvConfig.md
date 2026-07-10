@@ -124,3 +124,36 @@ npm install picocolors
 ``` bash
 npm install -D tsx (local)
 ```
+
+---
+
+# Configuración de Next.js (Fase 18 — Web Desktop)
+
+## Prerrequisito: Node.js 18.17+ (ya lo tenemos: v24.17.0)
+
+## Paso 1: Crear proyecto Next.js en /web
+``` bash
+npx create-next-app@latest web --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --use-npm
+```
+
+Qué significa cada flag:
+- `web` — nombre de la carpeta donde se crea el proyecto
+- `--typescript` — usa TypeScript en lugar de JavaScript
+- `--tailwind` — configura Tailwind CSS automáticamente
+- `--eslint` — incluye configuración de ESLint
+- `--app` — usa App Router (la nueva forma de rutas de Next.js 14+)
+- `--src-dir` — coloca el código dentro de `src/` (como nuestro proyecto existente)
+- `--import-alias "@/*"` — alias para imports absolutos (ej: `@/components/Button`)
+- `--use-npm` — usa npm en lugar de yarn/pnpm
+
+## Paso 2: Verificar que el proyecto se creó correctamente
+``` bash
+ls web
+```
+
+## Paso 3: Probar que arranca el servidor de desarrollo
+``` bash
+npm run dev
+```
+(Ejecutamos dentro de /web)
+```
