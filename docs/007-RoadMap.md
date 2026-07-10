@@ -166,61 +166,102 @@ Permite al usuario unificar ingredientes duplicados ("huevo" → "huevos") actua
 
 ### Fase 18: ^^ Versión WEB Desktop (Next.js)
 
-Migración de la CLI a interfaz web basada en los mockups aprobados por la usuaria. Todo el dominio existente se reutiliza tal cual.
+Migración de la CLI a interfaz web basada en los mockups aprobados por la usuaria. Todo el dominio existente (`src/`) se reutiliza sin modificar, importado desde un proyecto Next.js en `/web` (monorepo). Persistencia sigue siendo archivos (`data/`). Mock login (sin Supabase Auth).
 
-- [ ] Paso 1: ^^ Preparar proyecto Next.js 14+ con App Router y Tailwind
-    - [ ] Inicializar proyecto Next.js
-    - [ ] Configurar `@/` alias para apuntar a `./src/*`
-    - [ ] Configurar `tsconfig-paths` para el dominio existente
-    - [ ] Copiar carpeta `src/` completa dentro del proyecto Next.js
-- [ ] Paso 2: ^^ Landing page (HU-00.1)
-- [ ] Paso 3: ^^ Login / Registro con Supabase Auth (HU-01.1, HU-01.2)
-    - [ ] Configurar Supabase project + schema
-    - [ ] Implementar server actions de login/signup
-    - [ ] Implementar middleware para proteger rutas
-    - [ ] Mock Auth con `TEST_USER` para desarrollo
-- [ ] Paso 4: ^^ Dashboard principal (HU-01.3)
-- [ ] Paso 5: ^^ Pantalla de recetas (HU-03.1 a HU-03.4)
-    - [ ] Listado con filtros por etiqueta y búsqueda por nombre (HU-03.2)
-    - [ ] Formulario de creación/edición con autocompletado de ingredientes (RF-01.3)
-    - [ ] Eliminación con advertencia de uso en planificaciones (HU-03.4)
-- [ ] Paso 6: ^^ Pantalla de ingredientes maestros (HU-02.1, HU-02.2)
-    - [ ] CRUD + fusión de ingredientes (de Fase 17)
-- [ ] Paso 7: ^^ Pantalla de etiquetas (HU-04.1 a HU-04.3)
-- [ ] Paso 8: ^^ Pantalla de planificaciones (HU-05.1 a HU-05.5)
-    - [ ] Historial + creación + duplicación
-    - [ ] Editor detallado con vista semanal tipo grilla
-    - [ ] Configuración de comensales, exclusiones, preferencias (bulk edit)
-    - [ ] Botón "Autoplanificar" (de Fase 16)
-- [ ] Paso 9: ^^ Vista de ingredientes necesarios (HU-06.3)
-- [ ] Paso 10: ^^ Vista de lista de la compra con checkboxes (HU-06.4)
-    - [ ] Accesibilidad táctil: 44x44 px, contraste 4.5:1, aria-live
+**Paso 1: Inicializar proyecto Next.js**
+
+- [ ] 1.1: ^^ Qué es Next.js — conceptos: SSR, Server Components, App Router, por qué lo elegimos
+- [ ] 1.2: ^^ Crear proyecto con `create-next-app` en `/web`, explicar archivos generados
+- [ ] 1.3: ^^ App Router — rutas, `layout.tsx`, `page.tsx`, navegación
+- [ ] 1.4: ^^ Tailwind CSS — utility-first, cómo se usa en componentes
+- [ ] 1.5: ^^ Conectar dominio — alias `@domain/*` → `../src/*` en tsconfig, primer import
+- [ ] 1.6: ^^ Verificar integración — página que importa y ejecuta un use case real
+
+**Paso 2: Mock login**
+
+- [ ] 2.1: ^^ Landing page (`/`) — presentación de la app, botón "Comenzar" (HU-00.1)
+- [ ] 2.2: ^^ Pantalla de login (`/login`) — campo de texto, crea usuario si no existe, guarda userId en cookie (HU-01.1/01.2 simplificado)
+- [ ] 2.3: ^^ Layout protegido — wrapper que redirige a `/login` si no hay userId
+
+**Paso 3: Dashboard**
+
+- [ ] 3.1: ^^ Dashboard (`/dashboard`) — planificación activa, "Cocinar hoy", accesos rápidos (HU-01.3)
+- [ ] 3.2: ^^ Navegación global — sidebar o navbar con enlaces a secciones
+
+**Paso 4: Recetas**
+
+- [ ] 4.1: ^^ Listado de recetas (`/recipes`) — búsqueda por nombre, filtro por etiquetas (HU-03.2)
+- [ ] 4.2: ^^ Crear receta (`/recipes/new`) — formulario con autocompletado de ingredientes (HU-03.1)
+- [ ] 4.3: ^^ Editar receta (`/recipes/[id]/edit`) — mismo formulario reutilizado (HU-03.3)
+- [ ] 4.4: ^^ Eliminar receta — modal de confirmación con advertencia de uso (HU-03.4)
+
+**Paso 5: Ingredientes maestros**
+
+- [ ] 5.1: ^^ Listado + crear ingrediente (`/ingredients`) (HU-02.1, HU-02.2)
+- [ ] 5.2: ^^ Editar / eliminar ingrediente
+- [ ] 5.3: ^^ Fusión de ingredientes (desde Fase 17) (HU-02.3)
+
+**Paso 6: Etiquetas**
+
+- [ ] 6.1: ^^ CRUD de etiquetas (`/tags`) con advertencia de uso (HU-04.1 a HU-04.3)
+
+**Paso 7: Planificaciones — listado**
+
+- [ ] 7.1: ^^ Historial de planificaciones (`/plannings`) (HU-05.2)
+- [ ] 7.2: ^^ Crear planificación (HU-05.1)
+- [ ] 7.3: ^^ Duplicar planificación (desde Fase 14) (HU-05.3)
+- [ ] 7.4: ^^ Eliminar planificación con advertencia (HU-05.5)
+
+**Paso 8: Planificaciones — editor semanal**
+
+- [ ] 8.1: ^^ Editor de planificación (`/plannings/[id]/edit`) — vista semanal en grilla
+- [ ] 8.2: ^^ Asignar comida a un día/servicio (HU-06.1)
+- [ ] 8.3: ^^ Edición en lote de días (desde Fase 12) (HU-06.1)
+- [ ] 8.4: ^^ Botón "Autoplanificar" (desde Fase 16) (HU-06.2)
+- [ ] 8.5: ^^ Editar datos generales de la planificación (HU-05.4)
+
+**Paso 9: Despensa y lista de la compra**
+
+- [ ] 9.1: ^^ Vista de ingredientes necesarios y despensa (HU-06.3)
+- [ ] 9.2: ^^ Lista de la compra con checkboxes (HU-06.4)
 
 ### Fase 19: ^^ Versión WEB Mobile (responsive)
 
-Optimización de la UI existente para contexto móvil, siguiendo los mockups.
+Adaptación de la UI de escritorio a contexto móvil usando solo Tailwind breakpoints. Sin cambios estructurales.
 
 - [ ] Paso 1: Adaptar layout a mobile-first con Tailwind (`sm:` / `md:` breakpoints)
-- [ ] Paso 2: Optimizar lista de la compra para uso en supermercado (checkboxes grandes, swipe, contraste solar)
-- [ ] Paso 3: Probar accesibilidad WCAG 2.1 AA (lectores de pantalla, target size, contraste)
+- [ ] Paso 2: Optimizar lista de la compra para uso en supermercado (target táctil 44x44px, contraste 4.5:1)
+- [ ] Paso 3: Validar contraste WCAG 2.1 AA en toda la UI
 
-### Fase 20: ^^ Infraestructura de persistencia Postgres
+### Fase 20: ^^ Persistencia con Postgres + Prisma
 
-- [ ] Paso 1: Docker Compose para Postgres local (del diseño técnico)
-- [ ] Paso 2: Configurar Prisma ORM con `schema.prisma` mapeando el Domain Model
-- [ ] Paso 3: Implementar repositorios Postgres (`PostgresPlanningRepository`, etc.)
-- [ ] Paso 4: Migrar seed de etiquetas de sistema a Prisma
-- [ ] Paso 5: Tests de integración con base de datos real
+Sustitución de la persistencia por archivos por una base de datos Postgres. Se usa Prisma ORM como capa de acceso a datos (schema declarativo, migraciones automáticas, cliente tipado).
 
-### Fase 21: ^^ Despliegue en cloud + seguridad
+- [ ] Paso 1: Docker Compose para Postgres local (docker-compose.yml con postgres:16-alpine)
+- [ ] Paso 2: Inicializar Prisma (`npx prisma init`) con `schema.prisma` mapeando el Domain Model
+- [ ] Paso 3: Crear migración inicial y generar Prisma Client
+- [ ] Paso 4: Implementar `PostgresTagRepository` (siguiendo `TagRepository` interface)
+- [ ] Paso 5: Implementar `PostgresIngredientRepository`
+- [ ] Paso 6: Implementar `PostgresRecipeRepository`
+- [ ] Paso 7: Implementar `PostgresUserRepository`
+- [ ] Paso 8: Implementar `PostgresPlanningRepository`
+- [ ] Paso 9: Migrar seed de etiquetas de sistema a Prisma
+- [ ] Paso 10: Tests de integración con base de datos real
+- [ ] Paso 11: Actualizar `container.ts` para soportar `PERSISTENCE_TYPE=POSTGRES`
 
-- [ ] Paso 1: Conectar Supabase Postgres (producción)
-- [ ] Paso 2: Políticas RLS (Row-Level Security) para aislamiento multitenant
-- [ ] Paso 3: Rate limiting en endpoints de auth (OWASP)
-- [ ] Paso 4: Sanitización XSS con `isomorphic-dompurify`
-- [ ] Paso 5: Desplegar en Vercel (CI/CD desde GitHub)
-- [ ] Paso 6: Tests E2E opcionales (Playwright)
-- [ ] Paso 7: Revisión de seguridad estricta y robustez
+### Fase 21: ^^ Despliegue en cloud (Supabase + Vercel)
+
+Paso a producción usando los servicios donde el usuario ya tiene cuenta.
+
+- [ ] Paso 1: Crear proyecto Supabase y obtener DATABASE_URL
+- [ ] Paso 2: Migrar esquema a Supabase Postgres (producción)
+- [ ] Paso 3: Configurar Supabase Auth (login/registro real con email)
+- [ ] Paso 4: Implementar políticas RLS (Row-Level Security) para aislamiento multitenant
+- [ ] Paso 5: Reemplazar mock login por Supabase Auth en la web
+- [ ] Paso 6: Desplegar en Vercel (CI/CD desde GitHub)
+- [ ] Paso 7: Rate limiting en endpoints de auth (OWASP)
+- [ ] Paso 8: Sanitización XSS (`isomorphic-dompurify`)
+- [ ] Paso 9: Revisión de seguridad y robustez
 
 ### Fase 22: Preparación académica final
 
