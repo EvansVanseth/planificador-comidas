@@ -7,15 +7,24 @@ const ON_CANCEL = () => {};
 
 export async function crearUsuario(container: IContainer) {
   try {
-    const answers = await prompts({
-      type: 'text',
-      name: 'name',
-      message: 'Nombre del usuario:',
-    }, { onCancel: ON_CANCEL });
+    const answers = await prompts([
+      {
+        type: 'text',
+        name: 'name',
+        message: 'Nombre del usuario:',
+      },
+      {
+        type: 'text',
+        name: 'email',
+        message: 'Email:',
+        initial: (prev: string) =>
+          `${prev.toLowerCase().replace(/\s+/g, '.')}@plancomidas.com`,
+      },
+    ], { onCancel: ON_CANCEL });
 
     if (!answers?.name?.trim()) return;
 
-    const id = container.createUser.execute(answers.name.trim());
+    const id = container.createUser.execute(answers.name.trim(), answers.email.trim());
     console.log('✓ ' + `Usuario creado: ${id}`);
 
   } catch (error) {

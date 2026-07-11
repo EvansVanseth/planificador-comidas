@@ -39,6 +39,13 @@ export class FileUserRepository implements UserRepository {
     ) ?? null;
   }
 
+  findByEmail(email: string): User | null {
+    const normalized = email.toLowerCase().trim();
+    return this.findAll().find(
+      u => u.getEmail().toLowerCase().trim() === normalized
+    ) ?? null;
+  }
+
   save(user: User): void {
     const users = this.findAll();
     const index = users.findIndex(u => u.getId() === user.getId());

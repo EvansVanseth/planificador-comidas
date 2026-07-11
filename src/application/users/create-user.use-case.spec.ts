@@ -21,13 +21,13 @@ describe('CreateUserUseCase', () => {
     expect(saved!.getName()).toBe('Alice');
   });
 
-  it('debe rechazar nombre duplicado', () => {
-    useCase.execute('Alice');
-    expect(() => useCase.execute('Alice')).toThrow(AppError);
+  it('debe rechazar email duplicado', () => {
+    useCase.execute('Alice', 'alice@test.com');
+    expect(() => useCase.execute('Alice2', 'alice@test.com')).toThrow(AppError);
   });
 
-  it('debe rechazar nombre duplicado ignorando mayúsculas', () => {
-    useCase.execute('Alice');
-    expect(() => useCase.execute('alice')).toThrow(AppError);
+  it('debe rechazar email duplicado ignorando mayúsculas', () => {
+    useCase.execute('Alice', 'alice@test.com');
+    expect(() => useCase.execute('Alice2', 'ALICE@test.com')).toThrow(AppError);
   });
 });

@@ -7,24 +7,23 @@ import { getContainer } from '@/domain-container';
 type State = { error: string };
 
 export async function login(_prevState: State, formData: FormData): Promise<State> {
-  const name = formData.get('name') as string;
-  if (!name || name.trim().length === 0) {
-    return { error: 'Ingresá tu nombre' };
+  const email = formData.get('email') as string;
+  if (!email || email.trim().length === 0) {
+    return { error: 'Ingresá tu email' };
   }
 
   const container = getContainer();
   const users = container.listUsers.execute();
-  const existing = users.find(u => u.name.toLowerCase() === name.trim().toLowerCase());
+  const user = users.find(
+    u => u.email.toLowerCase() === email.trim().toLowerCase()
+  );
 
-  let userId: string;
-  if (existing) {
-    userId = existing.id;
-  } else {
-    userId = container.createUser.execute(name.trim());
+  if (!user) {
+    return { error: 'No existe un usuario con ese email. ¿Querés crear una cuenta?' };
   }
 
   const cookieStore = await cookies();
-  cookieStore.set('userId', userId, {
+  cookieStore.set('userId', user.id, {
     httpOnly: true,
     secure: false,
     sameSite: 'lax',

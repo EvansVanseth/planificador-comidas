@@ -19,6 +19,13 @@ export class InMemoryUserRepository implements UserRepository {
     ) ?? null;
   }
 
+  findByEmail(email: string): User | null {
+    const normalized = email.toLowerCase().trim();
+    return this.findAll().find(
+      u => u.getEmail().toLowerCase().trim() === normalized
+    ) ?? null;
+  }
+
   save(user: User): void {
     this.users.set(user.getId(), user);
   }

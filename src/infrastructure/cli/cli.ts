@@ -60,15 +60,24 @@ async function seleccionarUsuario(container: IContainer): Promise<string | null>
   if (!seleccion?.userId || seleccion.userId === '__exit__') return null;
 
   if (seleccion.userId === '__create__') {
-    const nuevo = await prompts({
-      type: 'text',
-      name: 'name',
-      message: 'Nombre del nuevo usuario:',
-    }, { onCancel: ON_CANCEL });
+    const nuevo = await prompts([
+      {
+        type: 'text',
+        name: 'name',
+        message: 'Nombre del nuevo usuario:',
+      },
+      {
+        type: 'text',
+        name: 'email',
+        message: 'Email:',
+        initial: (prev: string) =>
+          `${prev.toLowerCase().replace(/\s+/g, '.')}@plancomidas.com`,
+      },
+    ], { onCancel: ON_CANCEL });
 
     if (!nuevo?.name?.trim()) return null;
 
-    const newId = container.createUser.execute(nuevo.name.trim());
+    const newId = container.createUser.execute(nuevo.name.trim(), nuevo.email.trim());
     container.seedTagsForUser(newId);
     await resolveSystemTagsMenu(container, newId);
     console.log(`Bienvenido, ${nuevo.name.trim()}!`);

@@ -40,7 +40,7 @@ describe('DeleteUserUseCase', () => {
   });
 
   it('debe eliminar un usuario existente', () => {
-    userRepo.save(User.create(userId, 'Alice'));
+    userRepo.save(User.create(userId, 'Alice', 'alice@test.com'));
 
     const result = useCase.execute(userId);
 
@@ -53,7 +53,7 @@ describe('DeleteUserUseCase', () => {
   });
 
   it('debe eliminar todos los datos del usuario', () => {
-    userRepo.save(User.create(userId, 'Alice'));
+    userRepo.save(User.create(userId, 'Alice', 'alice@test.com'));
 
     tagRepo.save(Tag.create('00000000-0000-4000-a000-000000000001', userId, 'Vegano', TagDimension.ESTILOS_VIDA, false));
     tagRepo.save(Tag.create('00000000-0000-4000-a000-000000000002', userId, 'Celiaco', TagDimension.ESTILOS_VIDA, false));
