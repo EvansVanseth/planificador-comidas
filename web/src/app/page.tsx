@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function LandingPage() {
@@ -5,7 +6,11 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white">
       <header className="mx-auto flex h-20 max-w-[1024px] items-center justify-between px-6">
         <div className="flex items-center gap-2">
-          <div className="size-6 rounded bg-[#009966]" />
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#009B65" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 5v5a3 3 0 0 0 6 0V5" />
+            <path d="M8 5v15" />
+            <path d="M19 20V5c-3.5 0-4.5 1.5-4.5 4.5s1 4.5 4.5 4.5" />
+          </svg>
           <span className="text-xl font-bold text-[#0a0a0a]">PlanComidas</span>
         </div>
 
@@ -60,11 +65,14 @@ export default function LandingPage() {
           </div>
 
           <div className="relative w-full shrink-0 pt-10 lg:w-[464px]">
-            <div className="w-full overflow-hidden rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.1)] aspect-[2816/1536]">
-              <img
+            <div className="relative w-full overflow-hidden rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.1)] aspect-[2816/1536]">
+              <Image
                 src="/landing-companion.png"
                 alt="PlanComidas dashboard preview"
-                className="h-full w-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 464px"
+                className="object-cover"
+                priority
               />
             </div>
 
