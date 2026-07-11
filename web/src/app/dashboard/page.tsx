@@ -3,52 +3,8 @@ import { redirect } from 'next/navigation';
 import { getContainer } from '@/domain-container';
 import Link from 'next/link';
 import { logout } from './actions';
-
-function getTodayDayOrder(
-  startDateStr: string | null,
-  weeks: number,
-): number | null {
-  if (!startDateStr) return null;
-  const start = new Date(startDateStr);
-  const today = new Date();
-  const startNorm = new Date(
-    start.getFullYear(),
-    start.getMonth(),
-    start.getDate(),
-  );
-  const todayNorm = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate(),
-  );
-  const diff = Math.round(
-    (todayNorm.getTime() - startNorm.getTime()) / (1000 * 60 * 60 * 24),
-  );
-  if (diff < 0 || diff >= weeks * 7) return null;
-  return diff + 1;
-}
-
-function getDayName(offset: number): string {
-  const days = [
-    'Lunes',
-    'Martes',
-    'Miércoles',
-    'Jueves',
-    'Viernes',
-    'Sábado',
-    'Domingo',
-  ];
-  return days[(offset - 1) % 7];
-}
-
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString('es-ES', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-}
+import { getTodayDayOrder, getDayName, formatDate } from './helpers';
+import { GridIcon, RecipeIcon, CalendarIcon, CatalogIcon, LogoutIcon } from './icons';
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -57,7 +13,7 @@ export default async function DashboardPage() {
 
   const c = getContainer();
   const users = c.listUsers.execute();
-  const user = users.find((u: { id: string }) => u.id === userId);
+  const user = users.find((u) => u.id === userId);
   if (!user) redirect('/login');
 
   const recipes = c.listRecipes.execute(userId);
@@ -371,98 +327,4 @@ function MealCard({
   );
 }
 
-function GridIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="2" y="2" width="6" height="6" rx="1" />
-      <rect x="12" y="2" width="6" height="6" rx="1" />
-      <rect x="2" y="12" width="6" height="6" rx="1" />
-      <rect x="12" y="12" width="6" height="6" rx="1" />
-    </svg>
-  );
-}
 
-function RecipeIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M4 3h8a2 2 0 012 2v12a2 2 0 01-2 2H4V3z" />
-      <path d="M14 7h2a2 2 0 012 2v8a2 2 0 01-2 2h-2" />
-      <path d="M7 7h2" />
-      <path d="M7 10h2" />
-    </svg>
-  );
-}
-
-function CalendarIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="2" y="3" width="16" height="15" rx="2" />
-      <path d="M2 8h16" />
-      <path d="M6 1v4" />
-      <path d="M14 1v4" />
-    </svg>
-  );
-}
-
-function CatalogIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M2 4h6l2 2h8v10H2V4z" />
-    </svg>
-  );
-}
-
-function LogoutIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M7 17h8a2 2 0 002-2V5a2 2 0 00-2-2H7" />
-      <path d="M10 10H2" />
-      <path d="M5 7l-3 3 3 3" />
-    </svg>
-  );
-}

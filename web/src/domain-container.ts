@@ -1,11 +1,15 @@
 import path from 'path';
-import { createContainer } from '@/infrastructure/container';
+import { createContainer, IContainer } from '@/infrastructure/container';
 
-const projectRoot = path.resolve(process.cwd(), '..');
-process.chdir(projectRoot);
+let _container: IContainer | null = null;
 
-const _container = createContainer('file');
-
-export function getContainer() {
+export function getContainer(): IContainer {
+  if (!_container) {
+    const originalCwd = process.cwd();
+    const projectRoot = path.resolve(originalCwd, '..');
+    process.chdir(projectRoot);
+    _container = createContainer('file');
+    process.chdir(originalCwd);
+  }
   return _container;
 }
