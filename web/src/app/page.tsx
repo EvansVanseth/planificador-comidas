@@ -1,71 +1,216 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <header className="flex items-center justify-between px-8 py-4">
-        <h1 className="text-xl font-bold text-indigo-900">Planificador de Comidas</h1>
-        <nav className="flex gap-4">
+    <div className="min-h-screen bg-white">
+      <header className="mx-auto flex h-20 max-w-[1024px] items-center justify-between px-6">
+        <div className="flex items-center gap-2">
+          <div className="size-6 rounded bg-[#009966]" />
+          <span className="text-xl font-bold text-[#0a0a0a]">PlanComidas</span>
+        </div>
+
+        <nav className="flex items-center gap-6">
           <Link
             href="/login"
-            className="px-4 py-2 text-indigo-700 hover:text-indigo-900 transition-colors"
+            className="text-sm font-medium text-[#45556C] transition-colors hover:text-gray-900"
           >
-            Iniciar Sesión
+            Iniciar sesión
           </Link>
           <Link
             href="/login"
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            className="rounded-[10px] bg-[#009966] px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-[#008055]"
           >
-            Registrarse
+            Pruébalo gratis
           </Link>
         </nav>
       </header>
 
-      <main className="flex flex-col items-center justify-center px-8 pt-20 pb-32 text-center">
-        <h2 className="text-5xl font-bold text-gray-900 mb-6 max-w-2xl">
-          Planificá tus comidas
-          <span className="text-indigo-600"> sin pensar</span>
-        </h2>
-        <p className="text-xl text-gray-600 mb-12 max-w-xl">
-          Organizá el menú semanal, gestioná tu despensa, generá la lista de la compra
-          y deja que la app autoplanifique por vos.
-        </p>
+      <main className="mx-auto max-w-[1024px] px-6 pb-24 pt-16">
+        <div className="flex flex-col items-start gap-20 lg:flex-row">
+          <div className="w-full shrink-0 lg:w-[464px]">
+            <h1 className="text-[60px] font-bold leading-[1.1] text-[#0F172B] max-lg:text-5xl max-sm:text-4xl">
+              Deja de pensar
+              <br />
+              <span className="text-[#009966]">qué comer hoy.</span>
+            </h1>
 
-        <Link
-          href="/login"
-          className="px-8 py-4 bg-indigo-600 text-white text-lg font-semibold rounded-xl shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all"
-        >
-          Comenzar gratis
-        </Link>
+            <p className="mt-8 text-xl leading-relaxed text-[#45556C]">
+              Organiza tus recetas, genera tu menú semanal automáticamente y
+              obtén la lista de compras exacta con lo que falta en tu despensa.
+            </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24 max-w-4xl">
-          <div className="bg-white p-8 rounded-2xl shadow-md">
-            <div className="text-4xl mb-4">📋</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Planificación semanal</h3>
-            <p className="text-gray-500 text-sm">
-              Armá el menú de la semana con pocos clics. Asigná recetas a cada día y momento.
-            </p>
+            <Link
+              href="/login"
+              className="mt-10 inline-flex h-12 items-center justify-center rounded-[10px] bg-[#009966] px-7 text-lg font-medium text-white transition-colors hover:bg-[#008055]"
+            >
+              Empieza a planificar
+            </Link>
+
+            <div className="mt-14 space-y-5">
+              <FeatureItem>
+                Generación automática de menús sin repetir platos
+              </FeatureItem>
+              <FeatureItem>
+                Lista de compras inteligente basada en tu despensa
+              </FeatureItem>
+              <FeatureItem>
+                Filtra por tiempo, calorías o tipo de comida
+              </FeatureItem>
+            </div>
           </div>
-          <div className="bg-white p-8 rounded-2xl shadow-md">
-            <div className="text-4xl mb-4">🤖</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Autoplanificación</h3>
-            <p className="text-gray-500 text-sm">
-              El motor inteligente asigna recetas según tus preferencias, exclusiones y balance frío/caliente.
-            </p>
-          </div>
-          <div className="bg-white p-8 rounded-2xl shadow-md">
-            <div className="text-4xl mb-4">🛒</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Lista de la compra</h3>
-            <p className="text-gray-500 text-sm">
-              Calculá lo que falta comprar según tu despensa y llevalo al supermercado.
-            </p>
+
+          <div className="relative w-full shrink-0 pt-10 lg:w-[464px]">
+            <div className="w-full overflow-hidden rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.1)] aspect-[2816/1536]">
+              <img
+                src="/landing-companion.png"
+                alt="PlanComidas dashboard preview"
+                className="h-full w-full object-cover"
+              />
+            </div>
+
+            <FloatingCard
+              className="-right-4 -top-5 w-[223px]"
+              iconBg="bg-[#D0FAE5]"
+              icon={<CalendarIcon />}
+              title="Menú de la semana"
+              subtitle="14 comidas planificadas"
+            />
+
+            <FloatingCard
+              className="-bottom-16 -left-8 w-[206px]"
+              iconBg="bg-[#FEF3C6]"
+              icon={<CartIcon />}
+              title="Lista de compras"
+              subtitle="Faltan 8 ingredientes"
+            />
           </div>
         </div>
       </main>
-
-      <footer className="text-center py-8 text-gray-400 text-sm">
-        Planificador de Comidas — TFM
-      </footer>
     </div>
+  );
+}
+
+function FeatureItem({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-3">
+      <CheckIcon />
+      <span className="text-base text-[#314158]">{children}</span>
+    </div>
+  );
+}
+
+function FloatingCard({
+  className,
+  iconBg,
+  icon,
+  title,
+  subtitle,
+}: {
+  className: string;
+  iconBg: string;
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+}) {
+  return (
+    <div
+      className={`absolute flex h-20 items-center gap-3 rounded-xl bg-white px-4 shadow-[0_4px_10px_rgba(0,0,0,0.08)] ${className}`}
+    >
+      <div className={`flex size-12 shrink-0 items-center justify-center rounded-full ${iconBg}`}>
+        {icon}
+      </div>
+      <div>
+        <p className="text-sm font-bold text-[#0F172B]">{title}</p>
+        <p className="text-xs text-[#62748E]">{subtitle}</p>
+      </div>
+    </div>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      className="shrink-0"
+    >
+      <circle cx="10" cy="10" r="10" fill="#009966" />
+      <path
+        d="M6 10.5L8.5 13L14 7.5"
+        stroke="white"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+    >
+      <rect
+        x="1.5"
+        y="3"
+        width="15"
+        height="13.5"
+        rx="2"
+        stroke="#009966"
+        strokeWidth="1.5"
+      />
+      <path
+        d="M1.5 7.5H16.5"
+        stroke="#009966"
+        strokeWidth="1.5"
+      />
+      <path
+        d="M5.25 1.5V4.5"
+        stroke="#009966"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12.75 1.5V4.5"
+        stroke="#009966"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M5.25 10.5H7.5V12.75H5.25V10.5Z"
+        fill="#009966"
+      />
+      <path
+        d="M10.5 10.5H12.75V12.75H10.5V10.5Z"
+        fill="#009966"
+      />
+    </svg>
+  );
+}
+
+function CartIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+    >
+      <path
+        d="M1.5 2.25H3.75L5.25 11.25H14.25L16.5 4.5H4.5"
+        stroke="#F59E0B"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="6" cy="15" r="1.5" fill="#F59E0B" />
+      <circle cx="13.5" cy="15" r="1.5" fill="#F59E0B" />
+    </svg>
   );
 }
