@@ -1,10 +1,17 @@
 [
   {
     "id": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Juan"
+    "name": "Juan",
+    "email": "juan@plancomidas.com"
   },
   {
     "id": "31ce5372-598d-441c-b077-0c3e29787bf5",
-    "name": "Paquita"
+    "name": "Paquita",
+    "email": "paquita@plancomidas.com"
+  },
+  {
+    "id": "b773a1dd-3345-4725-a9fb-2beb77e355fe",
+    "name": "evansvanseth@gmail.com",
+    "email": "evansvanseth@gmail.com"
   }
 ]
