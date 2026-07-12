@@ -137,15 +137,11 @@ describe('Tag (Aggregate)', () => {
     expect(tag.getSystemKey()).toBeNull();
   });
 
-  it('debe rechazar rename si tiene systemKey', () => {
+  it('debe permitir rename aunque tenga systemKey', () => {
     const tag = Tag.create(validId, validUserId, 'Caliente', TagDimension.FORMATO, true, 'CALIENTE');
-    expect(() => tag.rename('Plato caliente')).toThrow(DomainError);
-  });
-
-  it('debe permitir rename si no tiene systemKey aunque sea sistema', () => {
-    const tag = Tag.create(validId, validUserId, 'Vegano', TagDimension.ESTILOS_VIDA, true);
-    tag.rename('Veggie');
-    expect(tag.getName()).toBe('Veggie');
+    tag.rename('Plato caliente');
+    expect(tag.getName()).toBe('Plato caliente');
+    expect(tag.getSystemKey()).toBe('CALIENTE');
   });
 
   it('debe serializar systemKey en primitivas', () => {

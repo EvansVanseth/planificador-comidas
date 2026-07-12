@@ -72,9 +72,6 @@ export class Tag {
   }
 
   public rename(name: string): void {
-    if (this.systemKey) {
-      throw new DomainError(`No se puede renombrar la etiqueta de sistema "${this.systemKey}"`);
-    }
     this.name = Name.create(TAG_NAME_FIELD, name);
   }
 
