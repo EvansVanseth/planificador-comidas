@@ -97,6 +97,11 @@ export default async function RecipesPage({
         <FilterToggle allTags={allTags} selectedTagIds={selectedTagIds} tagUrls={tagUrls} clearUrl={clearUrl} />
       </form>
 
+      <p className="mb-3 text-sm text-[#62748E]">
+        Mostrando {recipes.length} receta{recipes.length !== 1 ? 's' : ''}
+        {query || selectedTagIds.length > 0 ? ' filtradas' : ''}
+      </p>
+
       {recipes.length === 0 ? (
         <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">
           <p className="text-sm text-[#62748E]">
