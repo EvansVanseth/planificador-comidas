@@ -2,6 +2,7 @@
 
 import { useFormState, useFormStatus } from 'react-dom';
 import { login } from './actions';
+import { LogoIcon } from '@/components/icons';
 
 const initialState = { error: '' };
 
@@ -26,20 +27,7 @@ export default function LoginPage() {
       <div className="w-full max-w-[448px]">
         <div className="mb-8 flex flex-col items-center">
           <div className="mb-6">
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#009B65"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 5v5a3 3 0 0 0 6 0V5" />
-              <path d="M8 5v15" />
-              <path d="M19 20V5c-3.5 0-4.5 1.5-4.5 4.5s1 4.5 4.5 4.5" />
-            </svg>
+            <LogoIcon size={48} />
           </div>
           <h1 className="mb-2 text-[30px] font-bold text-[#0F172B]">
             Bienvenido de nuevo

@@ -1,16 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { LogoIcon, CheckIcon, CalendarFilledIcon, CartIcon } from '@/components/icons';
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
       <header className="mx-auto flex h-20 max-w-[1024px] items-center justify-between px-6">
         <div className="flex items-center gap-2">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#009B65" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 5v5a3 3 0 0 0 6 0V5" />
-            <path d="M8 5v15" />
-            <path d="M19 20V5c-3.5 0-4.5 1.5-4.5 4.5s1 4.5 4.5 4.5" />
-          </svg>
+          <LogoIcon />
           <span className="text-xl font-bold text-[#0a0a0a]">PlanComidas</span>
         </div>
 
@@ -79,7 +76,7 @@ export default function LandingPage() {
             <FloatingCard
               className="-right-4 -top-5 w-[223px]"
               iconBg="bg-[#D0FAE5]"
-              icon={<CalendarIcon />}
+              icon={<CalendarFilledIcon />}
               title="Menú de la semana"
               subtitle="14 comidas planificadas"
             />
@@ -135,90 +132,4 @@ function FloatingCard({
   );
 }
 
-function CheckIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      className="shrink-0"
-    >
-      <circle cx="10" cy="10" r="10" fill="#009966" />
-      <path
-        d="M6 10.5L8.5 13L14 7.5"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
-function CalendarIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 18 18"
-      fill="none"
-    >
-      <rect
-        x="1.5"
-        y="3"
-        width="15"
-        height="13.5"
-        rx="2"
-        stroke="#009966"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M1.5 7.5H16.5"
-        stroke="#009966"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M5.25 1.5V4.5"
-        stroke="#009966"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M12.75 1.5V4.5"
-        stroke="#009966"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M5.25 10.5H7.5V12.75H5.25V10.5Z"
-        fill="#009966"
-      />
-      <path
-        d="M10.5 10.5H12.75V12.75H10.5V10.5Z"
-        fill="#009966"
-      />
-    </svg>
-  );
-}
-
-function CartIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 18 18"
-      fill="none"
-    >
-      <path
-        d="M1.5 2.25H3.75L5.25 11.25H14.25L16.5 4.5H4.5"
-        stroke="#F59E0B"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="6" cy="15" r="1.5" fill="#F59E0B" />
-      <circle cx="13.5" cy="15" r="1.5" fill="#F59E0B" />
-    </svg>
-  );
-}

@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { getContainer } from '@/domain-container';
 import Link from 'next/link';
 import { getTodayDayOrder, getDayName, formatDate } from './helpers';
+import { PlusIcon, CalendarSmallIcon } from '@/components/icons';
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -81,18 +82,7 @@ export default async function DashboardPage() {
           href="/plannings"
           className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#009966] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          >
-            <path d="M8 3v10" />
-            <path d="M3 8h10" />
-          </svg>
+          <PlusIcon />
           Nueva planificación
         </Link>
       </div>
@@ -104,20 +94,7 @@ export default async function DashboardPage() {
           {activePlanning ? (
             <>
               <div className="mb-2 flex items-center gap-2 text-sm text-white/80">
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                >
-                  <rect x="1" y="2.5" width="12" height="10" rx="1.5" />
-                  <path d="M1 5.5h12" />
-                  <path d="M4 1v3" />
-                  <path d="M10 1v3" />
-                </svg>
+                <CalendarSmallIcon />
                 Planificación activa
               </div>
               <h2 className="mb-1 text-xl font-bold">

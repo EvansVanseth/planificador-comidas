@@ -3,13 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { logout } from './actions';
-import {
-  GridIcon,
-  RecipeIcon,
-  CalendarIcon,
-  CatalogIcon,
-  LogoutIcon,
-} from './icons';
+import { GridIcon, RecipeIcon, CalendarIcon, CatalogIcon, LogoutIcon, LogoIcon } from '@/components/icons';
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Panel', icon: GridIcon },
@@ -25,20 +19,7 @@ export default function Sidebar() {
   return (
     <aside className="flex w-64 shrink-0 flex-col border-r border-gray-200 bg-white">
       <div className="flex h-16 items-center gap-2 px-6">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#009B65"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M5 5v5a3 3 0 0 0 6 0V5" />
-          <path d="M8 5v15" />
-          <path d="M19 20V5c-3.5 0-4.5 1.5-4.5 4.5s1 4.5 4.5 4.5" />
-        </svg>
+        <LogoIcon />
         <span className="text-xl font-bold text-[#0a0a0a]">PlanComidas</span>
       </div>
 
