@@ -9,7 +9,7 @@ type State = { error: string };
 export async function login(_prevState: State, formData: FormData): Promise<State> {
   const email = formData.get('email') as string;
   if (!email || email.trim().length === 0) {
-    return { error: 'Ingresá tu email' };
+    return { error: 'Escribe tu email' };
   }
 
   const container = getContainer();
@@ -19,7 +19,7 @@ export async function login(_prevState: State, formData: FormData): Promise<Stat
   );
 
   if (!user) {
-    return { error: 'No existe un usuario con ese email. ¿Querés crear una cuenta?' };
+    return { error: 'No existe un usuario con ese email. ¿Quieres crear una cuenta?' };
   }
 
   const cookieStore = await cookies();

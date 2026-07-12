@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { getContainer } from '@/domain-container';
-import { createIngredient, deleteIngredient } from './actions';
+import { createIngredient } from './actions';
+import IngredientRow from './ingredient-row';
 
 export default async function IngredientsPage({
   searchParams,
@@ -66,25 +67,12 @@ export default async function IngredientsPage({
       ) : (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
           {filtered.map((ingredient, index) => (
-            <div
+            <IngredientRow
               key={ingredient.id}
-              className={`flex items-center justify-between px-6 py-3 ${
-                index < filtered.length - 1 ? 'border-b border-gray-100' : ''
-              }`}
-            >
-              <span className="text-sm font-medium text-[#0F172B]">
-                {ingredient.name}
-              </span>
-              <form action={deleteIngredient}>
-                <input type="hidden" name="id" value={ingredient.id} />
-                <button
-                  type="submit"
-                  className="text-sm text-[#62748E] transition-colors hover:text-red-500"
-                >
-                  Eliminar
-                </button>
-              </form>
-            </div>
+              id={ingredient.id}
+              name={ingredient.name}
+              isLast={index === filtered.length - 1}
+            />
           ))}
         </div>
       )}

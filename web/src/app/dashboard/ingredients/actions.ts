@@ -23,6 +23,25 @@ export async function createIngredient(formData: FormData) {
   redirect('/dashboard/ingredients');
 }
 
+export async function renameIngredient(formData: FormData) {
+  const id = formData.get('id') as string;
+  const name = formData.get('name') as string;
+
+  if (!name || name.trim().length === 0) {
+    redirect('/dashboard/ingredients?error=El nombre no puede estar vacío');
+  }
+
+  const c = getContainer();
+  try {
+    c.updateIngredient.execute({ id, name: name.trim() });
+  } catch {
+    redirect('/dashboard/ingredients?error=Ya existe un ingrediente con ese nombre');
+  }
+
+  revalidatePath('/dashboard/ingredients');
+  redirect('/dashboard/ingredients');
+}
+
 export async function deleteIngredient(formData: FormData) {
   const id = formData.get('id') as string;
 
