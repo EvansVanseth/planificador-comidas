@@ -22,7 +22,7 @@ As the project grows, skills (in `~/.config/opencode/skills/`) will be created t
 - **DDD**: Domain patterns (VO, Entity, Aggregate, DomainError), naming conventions, and structure.
 - **Application**: Use case patterns (constructor injection, `AppError`, `*Input` types, colocated `.spec.ts`).
 - **CLI**: Menu patterns with `prompts`, error handling, user selection flow.
-- **web-ui**: Next.js 14 patterns — server/client components, server actions, layout/auth, icons, routing, Tailwind tokens.
+- **web-ui**: Next.js 14 patterns — server/client components, server actions, layout/auth, icons, routing, Tailwind tokens, toast notification system via cookie queue.
 - Additional skills will emerge during development (planning engine, Postgres persistence, etc.) and will be created on demand.
 
 ## Stack

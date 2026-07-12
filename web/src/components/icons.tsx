@@ -245,6 +245,26 @@ export function CloseIcon() {
   );
 }
 
+export function MergeIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 2v5a3 3 0 0 0 3 3h7" />
+      <path d="M13 7l-3 3 3 3" />
+      <path d="M10 2v3" />
+      <path d="M13 2v3" />
+    </svg>
+  );
+}
+
 export function PlusIcon() {
   return (
     <svg

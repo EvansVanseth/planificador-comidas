@@ -37,7 +37,7 @@ export default function SimilarNameWarning({
         <p className="mb-3 text-sm text-[#62748E]">
           Ya existe uno o más ingredientes con nombres similares:
         </p>
-        <ul className="mb-6 space-y-1">
+        <ul className="mb-6 max-h-40 space-y-1 overflow-y-auto">
           {similarNames.map((n) => (
             <li key={n} className="text-sm text-[#0F172B]">
               • {n}

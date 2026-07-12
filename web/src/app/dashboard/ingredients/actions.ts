@@ -1,8 +1,12 @@
 'use server';
 
+import { Name } from '@/domain/shared/value-objects/name.vo';
 import { getContainer } from '@/domain-container';
+import { addToastToQueue } from '@/lib/toast-utils';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+
+const PATH = '/dashboard/ingredients';
 
 function isSimilar(a: string, b: string): boolean {
   const al = a.toLowerCase();
@@ -15,72 +19,89 @@ export async function createIngredient(formData: FormData) {
   const userId = formData.get('userId') as string;
   const name = formData.get('name') as string;
 
-  if (!name || name.trim().length === 0) {
-    redirect('/dashboard/ingredients?error=El nombre no puede estar vacío');
+  let nameVO: Name;
+  try {
+    nameVO = Name.create('nombre', name || '');
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Nombre inválido';
+    await addToastToQueue(msg, 'error', PATH);
+    revalidatePath(PATH);
+    redirect(PATH);
   }
 
-  const trimmed = name.trim();
+  const trimmed = nameVO.value;
   const c = getContainer();
 
   const existing = c.listIngredients.execute(userId);
   if (existing.some((i) => i.name.toLowerCase() === trimmed.toLowerCase())) {
-    redirect('/dashboard/ingredients?error=Ya existe un ingrediente con ese nombre');
+    await addToastToQueue('Ya existe un ingrediente con ese nombre', 'error', PATH);
+    revalidatePath(PATH);
+    redirect(PATH);
   }
 
   const similar = existing.filter((i) => isSimilar(trimmed, i.name));
   if (similar.length > 0) {
     const names = similar.map((i) => i.name).join(',');
     redirect(
-      `/dashboard/ingredients?similar=${encodeURIComponent(names)}&name=${encodeURIComponent(trimmed)}`,
+      `${PATH}?similar=${encodeURIComponent(names)}&name=${encodeURIComponent(trimmed)}`,
     );
   }
 
-  try {
-    c.createIngredient.execute(userId, trimmed);
-  } catch {
-    redirect('/dashboard/ingredients?error=Ya existe un ingrediente con ese nombre');
-  }
+  c.createIngredient.execute(userId, trimmed);
 
-  revalidatePath('/dashboard/ingredients');
-  redirect('/dashboard/ingredients?toast=created');
+  await addToastToQueue('Ingrediente creado correctamente.', 'success', PATH);
+  revalidatePath(PATH);
+  redirect(PATH);
 }
 
 export async function forceCreateIngredient(formData: FormData) {
   const userId = formData.get('userId') as string;
   const name = formData.get('name') as string;
 
-  if (!name || name.trim().length === 0) {
-    redirect('/dashboard/ingredients?error=El nombre no puede estar vacío');
+  let nameVO: Name;
+  try {
+    nameVO = Name.create('nombre', name || '');
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Nombre inválido';
+    await addToastToQueue(msg, 'error', PATH);
+    revalidatePath(PATH);
+    redirect(PATH);
   }
 
   const c = getContainer();
-  try {
-    c.createIngredient.execute(userId, name.trim());
-  } catch {
-    redirect('/dashboard/ingredients?error=Ya existe un ingrediente con ese nombre');
-  }
+  c.createIngredient.execute(userId, nameVO.value);
 
-  revalidatePath('/dashboard/ingredients');
-  redirect('/dashboard/ingredients?toast=created');
+  await addToastToQueue('Ingrediente creado correctamente.', 'success', PATH);
+  revalidatePath(PATH);
+  redirect(PATH);
 }
 
 export async function renameIngredient(formData: FormData) {
   const id = formData.get('id') as string;
   const name = formData.get('name') as string;
 
-  if (!name || name.trim().length === 0) {
-    redirect('/dashboard/ingredients?error=El nombre no puede estar vacío');
+  let nameVO: Name;
+  try {
+    nameVO = Name.create('nombre', name || '');
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Nombre inválido';
+    await addToastToQueue(msg, 'error', PATH);
+    revalidatePath(PATH);
+    redirect(PATH);
   }
 
   const c = getContainer();
   try {
-    c.updateIngredient.execute({ id, name: name.trim() });
+    c.updateIngredient.execute({ id, name: nameVO.value });
   } catch {
-    redirect('/dashboard/ingredients?error=Ya existe un ingrediente con ese nombre');
+    await addToastToQueue('Ya existe un ingrediente con ese nombre', 'error', PATH);
+    revalidatePath(PATH);
+    redirect(PATH);
   }
 
-  revalidatePath('/dashboard/ingredients');
-  redirect('/dashboard/ingredients?toast=edited');
+  await addToastToQueue('Ingrediente editado correctamente.', 'success', PATH);
+  revalidatePath(PATH);
+  redirect(PATH);
 }
 
 export async function deleteIngredient(formData: FormData) {
@@ -89,10 +110,35 @@ export async function deleteIngredient(formData: FormData) {
   const c = getContainer();
   const result = c.deleteIngredient.execute(id);
 
-  revalidatePath('/dashboard/ingredients');
-  redirect(
-    `/dashboard/ingredients?toast=deleted&rp=${result.recipesAffected}&pp=${result.planningsAffected}`,
+  await addToastToQueue(
+    `Ingrediente eliminado. Afectó a ${result.recipesAffected} recetas y ${result.planningsAffected} planificaciones.`,
+    'success',
+    PATH,
   );
+  revalidatePath(PATH);
+  redirect(PATH);
+}
+
+export async function mergeIngredients(formData: FormData) {
+  const userId = formData.get('userId') as string;
+  const sourceId = formData.get('sourceId') as string;
+  const targetId = formData.get('targetId') as string;
+
+  const c = getContainer();
+  c.mergeIngredients.execute(userId, sourceId, targetId);
+
+  await addToastToQueue('Ingredientes fusionados correctamente.', 'success', PATH);
+  revalidatePath(PATH);
+  redirect(PATH);
+}
+
+export async function getMergePreview(sourceId: string, userId: string) {
+  const c = getContainer();
+  const recipes = c.listRecipes.execute(userId);
+  const recipesAffected = recipes
+    .filter((r) => r.ingredients.some((i) => i.ingredientId === sourceId))
+    .map((r) => r.name);
+  return { recipesAffected };
 }
 
 export async function getDeleteImpact(ingredientId: string, userId: string) {
