@@ -19,7 +19,7 @@ export async function createTag(formData: FormData) {
     nameVO = Name.create('nombre', name || '');
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Nombre inválido';
-    await addToastToQueue(msg, 'error', PATH);
+    await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
     redirect(PATH);
   }
@@ -29,12 +29,12 @@ export async function createTag(formData: FormData) {
     c.createTag.execute(userId, nameVO.value, dimension, false);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al crear la etiqueta';
-    await addToastToQueue(msg, 'error', PATH);
+    await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
     redirect(PATH);
   }
 
-  await addToastToQueue('Etiqueta creada correctamente.', 'success', PATH);
+  await addToastToQueue(`Etiqueta '${nameVO.value}' creada correctamente.`);
   revalidatePath(PATH);
   redirect(PATH);
 }
@@ -42,13 +42,14 @@ export async function createTag(formData: FormData) {
 export async function updateTag(formData: FormData) {
   const id = formData.get('id') as string;
   const name = formData.get('name') as string;
+  const previousName = (formData.get('previousName') as string) || '';
 
   let nameVO: Name;
   try {
     nameVO = Name.create('nombre', name || '');
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Nombre inválido';
-    await addToastToQueue(msg, 'error', PATH);
+    await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
     redirect(PATH);
   }
@@ -58,30 +59,31 @@ export async function updateTag(formData: FormData) {
     c.updateTag.execute({ id, name: nameVO.value });
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al editar la etiqueta';
-    await addToastToQueue(msg, 'error', PATH);
+    await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
     redirect(PATH);
   }
 
-  await addToastToQueue('Etiqueta editada correctamente.', 'success', PATH);
+  await addToastToQueue(
+    `Modificada etiqueta '${previousName}' a '${nameVO.value}' correctamente.`,
+  );
   revalidatePath(PATH);
   redirect(PATH);
 }
 
 export async function deleteTag(formData: FormData) {
   const id = formData.get('id') as string;
+  const tagName = (formData.get('tagName') as string) || '';
 
   const c = getContainer();
   try {
     const result = c.deleteTag.execute(id);
     await addToastToQueue(
-      `Etiqueta eliminada. Afectó a ${result.recipesAffected} recetas y ${result.planningsAffected} planificaciones.`,
-      'success',
-      PATH,
+      `Etiqueta '${tagName}' eliminada. Afectó a ${result.recipesAffected} recetas y ${result.planningsAffected} planificaciones.`,
     );
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al eliminar la etiqueta';
-    await addToastToQueue(msg, 'error', PATH);
+    await addToastToQueue(msg, 'error');
   }
 
   revalidatePath(PATH);

@@ -62,6 +62,7 @@ export default function TagRow({
             className="flex flex-1 items-center gap-2"
           >
             <input type="hidden" name="id" value={id} />
+            <input type="hidden" name="previousName" value={name} />
             <input
               name="name"
               value={editName}
@@ -182,6 +183,7 @@ export default function TagRow({
               </button>
               <form ref={formRef} action={deleteTag}>
                 <input type="hidden" name="id" value={id} />
+                <input type="hidden" name="tagName" value={name} />
                 <button
                   type="submit"
                   className="rounded-lg bg-[#DC2626] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]"

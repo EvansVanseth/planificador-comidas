@@ -8,7 +8,6 @@ export type ToastItem = {
 export async function addToastToQueue(
   message: string,
   type: ToastItem['type'] = 'success',
-  path = '/dashboard',
 ) {
   const cookieStore = await cookies();
   let queue: ToastItem[] = [];
@@ -18,7 +17,7 @@ export async function addToastToQueue(
   } catch {}
   queue.push({ message, type });
   cookieStore.set('toast_queue', JSON.stringify(queue), {
-    path,
+    path: '/dashboard',
     maxAge: 10,
   });
 }

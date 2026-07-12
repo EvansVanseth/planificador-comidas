@@ -24,7 +24,7 @@ export async function createIngredient(formData: FormData) {
     nameVO = Name.create('nombre', name || '');
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Nombre inválido';
-    await addToastToQueue(msg, 'error', PATH);
+    await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
     redirect(PATH);
   }
@@ -34,7 +34,7 @@ export async function createIngredient(formData: FormData) {
 
   const existing = c.listIngredients.execute(userId);
   if (existing.some((i) => i.name.toLowerCase() === trimmed.toLowerCase())) {
-    await addToastToQueue('Ya existe un ingrediente con ese nombre', 'error', PATH);
+    await addToastToQueue('Ya existe un ingrediente con ese nombre', 'error');
     revalidatePath(PATH);
     redirect(PATH);
   }
@@ -49,7 +49,7 @@ export async function createIngredient(formData: FormData) {
 
   c.createIngredient.execute(userId, trimmed);
 
-  await addToastToQueue('Ingrediente creado correctamente.', 'success', PATH);
+  await addToastToQueue(`Ingrediente '${trimmed}' creado correctamente.`);
   revalidatePath(PATH);
   redirect(PATH);
 }
@@ -63,7 +63,7 @@ export async function forceCreateIngredient(formData: FormData) {
     nameVO = Name.create('nombre', name || '');
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Nombre inválido';
-    await addToastToQueue(msg, 'error', PATH);
+    await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
     redirect(PATH);
   }
@@ -71,7 +71,7 @@ export async function forceCreateIngredient(formData: FormData) {
   const c = getContainer();
   c.createIngredient.execute(userId, nameVO.value);
 
-  await addToastToQueue('Ingrediente creado correctamente.', 'success', PATH);
+  await addToastToQueue(`Ingrediente '${nameVO.value}' creado correctamente.`);
   revalidatePath(PATH);
   redirect(PATH);
 }
@@ -79,13 +79,14 @@ export async function forceCreateIngredient(formData: FormData) {
 export async function renameIngredient(formData: FormData) {
   const id = formData.get('id') as string;
   const name = formData.get('name') as string;
+  const previousName = (formData.get('previousName') as string) || '';
 
   let nameVO: Name;
   try {
     nameVO = Name.create('nombre', name || '');
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Nombre inválido';
-    await addToastToQueue(msg, 'error', PATH);
+    await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
     redirect(PATH);
   }
@@ -94,12 +95,14 @@ export async function renameIngredient(formData: FormData) {
   try {
     c.updateIngredient.execute({ id, name: nameVO.value });
   } catch {
-    await addToastToQueue('Ya existe un ingrediente con ese nombre', 'error', PATH);
+    await addToastToQueue('Ya existe un ingrediente con ese nombre', 'error');
     revalidatePath(PATH);
     redirect(PATH);
   }
 
-  await addToastToQueue('Ingrediente editado correctamente.', 'success', PATH);
+  await addToastToQueue(
+    `Modificado '${previousName}' a '${nameVO.value}' correctamente.`,
+  );
   revalidatePath(PATH);
   redirect(PATH);
 }
@@ -112,8 +115,6 @@ export async function deleteIngredient(formData: FormData) {
 
   await addToastToQueue(
     `Ingrediente eliminado. Afectó a ${result.recipesAffected} recetas y ${result.planningsAffected} planificaciones.`,
-    'success',
-    PATH,
   );
   revalidatePath(PATH);
   redirect(PATH);
@@ -127,7 +128,7 @@ export async function mergeIngredients(formData: FormData) {
   const c = getContainer();
   c.mergeIngredients.execute(userId, sourceId, targetId);
 
-  await addToastToQueue('Ingredientes fusionados correctamente.', 'success', PATH);
+  await addToastToQueue('Ingredientes fusionados correctamente.');
   revalidatePath(PATH);
   redirect(PATH);
 }

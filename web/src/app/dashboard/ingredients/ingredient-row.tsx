@@ -70,6 +70,7 @@ export default function IngredientRow({
             className="flex flex-1 items-center gap-2"
           >
             <input type="hidden" name="id" value={id} />
+            <input type="hidden" name="previousName" value={name} />
             <input
               ref={inputRef}
               name="name"

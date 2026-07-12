@@ -35,7 +35,6 @@ export default async function DashboardLayout({
                 message: t.message,
                 type: t.type === 'error' ? 'error' : 'success',
               }))}
-              path="/dashboard"
             />
           )}
           {children}

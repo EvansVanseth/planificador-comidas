@@ -106,7 +106,7 @@
   {
     "id": "4736a8fc-d4e4-41b9-b242-01314a9ec826",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Vegetariano",
+    "name": "Vegetarià",
     "dimension": "ESTILOS_VIDA",
     "isSystem": true,
     "systemKey": "VEGETARIANO"
@@ -114,7 +114,7 @@
   {
     "id": "a744d376-8ab7-47ec-9c48-00915c5bad0d",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Vegano",
+    "name": "Vegà",
     "dimension": "ESTILOS_VIDA",
     "isSystem": true,
     "systemKey": "VEGANO"
@@ -258,8 +258,24 @@
   {
     "id": "cfffce19-0c9c-4a95-aeca-35a3bdf972a7",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Solo findes",
+    "name": "Sols findes",
     "dimension": "ESTILOS_VIDA",
+    "isSystem": false,
+    "systemKey": null
+  },
+  {
+    "id": "57515af9-6928-42b7-95f9-d0683ce866b9",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Favorit",
+    "dimension": "ESTILOS_VIDA",
+    "isSystem": false,
+    "systemKey": null
+  },
+  {
+    "id": "b3a1ca6e-255e-4f65-a51c-efedf33f3444",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Caldo",
+    "dimension": "TIPO_PLATO",
     "isSystem": false,
     "systemKey": null
   }

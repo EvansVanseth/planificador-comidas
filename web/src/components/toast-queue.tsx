@@ -5,13 +5,7 @@ import { useRouter } from 'next/navigation';
 import ToastNotification from '@/components/toast';
 import type { ToastItem } from '@/lib/toast-utils';
 
-export default function ToastQueue({
-  messages,
-  path = '/dashboard',
-}: {
-  messages: ToastItem[];
-  path?: string;
-}) {
+export default function ToastQueue({ messages }: { messages: ToastItem[] }) {
   const [index, setIndex] = useState(0);
   const router = useRouter();
 
@@ -20,7 +14,7 @@ export default function ToastQueue({
     setIndex(next);
 
     if (next >= messages.length) {
-      document.cookie = `toast_queue=; path=${path}; max-age=0`;
+      document.cookie = 'toast_queue=; path=/dashboard; max-age=0';
       setTimeout(() => router.refresh(), 350);
     }
   }
