@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { ClockIcon, PeopleIcon, TrashIcon } from '@/components/icons';
 import { ConfirmModal } from '@/components/confirm-modal';
@@ -18,10 +18,10 @@ type RecipeData = {
 type TagFull = { id: string; name: string; dimension: string };
 
 const DIM_PILLS: Record<string, string> = {
-  MOMENTO_DIA: 'bg-[#D0FAC5] text-[#006045]',
-  FORMATO: 'bg-[#F1F5F9] text-[#0F172B]',
-  TIPO_PLATO: 'bg-[#F1F5F9] text-[#0F172B]',
-  ESTILOS_VIDA: 'bg-[#F1F5F9] text-[#0F172B]',
+  MOMENTO_DIA: 'bg-blue-100 text-blue-700',
+  FORMATO: 'bg-amber-100 text-amber-700',
+  TIPO_PLATO: 'bg-purple-100 text-purple-700',
+  ESTILOS_VIDA: 'bg-gray-100 text-gray-600',
 };
 
 function formatMinutes(m: number): string {
@@ -52,16 +52,13 @@ export default function RecipeCard({
     setShowDeleteModal(true);
   }
 
-  async function loadImpact() {
-    if (loadingImpact || planningsAffected !== null) return;
+  useEffect(() => {
+    if (!showDeleteModal || planningsAffected !== null || loadingImpact) return;
     setLoadingImpact(true);
-    try {
-      const data = await getDeleteImpact(recipe.id, userId);
-      setPlanningsAffected(data.planningsAffected);
-    } finally {
-      setLoadingImpact(false);
-    }
-  }
+    getDeleteImpact(recipe.id, userId)
+      .then((data) => setPlanningsAffected(data.planningsAffected))
+      .finally(() => setLoadingImpact(false));
+  }, [showDeleteModal, recipe.id, userId, planningsAffected, loadingImpact]);
 
   return (
     <div className="flex flex-col overflow-hidden rounded-xl border border-[#E2E8F0] bg-white shadow-[0_1px_2px_-1px_rgba(0,0,0,0.1),0_1px_3px_rgba(0,0,0,0.1)]">
@@ -130,15 +127,6 @@ export default function RecipeCard({
               ? ' y se removerá de las planificaciones que la contengan.'
               : '.'}
           </p>
-          {planningsAffected === null && !loadingImpact && (
-            <button
-              type="button"
-              onClick={loadImpact}
-              className="text-sm text-[#009966] hover:underline"
-            >
-              Ver impacto en planificaciones
-            </button>
-          )}
           {loadingImpact && (
             <p className="text-sm text-[#62748E]">Calculando impacto...</p>
           )}

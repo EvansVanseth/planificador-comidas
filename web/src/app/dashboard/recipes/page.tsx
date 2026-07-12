@@ -5,6 +5,8 @@ import { PlusIcon } from '@/components/icons';
 import RecipeCard from './recipe-card';
 import { FilterToggle } from './filter-toggle';
 
+const DIM_ORDER = ['MOMENTO_DIA', 'FORMATO', 'TIPO_PLATO', 'ESTILOS_VIDA'];
+
 export default async function RecipesPage({
   searchParams,
 }: {
@@ -15,7 +17,11 @@ export default async function RecipesPage({
 
   const c = getContainer();
   const allRecipes = c.listRecipes.execute(userId);
-  const allTags = c.listTags.execute(userId);
+  const allTags = c.listTags.execute(userId).sort((a, b) => {
+    const dimDiff = DIM_ORDER.indexOf(a.dimension) - DIM_ORDER.indexOf(b.dimension);
+    if (dimDiff !== 0) return dimDiff;
+    return a.name.localeCompare(b.name);
+  });
 
   const query = searchParams.q?.toLowerCase().trim() ?? '';
   const selectedTagIds = searchParams.tag?.split(',').filter(Boolean) ?? [];

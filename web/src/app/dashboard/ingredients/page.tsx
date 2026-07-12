@@ -67,12 +67,28 @@ export default async function IngredientsPage({
       </div>
 
       <form className="mb-6">
-        <input
-          name="q"
-          defaultValue={query}
-          placeholder="Buscar ingrediente..."
-          className="h-10 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm transition-colors focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
-        />
+        <div className="relative">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="#62748E"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2"
+          >
+            <circle cx="7" cy="7" r="4.5" />
+            <path d="M10.5 10.5l3 3" />
+          </svg>
+          <input
+            name="q"
+            defaultValue={query}
+            placeholder="Buscar ingrediente..."
+            className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-3.5 text-sm transition-colors focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+          />
+        </div>
       </form>
 
       {filtered.length === 0 ? (

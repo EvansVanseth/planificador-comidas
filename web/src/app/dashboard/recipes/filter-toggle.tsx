@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { FilterIcon } from '@/components/icons';
+import { FilterIcon, CloseIcon } from '@/components/icons';
 
 type TagInfo = { id: string; name: string; dimension: string };
 
@@ -77,14 +77,23 @@ export function FilterToggle({
             <p className="text-sm font-semibold text-[#0F172B]">
               Filtrar por etiquetas
             </p>
-            {selectedTagIds.length > 0 && (
-              <Link
-                href={clearUrl ?? '/dashboard/recipes'}
-                className="text-xs font-medium text-[#62748E] hover:text-[#009966]"
+            <div className="flex items-center gap-2">
+              {selectedTagIds.length > 0 && (
+                <Link
+                  href={clearUrl ?? '/dashboard/recipes'}
+                  className="text-xs font-medium text-[#62748E] hover:text-[#009966]"
+                >
+                  Limpiar
+                </Link>
+              )}
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="rounded-lg p-1 text-[#62748E] transition-colors hover:bg-gray-100"
               >
-                Limpiar
-              </Link>
-            )}
+                <CloseIcon />
+              </button>
+            </div>
           </div>
           <div className="flex flex-wrap gap-2">
             {allTags.map((tag) => {
@@ -94,7 +103,6 @@ export function FilterToggle({
                 <Link
                   key={tag.id}
                   href={tagUrl}
-                  onClick={() => setOpen(false)}
                   className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${pillClass(tag.dimension, selected)}`}
                 >
                   {tag.name}
