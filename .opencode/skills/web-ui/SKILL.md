@@ -6,7 +6,7 @@ user-invocable: true
 license: MIT
 metadata:
   author: planificador-de-comidas
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Web UI Skill — Planificador de Comidas
@@ -88,7 +88,8 @@ export async function createSomething(formData: FormData) {
 Reglas:
 - `revalidatePath()` antes de `redirect()` para que la página destino vea los datos nuevos
 - Errores de dominio/validación se pasan como query param `?error=`
-- El componente renderiza el error condicionalmente: `{searchParams.error && <div>...}`
+- Éxito se pasa como `?toast=mensaje` (incluye datos del resultado vía params extra como `&rp=X&pp=Y`)
+- La página renderiza toast condicionalmente: `{toastMessage && <ToastNotification message={toastMessage} />}`
 - No se usan `useActionState` ni manejo de estado en cliente para operaciones CRUD simples
 
 ---
@@ -169,6 +170,9 @@ Todos los iconos están centralizados en `web/src/components/icons.tsx`:
 | `CheckIcon` | Checkmark landing page |
 | `CartIcon` | Carrito landing page |
 | `PlusIcon` | Botón crear/nuevo (16x16) |
+| `PencilIcon` | Editar / renombrar (16x16) |
+| `TrashIcon` | Eliminar (16x16) |
+| `CloseIcon` | Cerrar toast / modal (16x16) |
 
 Import desde `@/components/icons`:
 
@@ -186,7 +190,7 @@ import { LogoIcon, PlusIcon } from '@/components/icons';
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { q?: string; error?: string };
+  searchParams: { q?: string; error?: string; toast?: string; rp?: string; pp?: string; similar?: string; name?: string };
 }) {
   // 1. Fetch data
   const items = c.listSomething.execute(userId);
@@ -195,15 +199,27 @@ export default async function Page({
     ? items.filter(i => i.name.toLowerCase().includes(query))
     : items;
 
+  // Messages from server actions
+  const toastMessage = searchParams.toast === 'created' ? 'Creado correctamente.'
+    : searchParams.toast === 'deleted' ? `Eliminado. Afectó a ${searchParams.rp ?? 0} recetas...`
+    : null;
+  const similarNames = searchParams.similar?.split(',').map(s => s.trim()) ?? [];
+
   return (
     <>
-      {/* 2. Header + create form */}
+      {/* 0. Toast + modals */}
+      {toastMessage && <ToastNotification message={toastMessage} />}
+      {similarNames.length > 0 && searchParams.name && (
+        <SimilarNameWarning similarNames={similarNames} proposedName={searchParams.name} userId={userId} />
+      )}
+
+      {/* 1. Header + create form */}
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-[#0F172B]">Título</h1>
         <form action={createAction}>...</form>
       </div>
 
-      {/* 3. Error banner */}
+      {/* 2. Error banner */}
       {searchParams.error && <div className="...">{searchParams.error}</div>}
 
       {/* 4. Search input */}
@@ -244,6 +260,8 @@ export default async function Page({
 web/src/
   components/
     icons.tsx           — Todos los SVG iconos
+    toast.tsx           — Toast notification
+    confirm-modal.tsx   — Modal de confirmación genérico
   app/
     layout.tsx          — Root layout (html, body, fonts)
     page.tsx            — Landing page (pública)
@@ -257,8 +275,10 @@ web/src/
       actions.ts        — Logout action
       helpers.ts        — Funciones auxiliares (fechas)
       ingredients/
-        page.tsx        — Listado de ingredientes
-        actions.ts      — CRUD ingredientes
+        page.tsx              — Listado de ingredientes
+        actions.ts            — CRUD ingredientes
+        ingredient-row.tsx    — Fila con inline edit + delete modal
+        similar-name-modal.tsx — Modal warning por nombres similares
       tags/             — (futuro)
       recipes/          — (futuro)
       plannings/        — (futuro)
@@ -294,6 +314,166 @@ web/src/
 - No se usa `useActionState` para errores simples; para forms complejos sí
 
 ---
+
+## Toast notifications
+
+`web/src/components/toast.tsx` — notificación flotante en esquina inferior derecha:
+
+```tsx
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { CloseIcon } from '@/components/icons';
+
+export default function ToastNotification({ message }: { message: string }) {
+  const [visible, setVisible] = useState(false);
+  const router = useRouter();
+
+  function dismiss() {
+    setVisible(false);
+    setTimeout(() => router.replace(window.location.pathname), 300);
+  }
+
+  useEffect(() => {
+    requestAnimationFrame(() => setVisible(true));
+    const timer = setTimeout(dismiss, 4000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${
+      visible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+    }`}>
+      <div className="flex items-center gap-3 rounded-xl bg-[#009966] px-5 py-3.5 text-white shadow-lg">
+        <span className="text-sm font-medium">{message}</span>
+        <button onClick={dismiss} className="shrink-0 rounded-md p-0.5 transition-colors hover:bg-white/20">
+          <CloseIcon />
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+Reglas:
+- Siempre se usa `router.replace(window.location.pathname)` al descartar para limpiar searchParams
+- Auto-dismiss a los 4 segundos
+- Apparece con fade+slide-up (`translate-y-0 opacity-100`)
+
+---
+
+## Confirmation modal
+
+`web/src/components/confirm-modal.tsx` — modal genérico reutilizable:
+
+```tsx
+'use client';
+
+export function ConfirmModal({ title, children, confirmLabel, cancelLabel, onConfirm, onCancel, danger }) { ... }
+```
+
+Propiedades:
+- `children`: contenido del cuerpo del modal
+- `danger`: true pinta el botón de confirmar en rojo
+- Escape cierra el modal vía `onCancel`
+- Backdrop click también cierra
+
+---
+
+## Patrón de eliminación con modal + preview de impacto
+
+La eliminación nunca es inmediata. Siempre muestra un modal con:
+
+1. Advertencia: "Esta acción es irreversible"
+2. Preview del impacto (recetas/planificaciones afectadas) calculado vía `getDeleteImpact()` (server action)
+3. Botones Cancelar / Eliminar
+
+Flujo:
+```tsx
+// Client component
+const [showDeleteModal, setShowDeleteModal] = useState(false);
+const [deleteImpact, setDeleteImpact] = useState<{recipesAffected: number; planningsAffected: number} | null>(null);
+const deleteFormRef = useRef<HTMLFormElement>(null);
+
+// Fetch impact when modal opens
+useEffect(() => {
+  if (showDeleteModal && !deleteImpact) {
+    getDeleteImpact(id, userId).then(setDeleteImpact);
+  }
+}, [showDeleteModal]);
+
+// Hidden form submits the real delete action
+<form ref={deleteFormRef} action={deleteIngredient} aria-hidden="true">
+  <input type="hidden" name="id" value={id} />
+</form>
+
+// Modal confirm triggers form submit
+<ConfirmModal
+  title="Eliminar X"
+  confirmLabel="Eliminar"
+  danger
+  onConfirm={() => deleteFormRef.current?.requestSubmit()}
+  onCancel={() => setShowDeleteModal(false)}
+>
+  <p className="mb-4">Esta acción es irreversible...</p>
+  {deleteImpact && (
+    <p>Recetas afectadas: <strong>{deleteImpact.recipesAffected}</strong></p>
+    <p>Planificaciones afectadas: <strong>{deleteImpact.planningsAffected}</strong></p>
+  )}
+</ConfirmModal>
+```
+
+La server action `getDeleteImpact` calcula el impacto SIN modificar datos:
+```tsx
+export async function getDeleteImpact(ingredientId: string, userId: string) {
+  const c = getContainer();
+  const recipes = c.listRecipes.execute(userId);
+  const recipesAffected = recipes.filter(r =>
+    r.ingredients.some(i => i.ingredientId === ingredientId)
+  ).length;
+  const plannings = c.listPlannings.execute(userId);
+  const planningsAffected = plannings.filter(p => {
+    const primitives = p.toPrimitives();
+    return primitives.pantryItems.some(i => i.ingredientId === ingredientId) ||
+           primitives.shoppingItems.some(i => i.ingredientId === ingredientId);
+  }).length;
+  return { recipesAffected, planningsAffected };
+}
+```
+
+---
+
+## Creación con detección de nombres similares
+
+Antes de crear un elemento, se verifica si existen otros con nombres similares (substring match case-insensitive). Si se encuentran, se muestra un modal de advertencia:
+
+```tsx
+// actions.ts — createIngredient
+const existing = c.listIngredients.execute(userId);
+const similar = existing.filter(i => isSimilar(trimmed, i.name));
+if (similar.length > 0) {
+  redirect(`/path?similar=${encodeURIComponent(names)}&name=${encodeURIComponent(trimmed)}`);
+}
+
+// page.tsx — renderiza SimilarNameWarning condicionalmente
+{similarNames.length > 0 && searchParams.name && (
+  <SimilarNameWarning similarNames={similarNames} proposedName={searchParams.name} userId={userId} />
+)}
+```
+
+`isSimilar` compara case-insensitive: un nombre contiene al otro → es similar. Excluye match exacto (ya manejado como error de duplicado).
+
+`SimilarNameWarning` es un client component con:
+- Lista de nombres similares
+- Botón "Cancelar" (cierra modal)
+- Form submit a `forceCreateIngredient` (server action que crea sin verificar similitud)
+
+---
+
+## File structure
+
+Actualizada:
 
 ## Routing
 

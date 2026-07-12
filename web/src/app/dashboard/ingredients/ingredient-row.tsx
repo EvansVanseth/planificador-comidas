@@ -2,18 +2,30 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { PencilIcon, TrashIcon } from '@/components/icons';
-import { renameIngredient, deleteIngredient } from './actions';
+import { ConfirmModal } from '@/components/confirm-modal';
+import { renameIngredient, deleteIngredient, getDeleteImpact } from './actions';
+
+type DeleteImpact = {
+  recipesAffected: number;
+  planningsAffected: number;
+};
 
 export default function IngredientRow({
   id,
   name,
+  userId,
   isLast,
 }: {
   id: string;
   name: string;
+  userId: string;
   isLast: boolean;
 }) {
   const [editing, setEditing] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteImpact, setDeleteImpact] = useState<DeleteImpact | null>(null);
+  const [loadingImpact, setLoadingImpact] = useState(false);
+  const deleteFormRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -23,71 +35,122 @@ export default function IngredientRow({
     }
   }, [editing]);
 
+  useEffect(() => {
+    if (showDeleteModal && !deleteImpact && !loadingImpact) {
+      setLoadingImpact(true);
+      getDeleteImpact(id, userId)
+        .then(setDeleteImpact)
+        .finally(() => setLoadingImpact(false));
+    }
+  }, [showDeleteModal, id, userId, deleteImpact, loadingImpact]);
+
+  function openDeleteModal() {
+    setDeleteImpact(null);
+    setShowDeleteModal(true);
+  }
+
+  function closeDeleteModal() {
+    setShowDeleteModal(false);
+    setDeleteImpact(null);
+  }
+
   return (
-    <div
-      className={`flex items-center justify-between gap-2 px-6 py-3 ${
-        isLast ? '' : 'border-b border-gray-100'
-      }`}
-    >
-      {editing ? (
-        <form
-          action={async (formData) => {
-            setEditing(false);
-            await renameIngredient(formData);
-          }}
-          className="flex flex-1 items-center gap-2"
-        >
-          <input type="hidden" name="id" value={id} />
-          <input
-            ref={inputRef}
-            name="name"
-            defaultValue={name}
-            className="h-8 flex-1 rounded-lg border border-gray-300 bg-white px-3 text-sm focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
-            onKeyDown={(e) => {
-              if (e.key === 'Escape') setEditing(false);
+    <>
+      <div
+        className={`flex items-center justify-between gap-2 px-6 py-3 ${
+          isLast ? '' : 'border-b border-gray-100'
+        }`}
+      >
+        {editing ? (
+          <form
+            action={async (formData) => {
+              setEditing(false);
+              await renameIngredient(formData);
             }}
-          />
-          <button
-            type="submit"
-            className="rounded-md bg-[#009966] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#008055]"
+            className="flex flex-1 items-center gap-2"
           >
-            Guardar
-          </button>
-          <button
-            type="button"
-            onClick={() => setEditing(false)}
-            className="rounded-md border border-gray-200 px-3 py-1.5 text-xs font-medium text-[#62748E] hover:bg-gray-50"
-          >
-            Cancelar
-          </button>
-        </form>
-      ) : (
-        <>
-          <span className="flex-1 text-sm font-medium text-[#0F172B]">
-            {name}
-          </span>
-          <div className="flex items-center gap-1">
+            <input type="hidden" name="id" value={id} />
+            <input
+              ref={inputRef}
+              name="name"
+              defaultValue={name}
+              className="h-8 flex-1 rounded-lg border border-gray-300 bg-white px-3 text-sm focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') setEditing(false);
+              }}
+            />
+            <button
+              type="submit"
+              className="rounded-md bg-[#009966] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#008055]"
+            >
+              Guardar
+            </button>
             <button
               type="button"
-              onClick={() => setEditing(true)}
-              title="Renombrar ingrediente"
-              className="rounded-lg p-2 text-[#62748E] transition-colors hover:bg-gray-100 hover:text-[#0F172B]"
+              onClick={() => setEditing(false)}
+              className="rounded-md border border-gray-200 px-3 py-1.5 text-xs font-medium text-[#62748E] hover:bg-gray-50"
             >
-              <PencilIcon />
+              Cancelar
             </button>
-            <form action={deleteIngredient}>
-              <input type="hidden" name="id" value={id} />
+          </form>
+        ) : (
+          <>
+            <span className="flex-1 text-sm font-medium text-[#0F172B]">
+              {name}
+            </span>
+            <div className="flex items-center gap-1">
               <button
-                type="submit"
+                type="button"
+                onClick={() => setEditing(true)}
+                title="Renombrar ingrediente"
+                className="rounded-lg p-2 text-[#62748E] transition-colors hover:bg-gray-100 hover:text-[#0F172B]"
+              >
+                <PencilIcon />
+              </button>
+              <button
+                type="button"
+                onClick={openDeleteModal}
                 title="Eliminar ingrediente"
                 className="rounded-lg p-2 text-[#62748E] transition-colors hover:bg-red-50 hover:text-red-500"
               >
                 <TrashIcon />
               </button>
-            </form>
-          </div>
-        </>
+            </div>
+          </>
+        )}
+      </div>
+
+      <form ref={deleteFormRef} action={deleteIngredient} aria-hidden="true">
+        <input type="hidden" name="id" value={id} />
+      </form>
+
+      {showDeleteModal && (
+        <ConfirmModal
+          title="Eliminar ingrediente"
+          confirmLabel="Eliminar"
+          danger
+          onConfirm={() => deleteFormRef.current?.requestSubmit()}
+          onCancel={closeDeleteModal}
+        >
+          <p className="mb-4">
+            Esta acción es irreversible. Se eliminará el ingrediente de todas las
+            recetas y planificaciones que lo contengan.
+          </p>
+          {loadingImpact ? (
+            <p className="text-sm text-[#62748E]">Calculando impacto...</p>
+          ) : deleteImpact ? (
+            <div className="space-y-1 text-sm text-[#0F172B]">
+              <p>
+                Recetas afectadas: <strong>{deleteImpact.recipesAffected}</strong>
+              </p>
+              <p>
+                Planificaciones afectadas:{' '}
+                <strong>{deleteImpact.planningsAffected}</strong>
+              </p>
+            </div>
+          ) : null}
+        </ConfirmModal>
       )}
-    </div>
+    </>
   );
 }

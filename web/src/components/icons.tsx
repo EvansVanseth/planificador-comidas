@@ -228,6 +228,23 @@ export function TrashIcon() {
   );
 }
 
+export function CloseIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    >
+      <path d="M4 4l8 8" />
+      <path d="M12 4l-8 8" />
+    </svg>
+  );
+}
+
 export function PlusIcon() {
   return (
     <svg

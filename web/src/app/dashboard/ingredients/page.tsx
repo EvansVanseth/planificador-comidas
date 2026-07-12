@@ -2,11 +2,21 @@ import { cookies } from 'next/headers';
 import { getContainer } from '@/domain-container';
 import { createIngredient } from './actions';
 import IngredientRow from './ingredient-row';
+import SimilarNameWarning from './similar-name-modal';
+import ToastNotification from '@/components/toast';
 
 export default async function IngredientsPage({
   searchParams,
 }: {
-  searchParams: { q?: string; error?: string };
+  searchParams: {
+    q?: string;
+    error?: string;
+    toast?: string;
+    rp?: string;
+    pp?: string;
+    similar?: string;
+    name?: string;
+  };
 }) {
   const cookieStore = await cookies();
   const cookie = cookieStore.get('userId');
@@ -20,8 +30,32 @@ export default async function IngredientsPage({
     ? ingredients.filter((i) => i.name.toLowerCase().includes(query))
     : ingredients;
 
+  const toastMessage =
+    searchParams.toast === 'created'
+      ? 'Ingrediente creado correctamente.'
+      : searchParams.toast === 'edited'
+        ? 'Ingrediente editado correctamente.'
+        : searchParams.toast === 'deleted'
+          ? `Ingrediente eliminado. Afectó a ${searchParams.rp ?? '0'} recetas y ${searchParams.pp ?? '0'} planificaciones.`
+          : null;
+
+  const similarParam = searchParams.similar;
+  const similarNames = similarParam
+    ? similarParam.split(',').map((s) => s.trim())
+    : [];
+
   return (
     <>
+      {toastMessage && <ToastNotification message={toastMessage} />}
+
+      {similarNames.length > 0 && searchParams.name && (
+        <SimilarNameWarning
+          similarNames={similarNames}
+          proposedName={searchParams.name}
+          userId={userId}
+        />
+      )}
+
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-[#0F172B]">Ingredientes</h1>
 
@@ -71,6 +105,7 @@ export default async function IngredientsPage({
               key={ingredient.id}
               id={ingredient.id}
               name={ingredient.name}
+              userId={userId}
               isLast={index === filtered.length - 1}
             />
           ))}
