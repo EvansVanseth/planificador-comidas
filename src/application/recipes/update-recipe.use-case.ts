@@ -62,15 +62,15 @@ export class UpdateRecipeUseCase {
       }
     }
 
-    if (input.addIngredients) {
-      for (const ing of input.addIngredients) {
-        recipe.addIngredient(RecipeIngredient.fromPrimitives(ing));
-      }
-    }
-
     if (input.removeIngredients) {
       for (const ingId of input.removeIngredients) {
         recipe.removeIngredient(ingId);
+      }
+    }
+
+    if (input.addIngredients) {
+      for (const ing of input.addIngredients) {
+        recipe.addIngredient(RecipeIngredient.fromPrimitives(ing));
       }
     }
 

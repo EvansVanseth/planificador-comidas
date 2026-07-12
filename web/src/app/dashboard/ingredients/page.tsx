@@ -41,8 +41,13 @@ export default async function IngredientsPage({
         />
       )}
 
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-[#0F172B]">Ingredientes</h1>
+      <div className="mb-8 flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-[#0F172B]">Ingredientes</h1>
+          <p className="mt-1 text-base text-[#62748E]">
+            Gestiona los ingredientes que usas en tus recetas.
+          </p>
+        </div>
 
         <div className="flex items-center gap-2">
           {ingredients.length >= 2 && (

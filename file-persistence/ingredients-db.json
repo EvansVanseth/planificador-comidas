@@ -228,5 +228,25 @@
     "id": "77229393-e66c-49df-90c2-a8feb5660777",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Huevo fresco"
+  },
+  {
+    "id": "ef41dd66-ef24-4767-89c1-902122fa2f3c",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Sobrasada"
+  },
+  {
+    "id": "e95762bb-2a03-4cee-b480-2a88851023b9",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Formatge manchego"
+  },
+  {
+    "id": "5d29aae8-d24d-4a77-8de7-fb2a871179b2",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Pan"
+  },
+  {
+    "id": "9296797e-0407-4629-9056-9135aabe1211",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Jamón"
   }
 ]

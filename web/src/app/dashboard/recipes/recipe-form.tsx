@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { PlusIcon, TrashIcon } from '@/components/icons';
+import { createIngredientInline } from './actions';
 
 type TagInfo = { id: string; name: string; dimension: string };
 type IngredientInfo = { id: string; name: string };
@@ -60,10 +61,12 @@ export default function RecipeForm({
   allTags,
   allIngredients,
   initialData,
+  returnTo,
 }: {
   userId: string;
   allTags: TagInfo[];
   allIngredients: IngredientInfo[];
+  returnTo?: string;
   initialData?: {
     id: string;
     name: string;
@@ -209,15 +212,20 @@ export default function RecipeForm({
           })),
       };
 
-      const res = await fetch('/dashboard/recipes/api/create', {
-        method: 'POST',
+      const url = initialData
+        ? `/dashboard/recipes/api/${initialData.id}`
+        : '/dashboard/recipes/api/create';
+      const method = initialData ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
 
       if (!res.ok) {
         const data = await res.json();
-        const msg: string = data.error ?? 'Error al crear la receta';
+        const msg: string = data.error ?? 'Error al guardar la receta';
         if (msg.toLowerCase().includes('ya existe') || msg.toLowerCase().includes('duplicate')) {
           setErrors({ name: msg });
         } else if (msg.toLowerCase().includes('nombre')) {
@@ -228,7 +236,7 @@ export default function RecipeForm({
         return;
       }
 
-      router.push('/dashboard/recipes');
+      router.push(returnTo ?? '/dashboard/recipes');
     } catch {
       setErrors({ general: 'Error inesperado. Inténtalo de nuevo.' });
     } finally {
@@ -365,6 +373,9 @@ export default function RecipeForm({
           <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
             Etiquetas <span className="text-red-500">*</span>
           </label>
+          <p className="mb-3 text-sm text-[#62748E]">
+            Categoriza la receta para poder filtrarla y planificarla.
+          </p>
           <div
             className={`space-y-4 rounded-xl border p-5 transition-colors ${
               errors.tags ? 'border-red-300 bg-red-50' : 'border-[#E2E8F0] bg-white'
@@ -407,6 +418,9 @@ export default function RecipeForm({
           <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
             Ingredientes
           </label>
+          <p className="mb-3 text-sm text-[#62748E]">
+            Lista los ingredientes necesarios y sus cantidades.
+          </p>
           <div className="rounded-xl border border-[#E2E8F0] bg-white">
             {ingredients.length === 0 && (
               <p className="px-5 py-4 text-sm text-[#62748E]">
@@ -423,6 +437,7 @@ export default function RecipeForm({
                   .filter((r) => r.key !== row.key)
                   .map((r) => r.ingredientId)
                   .filter(Boolean)}
+                userId={userId}
                 onSelect={(ingredientId) => selectIngredient(row.key, ingredientId)}
                 onChange={(field, value) => updateIngredient(row.key, field, value)}
                 onRemove={() => removeIngredientRow(row.key)}
@@ -466,6 +481,7 @@ function IngredientRow({
   row,
   idx,
   allIngredients,
+  userId,
   usedIngredientIds,
   onSelect,
   onChange,
@@ -475,6 +491,7 @@ function IngredientRow({
   row: IngredientRow;
   idx: number;
   allIngredients: IngredientInfo[];
+  userId: string;
   usedIngredientIds: string[];
   onSelect: (ingredientId: string) => void;
   onChange: (field: keyof IngredientRow, value: string) => void;
@@ -483,14 +500,35 @@ function IngredientRow({
 }) {
   const [search, setSearch] = useState(row.ingredientName);
   const [open, setOpen] = useState(false);
+  const [creating, setCreating] = useState(false);
 
-  const filtered = search.trim()
+  const trimmed = search.trim();
+  const filtered = trimmed
     ? allIngredients.filter(
         (i) =>
           i.name.toLowerCase().includes(search.toLowerCase()) &&
           !usedIngredientIds.includes(i.id),
       )
     : [];
+
+  const canCreate =
+    trimmed &&
+    !allIngredients.some((i) => i.name.toLowerCase() === trimmed.toLowerCase());
+
+  async function handleCreate() {
+    setCreating(true);
+    try {
+      const ing = await createIngredientInline(userId, trimmed);
+      setSearch(ing.name);
+      onChange('ingredientName', ing.name);
+      onChange('ingredientId', ing.id);
+      setOpen(false);
+    } catch {
+      // silently fail
+    } finally {
+      setCreating(false);
+    }
+  }
 
   function handleSelect(ing: IngredientInfo) {
     setSearch(ing.name);
@@ -519,7 +557,7 @@ function IngredientRow({
           placeholder="Buscar ingrediente..."
           className="h-10 w-full rounded-lg border border-[#E2E8F0] bg-white px-3 text-sm text-[#0F172B] placeholder:text-[#62748E] focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
         />
-        {open && filtered.length > 0 && (
+        {open && (filtered.length > 0 || canCreate) && (
           <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-48 overflow-y-auto rounded-lg border border-[#E2E8F0] bg-white shadow-lg">
             {filtered.map((ing) => (
               <button
@@ -534,6 +572,20 @@ function IngredientRow({
                 {ing.name}
               </button>
             ))}
+            {canCreate && (
+              <button
+                type="button"
+                disabled={creating}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  handleCreate();
+                }}
+                className="flex w-full items-center gap-2 border-t border-[#E2E8F0] px-3 py-2.5 text-left text-sm font-medium text-[#009966] transition-colors hover:bg-[#ECFDF5] disabled:opacity-50"
+              >
+                <PlusIcon />
+                {creating ? 'Creando…' : `Crear "${trimmed}"`}
+              </button>
+            )}
           </div>
         )}
       </div>

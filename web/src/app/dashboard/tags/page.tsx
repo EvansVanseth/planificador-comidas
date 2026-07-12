@@ -46,7 +46,12 @@ export default async function TagsPage() {
 
   return (
     <>
-      <h1 className="mb-8 text-2xl font-bold text-[#0F172B]">Etiquetas</h1>
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-[#0F172B]">Etiquetas</h1>
+        <p className="mt-1 text-base text-[#62748E]">
+          Categoriza tus recetas para filtrarlas y organizarlas.
+        </p>
+      </div>
 
       <div className="space-y-8">
         {DIMENSIONS.map((dim) => {

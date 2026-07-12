@@ -23,6 +23,22 @@ export async function deleteRecipe(formData: FormData) {
   redirect(PATH);
 }
 
+export async function createIngredientInline(userId: string, name: string) {
+  const c = getContainer();
+  const trimmed = name.trim();
+  if (!trimmed) throw new Error('El nombre no puede estar vacío.');
+
+  const existing = c.listIngredients.execute(userId);
+  const found = existing.find((i) => i.name.toLowerCase() === trimmed.toLowerCase());
+  if (found) return { id: found.id, name: found.name };
+
+  c.createIngredient.execute(userId, trimmed);
+  const updated = c.listIngredients.execute(userId);
+  const created = updated.find((i) => i.name.toLowerCase() === trimmed.toLowerCase());
+  if (!created) throw new Error('Error al crear el ingrediente.');
+  return { id: created.id, name: created.name };
+}
+
 export async function getDeleteImpact(recipeId: string, userId: string) {
   const c = getContainer();
 

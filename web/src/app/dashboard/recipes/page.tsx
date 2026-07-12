@@ -26,6 +26,12 @@ export default async function RecipesPage({
   const query = searchParams.q?.toLowerCase().trim() ?? '';
   const selectedTagIds = searchParams.tag?.split(',').filter(Boolean) ?? [];
 
+  const filtersParam = new URLSearchParams();
+  if (query) filtersParam.set('q', query);
+  if (selectedTagIds.length > 0) filtersParam.set('tag', selectedTagIds.join(','));
+  const filtersQuery = filtersParam.toString();
+  const returnTo = filtersQuery ? `/dashboard/recipes?${filtersQuery}` : '/dashboard/recipes';
+
   let recipes = allRecipes;
   if (query) {
     recipes = recipes.filter((r) => r.name.toLowerCase().includes(query));
@@ -63,7 +69,7 @@ export default async function RecipesPage({
           </p>
         </div>
         <Link
-          href="/dashboard/recipes/new"
+          href={`/dashboard/recipes/new?returnTo=${encodeURIComponent(returnTo)}`}
           className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#009966] px-4 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
         >
           <PlusIcon />
@@ -118,6 +124,7 @@ export default async function RecipesPage({
               recipe={recipe}
               tags={allTags}
               userId={userId}
+              returnTo={returnTo}
             />
           ))}
         </div>

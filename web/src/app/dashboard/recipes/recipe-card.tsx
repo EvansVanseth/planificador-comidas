@@ -35,10 +35,12 @@ export default function RecipeCard({
   recipe,
   tags,
   userId,
+  returnTo,
 }: {
   recipe: RecipeData;
   tags: TagFull[];
   userId: string;
+  returnTo?: string;
 }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [planningsAffected, setPlanningsAffected] = useState<number | null>(null);
@@ -94,7 +96,7 @@ export default function RecipeCard({
 
       <div className="flex items-center justify-between bg-[#F8FAFC] px-5 py-3">
         <Link
-          href={`/dashboard/recipes/${recipe.id}/edit`}
+          href={`/dashboard/recipes/${recipe.id}/edit?returnTo=${encodeURIComponent(returnTo ?? '/dashboard/recipes')}`}
           className="text-sm font-medium text-[#009966] transition-colors hover:text-[#008055]"
         >
           Editar receta
