@@ -28,6 +28,33 @@ function nextRowKey() {
   return `ing_${++rowKeyCounter}`;
 }
 
+function validateName(v: string): string {
+  if (!v.trim()) return 'El nombre es obligatorio.';
+  if (v.trim().length < 3) return 'El nombre debe tener al menos 3 caracteres.';
+  if (v.trim().length > 100) return 'El nombre no puede superar los 100 caracteres.';
+  return '';
+}
+
+function validateServings(v: number): string {
+  if (!v || v < 1) return 'Debe ser al menos 1.';
+  if (v > 99) return 'No puede superar 99.';
+  return '';
+}
+
+function validatePrepTime(v: number): string {
+  if (!v || v < 1) return 'Debe ser al menos 1 minuto.';
+  if (v > 1440) return 'No puede superar 1440 minutos (24 h).';
+  return '';
+}
+
+type FieldErrors = {
+  name?: string;
+  baseServings?: string;
+  prepTime?: string;
+  tags?: string;
+  general?: string;
+};
+
 export default function RecipeForm({
   userId,
   allTags,
@@ -49,7 +76,7 @@ export default function RecipeForm({
 }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<FieldErrors>({});
   const [name, setName] = useState(initialData?.name ?? '');
   const [baseServings, setBaseServings] = useState(initialData?.baseServings ?? 4);
   const [prepTime, setPrepTime] = useState(initialData?.prepTime ?? 30);
@@ -70,20 +97,10 @@ export default function RecipeForm({
 
   const ingredientMap = new Map(allIngredients.map((i) => [i.id, i]));
 
-  function toggleTag(tagId: string, dimension: string) {
-    if (REQUIRED_DIMS.includes(dimension)) {
-      setSelectedTagIds((prev) => {
-        const otherDims = prev.filter(
-          (id) => allTags.find((t) => t.id === id)?.dimension !== dimension,
-        );
-        if (prev.includes(tagId)) return otherDims;
-        return [...otherDims, tagId];
-      });
-    } else {
-      setSelectedTagIds((prev) =>
-        prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId],
-      );
-    }
+  function toggleTag(tagId: string) {
+    setSelectedTagIds((prev) =>
+      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId],
+    );
   }
 
   function isTagSelected(tagId: string) {
@@ -119,31 +136,58 @@ export default function RecipeForm({
     if (!ing) return;
     setIngredients((prev) =>
       prev.map((r) =>
-        r.key === key
-          ? { ...r, ingredientId, ingredientName: ing.name }
-          : r,
+        r.key === key ? { ...r, ingredientId, ingredientName: ing.name } : r,
       ),
     );
   }
 
   const ingredientInputRefs = useRef<Map<string, HTMLInputElement>>(new Map());
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (saving) return;
-    setError('');
+  function validate(): FieldErrors {
+    const errs: FieldErrors = {};
 
-    if (!name.trim()) {
-      setError('El nombre de la receta es obligatorio.');
-      return;
-    }
+    const nameErr = validateName(name);
+    if (nameErr) errs.name = nameErr;
+
+    const servingsErr = validateServings(baseServings);
+    if (servingsErr) errs.baseServings = servingsErr;
+
+    const prepErr = validatePrepTime(prepTime);
+    if (prepErr) errs.prepTime = prepErr;
 
     for (const dim of REQUIRED_DIMS) {
       if (!selectedTagForDim(dim)) {
-        setError(`Debe seleccionar una etiqueta para "${DIM_LABELS[dim]}".`);
-        return;
+        errs.tags = `Selecciona al menos una etiqueta para "${DIM_LABELS[dim]}".`;
+        break;
       }
     }
+
+    return errs;
+  }
+
+  function clearFieldError(field: keyof FieldErrors) {
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  }
+
+  function setFieldError(field: keyof FieldErrors, err: string) {
+    if (err) {
+      setErrors((prev) => ({ ...prev, [field]: err }));
+    } else {
+      clearFieldError(field);
+    }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (saving) return;
+
+    const validation = validate();
+    setErrors(validation);
+    if (Object.keys(validation).length > 0) return;
 
     setSaving(true);
     try {
@@ -173,12 +217,20 @@ export default function RecipeForm({
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error ?? 'Error al crear la receta');
+        const msg: string = data.error ?? 'Error al crear la receta';
+        if (msg.toLowerCase().includes('ya existe') || msg.toLowerCase().includes('duplicate')) {
+          setErrors({ name: msg });
+        } else if (msg.toLowerCase().includes('nombre')) {
+          setErrors({ name: msg, general: msg });
+        } else {
+          setErrors({ general: msg });
+        }
+        return;
       }
 
       router.push('/dashboard/recipes');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
+    } catch {
+      setErrors({ general: 'Error inesperado. Inténtalo de nuevo.' });
     } finally {
       setSaving(false);
     }
@@ -204,8 +256,15 @@ export default function RecipeForm({
     ESTILOS_VIDA: 'border-gray-600 bg-gray-600 text-white',
   };
 
+  const inputClass = (field: keyof FieldErrors) =>
+    `h-10 w-full rounded-[10px] border bg-white px-3.5 text-sm text-[#0F172B] placeholder:text-[#62748E] transition-colors focus:outline-none focus:ring-2 ${
+      errors[field]
+        ? 'border-red-300 focus:border-red-400 focus:ring-red-200'
+        : 'border-[#E2E8F0] focus:border-[#009966] focus:ring-[#009966]/20'
+    }`;
+
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-2xl">
+    <form onSubmit={handleSubmit} className="mx-auto max-w-2xl" noValidate>
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#0F172B]">
@@ -235,9 +294,9 @@ export default function RecipeForm({
         </div>
       </div>
 
-      {error && (
+      {errors.general && (
         <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {error}
+          {errors.general}
         </div>
       )}
 
@@ -248,10 +307,17 @@ export default function RecipeForm({
           </label>
           <input
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              if (errors.name) clearFieldError('name');
+            }}
+            onBlur={() => setFieldError('name', validateName(name))}
             placeholder="Ej: Pollo al horno con arroz"
-            className="h-10 w-full rounded-[10px] border border-[#E2E8F0] bg-white px-3.5 text-sm text-[#0F172B] placeholder:text-[#62748E] focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+            className={inputClass('name')}
           />
+          {errors.name && (
+            <p className="mt-1 text-xs text-red-500">{errors.name}</p>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -263,9 +329,16 @@ export default function RecipeForm({
               type="number"
               min={1}
               value={baseServings}
-              onChange={(e) => setBaseServings(Number(e.target.value))}
-              className="h-10 w-full rounded-[10px] border border-[#E2E8F0] bg-white px-3.5 text-sm text-[#0F172B] focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+              onChange={(e) => {
+                setBaseServings(Number(e.target.value));
+                if (errors.baseServings) clearFieldError('baseServings');
+              }}
+              onBlur={() => setFieldError('baseServings', validateServings(baseServings))}
+              className={inputClass('baseServings')}
             />
+            {errors.baseServings && (
+              <p className="mt-1 text-xs text-red-500">{errors.baseServings}</p>
+            )}
           </div>
           <div>
             <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
@@ -275,9 +348,16 @@ export default function RecipeForm({
               type="number"
               min={1}
               value={prepTime}
-              onChange={(e) => setPrepTime(Number(e.target.value))}
-              className="h-10 w-full rounded-[10px] border border-[#E2E8F0] bg-white px-3.5 text-sm text-[#0F172B] focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+              onChange={(e) => {
+                setPrepTime(Number(e.target.value));
+                if (errors.prepTime) clearFieldError('prepTime');
+              }}
+              onBlur={() => setFieldError('prepTime', validatePrepTime(prepTime))}
+              className={inputClass('prepTime')}
             />
+            {errors.prepTime && (
+              <p className="mt-1 text-xs text-red-500">{errors.prepTime}</p>
+            )}
           </div>
         </div>
 
@@ -285,7 +365,11 @@ export default function RecipeForm({
           <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
             Etiquetas <span className="text-red-500">*</span>
           </label>
-          <div className="space-y-4 rounded-xl border border-[#E2E8F0] bg-white p-5">
+          <div
+            className={`space-y-4 rounded-xl border p-5 transition-colors ${
+              errors.tags ? 'border-red-300 bg-red-50' : 'border-[#E2E8F0] bg-white'
+            }`}
+          >
             {groupedTags.map((group) => (
               <div key={group.dimension}>
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#62748E]">
@@ -299,7 +383,7 @@ export default function RecipeForm({
                       <button
                         key={tag.id}
                         type="button"
-                        onClick={() => toggleTag(tag.id, group.dimension)}
+                        onClick={() => toggleTag(tag.id)}
                         className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                           selected
                             ? DIM_CHIP_SELECTED[group.dimension] ?? 'border-[#009966] bg-[#009966] text-white'
@@ -314,11 +398,14 @@ export default function RecipeForm({
               </div>
             ))}
           </div>
+          {errors.tags && (
+            <p className="mt-1 text-xs text-red-500">{errors.tags}</p>
+          )}
         </div>
 
         <div>
           <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
-            Ingredientes <span className="text-red-500">*</span>
+            Ingredientes
           </label>
           <div className="rounded-xl border border-[#E2E8F0] bg-white">
             {ingredients.length === 0 && (
