@@ -26,9 +26,9 @@ export default function Sidebar() {
       <nav className="flex flex-1 flex-col gap-1 px-4 py-6">
         {NAV_ITEMS.map((item) => {
           const active =
-            pathname === item.href ||
-            pathname.startsWith(item.href + '/') ||
-            (item.href === '/dashboard' && pathname === '/dashboard');
+            item.href === '/dashboard'
+              ? pathname === '/dashboard'
+              : pathname === item.href || pathname.startsWith(item.href + '/');
           return (
             <Link
               key={item.href}
