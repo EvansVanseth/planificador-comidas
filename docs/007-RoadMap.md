@@ -170,40 +170,40 @@ Migración de la CLI a interfaz web basada en los mockups aprobados por la usuar
 
 **Paso 1: Inicializar proyecto Next.js**
 
-- [ ] 1.1: ^^ Qué es Next.js — conceptos: SSR, Server Components, App Router, por qué lo elegimos
-- [ ] 1.2: ^^ Crear proyecto con `create-next-app` en `/web`, explicar archivos generados
-- [ ] 1.3: ^^ App Router — rutas, `layout.tsx`, `page.tsx`, navegación
-- [ ] 1.4: ^^ Tailwind CSS — utility-first, cómo se usa en componentes
-- [ ] 1.5: ^^ Conectar dominio — alias `@domain/*` → `../src/*` en tsconfig, primer import
-- [ ] 1.6: ^^ Verificar integración — página que importa y ejecuta un use case real
+- [x] 1.1: ^^ Qué es Next.js — conceptos: SSR, Server Components, App Router, por qué lo elegimos
+- [x] 1.2: ^^ Crear proyecto con `create-next-app` en `/web`, explicar archivos generados
+- [x] 1.3: ^^ App Router — rutas, `layout.tsx`, `page.tsx`, navegación
+- [x] 1.4: ^^ Tailwind CSS — utility-first, cómo se usa en componentes
+- [x] 1.5: ^^ Conectar dominio — alias `@domain/*` → `../src/*` en tsconfig, primer import
+- [x] 1.6: ^^ Verificar integración — página que importa y ejecuta un use case real
 
 **Paso 2: Mock login**
 
-- [ ] 2.1: ^^ Landing page (`/`) — presentación de la app, botón "Comenzar" (HU-00.1)
-- [ ] 2.2: ^^ Pantalla de login (`/login`) — campo de texto, crea usuario si no existe, guarda userId en cookie (HU-01.1/01.2 simplificado)
-- [ ] 2.3: ^^ Layout protegido — wrapper que redirige a `/login` si no hay userId
+- [x] 2.1: ^^ Landing page (`/`) — presentación de la app, botón "Comenzar" (HU-00.1)
+- [x] 2.2: ^^ Pantalla de login (`/login`) — campo de texto, crea usuario si no existe, guarda userId en cookie (HU-01.1/01.2 simplificado)
+- [x] 2.3: ^^ Layout protegido — wrapper que redirige a `/login` si no hay userId
 
 **Paso 3: Dashboard**
 
-- [ ] 3.1: ^^ Dashboard (`/dashboard`) — planificación activa, "Cocinar hoy", accesos rápidos (HU-01.3)
-- [ ] 3.2: ^^ Navegación global — sidebar o navbar con enlaces a secciones
+- [x] 3.1: ^^ Dashboard (`/dashboard`) — planificación activa, "Cocinar hoy", accesos rápidos (HU-01.3)
+- [x] 3.2: ^^ Navegación global — sidebar o navbar con enlaces a secciones
 
 **Paso 4: Recetas**
 
-- [ ] 4.1: ^^ Listado de recetas (`/recipes`) — búsqueda por nombre, filtro por etiquetas (HU-03.2)
-- [ ] 4.2: ^^ Crear receta (`/recipes/new`) — formulario con autocompletado de ingredientes (HU-03.1)
-- [ ] 4.3: ^^ Editar receta (`/recipes/[id]/edit`) — mismo formulario reutilizado (HU-03.3)
-- [ ] 4.4: ^^ Eliminar receta — modal de confirmación con advertencia de uso (HU-03.4)
+- [x] 4.1: ^^ Listado de recetas (`/recipes`) — búsqueda por nombre, filtro por etiquetas (HU-03.2)
+- [x] 4.2: ^^ Crear receta (`/recipes/new`) — formulario con autocompletado de ingredientes (HU-03.1)
+- [x] 4.3: ^^ Editar receta (`/recipes/[id]/edit`) — mismo formulario reutilizado (HU-03.3)
+- [x] 4.4: ^^ Eliminar receta — modal de confirmación con advertencia de uso (HU-03.4)
 
 **Paso 5: Ingredientes maestros**
 
-- [ ] 5.1: ^^ Listado + crear ingrediente (`/ingredients`) (HU-02.1, HU-02.2)
-- [ ] 5.2: ^^ Editar / eliminar ingrediente
-- [ ] 5.3: ^^ Fusión de ingredientes (desde Fase 17) (HU-02.3)
+- [x] 5.1: ^^ Listado + crear ingrediente (`/ingredients`) (HU-02.1, HU-02.2)
+- [x] 5.2: ^^ Editar / eliminar ingrediente
+- [x] 5.3: ^^ Fusión de ingredientes (desde Fase 17) (HU-02.3)
 
 **Paso 6: Etiquetas**
 
-- [ ] 6.1: ^^ CRUD de etiquetas (`/tags`) con advertencia de uso (HU-04.1 a HU-04.3)
+- [x] 6.1: ^^ CRUD de etiquetas (`/tags`) con advertencia de uso (HU-04.1 a HU-04.3)
 
 **Paso 7: Planificaciones — listado**
 
