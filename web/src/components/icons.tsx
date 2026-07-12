@@ -281,3 +281,77 @@ export function PlusIcon() {
     </svg>
   );
 }
+
+export function SearchIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="7" cy="7" r="4.5" />
+      <path d="M10.5 10.5l3 3" />
+    </svg>
+  );
+}
+
+export function FilterIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    >
+      <path d="M2 4h12" />
+      <path d="M4.5 8h7" />
+      <path d="M7 12h2" />
+    </svg>
+  );
+}
+
+export function ClockIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="8" cy="8" r="6" />
+      <path d="M8 4.5V8l2.5 1.5" />
+    </svg>
+  );
+}
+
+export function PeopleIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5.5 7a2 2 0 100-4 2 2 0 000 4z" />
+      <path d="M1 14c0-2.5 2-4.5 4.5-4.5S10 11.5 10 14" />
+      <path d="M10.5 4.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" />
+      <path d="M15 14c0-2-1.5-3.5-3.5-3.5" />
+    </svg>
+  );
+}
