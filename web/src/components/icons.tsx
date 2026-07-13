@@ -265,6 +265,24 @@ export function MergeIcon() {
   );
 }
 
+export function DuplicateIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="5.5" y="5.5" width="9" height="9" rx="1" />
+      <path d="M2.5 13.5V3a.5.5 0 0 1 .5-.5h8" />
+    </svg>
+  );
+}
+
 export function PlusIcon() {
   return (
     <svg

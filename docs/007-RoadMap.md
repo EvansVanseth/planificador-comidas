@@ -207,10 +207,10 @@ Migración de la CLI a interfaz web basada en los mockups aprobados por la usuar
 
 **Paso 7: Planificaciones — listado**
 
-- [ ] 7.1: ^^ Historial de planificaciones (`/plannings`) (HU-05.2)
-- [ ] 7.2: ^^ Crear planificación (HU-05.1)
-- [ ] 7.3: ^^ Duplicar planificación (desde Fase 14) (HU-05.3)
-- [ ] 7.4: ^^ Eliminar planificación con advertencia (HU-05.5)
+- [x] 7.1: ^^ Historial de planificaciones (`/plannings`) (HU-05.2)
+- [x] 7.2: ^^ Crear planificación (HU-05.1)
+- [x] 7.3: ^^ Duplicar planificación (desde Fase 14) (HU-05.3)
+- [x] 7.4: ^^ Eliminar planificación con advertencia (HU-05.5)
 
 **Paso 8: Planificaciones — editor semanal**
 
