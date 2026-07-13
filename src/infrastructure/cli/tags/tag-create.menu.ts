@@ -25,7 +25,19 @@ export async function crearEtiqueta(container: IContainer, userId: string) {
     if (!answers || answers.dimension === '__cancel__') return;
     if (!answers) return;
 
-    const id = container.createTag.execute(userId, answers.name, answers.dimension, false);
+    let order = 0;
+    if (answers.dimension === 'MOMENTO_DIA') {
+      const orderResp = await prompts({
+        type: 'number',
+        name: 'value',
+        message: 'Orden (0 para final, 1=primero, etc.):',
+        initial: 0,
+        min: 0,
+      }, { onCancel: ON_CANCEL });
+      if (orderResp?.value !== undefined) order = orderResp.value;
+    }
+
+    const id = container.createTag.execute(userId, answers.name, answers.dimension, false, order);
     console.log('✓ ' + `Etiqueta creada: ${id}`);
 
   } catch (error) {

@@ -52,6 +52,7 @@ describe('Tag (Aggregate)', () => {
       dimension: TagDimension.ESTILOS_VIDA,
       isSystem: false,
       systemKey: null,
+      order: 0,
     });
   });
 
@@ -65,6 +66,7 @@ describe('Tag (Aggregate)', () => {
       dimension: TagDimension.FORMATO,
       isSystem: true,
       systemKey: null,
+      order: 0,
     });
   });
 
@@ -153,6 +155,12 @@ describe('Tag (Aggregate)', () => {
     const tag = Tag.create(validId, validUserId, 'Frío', TagDimension.FORMATO, true, 'FRIO');
     const restored = Tag.fromPrimitives(tag.toPrimitives());
     expect(restored.getSystemKey()).toBe('FRIO');
+  });
+
+  it('debe permitir cambiar el orden de etiquetas del sistema (MOMENTO_DIA)', () => {
+    const tag = Tag.create(validId, validUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true, 'DESAYUNO', 1);
+    tag.changeOrder(5);
+    expect(tag.getOrder()).toBe(5);
   });
 
   it('debe tolerar primitivas antiguas sin systemKey', () => {

@@ -73,4 +73,55 @@ describe('seedSystemTags', () => {
       expect(tag.isSystemTag()).toBe(true);
     }
   });
+
+  it('debe asignar ordenes contiguos a MOMENTO_DIA de datos antiguos (order=0)', () => {
+    const desayuno = Tag.create(
+      '550e8400-e29b-41d4-a716-446655440010', userId, 'Desayuno', TagDimension.MOMENTO_DIA, true, 'DESAYUNO', 0,
+    );
+    const comida = Tag.create(
+      '550e8400-e29b-41d4-a716-446655440011', userId, 'Comida', TagDimension.MOMENTO_DIA, true, 'COMIDA', 0,
+    );
+    const cena = Tag.create(
+      '550e8400-e29b-41d4-a716-446655440012', userId, 'Cena', TagDimension.MOMENTO_DIA, true, 'CENA', 0,
+    );
+    const almuerzo = Tag.create(
+      '550e8400-e29b-41d4-a716-446655440013', userId, 'Almuerzo', TagDimension.MOMENTO_DIA, false, undefined, 0,
+    );
+    repo.save(desayuno);
+    repo.save(comida);
+    repo.save(cena);
+    repo.save(almuerzo);
+
+    seedSystemTags(repo, userId);
+
+    const momentos = repo.findAll()
+      .filter(t => t.getDimension() === TagDimension.MOMENTO_DIA)
+      .sort((a, b) => a.getOrder() - b.getOrder());
+
+    expect(momentos).toHaveLength(4);
+    expect(momentos[0].getName()).toBe('Desayuno');
+    expect(momentos[0].getOrder()).toBe(1);
+    expect(momentos[1].getName()).toBe('Comida');
+    expect(momentos[1].getOrder()).toBe(2);
+    expect(momentos[2].getName()).toBe('Cena');
+    expect(momentos[2].getOrder()).toBe(3);
+    expect(momentos[3].getName()).toBe('Almuerzo');
+    expect(momentos[3].getOrder()).toBe(4);
+  });
+
+  it('no debe reasignar ordenes si ya tienen valores no cero', () => {
+    const desayuno = Tag.create(
+      '550e8400-e29b-41d4-a716-446655440010', userId, 'Desayuno', TagDimension.MOMENTO_DIA, true, 'DESAYUNO', 1,
+    );
+    const almuerzo = Tag.create(
+      '550e8400-e29b-41d4-a716-446655440013', userId, 'Almuerzo', TagDimension.MOMENTO_DIA, false, undefined, 5,
+    );
+    repo.save(desayuno);
+    repo.save(almuerzo);
+
+    seedSystemTags(repo, userId);
+
+    expect(repo.findById('550e8400-e29b-41d4-a716-446655440010')!.getOrder()).toBe(1);
+    expect(repo.findById('550e8400-e29b-41d4-a716-446655440013')!.getOrder()).toBe(5);
+  });
 });

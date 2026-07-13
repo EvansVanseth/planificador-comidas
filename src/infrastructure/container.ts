@@ -49,6 +49,8 @@ import { CreateTagUseCase } from '@/application/tags/create-tag.use-case';
 import { ListTagsUseCase } from '@/application/tags/list-tags.use-case';
 import { UpdateTagUseCase } from '@/application/tags/update-tag.use-case';
 import { DeleteTagUseCase } from '@/application/tags/delete-tag.use-case';
+import { TagOrderMoveUpUseCase } from '@/application/tags/tag-order-move-up.use-case';
+import { TagOrderMoveDownUseCase } from '@/application/tags/tag-order-move-down.use-case';
 import { CreateIngredientUseCase } from '@/application/ingredients/create-ingredient.use-case';
 import { ListIngredientsUseCase } from '@/application/ingredients/list-ingredients.use-case';
 import { UpdateIngredientUseCase } from '@/application/ingredients/update-ingredient.use-case';
@@ -105,6 +107,8 @@ export interface IContainer {
   createTag: CreateTagUseCase;
   updateTag: UpdateTagUseCase;
   deleteTag: DeleteTagUseCase;
+  tagOrderMoveUp: TagOrderMoveUpUseCase;
+  tagOrderMoveDown: TagOrderMoveDownUseCase;
   // Ingredients
   listIngredients: ListIngredientsUseCase;
   createIngredient: CreateIngredientUseCase;
@@ -187,6 +191,8 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     createTag: new CreateTagUseCase(tagRepository),
     updateTag: new UpdateTagUseCase(tagRepository),
     deleteTag: new DeleteTagUseCase(tagRepository, recipeRepository, planningRepository),
+    tagOrderMoveUp: new TagOrderMoveUpUseCase(tagRepository),
+    tagOrderMoveDown: new TagOrderMoveDownUseCase(tagRepository),
     // Ingredients
     listIngredients: new ListIngredientsUseCase(ingredientRepository),
     createIngredient: new CreateIngredientUseCase(ingredientRepository),

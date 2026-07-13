@@ -44,6 +44,14 @@ export async function editarEtiqueta(container: IContainer, userId: string) {
           { title: 'Estilo de vida',      value: 'ESTILOS_VIDA' },
         ]
       });
+
+      preguntas.push({
+        type: 'number',
+        name: 'order',
+        message: 'Nuevo orden (dejar 0 para mantener):',
+        initial: 0,
+        min: 0,
+      });
     }
 
     const cambios = await prompts(preguntas, { onCancel: ON_CANCEL });
@@ -53,6 +61,7 @@ export async function editarEtiqueta(container: IContainer, userId: string) {
     const input: any = { id: seleccion.id };
     if (cambios.name.trim()) input.name = cambios.name.trim();
     if (!isSystemTag && cambios.dimension !== '__skip__') input.dimension = cambios.dimension;
+    if (!isSystemTag && cambios.order > 0) input.order = cambios.order;
     container.updateTag.execute(input);
     console.log('✓ Etiqueta actualizada correctamente');
 

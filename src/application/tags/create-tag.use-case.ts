@@ -7,14 +7,14 @@ import { randomUUID } from 'crypto';
 export class CreateTagUseCase {
   constructor(private tagRepository: TagRepository) {}
 
-  execute(userId: string, name: string, dimension: TagDimension, isSystem: boolean = false): string {
+  execute(userId: string, name: string, dimension: TagDimension, isSystem: boolean = false, order: number = 0): string {
     const existing = this.tagRepository.findByNameAndDimension(name, dimension);
     if (existing) {
       throw new AppError(`Ya existe una etiqueta con el nombre "${name}" en la dimensión ${dimension}`);
     }
 
     const id = randomUUID();
-    const tag = Tag.create(id, userId, name, dimension, isSystem);
+    const tag = Tag.create(id, userId, name, dimension, isSystem, undefined, order);
     this.tagRepository.save(tag);
     return id;
   }

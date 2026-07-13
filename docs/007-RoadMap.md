@@ -214,7 +214,7 @@ Migración de la CLI a interfaz web basada en los mockups aprobados por la usuar
 
 **Paso 8: Planificaciones — editor semanal**
 
-- [ ] 8.1: ^^ Editor de planificación (`/plannings/[id]/edit`) — vista semanal en grilla
+- [x] 8.1: ^^ Editor de planificación (`/plannings/[id]/edit`) — vista semanal en grilla
 - [ ] 8.2: ^^ Asignar comida a un día/servicio (HU-06.1)
 - [ ] 8.3: ^^ Edición en lote de días (desde Fase 12) (HU-06.1)
 - [ ] 8.4: ^^ Botón "Autoplanificar" (desde Fase 16) (HU-06.2)

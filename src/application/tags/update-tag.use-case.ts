@@ -7,6 +7,7 @@ export type UpdateTagInput = {
   name?: string;
   userId?: string;
   dimension?: TagDimension;
+  order?: number;
 };
 
 export class UpdateTagUseCase {
@@ -36,6 +37,10 @@ export class UpdateTagUseCase {
 
     if (input.dimension !== undefined) {
       tag.changeDimension(input.dimension);
+    }
+
+    if (input.order !== undefined) {
+      tag.changeOrder(input.order);
     }
 
     this.tagRepository.save(tag);

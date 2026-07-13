@@ -3,6 +3,7 @@ import { Id } from '@/domain/shared/value-objects/id.vo';
 import { Name } from '@/domain/shared/value-objects/name.vo';
 import { UserId } from '@/domain/users/value-objects/user-id.vo';
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';
+import { TagOrder } from '../value-objects/tag-order.vo';
 
 const TAG_NAME_FIELD = 'tag name';
 
@@ -13,6 +14,7 @@ export type TagPrimitives = {
   dimension: TagDimension;
   isSystem: boolean;
   systemKey?: string | null;
+  order?: number;
 };
 
 export class Tag {
@@ -22,17 +24,19 @@ export class Tag {
   private dimension: TagDimension;
   private isSystem: boolean;
   private systemKey: string | null;
+  private order: TagOrder;
 
-  private constructor(id: Id, userId: UserId, name: Name, dimension: TagDimension, isSystem: boolean, systemKey: string | null) {
+  private constructor(id: Id, userId: UserId, name: Name, dimension: TagDimension, isSystem: boolean, systemKey: string | null, order: TagOrder) {
     this.id = id;
     this.userId = userId;
     this.name = name;
     this.dimension = dimension;
     this.isSystem = isSystem;
     this.systemKey = systemKey;
+    this.order = order;
   }
 
-  public static create(id: string, userId: string, name: string, dimension: TagDimension, isSystem: boolean, systemKey?: string | null): Tag {
+  public static create(id: string, userId: string, name: string, dimension: TagDimension, isSystem: boolean, systemKey?: string | null, order: number = 0): Tag {
     if (dimension === TagDimension.FORMATO && !isSystem) {
       throw new DomainError('La dimensión FORMATO es exclusiva del sistema');
     }
@@ -44,6 +48,7 @@ export class Tag {
       dimension,
       isSystem,
       systemKey ?? null,
+      TagOrder.create(order),
     );
   }
 
@@ -71,6 +76,10 @@ export class Tag {
     return this.systemKey;
   }
 
+  public getOrder(): number {
+    return this.order.value;
+  }
+
   public rename(name: string): void {
     this.name = Name.create(TAG_NAME_FIELD, name);
   }
@@ -85,6 +94,9 @@ export class Tag {
     }
 
     this.dimension = dimension;
+    if (dimension !== TagDimension.MOMENTO_DIA) {
+      this.order = TagOrder.create(0);
+    }
   }
 
   public reassignUser(userId: string): void {
@@ -92,6 +104,10 @@ export class Tag {
       throw new DomainError('No se puede asignar un usuario a una etiqueta FORMATO');
     }
     this.userId = UserId.create(userId);
+  }
+
+  public changeOrder(order: number): void {
+    this.order = TagOrder.create(order);
   }
 
   public toPrimitives(): TagPrimitives {
@@ -102,6 +118,7 @@ export class Tag {
       dimension: this.dimension,
       isSystem: this.isSystem,
       systemKey: this.systemKey,
+      order: this.order.value,
     };
   }
 
@@ -117,6 +134,7 @@ export class Tag {
       data.dimension,
       data.isSystem,
       data.systemKey ?? null,
+      TagOrder.create(data.order ?? 0),
     );
   }
 }
