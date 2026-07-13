@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { updateTag, deleteTag, getDeleteImpact } from './actions';
-import { PencilIcon, TrashIcon, CloseIcon } from '@/components/icons';
+import { updateTag, deleteTag, moveTagUp, moveTagDown, getDeleteImpact } from './actions';
+import { PencilIcon, TrashIcon, CloseIcon, ChevronUpIcon, ChevronDownIcon } from '@/components/icons';
 
 export default function TagRow({
   id,
@@ -10,12 +10,16 @@ export default function TagRow({
   isSystem,
   userId,
   isLast,
+  canMoveUp,
+  canMoveDown,
 }: {
   id: string;
   name: string;
   isSystem: boolean;
   userId: string;
   isLast: boolean;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(name);
@@ -95,6 +99,38 @@ export default function TagRow({
               )}
             </div>
             <div className="flex items-center gap-1">
+              {canMoveUp !== undefined && (
+                <>
+                  <form action={moveTagUp}>
+                    <input type="hidden" name="tagId" value={id} />
+                    <button
+                      type="submit"
+                      disabled={!canMoveUp}
+                      className={`rounded-md p-1.5 transition-colors ${
+                        canMoveUp
+                          ? 'text-[#62748E] hover:bg-gray-100'
+                          : 'text-gray-300'
+                      }`}
+                    >
+                      <ChevronUpIcon />
+                    </button>
+                  </form>
+                  <form action={moveTagDown}>
+                    <input type="hidden" name="tagId" value={id} />
+                    <button
+                      type="submit"
+                      disabled={!canMoveDown}
+                      className={`rounded-md p-1.5 transition-colors ${
+                        canMoveDown
+                          ? 'text-[#62748E] hover:bg-gray-100'
+                          : 'text-gray-300'
+                      }`}
+                    >
+                      <ChevronDownIcon />
+                    </button>
+                  </form>
+                </>
+              )}
               <button
                 type="button"
                 onClick={startEdit}
@@ -102,15 +138,18 @@ export default function TagRow({
               >
                 <PencilIcon />
               </button>
-              {!isSystem && (
-                <button
-                  type="button"
-                  onClick={() => setShowDelete(true)}
-                  className="rounded-md p-1.5 text-[#62748E] transition-colors hover:bg-red-50 hover:text-red-500"
-                >
-                  <TrashIcon />
-                </button>
-              )}
+              <button
+                type="button"
+                onClick={() => setShowDelete(true)}
+                disabled={isSystem}
+                className={`rounded-md p-1.5 transition-colors ${
+                  isSystem
+                    ? 'invisible'
+                    : 'text-[#62748E] hover:bg-red-50 hover:text-red-500'
+                }`}
+              >
+                <TrashIcon />
+              </button>
             </div>
           </>
         )}

@@ -373,3 +373,37 @@ export function PeopleIcon({ size = 16 }: { size?: number }) {
     </svg>
   );
 }
+
+export function ChevronUpIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 10l4-4 4 4" />
+    </svg>
+  );
+}
+
+export function ChevronDownIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 6l-4 4-4-4" />
+    </svg>
+  );
+}

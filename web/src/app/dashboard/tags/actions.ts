@@ -90,6 +90,36 @@ export async function deleteTag(formData: FormData) {
   redirect(PATH);
 }
 
+export async function moveTagUp(formData: FormData) {
+  const tagId = formData.get('tagId') as string;
+
+  const c = getContainer();
+  try {
+    c.tagOrderMoveUp.execute(tagId);
+    await addToastToQueue('Etiqueta movida arriba.');
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al mover la etiqueta';
+    await addToastToQueue(msg, 'error');
+  }
+
+  revalidatePath(PATH);
+}
+
+export async function moveTagDown(formData: FormData) {
+  const tagId = formData.get('tagId') as string;
+
+  const c = getContainer();
+  try {
+    c.tagOrderMoveDown.execute(tagId);
+    await addToastToQueue('Etiqueta movida abajo.');
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al mover la etiqueta';
+    await addToastToQueue(msg, 'error');
+  }
+
+  revalidatePath(PATH);
+}
+
 export async function getDeleteImpact(tagId: string, userId: string) {
   const c = getContainer();
 

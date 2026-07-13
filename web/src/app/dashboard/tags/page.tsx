@@ -55,7 +55,17 @@ export default async function TagsPage() {
 
       <div className="space-y-8">
         {DIMENSIONS.map((dim) => {
-          const dimensionTags = tags.filter((t) => t.dimension === dim.key);
+          let dimensionTags = tags.filter((t) => t.dimension === dim.key);
+
+          if (dim.key === TagDimension.MOMENTO_DIA) {
+            dimensionTags = dimensionTags.sort(
+              (a, b) => (a.order ?? 0) - (b.order ?? 0),
+            );
+          } else {
+            dimensionTags = dimensionTags.sort((a, b) =>
+              a.name.localeCompare(b.name),
+            );
+          }
 
           return (
             <div
@@ -83,16 +93,26 @@ export default async function TagsPage() {
                   No hay etiquetas en esta dimensión.
                 </div>
               ) : (
-                dimensionTags.map((tag, index) => (
-                  <TagRow
-                    key={tag.id}
-                    id={tag.id}
-                    name={tag.name}
-                    isSystem={tag.isSystem}
-                    userId={userId}
-                    isLast={index === dimensionTags.length - 1}
-                  />
-                ))
+                dimensionTags.map((tag, index) => {
+                  const isMoment = dim.key === TagDimension.MOMENTO_DIA;
+                  return (
+                    <TagRow
+                      key={tag.id}
+                      id={tag.id}
+                      name={tag.name}
+                      isSystem={tag.isSystem}
+                      userId={userId}
+                      isLast={index === dimensionTags.length - 1}
+                      {...(isMoment
+                        ? {
+                            canMoveUp: index > 0,
+                            canMoveDown:
+                              index < dimensionTags.length - 1,
+                          }
+                        : {})}
+                    />
+                  );
+                })
               )}
             </div>
           );
