@@ -11,7 +11,7 @@ export class AssignMealUseCase {
     private recipeRepository: RecipeRepository,
   ) {}
 
-  execute(planningId: string, orderDay: number, momentTagId: string, recipeId: string | null, covers: number, ignoreRestrictions = false) {
+  execute(planningId: string, orderDay: number, momentTagId: string, recipeId: string | null, covers: number, ignoreRestrictions = false, exclusions?: string[], preferences?: string[]) {
     const planning = this.planningRepository.findById(planningId);
     if (planning === null) throw new AppError('El Id del planning no existe');
 
@@ -21,17 +21,15 @@ export class AssignMealUseCase {
       throw new AppError('La etiqueta no es de tipo MOMENTO_DIA');
     }
 
-    if (recipeId && !ignoreRestrictions) {
-      const dayDTO = planning.getDay(orderDay);
-      const meal = dayDTO?.services[momentTagId];
-      const exclusions = meal?.getExclusions() ?? [];
+    const effectiveExclusions = exclusions ?? planning.getDay(orderDay)?.services[momentTagId]?.getExclusions() ?? [];
 
-      if (exclusions.length > 0) {
+    if (recipeId && !ignoreRestrictions) {
+      if (effectiveExclusions.length > 0) {
         const recipe = this.recipeRepository.findById(recipeId);
         if (!recipe) throw new AppError('La receta no existe');
 
         const recipeTagIds = recipe.getTagIds();
-        const conflicted = exclusions.filter(e => recipeTagIds.includes(e));
+        const conflicted = effectiveExclusions.filter(e => recipeTagIds.includes(e));
         if (conflicted.length > 0) {
           const tagNames = conflicted.map(id => this.tagRepository.findById(id)?.getName() ?? id).join(', ');
           throw new AppError(`La receta contiene etiquetas excluidas: ${tagNames}`);
@@ -39,7 +37,7 @@ export class AssignMealUseCase {
       }
     }
 
-    planning.assignMealToDay(orderDay, momentTagId, covers, recipeId, undefined, undefined, ignoreRestrictions);
+    planning.assignMealToDay(orderDay, momentTagId, covers, recipeId, effectiveExclusions, preferences, ignoreRestrictions);
     this.planningRepository.save(planning);
   }
 }

@@ -11,6 +11,7 @@ type Props = {
   planning: PlanningPrimitives;
   recipes: { id: string; name: string; tags: { id: string; dimension: string }[] }[];
   momentTags: { id: string; name: string }[];
+  allTags: { id: string; name: string; dimension: string }[];
 };
 
 type CellSelection = {
@@ -21,6 +22,7 @@ type CellSelection = {
   currentRecipeId: string | null;
   currentCovers: number;
   serviceExclusions: string[];
+  servicePreferences: string[];
   currentIgnoreRestrictions: boolean;
 };
 
@@ -56,7 +58,7 @@ function nextExistingDay(dayMap: Map<number, unknown>, order: number, max: numbe
   return null;
 }
 
-export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
+export default function PlanningGrid({ planning, recipes, momentTags, allTags }: Props) {
   const dayMap = new Map(planning.days.map((d) => [d.order, d]));
   const [cell, setCell] = useState<CellSelection | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -65,6 +67,9 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
 
   const recipeName = (id: string | null) =>
     id ? recipes.find((r) => r.id === id)?.name ?? null : null;
+
+  const tagName = (id: string) =>
+    allTags.find((t) => t.id === id)?.name ?? id;
 
   const weekIndices = Array.from({ length: planning.weeks }, (v, k) => k);
 
@@ -79,6 +84,7 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
       currentRecipeId: svc?.recipeId ?? null,
       currentCovers: svc?.covers ?? 1,
       serviceExclusions: svc?.exclusions ?? [],
+      servicePreferences: svc?.preferences ?? [],
       currentIgnoreRestrictions: svc?.ignoreRestrictions ?? false,
     };
   }
@@ -240,11 +246,41 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
                                       <div className="mt-0.5 flex items-center gap-1 text-[11px] text-[#62748E]">
                                         <PeopleIcon size={12} />
                                         {svc.covers}
+                                        {svc.preferences && svc.preferences.length > 0 && (
+                                          <span
+                                            className="ml-auto text-green-600"
+                                            title={`Preferencias: ${svc.preferences.map((id) => tagName(id)).join(', ')}`}
+                                          >
+                                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8l3 3 5-5" /></svg>
+                                          </span>
+                                        )}
+                                        {svc.exclusions && svc.exclusions.length > 0 && (
+                                          <span
+                                            className="text-red-500"
+                                            title={`Exclusiones: ${svc.exclusions.map((id) => tagName(id)).join(', ')}`}
+                                          >
+                                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l8 8" /><path d="M12 4l-8 8" /></svg>
+                                          </span>
+                                        )}
                                       </div>
                                     </>
                                   ) : (
-                                    <div className="text-[11px] italic text-[#94A3B8]">
-                                      Vacío
+                                    <div>
+                                      <div className="text-[11px] italic text-[#94A3B8]">Vacío</div>
+                                      {(svc?.preferences?.length ?? 0) > 0 || (svc?.exclusions?.length ?? 0) > 0 ? (
+                                        <div className="mt-0.5 flex items-center gap-1 text-[11px] text-[#62748E]">
+                                          {svc!.preferences.length > 0 && (
+                                            <span className="text-green-600" title={`Preferencias: ${svc!.preferences.map((id) => tagName(id)).join(', ')}`}>
+                                              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8l3 3 5-5" /></svg>
+                                            </span>
+                                          )}
+                                          {svc!.exclusions.length > 0 && (
+                                            <span className="text-red-500" title={`Exclusiones: ${svc!.exclusions.map((id) => tagName(id)).join(', ')}`}>
+                                              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l8 8" /><path d="M12 4l-8 8" /></svg>
+                                            </span>
+                                          )}
+                                        </div>
+                                      ) : null}
                                     </div>
                                   )}
                                 </button>
@@ -270,7 +306,9 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
           momentTagId={cell.momentTagId}
           momentName={cell.momentName}
           allRecipes={recipes}
+          allTags={allTags}
           serviceExclusions={cell.serviceExclusions}
+          servicePreferences={cell.servicePreferences}
           currentRecipeId={cell.currentRecipeId}
           currentCovers={cell.currentCovers}
           currentIgnoreRestrictions={cell.currentIgnoreRestrictions}

@@ -24,11 +24,14 @@ export default async function EditPlanningPage({
     .filter((t) => t.dimension === 'MOMENTO_DIA')
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
+  const allTags = tags.map((t) => ({ id: t.id, name: t.name, dimension: t.dimension }));
+
   return (
     <PlanningGrid
       planning={primitives}
       recipes={recipes}
       momentTags={momentTags}
+      allTags={allTags}
     />
   );
 }

@@ -167,7 +167,10 @@
             "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
             "recipeId": "5fb368e9-27d8-4b07-819d-a3993eba3e80",
             "covers": 2,
-            "exclusions": [],
+            "exclusions": [
+              "4d704678-63f2-4a7f-9b26-298b8ff4baa7",
+              "71119878-0dc2-4109-84ab-36125c8e2ab7"
+            ],
             "preferences": [],
             "ignoreRestrictions": false
           }

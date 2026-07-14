@@ -157,10 +157,14 @@ export async function assignMeal(formData: FormData) {
   const recipeId = formData.get('recipeId') as string;
   const covers = parseInt(formData.get('covers') as string, 10) || 1;
   const ignoreRestrictions = formData.get('ignoreRestrictions') === 'true';
+  const exclusionsRaw = formData.get('exclusions') as string | null;
+  const preferencesRaw = formData.get('preferences') as string | null;
+  const exclusions: string[] | undefined = exclusionsRaw ? JSON.parse(exclusionsRaw) : undefined;
+  const preferences: string[] | undefined = preferencesRaw ? JSON.parse(preferencesRaw) : undefined;
 
   const c = getContainer();
   try {
-    c.assignMeal.execute(planningId, orderDay, momentTagId, recipeId || null, covers, ignoreRestrictions);
+    c.assignMeal.execute(planningId, orderDay, momentTagId, recipeId || null, covers, ignoreRestrictions, exclusions, preferences);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al asignar la receta';
     await addToastToQueue(msg, 'error');
