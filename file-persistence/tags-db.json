@@ -270,15 +270,6 @@
     "order": 0
   },
   {
-    "id": "b9c825c0-e23c-441a-9258-47daa89e879f",
-    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Berenar",
-    "dimension": "MOMENTO_DIA",
-    "isSystem": false,
-    "systemKey": null,
-    "order": 4
-  },
-  {
     "id": "e9033861-c62b-4d69-9aa4-a6c16c7f9784",
     "userId": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Entrepà",
@@ -313,14 +304,5 @@
     "isSystem": false,
     "systemKey": null,
     "order": 0
-  },
-  {
-    "id": "eac930c0-b14b-4dd8-b0ac-1ab4ef808030",
-    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
-    "name": "Angelus",
-    "dimension": "MOMENTO_DIA",
-    "isSystem": false,
-    "systemKey": null,
-    "order": 2
   }
 ]

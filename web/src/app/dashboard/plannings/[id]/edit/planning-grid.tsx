@@ -145,14 +145,14 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
         />
       )}
 
-      <div className="overflow-hidden rounded-xl border border-[#E2E8F0] bg-white">
+      <div className="overflow-hidden rounded-xl border border-[#CBD5E1] bg-white shadow-sm">
         <table className="w-full table-fixed border-collapse">
           <thead>
             <tr>
               {DAY_COLS.map((day) => (
                 <th
                   key={day}
-                  className="border-b border-[#E2E8F0] bg-[#F8FAFC] px-2 py-2.5 text-center text-xs font-semibold uppercase tracking-wider text-[#62748E]"
+                  className="border-b-2 border-[#CBD5E1] bg-[#F1F5F9] px-2 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[#475569]"
                 >
                   {day}
                 </th>
@@ -172,12 +172,12 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                     return (
                       <td
                         key={colIdx}
-                        className="border border-[#E2E8F0] align-top"
+                        className="border border-[#CBD5E1] align-top"
                       >
-                        <div className="min-h-[120px] p-2">
+                        <div className="min-h-[140px] p-2.5">
                           <div className="mb-1 flex items-center justify-end gap-0.5">
                             {dateInfo !== null && (
-                              <span className="mr-auto text-[11px] font-medium text-[#94A3B8]">
+                              <span className="mr-auto text-[11px] font-semibold text-[#64748B]">
                                 {dateInfo.short}
                               </span>
                             )}
@@ -229,15 +229,15 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                               );
                               if (svc) {
                                 return (
-                                  <div key={mt.id} className="group relative mb-1">
+                                  <div key={mt.id} className="group relative mb-1.5">
                                     <button
                                       type="button"
                                       onClick={() =>
                                         setCell(buildCell(order, mt.id, mt.name))
                                       }
-                                      className="w-full rounded-md bg-[#F1F5F9] px-2 py-1.5 text-left transition-colors hover:bg-[#E2E8F0]"
+                                      className="w-full rounded-md border border-[#D1FAE5] bg-[#F0FDF4] px-2 py-1.5 text-left transition-colors hover:bg-[#D1FAE5]"
                                     >
-                                      <div className="text-[10px] font-medium uppercase tracking-wide text-[#62748E]">
+                                      <div className="text-[10px] font-semibold uppercase tracking-wide text-[#009966]">
                                         {mt.name}
                                       </div>
                                       {svc.recipeId ? (
@@ -289,9 +289,9 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                                 );
                               }
                               return (
-                                <div key={mt.id} className="mb-1">
+                                <div key={mt.id} className="mb-1.5">
                                   <div className="flex items-center">
-                                    <span className="rounded-l-md border border-dashed border-[#D1D5DB] bg-white px-2 py-1.5 text-[10px] font-medium uppercase tracking-wide text-[#9CA3AF]">
+                                    <span className="rounded-l-md border border-dashed border-[#CBD5E1] bg-white px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-[#94A3B8]">
                                       {mt.name}
                                     </span>
                                     <button
@@ -299,7 +299,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                                       onClick={() =>
                                         setCell(buildCell(order, mt.id, mt.name))
                                       }
-                                      className="rounded-r-md border-b border-r border-t border-dashed border-[#D1D5DB] bg-white px-1.5 py-1.5 text-[#9CA3AF] transition-colors hover:bg-gray-50 hover:text-[#009966]"
+                                      className="rounded-r-md border-b border-r border-t border-dashed border-[#CBD5E1] bg-white px-1.5 py-1.5 text-[#94A3B8] transition-colors hover:bg-[#F0FDF4] hover:text-[#009966]"
                                       title="Añadir servicio"
                                     >
                                       <PlusIcon size={14} />
@@ -367,7 +367,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
               >
                 Cancelar
               </button>
-              <form action={removeDay}>
+              <form action={removeDay} onSubmit={() => setRemoveConfirmDay(null)}>
                 <input type="hidden" name="planningId" value={planning.id} />
                 <input type="hidden" name="dayOrder" value={removeConfirmDay} />
                 <button
@@ -403,7 +403,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
               >
                 Cancelar
               </button>
-              <form action={removeMeal}>
+              <form action={removeMeal} onSubmit={() => setRemoveConfirmMeal(null)}>
                 <input type="hidden" name="planningId" value={planning.id} />
                 <input type="hidden" name="dayOrder" value={removeConfirmMeal.dayOrder} />
                 <input type="hidden" name="momentTagId" value={removeConfirmMeal.momentTagId} />

@@ -1044,10 +1044,6 @@
         "dimension": "MOMENTO_DIA"
       },
       {
-        "id": "b9c825c0-e23c-441a-9258-47daa89e879f",
-        "dimension": "MOMENTO_DIA"
-      },
-      {
         "id": "40872982-57db-4106-a15d-28e40a5b7c5a",
         "dimension": "FORMATO"
       },
@@ -1085,10 +1081,6 @@
     "tags": [
       {
         "id": "de4ab7f6-c265-4cae-be38-5f690121098f",
-        "dimension": "MOMENTO_DIA"
-      },
-      {
-        "id": "b9c825c0-e23c-441a-9258-47daa89e879f",
         "dimension": "MOMENTO_DIA"
       },
       {
