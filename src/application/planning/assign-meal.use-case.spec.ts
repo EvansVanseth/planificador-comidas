@@ -88,6 +88,28 @@ describe('AssignMealUseCase', () => {
     expect(() => useCase.execute(planningId, 1, momentTagId, recipeId, 4)).toThrow(AppError);
   });
 
+  it('debe permitir receta con ignoreRestrictions=true aunque tenga exclusiones', () => {
+    tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
+    tagRepo.save(Tag.create(excludedTagId, userId, 'Carne', TagDimension.TIPO_PLATO, true));
+    recipeRepo.save(Recipe.create(recipeId, userId, 'Arroz con pollo', 4, 30, null, [], [
+      { id: momentTagId, dimension: TagDimension.MOMENTO_DIA },
+      { id: formatoTagId, dimension: TagDimension.FORMATO },
+      { id: excludedTagId, dimension: TagDimension.TIPO_PLATO },
+    ]));
+    const planning = Planning.create(planningId, userId, 'Test', null, 1);
+    planning.addDay(dayId, 1);
+    planning.assignMealToDay(1, momentTagId, 4, undefined, [excludedTagId]);
+    planningRepo.save(planning);
+
+    useCase.execute(planningId, 1, momentTagId, recipeId, 4, true);
+
+    const updated = planningRepo.findById(planningId)!;
+    const day = updated.getDay(1)!;
+    const meal = day.services[momentTagId]!;
+    expect(meal.getRecipeId()).toBe(recipeId);
+    expect(meal.getIgnoreRestrictions()).toBe(true);
+  });
+
   it('debe permitir receta si exclusiones no coinciden con tags de la receta', () => {
     tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
     recipeRepo.save(Recipe.create(recipeId, userId, 'Arroz', 4, 30, null, [], [

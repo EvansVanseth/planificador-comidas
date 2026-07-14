@@ -125,7 +125,7 @@ export class Planning {
     this.days.set(day.getOrdenDia(), day);
   }
 
-  public assignMealToDay(ordenDia: number, momentTagId: string, covers: number, recipeId?: string, exclusions?: string[], preferences?: string[]): void {
+  public assignMealToDay(ordenDia: number, momentTagId: string, covers: number, recipeId?: string | null, exclusions?: string[], preferences?: string[], ignoreRestrictions = false): void {
     const day = this.days.get(ordenDia);
     if (!day) {
       throw new DomainError('No existe un día con ese orden');
@@ -135,7 +135,11 @@ export class Planning {
     if (existing) {
       existing.changeCovers(covers);
       if (recipeId !== undefined) {
-        existing.assignRecipe(recipeId);
+        if (recipeId === null) {
+          existing.unassignRecipe();
+        } else {
+          existing.assignRecipe(recipeId);
+        }
       }
       if (exclusions !== undefined) {
         existing.setExclusions(exclusions);
@@ -143,8 +147,9 @@ export class Planning {
       if (preferences !== undefined) {
         existing.setPreferences(preferences);
       }
+      existing.setIgnoreRestrictions(ignoreRestrictions);
     } else {
-      day.addMeal(momentTagId, covers, recipeId, exclusions, preferences);
+      day.addMeal(momentTagId, covers, recipeId ?? undefined, exclusions, preferences, ignoreRestrictions);
     }
   }
 

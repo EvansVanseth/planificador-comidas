@@ -11,7 +11,7 @@ export class AssignMealUseCase {
     private recipeRepository: RecipeRepository,
   ) {}
 
-  execute(planningId: string, orderDay: number, momentTagId: string, recipeId: string, covers: number) {
+  execute(planningId: string, orderDay: number, momentTagId: string, recipeId: string | null, covers: number, ignoreRestrictions = false) {
     const planning = this.planningRepository.findById(planningId);
     if (planning === null) throw new AppError('El Id del planning no existe');
 
@@ -21,7 +21,7 @@ export class AssignMealUseCase {
       throw new AppError('La etiqueta no es de tipo MOMENTO_DIA');
     }
 
-    if (recipeId) {
+    if (recipeId && !ignoreRestrictions) {
       const dayDTO = planning.getDay(orderDay);
       const meal = dayDTO?.services[momentTagId];
       const exclusions = meal?.getExclusions() ?? [];
@@ -39,7 +39,7 @@ export class AssignMealUseCase {
       }
     }
 
-    planning.assignMealToDay(orderDay, momentTagId, covers, recipeId);
+    planning.assignMealToDay(orderDay, momentTagId, covers, recipeId, undefined, undefined, ignoreRestrictions);
     this.planningRepository.save(planning);
   }
 }

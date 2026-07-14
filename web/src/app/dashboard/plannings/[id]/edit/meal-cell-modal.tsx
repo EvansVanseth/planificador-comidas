@@ -14,6 +14,7 @@ type Props = {
   serviceExclusions: string[];
   currentRecipeId: string | null;
   currentCovers: number;
+  currentIgnoreRestrictions: boolean;
   onClose: () => void;
   onPrevDay?: () => void;
   onNextDay?: () => void;
@@ -29,13 +30,18 @@ export default function MealCellModal({
   serviceExclusions,
   currentRecipeId,
   currentCovers,
+  currentIgnoreRestrictions,
   onClose,
   onPrevDay,
   onNextDay,
 }: Props) {
   const [selectedRecipe, setSelectedRecipe] = useState(currentRecipeId ?? '');
+  const [skipRestrictions, setSkipRestrictions] = useState(currentIgnoreRestrictions);
 
   const filteredRecipes = useMemo(() => {
+    if (skipRestrictions) {
+      return [...allRecipes].sort((a, b) => a.name.localeCompare(b.name));
+    }
     return allRecipes.filter((r) => {
       const momentTags = r.tags.filter((t) => t.dimension === 'MOMENTO_DIA');
       if (momentTags.length > 0 && !momentTags.some((t) => t.id === momentTagId)) {
@@ -46,7 +52,7 @@ export default function MealCellModal({
       }
       return true;
     }).sort((a, b) => a.name.localeCompare(b.name));
-  }, [allRecipes, momentTagId, serviceExclusions]);
+  }, [allRecipes, momentTagId, serviceExclusions, skipRestrictions]);
 
   const [covers, setCovers] = useState(currentCovers);
 
@@ -103,6 +109,7 @@ export default function MealCellModal({
           <input type="hidden" name="planningId" value={planningId} />
           <input type="hidden" name="dayOrder" value={dayOrder} />
           <input type="hidden" name="momentTagId" value={momentTagId} />
+          <input type="hidden" name="ignoreRestrictions" value={String(skipRestrictions)} />
 
           <div>
             <label className="mb-1 block text-sm font-medium text-[#0F172B]">
@@ -130,6 +137,23 @@ export default function MealCellModal({
             {filteredRecipes.length === 0 && (
               <p className="mt-1 text-xs text-[#62748E]">
                 Ninguna receta coincide con {momentName.toLowerCase()} ni con las exclusiones del servicio.
+              </p>
+            )}
+          </div>
+
+          <div className="pt-1">
+            <label className="flex items-center gap-2 text-sm text-[#62748E]">
+              <input
+                type="checkbox"
+                checked={skipRestrictions}
+                onChange={(e) => setSkipRestrictions(e.target.checked)}
+                className="rounded border-[#E2E8F0] text-[#009966] focus:ring-[#009966]/20"
+              />
+              Saltar restricciones de servicio
+            </label>
+            {skipRestrictions && (
+              <p className="mt-1 text-xs text-[#94A3B8]">
+                Se muestran todas las recetas sin filtrar por momento del día ni exclusiones.
               </p>
             )}
           </div>

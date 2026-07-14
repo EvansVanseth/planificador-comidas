@@ -183,7 +183,8 @@ describe('Planning (Aggregate)', () => {
       recipeId: validId,
       covers: 2,
       exclusions: [],
-      preferences: []
+      preferences: [],
+      ignoreRestrictions: false,
     });
   });
 

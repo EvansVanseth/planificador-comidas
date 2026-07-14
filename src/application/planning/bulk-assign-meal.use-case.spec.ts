@@ -16,7 +16,7 @@ describe('BulkAssignMealUseCase', () => {
   const userId = '550e8400-e29b-41d4-a716-446655440001';
   const lunchTagId = '550e8400-e29b-41d4-a716-446655440010';
     const recipeId = '550e8400-e29b-41d4-a716-446655440020';
-  const recipeTagMomento = '550e8400-e29b-41d4-a716-446655440030';
+  const recipeTagMomento = lunchTagId;
   const recipeTagFormato = '550e8400-e29b-41d4-a716-446655440031';
   const recipeTagTipo = '550e8400-e29b-41d4-a716-446655440032';
 
@@ -39,7 +39,6 @@ describe('BulkAssignMealUseCase', () => {
     recipeRepo = new InMemoryRecipeRepository();
 
     tagRepo.save(Tag.create(lunchTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
-    tagRepo.save(Tag.create(recipeTagMomento, userId, 'Desayuno', TagDimension.MOMENTO_DIA, true));
     tagRepo.save(Tag.create(recipeTagFormato, userId, 'Plato', TagDimension.FORMATO, true));
     tagRepo.save(Tag.create(recipeTagTipo, userId, 'Carne', TagDimension.TIPO_PLATO, true));
     recipeRepo.save(Recipe.create(

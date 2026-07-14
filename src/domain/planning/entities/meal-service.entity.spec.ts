@@ -100,6 +100,7 @@ describe('MealService (Entity)', () => {
       covers: 4,
       exclusions: [tagId1],
       preferences: [tagId2],
+      ignoreRestrictions: false,
     });
   });
 
@@ -109,11 +110,13 @@ describe('MealService (Entity)', () => {
       covers: 4,
       exclusions: [tagId1],
       preferences: [tagId2],
+      ignoreRestrictions: false,
     };
     const service = MealService.fromPrimitives(data);
     expect(service.getCovers()).toBe(4);
     expect(service.getRecipeId()).toBe(dinnerTagId);
     expect(service.getExclusions()).toEqual([tagId1]);
     expect(service.getPreferences()).toEqual([tagId2]);
+    expect(service.getIgnoreRestrictions()).toBe(false);
   });
 });

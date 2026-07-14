@@ -43,11 +43,11 @@ export class PlannedDay {
     return this.orden_dia.value;
   }  
 
-  public addMeal(momentTagId: string, covers: number, recipeId?: string, exclusions?: string[], preferences?: string[]): void {
+  public addMeal(momentTagId: string, covers: number, recipeId?: string, exclusions?: string[], preferences?: string[], ignoreRestrictions = false): void {
     if (this.services.has(momentTagId)) {
       throw new DomainError('Ya hay un servicio asignado para este momento del día');
     }
-    this.services.set(momentTagId, MealService.create(covers, recipeId, exclusions, preferences));
+    this.services.set(momentTagId, MealService.create(covers, recipeId, exclusions, preferences, ignoreRestrictions));
   }
 
   public getMeal(momentTagId: string): MealService | null {

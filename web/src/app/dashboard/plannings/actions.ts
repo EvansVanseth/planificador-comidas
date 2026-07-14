@@ -156,10 +156,11 @@ export async function assignMeal(formData: FormData) {
   const momentTagId = formData.get('momentTagId') as string;
   const recipeId = formData.get('recipeId') as string;
   const covers = parseInt(formData.get('covers') as string, 10) || 1;
+  const ignoreRestrictions = formData.get('ignoreRestrictions') === 'true';
 
   const c = getContainer();
   try {
-    c.assignMeal.execute(planningId, orderDay, momentTagId, recipeId, covers);
+    c.assignMeal.execute(planningId, orderDay, momentTagId, recipeId || null, covers, ignoreRestrictions);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al asignar la receta';
     await addToastToQueue(msg, 'error');

@@ -8,6 +8,7 @@ export type MealServicePrimitives = {
   covers: number;
   exclusions: string[];
   preferences: string[];
+  ignoreRestrictions: boolean;
 };
 
 export class MealService {
@@ -15,15 +16,17 @@ export class MealService {
   private covers: CoversNumber;
   private exclusions: Set<string>;
   private preferences: Set<string>;
+  private ignoreRestrictions: boolean;
 
-  private constructor(recipeId: Id | null, covers: CoversNumber, exclusions: Set<string>, preferences: Set<string>) {
+  private constructor(recipeId: Id | null, covers: CoversNumber, exclusions: Set<string>, preferences: Set<string>, ignoreRestrictions: boolean) {
     this.recipeId = recipeId;
     this.covers = covers;
     this.exclusions = exclusions;
     this.preferences = preferences;
+    this.ignoreRestrictions = ignoreRestrictions;
   }
 
-  public static create(covers: number, recipeId?: string, exclusions?: string[], preferences?: string[]): MealService {
+  public static create(covers: number, recipeId?: string, exclusions?: string[], preferences?: string[], ignoreRestrictions = false): MealService {
     if (covers === 0 && recipeId !== undefined) {
       throw new DomainError('Un servicio con 0 comensales no puede tener una receta asignada');
     }
@@ -33,11 +36,12 @@ export class MealService {
       CoversNumber.create(covers),
       new Set(exclusions ?? []),
       new Set(preferences ?? []),
+      ignoreRestrictions,
     );
   }
 
   public static createEmpty(): MealService {
-    return new MealService(null, CoversNumber.create(0), new Set(), new Set());
+    return new MealService(null, CoversNumber.create(0), new Set(), new Set(), false);
   }
 
   public getRecipeId(): string | null {
@@ -90,6 +94,14 @@ export class MealService {
     this.preferences.delete(tagId);
   }
 
+  public getIgnoreRestrictions(): boolean {
+    return this.ignoreRestrictions;
+  }
+
+  public setIgnoreRestrictions(value: boolean): void {
+    this.ignoreRestrictions = value;
+  }
+
   public setExclusions(tagIds: string[]): void {
     this.exclusions = new Set(tagIds.map(id => Id.create(id).value));
   }
@@ -105,6 +117,7 @@ export class MealService {
       covers: this.covers.value,
       exclusions: Array.from(this.exclusions),
       preferences: Array.from(this.preferences),
+      ignoreRestrictions: this.ignoreRestrictions,
     };
   }
 
@@ -114,6 +127,7 @@ export class MealService {
       CoversNumber.create(data.covers),
       new Set(data.exclusions),
       new Set(data.preferences),
+      data.ignoreRestrictions ?? false,
     );
   }
 }

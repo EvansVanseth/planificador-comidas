@@ -21,6 +21,7 @@ type CellSelection = {
   currentRecipeId: string | null;
   currentCovers: number;
   serviceExclusions: string[];
+  currentIgnoreRestrictions: boolean;
 };
 
 const DAY_COLS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
@@ -59,6 +60,7 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
   const dayMap = new Map(planning.days.map((d) => [d.order, d]));
   const [cell, setCell] = useState<CellSelection | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [removeConfirmDay, setRemoveConfirmDay] = useState<number | null>(null);
   const totalDays = planning.weeks * 7;
 
   const recipeName = (id: string | null) =>
@@ -77,6 +79,7 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
       currentRecipeId: svc?.recipeId ?? null,
       currentCovers: svc?.covers ?? 1,
       serviceExclusions: svc?.exclusions ?? [],
+      currentIgnoreRestrictions: svc?.ignoreRestrictions ?? false,
     };
   }
 
@@ -185,17 +188,14 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
                               </form>
                             )}
                             {dayData && (
-                              <form action={removeDay}>
-                                <input type="hidden" name="planningId" value={planning.id} />
-                                <input type="hidden" name="dayOrder" value={order} />
-                                <button
-                                  type="submit"
-                                  className="rounded-md p-1 text-[#62748E] transition-colors hover:bg-red-50 hover:text-red-500"
-                                  title="Eliminar día"
-                                >
-                                  <MinusIcon size={14} />
-                                </button>
-                              </form>
+                              <button
+                                type="button"
+                                onClick={() => setRemoveConfirmDay(order)}
+                                className="rounded-md p-1 text-[#62748E] transition-colors hover:bg-red-50 hover:text-red-500"
+                                title="Eliminar día"
+                              >
+                                <MinusIcon size={14} />
+                              </button>
                             )}
                           </div>
 
@@ -273,6 +273,7 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
           serviceExclusions={cell.serviceExclusions}
           currentRecipeId={cell.currentRecipeId}
           currentCovers={cell.currentCovers}
+          currentIgnoreRestrictions={cell.currentIgnoreRestrictions}
           onClose={() => setCell(null)}
           onPrevDay={(() => {
             const prev = prevExistingDay(dayMap, cell.dayOrder);
@@ -283,6 +284,42 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
             return next !== null ? () => setCell(buildCell(next, cell.momentTagId, cell.momentName)) : undefined;
           })()}
         />
+      )}
+
+      {removeConfirmDay !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setRemoveConfirmDay(null)}
+          />
+          <div className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
+            <h2 className="mb-4 text-lg font-semibold text-[#0F172B]">
+              Eliminar día
+            </h2>
+            <p className="mb-4 text-sm text-[#62748E]">
+              ¿Estás seguro de que querés eliminar el día {removeConfirmDay} y todos sus servicios?
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setRemoveConfirmDay(null)}
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#62748E] transition-colors hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <form action={removeDay}>
+                <input type="hidden" name="planningId" value={planning.id} />
+                <input type="hidden" name="dayOrder" value={removeConfirmDay} />
+                <button
+                  type="submit"
+                  className="rounded-lg bg-[#DC2626] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]"
+                >
+                  Eliminar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -4,7 +4,7 @@ description: "Trigger: toast, notificación, notificar, toast queue, error banne
 license: Apache-2.0
 metadata:
   author: "planificador-comidas"
-  version: "1.3"
+  version: "1.4"
 ---
 
 ## Activation Contract
@@ -37,6 +37,18 @@ Apply these patterns when:
   redirect(path);
   ```
 - **Error handling in UI**: catch `AppError`/`DomainError` in try/catch and convert to toast errors. Do NOT rely on URL query params.
+
+### Confirmation modals for destructive actions (delete/remove)
+
+- **Pattern**: `useState` boolean/null for the target entity, not `window.confirm()`
+  - `const [removeConfirmDay, setRemoveConfirmDay] = useState<number | null>(null)`
+  - Trigger button sets state (e.g. `onClick={() => setRemoveConfirmDay(order)}`)
+  - Modal renders when state is non-null, with "Cancelar" (clears state) and "Eliminar" (submits server action form)
+- **Structure**: overlay (`bg-black/40`) + white card (`max-w-md rounded-xl bg-white p-6 shadow-2xl`)
+  - Click on overlay closes modal: `onClick={() => setRemoveConfirmDay(null)}`
+  - "Cancelar" button: `type="button"`, same `onClick`
+  - "Eliminar" button: inside a `<form action={serverAction}>` with hidden inputs, `type="submit"`, `bg-[#DC2626]`
+- **Reference**: `tag-row.tsx` (delete modal with impact preview), `planning-grid.tsx` (remove day modal)
 
 ## Execution Steps
 
