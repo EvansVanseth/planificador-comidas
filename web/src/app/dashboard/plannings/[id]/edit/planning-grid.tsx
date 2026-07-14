@@ -297,7 +297,7 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
               Eliminar día
             </h2>
             <p className="mb-4 text-sm text-[#62748E]">
-              ¿Estás seguro de que querés eliminar el día {removeConfirmDay} y todos sus servicios?
+              ¿Estás seguro de que quieres eliminar el día {removeConfirmDay} y todos sus servicios?
             </p>
             <div className="flex justify-end gap-3">
               <button

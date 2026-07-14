@@ -166,7 +166,7 @@ export default function TagRow({
               Eliminar etiqueta
             </h2>
             <p className="mb-4 text-sm text-[#62748E]">
-              ¿Estás seguro de que querés eliminar <strong>{name}</strong>?
+              ¿Estás seguro de que quieres eliminar <strong>{name}</strong>?
             </p>
 
             {loadingImpact && (
