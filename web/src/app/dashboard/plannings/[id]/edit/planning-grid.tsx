@@ -1,31 +1,64 @@
 'use client';
 
+import { useState } from 'react';
 import type { PlanningPrimitives } from '@/domain/planning/aggregates/planning.aggregate';
 import { PeopleIcon } from '@/components/icons';
+import MealCellModal from './meal-cell-modal';
 
 type Props = {
   planning: PlanningPrimitives;
-  recipes: { id: string; name: string }[];
+  recipes: { id: string; name: string; tags: { id: string; dimension: string }[] }[];
   momentTags: { id: string; name: string }[];
+};
+
+type CellSelection = {
+  dayOrder: number;
+  dateLabel: string;
+  momentTagId: string;
+  momentName: string;
+  currentRecipeId: string | null;
+  currentCovers: number;
+  serviceExclusions: string[];
 };
 
 const DAY_COLS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
-function getDateForDay(startDate: string | null, dayOrder: number): number | null {
+const WEEKDAYS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+function getDateForDay(startDate: string | null, dayOrder: number): { dateNum: number; label: string } | null {
   if (!startDate) return null;
   const start = new Date(startDate);
   const d = new Date(start);
   d.setDate(start.getDate() + (dayOrder - 1));
-  return d.getDate();
+  return {
+    dateNum: d.getDate(),
+    label: `${WEEKDAYS[d.getDay()]}, ${d.getDate()} de ${d.toLocaleDateString('es-ES', { month: 'long' })}`,
+  };
 }
 
 export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
   const dayMap = new Map(planning.days.map((d) => [d.order, d]));
+  const [cell, setCell] = useState<CellSelection | null>(null);
+  const totalDays = planning.weeks * 7;
 
   const recipeName = (id: string | null) =>
     id ? recipes.find((r) => r.id === id)?.name ?? null : null;
 
   const weekIndices = Array.from({ length: planning.weeks }, (v, k) => k);
+
+  function buildCell(order: number, momentId: string, momentName: string): CellSelection {
+    const dayData = dayMap.get(order);
+    const svc = dayData?.services.find((s) => s.time === momentId);
+    return {
+      dayOrder: order,
+      dateLabel: getDateForDay(planning.startdate, order)?.label ?? '',
+      momentTagId: momentId,
+      momentName,
+      currentRecipeId: svc?.recipeId ?? null,
+      currentCovers: svc?.covers ?? 1,
+      serviceExclusions: svc?.exclusions ?? [],
+    };
+  }
 
   return (
     <div>
@@ -64,7 +97,7 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
                   {DAY_COLS.map((_day, colIdx) => {
                     const order = weekStart + colIdx;
                     const dayData = dayMap.get(order);
-                    const dayNum = getDateForDay(planning.startdate, order);
+                    const dateInfo = getDateForDay(planning.startdate, order);
 
                     return (
                       <td
@@ -72,9 +105,9 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
                         className="border border-[#E2E8F0] align-top"
                       >
                         <div className="min-h-[120px] p-2">
-                          {dayNum !== null && (
+                          {dateInfo !== null && (
                             <span className="mb-1 block text-right text-[11px] font-medium text-[#94A3B8]">
-                              {dayNum}
+                              {dateInfo.dateNum}
                             </span>
                           )}
 
@@ -84,9 +117,13 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
                                 (s) => s.time === mt.id,
                               );
                               return (
-                                <div
+                                <button
                                   key={mt.id}
-                                  className="mb-1 rounded-md bg-[#F1F5F9] px-2 py-1.5"
+                                  type="button"
+                                  onClick={() =>
+                                    setCell(buildCell(order, mt.id, mt.name))
+                                  }
+                                  className="mb-1 w-full rounded-md bg-[#F1F5F9] px-2 py-1.5 text-left transition-colors hover:bg-[#E2E8F0]"
                                 >
                                   <div className="text-[10px] font-medium uppercase tracking-wide text-[#62748E]">
                                     {mt.name}
@@ -106,7 +143,7 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
                                       Vacío
                                     </div>
                                   )}
-                                </div>
+                                </button>
                               );
                             })}
                         </div>
@@ -119,6 +156,24 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
           </tbody>
         </table>
       </div>
+
+      {cell && (
+        <MealCellModal
+          key={`${cell.dayOrder}-${cell.momentTagId}`}
+          planningId={planning.id}
+          dayOrder={cell.dayOrder}
+          dateLabel={cell.dateLabel}
+          momentTagId={cell.momentTagId}
+          momentName={cell.momentName}
+          allRecipes={recipes}
+          serviceExclusions={cell.serviceExclusions}
+          currentRecipeId={cell.currentRecipeId}
+          currentCovers={cell.currentCovers}
+          onClose={() => setCell(null)}
+          onPrevDay={cell.dayOrder > 1 ? () => setCell(buildCell(cell.dayOrder - 1, cell.momentTagId, cell.momentName)) : undefined}
+          onNextDay={cell.dayOrder < totalDays ? () => setCell(buildCell(cell.dayOrder + 1, cell.momentTagId, cell.momentName)) : undefined}
+        />
+      )}
     </div>
   );
 }

@@ -50,3 +50,57 @@ export async function deletePlanning(formData: FormData) {
   revalidatePath(PATH);
   redirect(PATH);
 }
+
+export async function assignMeal(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const orderDay = parseInt(formData.get('dayOrder') as string, 10);
+  const momentTagId = formData.get('momentTagId') as string;
+  const recipeId = formData.get('recipeId') as string;
+  const covers = parseInt(formData.get('covers') as string, 10) || 1;
+
+  const c = getContainer();
+  try {
+    c.assignMeal.execute(planningId, orderDay, momentTagId, recipeId, covers);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al asignar la receta';
+    await addToastToQueue(msg, 'error');
+    const editPath = `/dashboard/plannings/${planningId}/edit`;
+    revalidatePath(editPath);
+    redirect(editPath);
+  }
+
+  await addToastToQueue('Servicio actualizado correctamente.');
+  const editPath = `/dashboard/plannings/${planningId}/edit`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
+export async function getDeleteImpact(tagId: string, userId: string) {
+  const c = getContainer();
+
+  const recipes = c.listRecipes.execute(userId);
+  const recipesWithTag = recipes
+    .filter((r) => r.tags.some((t) => t.id === tagId))
+    .map((r) => r.name);
+
+  const plannings = c.listPlannings.execute(userId);
+  let planningsAffected = 0;
+  for (const planning of plannings) {
+    for (const day of planning.getDays()) {
+      const dto = day.toDTO();
+      for (const [momentTagId, service] of Object.entries(dto.services)) {
+        if (service === null) continue;
+        if (
+          momentTagId === tagId ||
+          service.getExclusions().includes(tagId) ||
+          service.getPreferences().includes(tagId)
+        ) {
+          planningsAffected++;
+          break;
+        }
+      }
+    }
+  }
+
+  return { recipesAffected: recipesWithTag, planningsAffected };
+}

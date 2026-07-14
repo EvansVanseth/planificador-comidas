@@ -6,7 +6,7 @@
     "dimension": "MOMENTO_DIA",
     "isSystem": true,
     "systemKey": "DESAYUNO",
-    "order": 1
+    "order": 0
   },
   {
     "id": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
@@ -313,5 +313,14 @@
     "isSystem": false,
     "systemKey": null,
     "order": 0
+  },
+  {
+    "id": "eac930c0-b14b-4dd8-b0ac-1ab4ef808030",
+    "userId": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Angelus",
+    "dimension": "MOMENTO_DIA",
+    "isSystem": false,
+    "systemKey": null,
+    "order": 1
   }
 ]
