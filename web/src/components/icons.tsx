@@ -283,11 +283,11 @@ export function DuplicateIcon() {
   );
 }
 
-export function PlusIcon() {
+export function PlusIcon({ size = 16 }: { size?: number }) {
   return (
     <svg
-      width="16"
-      height="16"
+      width={size}
+      height={size}
       viewBox="0 0 16 16"
       fill="none"
       stroke="currentColor"
@@ -295,6 +295,22 @@ export function PlusIcon() {
       strokeLinecap="round"
     >
       <path d="M8 3v10" />
+      <path d="M3 8h10" />
+    </svg>
+  );
+}
+
+export function MinusIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    >
       <path d="M3 8h10" />
     </svg>
   );

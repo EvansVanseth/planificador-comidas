@@ -51,6 +51,42 @@ export async function deletePlanning(formData: FormData) {
   redirect(PATH);
 }
 
+export async function addDay(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const dayOrder = parseInt(formData.get('dayOrder') as string, 10);
+
+  const c = getContainer();
+  try {
+    c.addDayToPlanning.execute(planningId, dayOrder);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al añadir el día';
+    await addToastToQueue(msg, 'error');
+  }
+
+  await addToastToQueue(`Día ${dayOrder} añadido.`);
+  const editPath = `/dashboard/plannings/${planningId}/edit`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
+export async function removeDay(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const dayOrder = parseInt(formData.get('dayOrder') as string, 10);
+
+  const c = getContainer();
+  try {
+    c.removeDayFromPlanning.execute(planningId, dayOrder);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al eliminar el día';
+    await addToastToQueue(msg, 'error');
+  }
+
+  await addToastToQueue(`Día ${dayOrder} eliminado.`);
+  const editPath = `/dashboard/plannings/${planningId}/edit`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
 export async function assignMeal(formData: FormData) {
   const planningId = formData.get('planningId') as string;
   const orderDay = parseInt(formData.get('dayOrder') as string, 10);

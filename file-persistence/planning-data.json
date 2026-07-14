@@ -542,7 +542,98 @@
     "startdate": null,
     "weeks": 3,
     "hotColdBalance": 50,
-    "days": [],
+    "days": [
+      {
+        "id": "39798ee0-fa0b-4784-8a87-1ba3b1c41622",
+        "order": 1,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          },
+          {
+            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "d5885a00-9bef-4e4c-82d3-1c3383097268",
+        "order": 2,
+        "services": []
+      },
+      {
+        "id": "d658e974-78f5-4bbe-b9c1-e17672a9ff12",
+        "order": 3,
+        "services": []
+      },
+      {
+        "id": "47a46cc1-b093-47d6-92f4-e1ecf9f4fdf5",
+        "order": 4,
+        "services": []
+      },
+      {
+        "id": "ae0b6e27-fe65-4dfd-a342-452cd34ba2ce",
+        "order": 5,
+        "services": []
+      },
+      {
+        "id": "42d10b97-b25a-48cc-a953-41370c10b10e",
+        "order": 8,
+        "services": []
+      },
+      {
+        "id": "0562c9d3-3f7c-45cd-95fe-863e01b38c4f",
+        "order": 9,
+        "services": []
+      },
+      {
+        "id": "1ba8f47f-1eaa-422a-80b0-ad71ce905283",
+        "order": 10,
+        "services": []
+      },
+      {
+        "id": "58ab24aa-6e0b-4c86-aadc-e07e98b19500",
+        "order": 11,
+        "services": []
+      },
+      {
+        "id": "222b1557-c17c-462d-833d-7f70811cc265",
+        "order": 12,
+        "services": []
+      },
+      {
+        "id": "e720eb26-1ac7-4ae1-933b-b960d7963dba",
+        "order": 15,
+        "services": []
+      },
+      {
+        "id": "98cfcc82-2ec7-44b9-9e8f-7e8648701383",
+        "order": 16,
+        "services": []
+      },
+      {
+        "id": "77367147-da38-4900-8154-6fd54947881a",
+        "order": 17,
+        "services": []
+      },
+      {
+        "id": "58166e8a-d6e0-4d0d-95f5-219603ed0aea",
+        "order": 18,
+        "services": []
+      },
+      {
+        "id": "a4259b45-e5d8-4c63-b4c5-d2d0085e819f",
+        "order": 19,
+        "services": []
+      }
+    ],
     "pantryItems": [],
     "shoppingItems": []
   }

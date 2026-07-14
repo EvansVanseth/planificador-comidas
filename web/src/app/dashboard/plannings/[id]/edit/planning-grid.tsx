@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import type { PlanningPrimitives } from '@/domain/planning/aggregates/planning.aggregate';
-import { PeopleIcon } from '@/components/icons';
+import { PeopleIcon, PlusIcon, MinusIcon } from '@/components/icons';
+import { addDay, removeDay } from '../../actions';
 import MealCellModal from './meal-cell-modal';
 
 type Props = {
@@ -25,15 +26,32 @@ const DAY_COLS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
 const WEEKDAYS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 
-function getDateForDay(startDate: string | null, dayOrder: number): { dateNum: number; label: string } | null {
+function getDateForDay(startDate: string | null, dayOrder: number): { short: string; label: string } | null {
   if (!startDate) return null;
   const start = new Date(startDate);
   const d = new Date(start);
   d.setDate(start.getDate() + (dayOrder - 1));
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = String(d.getFullYear()).slice(-2);
   return {
-    dateNum: d.getDate(),
+    short: `${day}/${month}/${year}`,
     label: `${WEEKDAYS[d.getDay()]}, ${d.getDate()} de ${d.toLocaleDateString('es-ES', { month: 'long' })}`,
   };
+}
+
+function prevExistingDay(dayMap: Map<number, unknown>, order: number): number | null {
+  for (let o = order - 1; o >= 1; o--) {
+    if (dayMap.has(o)) return o;
+  }
+  return null;
+}
+
+function nextExistingDay(dayMap: Map<number, unknown>, order: number, max: number): number | null {
+  for (let o = order + 1; o <= max; o++) {
+    if (dayMap.has(o)) return o;
+  }
+  return null;
 }
 
 export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
@@ -105,10 +123,54 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
                         className="border border-[#E2E8F0] align-top"
                       >
                         <div className="min-h-[120px] p-2">
-                          {dateInfo !== null && (
-                            <span className="mb-1 block text-right text-[11px] font-medium text-[#94A3B8]">
-                              {dateInfo.dateNum}
-                            </span>
+                          <div className="mb-1 flex items-center justify-end gap-0.5">
+                            {dateInfo !== null && (
+                              <span className="mr-auto text-[11px] font-medium text-[#94A3B8]">
+                                {dateInfo.short}
+                              </span>
+                            )}
+                            {!dayData && (
+                              <form action={addDay}>
+                                <input type="hidden" name="planningId" value={planning.id} />
+                                <input type="hidden" name="dayOrder" value={order} />
+                                <button
+                                  type="submit"
+                                  className="rounded-md p-1 text-[#62748E] transition-colors hover:bg-gray-100"
+                                  title="Añadir día"
+                                >
+                                  <PlusIcon size={14} />
+                                </button>
+                              </form>
+                            )}
+                            {dayData && (
+                              <form action={removeDay}>
+                                <input type="hidden" name="planningId" value={planning.id} />
+                                <input type="hidden" name="dayOrder" value={order} />
+                                <button
+                                  type="submit"
+                                  className="rounded-md p-1 text-[#62748E] transition-colors hover:bg-red-50 hover:text-red-500"
+                                  title="Eliminar día"
+                                >
+                                  <MinusIcon size={14} />
+                                </button>
+                              </form>
+                            )}
+                          </div>
+
+                          {!dayData && (
+                            <div className="flex items-center justify-center pt-6">
+                              <form action={addDay}>
+                                <input type="hidden" name="planningId" value={planning.id} />
+                                <input type="hidden" name="dayOrder" value={order} />
+                                <button
+                                  type="submit"
+                                  className="rounded-full border border-dashed border-[#94A3B8] p-2 text-[#62748E] transition-colors hover:border-[#009966] hover:text-[#009966]"
+                                  title="Añadir día"
+                                >
+                                  <PlusIcon size={18} />
+                                </button>
+                              </form>
+                            </div>
                           )}
 
                           {dayData &&
@@ -170,8 +232,14 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
           currentRecipeId={cell.currentRecipeId}
           currentCovers={cell.currentCovers}
           onClose={() => setCell(null)}
-          onPrevDay={cell.dayOrder > 1 ? () => setCell(buildCell(cell.dayOrder - 1, cell.momentTagId, cell.momentName)) : undefined}
-          onNextDay={cell.dayOrder < totalDays ? () => setCell(buildCell(cell.dayOrder + 1, cell.momentTagId, cell.momentName)) : undefined}
+          onPrevDay={(() => {
+            const prev = prevExistingDay(dayMap, cell.dayOrder);
+            return prev !== null ? () => setCell(buildCell(prev, cell.momentTagId, cell.momentName)) : undefined;
+          })()}
+          onNextDay={(() => {
+            const next = nextExistingDay(dayMap, cell.dayOrder, totalDays);
+            return next !== null ? () => setCell(buildCell(next, cell.momentTagId, cell.momentName)) : undefined;
+          })()}
         />
       )}
     </div>
