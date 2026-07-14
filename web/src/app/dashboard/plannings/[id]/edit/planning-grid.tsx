@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { PlanningPrimitives } from '@/domain/planning/aggregates/planning.aggregate';
 import { PeopleIcon, PlusIcon, MinusIcon, CloseIcon } from '@/components/icons';
-import { addDay, removeDay, addAllDays } from '../../actions';
+import { addDay, removeDay, addAllDays, removeMeal } from '../../actions';
 import MealCellModal from './meal-cell-modal';
 import EditPlanningModal from './edit-planning-modal';
 
@@ -63,6 +63,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
   const [cell, setCell] = useState<CellSelection | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [removeConfirmDay, setRemoveConfirmDay] = useState<number | null>(null);
+  const [removeConfirmMeal, setRemoveConfirmMeal] = useState<{ dayOrder: number; momentTagId: string } | null>(null);
   const totalDays = planning.weeks * 7;
 
   const recipeName = (id: string | null) =>
@@ -226,64 +227,85 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                               const svc = dayData.services.find(
                                 (s) => s.time === mt.id,
                               );
-                              return (
-                                <button
-                                  key={mt.id}
-                                  type="button"
-                                  onClick={() =>
-                                    setCell(buildCell(order, mt.id, mt.name))
-                                  }
-                                  className="mb-1 w-full rounded-md bg-[#F1F5F9] px-2 py-1.5 text-left transition-colors hover:bg-[#E2E8F0]"
-                                >
-                                  <div className="text-[10px] font-medium uppercase tracking-wide text-[#62748E]">
-                                    {mt.name}
-                                  </div>
-                                  {svc?.recipeId ? (
-                                    <>
-                                      <div className="break-words text-xs font-semibold leading-tight text-[#0F172B]">
-                                        {recipeName(svc.recipeId)}
+                              if (svc) {
+                                return (
+                                  <div key={mt.id} className="group relative mb-1">
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        setCell(buildCell(order, mt.id, mt.name))
+                                      }
+                                      className="w-full rounded-md bg-[#F1F5F9] px-2 py-1.5 text-left transition-colors hover:bg-[#E2E8F0]"
+                                    >
+                                      <div className="text-[10px] font-medium uppercase tracking-wide text-[#62748E]">
+                                        {mt.name}
                                       </div>
-                                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-[#62748E]">
-                                        <PeopleIcon size={12} />
-                                        {svc.covers}
-                                        {svc.preferences && svc.preferences.length > 0 && (
-                                          <span
-                                            className="ml-auto text-green-600"
-                                            title={`Preferencias: ${svc.preferences.map((id) => tagName(id)).join(', ')}`}
-                                          >
-                                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8l3 3 5-5" /></svg>
-                                          </span>
-                                        )}
-                                        {svc.exclusions && svc.exclusions.length > 0 && (
-                                          <span
-                                            className="text-red-500"
-                                            title={`Exclusiones: ${svc.exclusions.map((id) => tagName(id)).join(', ')}`}
-                                          >
-                                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l8 8" /><path d="M12 4l-8 8" /></svg>
-                                          </span>
-                                        )}
-                                      </div>
-                                    </>
-                                  ) : (
-                                    <div>
-                                      <div className="text-[11px] italic text-[#94A3B8]">Vacío</div>
-                                      {(svc?.preferences?.length ?? 0) > 0 || (svc?.exclusions?.length ?? 0) > 0 ? (
+                                      {svc.recipeId ? (
+                                        <>
+                                          <div className="break-words text-xs font-semibold leading-tight text-[#0F172B]">
+                                            {recipeName(svc.recipeId)}
+                                          </div>
+                                          <div className="mt-0.5 flex items-center gap-1 text-[11px] text-[#62748E]">
+                                            <PeopleIcon size={12} />
+                                            {svc.covers}
+                                            {svc.preferences && svc.preferences.length > 0 && (
+                                              <span className="ml-auto text-green-600" title={`Preferencias: ${svc.preferences.map((id) => tagName(id)).join(', ')}`}>
+                                                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8l3 3 5-5" /></svg>
+                                              </span>
+                                            )}
+                                            {svc.exclusions && svc.exclusions.length > 0 && (
+                                              <span className="text-red-500" title={`Exclusiones: ${svc.exclusions.map((id) => tagName(id)).join(', ')}`}>
+                                                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l8 8" /><path d="M12 4l-8 8" /></svg>
+                                              </span>
+                                            )}
+                                          </div>
+                                        </>
+                                      ) : (
                                         <div className="mt-0.5 flex items-center gap-1 text-[11px] text-[#62748E]">
-                                          {svc!.preferences.length > 0 && (
-                                            <span className="text-green-600" title={`Preferencias: ${svc!.preferences.map((id) => tagName(id)).join(', ')}`}>
+                                          <PeopleIcon size={12} />
+                                          {svc.covers}
+                                          {svc.preferences && svc.preferences.length > 0 && (
+                                            <span className="ml-auto text-green-600" title={`Preferencias: ${svc.preferences.map((id) => tagName(id)).join(', ')}`}>
                                               <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8l3 3 5-5" /></svg>
                                             </span>
                                           )}
-                                          {svc!.exclusions.length > 0 && (
-                                            <span className="text-red-500" title={`Exclusiones: ${svc!.exclusions.map((id) => tagName(id)).join(', ')}`}>
+                                          {svc.exclusions && svc.exclusions.length > 0 && (
+                                            <span className="text-red-500" title={`Exclusiones: ${svc.exclusions.map((id) => tagName(id)).join(', ')}`}>
                                               <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l8 8" /><path d="M12 4l-8 8" /></svg>
                                             </span>
                                           )}
                                         </div>
-                                      ) : null}
-                                    </div>
-                                  )}
-                                </button>
+                                      )}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => setRemoveConfirmMeal({ dayOrder: order, momentTagId: mt.id })}
+                                      className="absolute right-0 top-0 hidden rounded-md p-0.5 text-[#94A3B8] transition-colors hover:text-red-500 group-hover:block"
+                                      title="Eliminar servicio"
+                                    >
+                                      <CloseIcon />
+                                    </button>
+                                  </div>
+                                );
+                              }
+                              return (
+                                <div key={mt.id} className="mb-1">
+                                  <div className="flex items-center">
+                                    <span className="rounded-l-md border border-dashed border-[#D1D5DB] bg-white px-2 py-1.5 text-[10px] font-medium uppercase tracking-wide text-[#9CA3AF]">
+                                      {mt.name}
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        setCell(buildCell(order, mt.id, mt.name))
+                                      }
+                                      className="rounded-r-md border-b border-r border-t border-dashed border-[#D1D5DB] bg-white px-1.5 py-1.5 text-[#9CA3AF] transition-colors hover:bg-gray-50 hover:text-[#009966]"
+                                      title="Añadir servicio"
+                                    >
+                                      <PlusIcon size={14} />
+                                    </button>
+                                  </div>
+                                </div>
                               );
                             })}
                         </div>
@@ -348,6 +370,43 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
               <form action={removeDay}>
                 <input type="hidden" name="planningId" value={planning.id} />
                 <input type="hidden" name="dayOrder" value={removeConfirmDay} />
+                <button
+                  type="submit"
+                  className="rounded-lg bg-[#DC2626] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]"
+                >
+                  Eliminar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {removeConfirmMeal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setRemoveConfirmMeal(null)}
+          />
+          <div className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
+            <h2 className="mb-4 text-lg font-semibold text-[#0F172B]">
+              Eliminar servicio
+            </h2>
+            <p className="mb-4 text-sm text-[#62748E]">
+              ¿Estás seguro de que quieres eliminar este servicio?
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setRemoveConfirmMeal(null)}
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#62748E] transition-colors hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <form action={removeMeal}>
+                <input type="hidden" name="planningId" value={planning.id} />
+                <input type="hidden" name="dayOrder" value={removeConfirmMeal.dayOrder} />
+                <input type="hidden" name="momentTagId" value={removeConfirmMeal.momentTagId} />
                 <button
                   type="submit"
                   className="rounded-lg bg-[#DC2626] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]"

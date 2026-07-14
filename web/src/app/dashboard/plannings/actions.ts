@@ -179,6 +179,25 @@ export async function assignMeal(formData: FormData) {
   redirect(editPath);
 }
 
+export async function removeMeal(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const orderDay = parseInt(formData.get('dayOrder') as string, 10);
+  const momentTagId = formData.get('momentTagId') as string;
+
+  const c = getContainer();
+  try {
+    c.removeMealFromDay.execute(planningId, orderDay, momentTagId);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al eliminar el servicio';
+    await addToastToQueue(msg, 'error');
+  }
+
+  await addToastToQueue('Servicio eliminado.');
+  const editPath = `/dashboard/plannings/${planningId}/edit`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
 export async function getDeleteImpact(tagId: string, userId: string) {
   const c = getContainer();
 
