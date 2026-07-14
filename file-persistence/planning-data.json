@@ -636,5 +636,108 @@
     ],
     "pantryItems": [],
     "shoppingItems": []
+  },
+  {
+    "id": "d1bd98c3-70bf-4ddd-98e7-d9e1380c4bef",
+    "userid": "58449777-6a4c-4851-981b-d5d00a209262",
+    "name": "Planificación corta",
+    "startdate": null,
+    "weeks": 1,
+    "hotColdBalance": 50,
+    "days": [
+      {
+        "id": "1e7da2c8-9696-4ca9-b1bf-894d074255b0",
+        "order": 1,
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          },
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          },
+          {
+            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "27969811-7950-4dd4-8f80-0e9690ef83c6",
+        "order": 2,
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          },
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          },
+          {
+            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "ef9758a5-72fc-42e2-9374-614eb10a7e0c",
+        "order": 3,
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          },
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          },
+          {
+            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [],
+            "preferences": []
+          }
+        ]
+      },
+      {
+        "id": "1de68134-bf04-4649-9847-3f6fc497fd6f",
+        "order": 4,
+        "services": []
+      },
+      {
+        "id": "a720c57e-2d86-47f3-bf1a-7283af23e2c6",
+        "order": 5,
+        "services": []
+      }
+    ],
+    "pantryItems": [],
+    "shoppingItems": []
   }
 ]

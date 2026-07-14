@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import type { PlanningPrimitives } from '@/domain/planning/aggregates/planning.aggregate';
-import { PeopleIcon, PlusIcon, MinusIcon } from '@/components/icons';
-import { addDay, removeDay } from '../../actions';
+import { PeopleIcon, PlusIcon, MinusIcon, CloseIcon } from '@/components/icons';
+import { addDay, removeDay, addAllDays } from '../../actions';
 import MealCellModal from './meal-cell-modal';
+import EditPlanningModal from './edit-planning-modal';
 
 type Props = {
   planning: PlanningPrimitives;
@@ -57,6 +58,7 @@ function nextExistingDay(dayMap: Map<number, unknown>, order: number, max: numbe
 export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
   const dayMap = new Map(planning.days.map((d) => [d.order, d]));
   const [cell, setCell] = useState<CellSelection | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
   const totalDays = planning.weeks * 7;
 
   const recipeName = (id: string | null) =>
@@ -91,7 +93,47 @@ export default function PlanningGrid({ planning, recipes, momentTags }: Props) {
               ` — desde ${new Date(planning.startdate).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}`}
           </p>
         </div>
+        <a
+          href="/dashboard/plannings"
+          className="rounded-md p-2 text-[#62748E] transition-colors hover:bg-gray-100"
+          title="Volver a planificaciones"
+        >
+          <CloseIcon />
+        </a>
       </div>
+
+      <div className="mb-4 flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => setShowEditModal(true)}
+          className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-white px-3.5 text-sm font-medium text-[#0F172B] transition-colors hover:bg-gray-50"
+        >
+          Editar datos
+        </button>
+        <form action={addAllDays}>
+          <input type="hidden" name="planningId" value={planning.id} />
+          <input type="hidden" name="weeks" value={planning.weeks} />
+          <input type="hidden" name="existingDays" value={planning.days.map((d) => d.order).join(',')} />
+          <button
+            type="submit"
+            className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-white px-3.5 text-sm font-medium text-[#0F172B] transition-colors hover:bg-gray-50"
+          >
+            <PlusIcon size={14} />
+            Añadir todos los días
+          </button>
+        </form>
+      </div>
+
+      {showEditModal && (
+        <EditPlanningModal
+          planningId={planning.id}
+          initialName={planning.name}
+          initialWeeks={planning.weeks}
+          initialStartDate={planning.startdate}
+          initialBalance={planning.hotColdBalance ?? 50}
+          onClose={() => setShowEditModal(false)}
+        />
+      )}
 
       <div className="overflow-hidden rounded-xl border border-[#E2E8F0] bg-white">
         <table className="w-full table-fixed border-collapse">

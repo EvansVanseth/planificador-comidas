@@ -51,6 +51,69 @@ export async function deletePlanning(formData: FormData) {
   redirect(PATH);
 }
 
+export async function updatePlanning(formData: FormData) {
+  const id = formData.get('id') as string;
+  const name = (formData.get('name') as string) || undefined;
+  const weeksRaw = formData.get('weeks') as string;
+  const startDateRaw = formData.get('startDate') as string | null;
+  const balanceRaw = formData.get('hotColdBalance') as string;
+
+  const c = getContainer();
+  try {
+    c.updatePlanning.execute({
+      id,
+      name: name || undefined,
+      weeks: weeksRaw ? parseInt(weeksRaw, 10) : undefined,
+      startDate: startDateRaw ? new Date(startDateRaw + 'T00:00:00') : null,
+      hotColdBalance: balanceRaw ? parseInt(balanceRaw, 10) : undefined,
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al actualizar la planificación';
+    await addToastToQueue(msg, 'error');
+    const editPath = `/dashboard/plannings/${id}/edit`;
+    revalidatePath(editPath);
+    redirect(editPath);
+  }
+
+  await addToastToQueue('Planificación actualizada correctamente.');
+  const editPath = `/dashboard/plannings/${id}/edit`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
+export async function addAllDays(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const weeks = parseInt(formData.get('weeks') as string, 10);
+  const existingRaw = formData.get('existingDays') as string;
+  const existingOrders = new Set(existingRaw ? existingRaw.split(',').map(Number) : []);
+  const totalDays = weeks * 7;
+
+  const missing: number[] = [];
+  for (let o = 1; o <= totalDays; o++) {
+    if (!existingOrders.has(o)) missing.push(o);
+  }
+
+  if (missing.length === 0) {
+    await addToastToQueue('Todos los días ya están creados.', 'error');
+    const editPath = `/dashboard/plannings/${planningId}/edit`;
+    revalidatePath(editPath);
+    redirect(editPath);
+  }
+
+  const c = getContainer();
+  try {
+    c.bulkCreateDays.execute({ planningId, orders: missing });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al añadir días';
+    await addToastToQueue(msg, 'error');
+  }
+
+  await addToastToQueue(`${missing.length} día(s) añadido(s).`);
+  const editPath = `/dashboard/plannings/${planningId}/edit`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
 export async function addDay(formData: FormData) {
   const planningId = formData.get('planningId') as string;
   const dayOrder = parseInt(formData.get('dayOrder') as string, 10);
