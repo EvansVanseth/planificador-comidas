@@ -161,6 +161,17 @@ export class Planning {
     day.removeMeal(momentTagId);
   }
 
+  public addMissingServiceToAllDays(momentTagId: string, covers: number, exclusions?: string[], preferences?: string[]): number {
+    let count = 0;
+    for (const day of this.days.values()) {
+      if (!day.getMeal(momentTagId)) {
+        day.addMeal(momentTagId, covers, undefined, exclusions, preferences);
+        count++;
+      }
+    }
+    return count;
+  }
+
   public removeDay(ordenDia: number): void {
     if (!this.days.has(ordenDia)) {
       throw new DomainError('No existe un día con ese orden');

@@ -6,6 +6,7 @@ import { PeopleIcon, PlusIcon, MinusIcon, CloseIcon } from '@/components/icons';
 import { addDay, removeDay, addAllDays, removeMeal, clearAllRecipes } from '../../actions';
 import MealCellModal from './meal-cell-modal';
 import EditPlanningModal from './edit-planning-modal';
+import BulkAddServiceModal from './bulk-add-service-modal';
 
 type Props = {
   planning: PlanningPrimitives;
@@ -65,6 +66,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
   const [removeConfirmDay, setRemoveConfirmDay] = useState<number | null>(null);
   const [removeConfirmMeal, setRemoveConfirmMeal] = useState<{ dayOrder: number; momentTagId: string } | null>(null);
   const [showClearRecipesConfirm, setShowClearRecipesConfirm] = useState(false);
+  const [showBulkAddService, setShowBulkAddService] = useState(false);
   const [, startTransition] = useTransition();
   const totalDays = planning.weeks * 7;
 
@@ -147,6 +149,13 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
             Añadir todos los días
           </button>
         </form>
+        <button
+          type="button"
+          onClick={() => setShowBulkAddService(true)}
+          className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-white px-3.5 text-sm font-medium text-[#0F172B] transition-colors hover:bg-gray-50"
+        >
+          Añadir servicio
+        </button>
         <button
           type="button"
           onClick={() => setShowClearRecipesConfirm(true)}
@@ -474,6 +483,15 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
             </div>
           </div>
         </div>
+      )}
+
+      {showBulkAddService && (
+        <BulkAddServiceModal
+          planningId={planning.id}
+          momentTags={momentTags}
+          allTags={allTags}
+          onClose={() => setShowBulkAddService(false)}
+        />
       )}
     </div>
   );

@@ -167,6 +167,29 @@ export async function clearAllRecipes(formData: FormData) {
   redirect(editPath);
 }
 
+export async function bulkAddMissingService(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const momentTagId = formData.get('momentTagId') as string;
+  const covers = parseInt(formData.get('covers') as string, 10) || 1;
+  const exclusionsRaw = formData.get('exclusions') as string | null;
+  const preferencesRaw = formData.get('preferences') as string | null;
+  const exclusions: string[] | undefined = exclusionsRaw ? JSON.parse(exclusionsRaw) : undefined;
+  const preferences: string[] | undefined = preferencesRaw ? JSON.parse(preferencesRaw) : undefined;
+
+  const c = getContainer();
+  try {
+    const count = c.bulkAddMissingService.execute({ planningId, momentTagId, covers, exclusions, preferences });
+    await addToastToQueue(`Servicio añadido a ${count} día${count !== 1 ? 's' : ''}.`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al añadir servicio';
+    await addToastToQueue(msg, 'error');
+  }
+
+  const editPath = `/dashboard/plannings/${planningId}/edit`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
 export async function assignMeal(formData: FormData) {
   const planningId = formData.get('planningId') as string;
   const orderDay = parseInt(formData.get('dayOrder') as string, 10);

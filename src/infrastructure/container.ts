@@ -28,6 +28,7 @@ import { BulkCreateDaysUseCase } from '@/application/planning/bulk-create-days.u
 import { BulkRemoveDaysUseCase } from '@/application/planning/bulk-remove-days.use-case';
 import { BulkAssignMealUseCase } from '@/application/planning/bulk-assign-meal.use-case';
 import { BulkRemoveMealUseCase } from '@/application/planning/bulk-remove-meal.use-case';
+import { BulkAddMissingServiceUseCase } from '@/application/planning/bulk-add-missing-service.use-case';
 import { DuplicatePlanningUseCase } from '@/application/planning/duplicate-planning.use-case';
 import { ClearAllRecipesUseCase } from '@/application/planning/clear-all-recipes.use-case';
 import { AutoScheduleUseCase } from '@/application/planning/auto-schedule.use-case';
@@ -95,6 +96,7 @@ export interface IContainer {
   bulkRemoveDays: BulkRemoveDaysUseCase;
   bulkAssignMeal: BulkAssignMealUseCase;
   bulkRemoveMeal: BulkRemoveMealUseCase;
+  bulkAddMissingService: BulkAddMissingServiceUseCase;
   getNeededIngredients: GetNeededIngredientsUseCase;
   getShoppingList: GetShoppingListUseCase;
   addPantryItem: AddPantryItemUseCase;
@@ -176,6 +178,7 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     bulkRemoveDays: new BulkRemoveDaysUseCase(planningRepository),
     bulkAssignMeal: new BulkAssignMealUseCase(planningRepository, tagRepository, recipeRepository),
     bulkRemoveMeal: new BulkRemoveMealUseCase(planningRepository),
+    bulkAddMissingService: new BulkAddMissingServiceUseCase(planningRepository),
     addDayToPlanning: new AddDayToPlanningUseCase(planningRepository),
     removeDayFromPlanning: new RemoveDayFromPlanningUseCase(planningRepository),
     removeMealFromDay: new RemoveMealFromDayUseCase(planningRepository),
