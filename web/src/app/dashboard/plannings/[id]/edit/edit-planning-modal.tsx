@@ -4,6 +4,14 @@ import { useState } from 'react';
 import { CloseIcon } from '@/components/icons';
 import { updatePlanning } from '../../actions';
 
+function toDateInputValue(iso: string | null): string {
+  if (!iso) return '';
+  if (!iso.includes('T')) return iso;
+  const d = new Date(iso);
+  const adjusted = new Date(d.getTime() + d.getTimezoneOffset() * 60_000);
+  return adjusted.toISOString().split('T')[0];
+}
+
 const inputClass =
   'h-10 w-full rounded-[10px] border border-[#E2E8F0] bg-white px-3.5 text-sm text-[#0F172B] placeholder:text-[#4F617B] transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20';
 
@@ -87,7 +95,7 @@ export default function EditPlanningModal({
                 <input
                   name="startDate"
                   type="date"
-                  defaultValue={initialStartDate ? initialStartDate.split('T')[0] : ''}
+                  defaultValue={toDateInputValue(initialStartDate)}
                   className={inputClass}
                   onChange={(e) => {
                     const d = new Date(e.target.value + 'T00:00:00');

@@ -376,7 +376,7 @@ export class Planning {
       id: this.id.value,
       userid: this.userId.value,
       name: this.name.value,
-      startdate: this.startDate.value ? this.startDate.value.toISOString() : null,
+      startdate: this.startDate.value ? toLocalDateString(this.startDate.value) : null,
       weeks: this.weeks.value,
       hotColdBalance: this.hotColdBalance,
       days: serializedDays,
@@ -387,7 +387,7 @@ export class Planning {
 
   public static fromPrimitives(data: PlanningPrimitives): Planning {
 
-    const parsedDate = data.startdate ? new Date(data.startdate) : null;
+    const parsedDate = parseStartDate(data.startdate);
 
     const planning = new Planning(
       Id.create(data.id),
@@ -423,6 +423,21 @@ export class Planning {
   }
 
 
+}
+
+function toLocalDateString(d: Date): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function parseStartDate(str: string | null | undefined): Date | null {
+  if (!str) return null;
+  if (str.includes('T')) {
+    return new Date(str);
+  }
+  return new Date(str + 'T00:00:00');
 }
 
 function hcb(value: unknown): number {

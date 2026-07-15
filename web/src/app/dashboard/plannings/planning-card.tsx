@@ -7,9 +7,15 @@ import { ConfirmModal } from '@/components/confirm-modal';
 import { duplicatePlanning, deletePlanning } from './actions';
 import type { PlanningPrimitives } from '@/domain/planning/aggregates/planning.aggregate';
 
+function parseDate(str: string | null): Date | null {
+  if (!str) return null;
+  if (str.includes('T')) return new Date(str);
+  return new Date(str + 'T00:00:00');
+}
+
 function formatDate(iso: string | null): string {
   if (!iso) return 'Sin fecha';
-  const d = new Date(iso);
+  const d = parseDate(iso)!;
   return d.toLocaleDateString('es-ES', {
     weekday: 'short',
     day: 'numeric',

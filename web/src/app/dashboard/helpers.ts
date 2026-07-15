@@ -1,9 +1,15 @@
+function parseStartDate(str: string | null | undefined): Date | null {
+  if (!str) return null;
+  if (str.includes('T')) return new Date(str);
+  return new Date(str + 'T00:00:00');
+}
+
 export function getTomorrowDayOrder(
   startDateStr: string | null,
   weeks: number,
 ): number | null {
   if (!startDateStr) return null;
-  const start = new Date(startDateStr);
+  const start = parseStartDate(startDateStr)!;
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const startNorm = new Date(
@@ -28,7 +34,7 @@ export function getTodayDayOrder(
   weeks: number,
 ): number | null {
   if (!startDateStr) return null;
-  const start = new Date(startDateStr);
+  const start = parseStartDate(startDateStr)!;
   const today = new Date();
   const startNorm = new Date(
     start.getFullYear(),
@@ -62,7 +68,7 @@ export function getDayName(offset: number): string {
 }
 
 export function formatDate(iso: string): string {
-  const d = new Date(iso);
+  const d = parseStartDate(iso)!;
   return d.toLocaleDateString('es-ES', {
     day: 'numeric',
     month: 'short',

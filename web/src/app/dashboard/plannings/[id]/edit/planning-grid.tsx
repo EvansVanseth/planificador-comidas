@@ -31,9 +31,15 @@ const DAY_COLS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
 const WEEKDAYS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 
+function parseStartDate(str: string | null | undefined): Date | null {
+  if (!str) return null;
+  if (str.includes('T')) return new Date(str);
+  return new Date(str + 'T00:00:00');
+}
+
 function getDateForDay(startDate: string | null, dayOrder: number): { short: string; label: string } | null {
   if (!startDate) return null;
-  const start = new Date(startDate);
+  const start = parseStartDate(startDate)!;
   const d = new Date(start);
   d.setDate(start.getDate() + (dayOrder - 1));
   const day = String(d.getDate()).padStart(2, '0');
