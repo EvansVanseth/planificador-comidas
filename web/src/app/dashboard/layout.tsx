@@ -27,7 +27,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex h-screen">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto bg-[#F8FAFC]">
+      <main className="flex-1 overflow-y-auto bg-[#CCEDD5]">
         <div className="mx-auto max-w-7xl px-6 py-6">
           {toasts.length > 0 && (
             <ToastQueue
