@@ -80,7 +80,7 @@ export default async function DashboardPage() {
         </div>
         <Link
           href="/plannings"
-          className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#009966] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+          className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
         >
           <PlusIcon />
           Nueva planificación
@@ -90,7 +90,7 @@ export default async function DashboardPage() {
       {/* Cards section */}
       <div className="mb-8 flex gap-6">
         {/* Green card */}
-        <div className="flex-1 rounded-xl bg-[#009966] p-8 text-white shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+        <div className="flex-1 rounded-xl bg-[#007A55] p-8 text-white shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
           {activePlanning ? (
             <>
               <div className="mb-2 flex items-center gap-2 text-sm text-white/80">
@@ -140,16 +140,16 @@ export default async function DashboardPage() {
           <h3 className="mb-1 text-sm font-medium text-[#0F172B]">
             Recetas
           </h3>
-          <p className="mb-4 text-3xl font-bold text-[#009966]">
+          <p className="mb-4 text-3xl font-bold text-[#007A55]">
             {recipes.length}
           </p>
-          <p className="mb-4 text-xs text-[#62748E]">
+          <p className="mb-4 text-xs text-[#4F617B]">
             {tags.length} etiquetas · {recipes.length} receta
             {recipes.length !== 1 ? 's' : ''}
           </p>
           <Link
             href="/recipes"
-            className="text-xs font-medium text-[#009966] hover:underline"
+            className="text-xs font-medium text-[#007A55] hover:underline"
           >
             Ver todas las recetas →
           </Link>
@@ -174,7 +174,7 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">
-            <p className="text-sm text-[#62748E]">
+            <p className="text-sm text-[#4F617B]">
               {activePlanning
                 ? 'No hay comidas planificadas para hoy.'
                 : 'Crea una planificación para ver las comidas de hoy.'}
@@ -204,13 +204,13 @@ function MealCard({
 }) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-      <p className="mb-1 text-xs font-medium uppercase tracking-wide text-[#62748E]">
+      <p className="mb-1 text-xs font-medium uppercase tracking-wide text-[#4F617B]">
         {timeName}
       </p>
       {recipeName ? (
         <p className="text-sm font-medium text-[#0F172B]">{recipeName}</p>
       ) : (
-        <p className="text-sm italic text-[#62748E]">Sin asignar</p>
+        <p className="text-sm italic text-[#4F617B]">Sin asignar</p>
       )}
     </div>
   );

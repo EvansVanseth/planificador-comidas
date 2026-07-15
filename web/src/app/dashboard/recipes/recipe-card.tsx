@@ -67,7 +67,7 @@ export default function RecipeCard({
       <div className="flex flex-1 flex-col gap-3 px-5 pb-4 pt-5">
         <h3 className="text-lg font-bold text-[#0F172B]">{recipe.name}</h3>
 
-        <div className="flex items-center gap-3 text-sm text-[#62748E]">
+        <div className="flex items-center gap-3 text-sm text-[#4F617B]">
           <span className="inline-flex items-center gap-1.5">
             <ClockIcon />
             {formatMinutes(recipe.prepTime)}
@@ -97,7 +97,7 @@ export default function RecipeCard({
       <div className="flex items-center justify-between bg-[#F8FAFC] px-5 py-3">
         <Link
           href={`/dashboard/recipes/${recipe.id}/edit?returnTo=${encodeURIComponent(returnTo ?? '/dashboard/recipes')}`}
-          className="text-sm font-medium text-[#009966] transition-colors hover:text-[#008055]"
+          className="text-sm font-medium text-[#007A55] transition-colors hover:text-[#008055]"
         >
           Editar receta
         </Link>
@@ -105,7 +105,7 @@ export default function RecipeCard({
           type="button"
           onClick={openDeleteModal}
           title="Eliminar receta"
-          className="rounded-lg p-1.5 text-[#62748E] transition-colors hover:bg-red-50 hover:text-red-500"
+          className="rounded-lg p-1.5 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
         >
           <TrashIcon />
         </button>
@@ -130,7 +130,7 @@ export default function RecipeCard({
               : '.'}
           </p>
           {loadingImpact && (
-            <p className="text-sm text-[#62748E]">Calculando impacto...</p>
+            <p className="text-sm text-[#4F617B]">Calculando impacto...</p>
           )}
           {planningsAffected !== null && (
             <div className="space-y-1 text-sm text-[#0F172B]">

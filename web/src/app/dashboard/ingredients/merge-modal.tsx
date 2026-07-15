@@ -44,7 +44,7 @@ export default function MergeModal({
           <h2 className="text-lg font-semibold text-[#0F172B]">Fusionar ingredientes</h2>
           <button
             onClick={onClose}
-            className="rounded-md p-1 text-[#62748E] transition-colors hover:bg-gray-100"
+            className="rounded-md p-1 text-[#4F617B] transition-colors hover:bg-gray-100"
           >
             <CloseIcon />
           </button>
@@ -58,7 +58,7 @@ export default function MergeModal({
             setTargetId('');
             setPreview(null);
           }}
-          className="mb-4 h-10 w-full rounded-lg border border-gray-200 px-3 text-sm transition-colors focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+          className="mb-4 h-10 w-full rounded-lg border border-gray-200 px-3 text-sm transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
         >
           <option value="">Seleccionar origen...</option>
           {ingredients.map((i) => (
@@ -73,7 +73,7 @@ export default function MergeModal({
           value={targetId}
           onChange={(e) => handleTargetChange(e.target.value)}
           disabled={!sourceId}
-          className="mb-4 h-10 w-full rounded-lg border border-gray-200 px-3 text-sm transition-colors focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20 disabled:cursor-not-allowed disabled:opacity-50"
+          className="mb-4 h-10 w-full rounded-lg border border-gray-200 px-3 text-sm transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <option value="">Seleccionar destino...</option>
           {targetOptions.map((i) => (
@@ -84,7 +84,7 @@ export default function MergeModal({
         </select>
 
         {loading && (
-          <div className="mb-4 rounded-lg bg-gray-50 p-3 text-sm text-[#62748E]">
+          <div className="mb-4 rounded-lg bg-gray-50 p-3 text-sm text-[#4F617B]">
             Verificando recetas...
           </div>
         )}
@@ -92,7 +92,7 @@ export default function MergeModal({
         {preview !== null && !loading && (
           <div className="mb-4 rounded-lg bg-gray-50 p-3">
             {preview.length === 0 ? (
-              <p className="text-sm text-[#62748E]">
+              <p className="text-sm text-[#4F617B]">
                 Ninguna receta usa <strong>{source?.name}</strong>. Solo se eliminará el ingrediente.
               </p>
             ) : (
@@ -103,12 +103,12 @@ export default function MergeModal({
                 </p>
                 <ul className="max-h-32 space-y-1 overflow-y-auto">
                   {preview.map((name) => (
-                    <li key={name} className="text-sm text-[#62748E]">
+                    <li key={name} className="text-sm text-[#4F617B]">
                       • {name}
                     </li>
                   ))}
                 </ul>
-                <p className="mt-2 text-xs text-[#62748E]">
+                <p className="mt-2 text-xs text-[#4F617B]">
                   Se reemplazará <strong>{source?.name}</strong> por{' '}
                   <strong>{target?.name}</strong> en las recetas afectadas.
                 </p>
@@ -131,7 +131,7 @@ export default function MergeModal({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#62748E] transition-colors hover:bg-gray-50"
+            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
           >
             Cancelar
           </button>
@@ -142,7 +142,7 @@ export default function MergeModal({
             <button
               type="submit"
               disabled={!canSubmit}
-              className="rounded-lg bg-[#009966] px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-[#008055] disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-lg bg-[#007A55] px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-[#008055] disabled:cursor-not-allowed disabled:opacity-50"
             >
               Fusionar
             </button>
@@ -167,7 +167,7 @@ export function MergeButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-gray-200 px-3.5 text-sm font-medium text-[#62748E] transition-colors hover:bg-gray-50"
+        className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-gray-200 px-3.5 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
       >
         <MergeIcon />
         Fusionar

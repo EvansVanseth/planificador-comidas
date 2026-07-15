@@ -75,21 +75,21 @@ export default function IngredientRow({
               ref={inputRef}
               name="name"
               defaultValue={name}
-              className="h-8 flex-1 rounded-lg border border-gray-300 bg-white px-3 text-sm focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+              className="h-8 flex-1 rounded-lg border border-gray-300 bg-white px-3 text-sm focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
               onKeyDown={(e) => {
                 if (e.key === 'Escape') setEditing(false);
               }}
             />
             <button
               type="submit"
-              className="rounded-md bg-[#009966] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#008055]"
+              className="rounded-md bg-[#007A55] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#008055]"
             >
               Guardar
             </button>
             <button
               type="button"
               onClick={() => setEditing(false)}
-              className="rounded-md border border-gray-200 px-3 py-1.5 text-xs font-medium text-[#62748E] hover:bg-gray-50"
+              className="rounded-md border border-gray-200 px-3 py-1.5 text-xs font-medium text-[#4F617B] hover:bg-gray-50"
             >
               Cancelar
             </button>
@@ -104,7 +104,7 @@ export default function IngredientRow({
                 type="button"
                 onClick={() => setEditing(true)}
                 title="Renombrar ingrediente"
-                className="rounded-lg p-2 text-[#62748E] transition-colors hover:bg-gray-100 hover:text-[#0F172B]"
+                className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-gray-100 hover:text-[#0F172B]"
               >
                 <PencilIcon />
               </button>
@@ -112,7 +112,7 @@ export default function IngredientRow({
                 type="button"
                 onClick={openDeleteModal}
                 title="Eliminar ingrediente"
-                className="rounded-lg p-2 text-[#62748E] transition-colors hover:bg-red-50 hover:text-red-500"
+                className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
               >
                 <TrashIcon />
               </button>
@@ -138,7 +138,7 @@ export default function IngredientRow({
             recetas y planificaciones que lo contengan.
           </p>
           {loadingImpact ? (
-            <p className="text-sm text-[#62748E]">Calculando impacto...</p>
+            <p className="text-sm text-[#4F617B]">Calculando impacto...</p>
           ) : deleteImpact ? (
             <div className="space-y-1 text-sm text-[#0F172B]">
               <p>

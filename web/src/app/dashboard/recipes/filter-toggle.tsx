@@ -21,7 +21,7 @@ const DIM_SELECTED: Record<string, string> = {
 };
 
 function pillClass(dimension: string, selected: boolean): string {
-  if (selected) return DIM_SELECTED[dimension] ?? 'bg-[#009966] text-white';
+  if (selected) return DIM_SELECTED[dimension] ?? 'bg-[#007A55] text-white';
   return DIM_COLORS[dimension] ?? 'bg-gray-100 text-gray-600';
 }
 
@@ -58,14 +58,14 @@ export function FilterToggle({
         onClick={() => setOpen(!open)}
         className={`inline-flex h-10 items-center gap-2 rounded-[10px] border px-4 text-sm font-medium transition-colors ${
           open || selectedTagIds.length > 0
-            ? 'border-[#009966] bg-[#ECFDF5] text-[#009966]'
+            ? 'border-[#007A55] bg-[#ECFDF5] text-[#007A55]'
             : 'border-[#E2E8F0] bg-white text-[#0F172B] hover:bg-gray-50'
         }`}
       >
         <FilterIcon />
         Filtros
         {selectedTagIds.length > 0 && (
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#009966] text-xs font-bold text-white">
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#007A55] text-xs font-bold text-white">
             {selectedTagIds.length}
           </span>
         )}
@@ -81,7 +81,7 @@ export function FilterToggle({
               {selectedTagIds.length > 0 && (
                 <Link
                   href={clearUrl ?? '/dashboard/recipes'}
-                  className="text-xs font-medium text-[#62748E] hover:text-[#009966]"
+                  className="text-xs font-medium text-[#4F617B] hover:text-[#007A55]"
                 >
                   Limpiar
                 </Link>
@@ -89,7 +89,7 @@ export function FilterToggle({
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="rounded-lg p-1 text-[#62748E] transition-colors hover:bg-gray-100"
+                className="rounded-lg p-1 text-[#4F617B] transition-colors hover:bg-gray-100"
               >
                 <CloseIcon />
               </button>

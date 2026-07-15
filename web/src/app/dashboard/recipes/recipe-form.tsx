@@ -265,10 +265,10 @@ export default function RecipeForm({
   };
 
   const inputClass = (field: keyof FieldErrors) =>
-    `h-10 w-full rounded-[10px] border bg-white px-3.5 text-sm text-[#0F172B] placeholder:text-[#62748E] transition-colors focus:outline-none focus:ring-2 ${
+    `h-10 w-full rounded-[10px] border bg-white px-3.5 text-sm text-[#0F172B] placeholder:text-[#4F617B] transition-colors focus:outline-none focus:ring-2 ${
       errors[field]
         ? 'border-red-300 focus:border-red-400 focus:ring-red-200'
-        : 'border-[#E2E8F0] focus:border-[#009966] focus:ring-[#009966]/20'
+        : 'border-[#E2E8F0] focus:border-[#007A55] focus:ring-[#007A55]/20'
     }`;
 
   return (
@@ -278,7 +278,7 @@ export default function RecipeForm({
           <h1 className="text-2xl font-bold text-[#0F172B]">
             {initialData ? 'Editar receta' : 'Nueva receta'}
           </h1>
-          <p className="mt-1 text-base text-[#62748E]">
+          <p className="mt-1 text-base text-[#4F617B]">
             {initialData
               ? 'Modifica los datos de la receta.'
               : 'Añade una receta a tu catálogo.'}
@@ -295,7 +295,7 @@ export default function RecipeForm({
           <button
             type="submit"
             disabled={saving}
-            className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#009966] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055] disabled:opacity-50"
+            className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055] disabled:opacity-50"
           >
             {saving ? 'Guardando…' : initialData ? 'Guardar cambios' : 'Crear receta'}
           </button>
@@ -373,7 +373,7 @@ export default function RecipeForm({
           <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
             Etiquetas <span className="text-red-500">*</span>
           </label>
-          <p className="mb-3 text-sm text-[#62748E]">
+          <p className="mb-3 text-sm text-[#4F617B]">
             Categoriza la receta para poder filtrarla y planificarla.
           </p>
           <div
@@ -383,7 +383,7 @@ export default function RecipeForm({
           >
             {groupedTags.map((group) => (
               <div key={group.dimension}>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#62748E]">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#4F617B]">
                   {group.label}
                   {group.required && ' *'}
                 </p>
@@ -397,7 +397,7 @@ export default function RecipeForm({
                         onClick={() => toggleTag(tag.id)}
                         className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                           selected
-                            ? DIM_CHIP_SELECTED[group.dimension] ?? 'border-[#009966] bg-[#009966] text-white'
+                            ? DIM_CHIP_SELECTED[group.dimension] ?? 'border-[#007A55] bg-[#007A55] text-white'
                             : DIM_CHIP_COLORS[group.dimension] ?? 'border-gray-200 bg-white text-[#0F172B] hover:bg-gray-50'
                         }`}
                       >
@@ -418,12 +418,12 @@ export default function RecipeForm({
           <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
             Ingredientes
           </label>
-          <p className="mb-3 text-sm text-[#62748E]">
+          <p className="mb-3 text-sm text-[#4F617B]">
             Lista los ingredientes necesarios y sus cantidades.
           </p>
           <div className="rounded-xl border border-[#E2E8F0] bg-white">
             {ingredients.length === 0 && (
-              <p className="px-5 py-4 text-sm text-[#62748E]">
+              <p className="px-5 py-4 text-sm text-[#4F617B]">
                 No hay ingredientes todavía. Añade el primero.
               </p>
             )}
@@ -451,7 +451,7 @@ export default function RecipeForm({
               <button
                 type="button"
                 onClick={addIngredientRow}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-[#009966] transition-colors hover:text-[#008055]"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-[#007A55] transition-colors hover:text-[#008055]"
               >
                 <PlusIcon />
                 Añadir ingrediente
@@ -469,7 +469,7 @@ export default function RecipeForm({
             onChange={(e) => setPreparation(e.target.value)}
             placeholder="(Opcional) Describe el paso a paso de la receta..."
             rows={5}
-            className="w-full resize-none rounded-[10px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 text-sm text-[#0F172B] placeholder:text-[#62748E] focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+            className="w-full resize-none rounded-[10px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 text-sm text-[#0F172B] placeholder:text-[#4F617B] focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
           />
         </div>
       </div>
@@ -539,7 +539,7 @@ function IngredientRow({
 
   return (
     <div className="flex items-start gap-3 border-b border-[#E2E8F0] px-5 py-3 last:border-b-0">
-      <span className="mt-2.5 text-xs font-medium text-[#62748E] min-w-5">
+      <span className="mt-2.5 text-xs font-medium text-[#4F617B] min-w-5">
         {idx + 1}.
       </span>
 
@@ -555,7 +555,7 @@ function IngredientRow({
           }}
           onFocus={() => setOpen(true)}
           placeholder="Buscar ingrediente..."
-          className="h-10 w-full rounded-lg border border-[#E2E8F0] bg-white px-3 text-sm text-[#0F172B] placeholder:text-[#62748E] focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+          className="h-10 w-full rounded-lg border border-[#E2E8F0] bg-white px-3 text-sm text-[#0F172B] placeholder:text-[#4F617B] focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
         />
         {open && (filtered.length > 0 || canCreate) && (
           <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-48 overflow-y-auto rounded-lg border border-[#E2E8F0] bg-white shadow-lg">
@@ -580,7 +580,7 @@ function IngredientRow({
                   e.preventDefault();
                   handleCreate();
                 }}
-                className="flex w-full items-center gap-2 border-t border-[#E2E8F0] px-3 py-2.5 text-left text-sm font-medium text-[#009966] transition-colors hover:bg-[#ECFDF5] disabled:opacity-50"
+                className="flex w-full items-center gap-2 border-t border-[#E2E8F0] px-3 py-2.5 text-left text-sm font-medium text-[#007A55] transition-colors hover:bg-[#ECFDF5] disabled:opacity-50"
               >
                 <PlusIcon />
                 {creating ? 'Creando…' : `Crear "${trimmed}"`}
@@ -594,13 +594,13 @@ function IngredientRow({
         value={row.quantityNote}
         onChange={(e) => onChange('quantityNote', e.target.value)}
         placeholder="1 taza, 500g..."
-        className="h-10 w-28 shrink-0 rounded-lg border border-[#E2E8F0] bg-white px-3 text-sm text-[#0F172B] placeholder:text-[#62748E] focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+        className="h-10 w-28 shrink-0 rounded-lg border border-[#E2E8F0] bg-white px-3 text-sm text-[#0F172B] placeholder:text-[#4F617B] focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
       />
 
       <button
         type="button"
         onClick={onRemove}
-        className="mt-1.5 shrink-0 rounded-lg p-1.5 text-[#62748E] transition-colors hover:bg-red-50 hover:text-red-500"
+        className="mt-1.5 shrink-0 rounded-lg p-1.5 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
       >
         <TrashIcon />
       </button>

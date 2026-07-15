@@ -97,7 +97,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
           <h1 className="text-2xl font-bold text-[#0F172B]">
             {planning.name}
           </h1>
-          <p className="mt-1 text-sm text-[#62748E]">
+          <p className="mt-1 text-sm text-[#4F617B]">
             {planning.weeks} {planning.weeks === 1 ? 'semana' : 'semanas'}
             {planning.startdate &&
               ` — desde ${new Date(planning.startdate).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}`}
@@ -105,7 +105,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
         </div>
         <a
           href="/dashboard/plannings"
-          className="rounded-md p-2 text-[#62748E] transition-colors hover:bg-gray-100"
+          className="rounded-md p-2 text-[#4F617B] transition-colors hover:bg-gray-100"
           title="Volver a planificaciones"
         >
           <CloseIcon />
@@ -177,7 +177,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                         <div className="min-h-[140px] p-2.5">
                           <div className="mb-1 flex items-center justify-end gap-0.5">
                             {dateInfo !== null && (
-                              <span className="mr-auto text-[11px] font-semibold text-[#64748B]">
+                              <span className="mr-auto text-[11px] font-semibold text-[#4F617B]">
                                 {dateInfo.short}
                               </span>
                             )}
@@ -187,7 +187,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                                 <input type="hidden" name="dayOrder" value={order} />
                                 <button
                                   type="submit"
-                                  className="rounded-md p-1 text-[#62748E] transition-colors hover:bg-gray-100"
+                                  className="rounded-md p-1 text-[#4F617B] transition-colors hover:bg-gray-100"
                                   title="Añadir día"
                                 >
                                   <PlusIcon size={14} />
@@ -198,7 +198,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                               <button
                                 type="button"
                                 onClick={() => setRemoveConfirmDay(order)}
-                                className="rounded-md p-1 text-[#62748E] transition-colors hover:bg-red-50 hover:text-red-500"
+                                className="rounded-md p-1 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
                                 title="Eliminar día"
                               >
                                 <MinusIcon size={14} />
@@ -213,7 +213,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                                 <input type="hidden" name="dayOrder" value={order} />
                                 <button
                                   type="submit"
-                                  className="rounded-full border border-dashed border-[#94A3B8] p-2 text-[#62748E] transition-colors hover:border-[#009966] hover:text-[#009966]"
+                                  className="rounded-full border border-dashed border-[#94A3B8] p-2 text-[#4F617B] transition-colors hover:border-[#007A55] hover:text-[#007A55]"
                                   title="Añadir día"
                                 >
                                   <PlusIcon size={18} />
@@ -237,7 +237,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                                       }
                                       className="w-full rounded-md border border-[#D1FAE5] bg-[#F0FDF4] px-2 py-1.5 text-left transition-colors hover:bg-[#D1FAE5]"
                                     >
-                                      <div className="text-[10px] font-semibold uppercase tracking-wide text-[#009966]">
+                                      <div className="text-[10px] font-semibold uppercase tracking-wide text-[#007A55]">
                                         {mt.name}
                                       </div>
                                       {svc.recipeId ? (
@@ -245,11 +245,11 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                                           <div className="break-words text-xs font-semibold leading-tight text-[#0F172B]">
                                             {recipeName(svc.recipeId)}
                                           </div>
-                                          <div className="mt-0.5 flex items-center gap-1 text-[11px] text-[#62748E]">
+                                          <div className="mt-0.5 flex items-center gap-1 text-[11px] text-[#4F617B]">
                                             <PeopleIcon size={12} />
                                             {svc.covers}
                                             {svc.preferences && svc.preferences.length > 0 && (
-                                              <span className="ml-auto text-green-600" title={`Preferencias: ${svc.preferences.map((id) => tagName(id)).join(', ')}`}>
+                                              <span className="ml-auto text-green-700" title={`Preferencias: ${svc.preferences.map((id) => tagName(id)).join(', ')}`}>
                                                 <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8l3 3 5-5" /></svg>
                                               </span>
                                             )}
@@ -261,11 +261,11 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                                           </div>
                                         </>
                                       ) : (
-                                        <div className="mt-0.5 flex items-center gap-1 text-[11px] text-[#62748E]">
+                                        <div className="mt-0.5 flex items-center gap-1 text-[11px] text-[#4F617B]">
                                           <PeopleIcon size={12} />
                                           {svc.covers}
                                           {svc.preferences && svc.preferences.length > 0 && (
-                                            <span className="ml-auto text-green-600" title={`Preferencias: ${svc.preferences.map((id) => tagName(id)).join(', ')}`}>
+                                            <span className="ml-auto text-green-700" title={`Preferencias: ${svc.preferences.map((id) => tagName(id)).join(', ')}`}>
                                               <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8l3 3 5-5" /></svg>
                                             </span>
                                           )}
@@ -280,7 +280,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                                     <button
                                       type="button"
                                       onClick={() => setRemoveConfirmMeal({ dayOrder: order, momentTagId: mt.id })}
-                                      className="absolute right-0 top-0 hidden rounded-md p-0.5 text-[#94A3B8] transition-colors hover:text-red-500 group-hover:block"
+                                      className="absolute right-0 top-0 hidden rounded-md p-0.5 text-[#4F617B] transition-colors hover:text-red-500 group-hover:block"
                                       title="Eliminar servicio"
                                     >
                                       <CloseIcon />
@@ -291,7 +291,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                               return (
                                 <div key={mt.id} className="mb-1.5">
                                   <div className="flex items-center">
-                                    <span className="rounded-l-md border border-dashed border-[#CBD5E1] bg-white px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-[#94A3B8]">
+                                    <span className="rounded-l-md border border-dashed border-[#CBD5E1] bg-white px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-[#4F617B]">
                                       {mt.name}
                                     </span>
                                     <button
@@ -299,7 +299,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                                       onClick={() =>
                                         setCell(buildCell(order, mt.id, mt.name))
                                       }
-                                      className="rounded-r-md border-b border-r border-t border-dashed border-[#CBD5E1] bg-white px-1.5 py-1.5 text-[#94A3B8] transition-colors hover:bg-[#F0FDF4] hover:text-[#009966]"
+                                      className="rounded-r-md border-b border-r border-t border-dashed border-[#CBD5E1] bg-white px-1.5 py-1.5 text-[#4F617B] transition-colors hover:bg-[#F0FDF4] hover:text-[#007A55]"
                                       title="Añadir servicio"
                                     >
                                       <PlusIcon size={14} />
@@ -356,14 +356,14 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
             <h2 className="mb-4 text-lg font-semibold text-[#0F172B]">
               Eliminar día
             </h2>
-            <p className="mb-4 text-sm text-[#62748E]">
+            <p className="mb-4 text-sm text-[#4F617B]">
               ¿Estás seguro de que quieres eliminar el día {removeConfirmDay} y todos sus servicios?
             </p>
             <div className="flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setRemoveConfirmDay(null)}
-                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#62748E] transition-colors hover:bg-gray-50"
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
               >
                 Cancelar
               </button>
@@ -392,14 +392,14 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
             <h2 className="mb-4 text-lg font-semibold text-[#0F172B]">
               Eliminar servicio
             </h2>
-            <p className="mb-4 text-sm text-[#62748E]">
+            <p className="mb-4 text-sm text-[#4F617B]">
               ¿Estás seguro de que quieres eliminar este servicio?
             </p>
             <div className="flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setRemoveConfirmMeal(null)}
-                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#62748E] transition-colors hover:bg-gray-50"
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
               >
                 Cancelar
               </button>

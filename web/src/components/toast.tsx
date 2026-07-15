@@ -24,7 +24,7 @@ export default function ToastNotification({
     <div className="fixed bottom-6 right-6 z-50">
       <div
         className={`flex items-center gap-3 rounded-xl px-5 py-3.5 text-white shadow-lg ${
-          type === 'error' ? 'bg-[#DC2626]' : 'bg-[#009966]'
+          type === 'error' ? 'bg-[#DC2626]' : 'bg-[#007A55]'
         }`}
       >
         <span className="text-sm font-medium">{message}</span>

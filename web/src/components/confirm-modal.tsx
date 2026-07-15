@@ -36,12 +36,12 @@ export function ConfirmModal({
       <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
       <div className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
         <h2 className="mb-4 text-lg font-semibold text-[#0F172B]">{title}</h2>
-        <div className="mb-6 text-sm text-[#62748E]">{children}</div>
+        <div className="mb-6 text-sm text-[#4F617B]">{children}</div>
         <div className="flex justify-end gap-3">
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#62748E] transition-colors hover:bg-gray-50"
+            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
           >
             {cancelLabel}
           </button>
@@ -51,7 +51,7 @@ export function ConfirmModal({
             className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors ${
               danger
                 ? 'bg-red-500 hover:bg-red-600'
-                : 'bg-[#009966] hover:bg-[#008055]'
+                : 'bg-[#007A55] hover:bg-[#008055]'
             }`}
           >
             {confirmLabel}

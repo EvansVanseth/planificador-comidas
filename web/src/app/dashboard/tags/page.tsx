@@ -48,7 +48,7 @@ export default async function TagsPage() {
     <>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-[#0F172B]">Etiquetas</h1>
-        <p className="mt-1 text-base text-[#62748E]">
+        <p className="mt-1 text-base text-[#4F617B]">
           Categoriza tus recetas para filtrarlas y organizarlas.
         </p>
       </div>
@@ -78,7 +78,7 @@ export default async function TagsPage() {
                     {dim.label}
                   </h2>
                   {dim.description && (
-                    <p className="mt-0.5 text-xs text-[#62748E]">
+                    <p className="mt-0.5 text-xs text-[#4F617B]">
                       {dim.description}
                     </p>
                   )}
@@ -89,7 +89,7 @@ export default async function TagsPage() {
               </div>
 
               {dimensionTags.length === 0 ? (
-                <div className="px-6 py-4 text-sm text-[#62748E]">
+                <div className="px-6 py-4 text-sm text-[#4F617B]">
                   No hay etiquetas en esta dimensión.
                 </div>
               ) : (

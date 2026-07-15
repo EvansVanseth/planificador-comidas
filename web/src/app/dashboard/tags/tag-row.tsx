@@ -72,18 +72,18 @@ export default function TagRow({
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
               autoFocus
-              className="h-8 flex-1 rounded-md border border-gray-200 px-2 text-sm focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+              className="h-8 flex-1 rounded-md border border-gray-200 px-2 text-sm focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
             />
             <button
               type="submit"
-              className="rounded-md bg-[#009966] px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-[#008055]"
+              className="rounded-md bg-[#007A55] px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-[#008055]"
             >
               Guardar
             </button>
             <button
               type="button"
               onClick={cancelEdit}
-              className="rounded-md p-1 text-[#62748E] transition-colors hover:bg-gray-100"
+              className="rounded-md p-1 text-[#4F617B] transition-colors hover:bg-gray-100"
             >
               <CloseIcon />
             </button>
@@ -93,7 +93,7 @@ export default function TagRow({
             <div className="flex items-center gap-2">
               <span className="text-sm text-[#0F172B]">{name}</span>
               {isSystem && (
-                <span className="rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-[#62748E]">
+                <span className="rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-[#4F617B]">
                   sistema
                 </span>
               )}
@@ -108,7 +108,7 @@ export default function TagRow({
                       disabled={!canMoveUp}
                       className={`rounded-md p-1.5 transition-colors ${
                         canMoveUp
-                          ? 'text-[#62748E] hover:bg-gray-100'
+                          ? 'text-[#4F617B] hover:bg-gray-100'
                           : 'text-gray-300'
                       }`}
                     >
@@ -122,7 +122,7 @@ export default function TagRow({
                       disabled={!canMoveDown}
                       className={`rounded-md p-1.5 transition-colors ${
                         canMoveDown
-                          ? 'text-[#62748E] hover:bg-gray-100'
+                          ? 'text-[#4F617B] hover:bg-gray-100'
                           : 'text-gray-300'
                       }`}
                     >
@@ -134,7 +134,7 @@ export default function TagRow({
               <button
                 type="button"
                 onClick={startEdit}
-                className="rounded-md p-1.5 text-[#62748E] transition-colors hover:bg-gray-100"
+                className="rounded-md p-1.5 text-[#4F617B] transition-colors hover:bg-gray-100"
               >
                 <PencilIcon />
               </button>
@@ -145,7 +145,7 @@ export default function TagRow({
                 className={`rounded-md p-1.5 transition-colors ${
                   isSystem
                     ? 'invisible'
-                    : 'text-[#62748E] hover:bg-red-50 hover:text-red-500'
+                    : 'text-[#4F617B] hover:bg-red-50 hover:text-red-500'
                 }`}
               >
                 <TrashIcon />
@@ -165,12 +165,12 @@ export default function TagRow({
             <h2 className="mb-4 text-lg font-semibold text-[#0F172B]">
               Eliminar etiqueta
             </h2>
-            <p className="mb-4 text-sm text-[#62748E]">
+            <p className="mb-4 text-sm text-[#4F617B]">
               ¿Estás seguro de que quieres eliminar <strong>{name}</strong>?
             </p>
 
             {loadingImpact && (
-              <div className="mb-4 rounded-lg bg-gray-50 p-3 text-sm text-[#62748E]">
+              <div className="mb-4 rounded-lg bg-gray-50 p-3 text-sm text-[#4F617B]">
                 Verificando impacto...
               </div>
             )}
@@ -179,7 +179,7 @@ export default function TagRow({
               <div className="mb-4 rounded-lg bg-gray-50 p-3">
                 {impact.recipesAffected.length === 0 &&
                 impact.planningsAffected === 0 ? (
-                  <p className="text-sm text-[#62748E]">
+                  <p className="text-sm text-[#4F617B]">
                     Ninguna receta o planificación usa esta etiqueta.
                   </p>
                 ) : (
@@ -193,7 +193,7 @@ export default function TagRow({
                         </p>
                         <ul className="mb-3 max-h-32 space-y-1 overflow-y-auto">
                           {impact.recipesAffected.map((r) => (
-                            <li key={r} className="text-sm text-[#62748E]">
+                            <li key={r} className="text-sm text-[#4F617B]">
                               • {r}
                             </li>
                           ))}
@@ -201,7 +201,7 @@ export default function TagRow({
                       </>
                     )}
                     {impact.planningsAffected > 0 && (
-                      <p className="text-sm text-[#62748E]">
+                      <p className="text-sm text-[#4F617B]">
                         Referenciada en servicios de{' '}
                         {impact.planningsAffected} planificación
                         {impact.planningsAffected !== 1 ? 'es' : ''}.
@@ -216,7 +216,7 @@ export default function TagRow({
               <button
                 type="button"
                 onClick={() => setShowDelete(false)}
-                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#62748E] transition-colors hover:bg-gray-50"
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
               >
                 Cancelar
               </button>

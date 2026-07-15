@@ -50,7 +50,7 @@ export default function Sidebar() {
         <form action={logout}>
           <button
             type="submit"
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#62748E] transition-colors hover:bg-gray-50"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
           >
             <LogoutIcon />
             Cerrar sesión

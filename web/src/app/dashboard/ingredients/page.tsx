@@ -44,7 +44,7 @@ export default async function IngredientsPage({
       <div className="mb-8 flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#0F172B]">Ingredientes</h1>
-          <p className="mt-1 text-base text-[#62748E]">
+          <p className="mt-1 text-base text-[#4F617B]">
             Gestiona los ingredientes que usas en tus recetas.
           </p>
         </div>
@@ -59,11 +59,11 @@ export default async function IngredientsPage({
             <input
               name="name"
               placeholder="Nuevo ingrediente..."
-              className="h-10 w-48 rounded-lg border border-gray-200 bg-white px-3.5 text-sm transition-colors focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+              className="h-10 w-48 rounded-lg border border-gray-200 bg-white px-3.5 text-sm transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
             />
             <button
               type="submit"
-              className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#009966] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+              className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
             >
               + Añadir
             </button>
@@ -78,7 +78,7 @@ export default async function IngredientsPage({
             height="16"
             viewBox="0 0 16 16"
             fill="none"
-            stroke="#62748E"
+            stroke="#4F617B"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -91,14 +91,14 @@ export default async function IngredientsPage({
             name="q"
             defaultValue={query}
             placeholder="Buscar ingrediente..."
-            className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-3.5 text-sm transition-colors focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+            className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-3.5 text-sm transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
           />
         </div>
       </form>
 
       {filtered.length === 0 ? (
         <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">
-          <p className="text-sm text-[#62748E]">
+          <p className="text-sm text-[#4F617B]">
             {query
               ? `No se encontraron ingredientes para "${query}".`
               : 'No hay ingredientes todavía. ¡Añadí el primero!'}

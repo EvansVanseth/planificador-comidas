@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { createPlanning } from '../actions';
 
 const inputClass =
-  'h-10 w-full rounded-[10px] border border-[#E2E8F0] bg-white px-3.5 text-sm text-[#0F172B] placeholder:text-[#62748E] transition-colors focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20';
+  'h-10 w-full rounded-[10px] border border-[#E2E8F0] bg-white px-3.5 text-sm text-[#0F172B] placeholder:text-[#4F617B] transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20';
 
 export default function CreatePlanningForm({ userId }: { userId: string }) {
   const [weeks, setWeeks] = useState(2);
@@ -17,7 +17,7 @@ export default function CreatePlanningForm({ userId }: { userId: string }) {
 
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-[#0F172B]">Nueva planificación</h1>
-        <p className="mt-1 text-base text-[#62748E]">
+        <p className="mt-1 text-base text-[#4F617B]">
           Define el esqueleto de tu planificación semanal.
         </p>
       </div>
@@ -25,7 +25,7 @@ export default function CreatePlanningForm({ userId }: { userId: string }) {
       <div className="space-y-5">
         <div>
           <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
-            Nombre <span className="text-[#62748E] font-normal">(opcional)</span>
+            Nombre <span className="text-[#4F617B] font-normal">(opcional)</span>
           </label>
           <input
             name="name"
@@ -55,7 +55,7 @@ export default function CreatePlanningForm({ userId }: { userId: string }) {
               type="checkbox"
               checked={hasDate}
               onChange={(e) => setHasDate(e.target.checked)}
-              className="rounded border-[#E2E8F0] text-[#009966] focus:ring-[#009966]/20"
+              className="rounded border-[#E2E8F0] text-[#007A55] focus:ring-[#007A55]/20"
             />
             Asignar fecha de inicio
           </label>
@@ -87,9 +87,9 @@ export default function CreatePlanningForm({ userId }: { userId: string }) {
             max={100}
             value={balance}
             onChange={(e) => setBalance(Number(e.target.value))}
-            className="w-full accent-[#009966]"
+            className="w-full accent-[#007A55]"
           />
-          <div className="flex justify-between text-xs text-[#62748E]">
+          <div className="flex justify-between text-xs text-[#4F617B]">
             <span>0% (todo frío)</span>
             <span>50% (mitad)</span>
             <span>100% (todo caliente)</span>
@@ -100,7 +100,7 @@ export default function CreatePlanningForm({ userId }: { userId: string }) {
       <div className="mt-8 flex items-center gap-3">
         <button
           type="submit"
-          className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#009966] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+          className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
         >
           Crear planificación
         </button>

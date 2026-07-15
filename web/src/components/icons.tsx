@@ -104,12 +104,12 @@ export function CalendarFilledIcon() {
       viewBox="0 0 18 18"
       fill="none"
     >
-      <rect x="1.5" y="3" width="15" height="13.5" rx="2" stroke="#009966" strokeWidth="1.5" />
-      <path d="M1.5 7.5H16.5" stroke="#009966" strokeWidth="1.5" />
-      <path d="M5.25 1.5V4.5" stroke="#009966" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M12.75 1.5V4.5" stroke="#009966" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M5.25 10.5H7.5V12.75H5.25V10.5Z" fill="#009966" />
-      <path d="M10.5 10.5H12.75V12.75H10.5V10.5Z" fill="#009966" />
+      <rect x="1.5" y="3" width="15" height="13.5" rx="2" stroke="#007A55" strokeWidth="1.5" />
+      <path d="M1.5 7.5H16.5" stroke="#007A55" strokeWidth="1.5" />
+      <path d="M5.25 1.5V4.5" stroke="#007A55" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M12.75 1.5V4.5" stroke="#007A55" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M5.25 10.5H7.5V12.75H5.25V10.5Z" fill="#007A55" />
+      <path d="M10.5 10.5H12.75V12.75H10.5V10.5Z" fill="#007A55" />
     </svg>
   );
 }
@@ -159,7 +159,7 @@ export function CheckIcon() {
       fill="none"
       className="shrink-0"
     >
-      <circle cx="10" cy="10" r="10" fill="#009966" />
+      <circle cx="10" cy="10" r="10" fill="#007A55" />
       <path
         d="M6 10.5L8.5 13L14 7.5"
         stroke="white"

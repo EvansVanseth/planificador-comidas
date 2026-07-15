@@ -25,11 +25,11 @@ export function CreateTagForm({
       <input
         name="name"
         placeholder="Nueva etiqueta..."
-        className="h-8 w-40 rounded-md border border-gray-200 px-2.5 text-sm transition-colors focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+        className="h-8 w-40 rounded-md border border-gray-200 px-2.5 text-sm transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
       />
       <button
         type="submit"
-        className="inline-flex h-8 items-center rounded-md bg-[#009966] px-3 text-xs font-medium text-white transition-colors hover:bg-[#008055]"
+        className="inline-flex h-8 items-center rounded-md bg-[#007A55] px-3 text-xs font-medium text-white transition-colors hover:bg-[#008055]"
       >
         + Añadir
       </button>

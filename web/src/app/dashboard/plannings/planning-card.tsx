@@ -44,12 +44,12 @@ export default function PlanningCard({
             {planning.name}
           </h3>
           {planning.startdate && (
-            <span className="rounded-full bg-[#ECFDF5] px-2 py-0.5 text-xs font-medium text-[#009966]">
+            <span className="rounded-full bg-[#ECFDF5] px-2 py-0.5 text-xs font-medium text-[#007A55]">
               Activa
             </span>
           )}
         </div>
-        <div className="mt-1 flex items-center gap-3 text-sm text-[#62748E]">
+        <div className="mt-1 flex items-center gap-3 text-sm text-[#4F617B]">
           <span>{planning.weeks} {planning.weeks === 1 ? 'semana' : 'semanas'}</span>
           <span>·</span>
           <span>{totalDays} días</span>
@@ -69,7 +69,7 @@ export default function PlanningCard({
       <div className="flex items-center gap-2">
         <Link
           href={`/dashboard/plannings/${planning.id}/edit`}
-          className="rounded-lg p-2 text-[#62748E] transition-colors hover:bg-[#F1F5F9] hover:text-[#009966]"
+          className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-[#F1F5F9] hover:text-[#007A55]"
           title="Editar planificación"
         >
           <PencilIcon />
@@ -80,7 +80,7 @@ export default function PlanningCard({
           <input type="hidden" name="userId" value={userId} />
           <button
             type="submit"
-            className="rounded-lg p-2 text-[#62748E] transition-colors hover:bg-[#F1F5F9] hover:text-[#009966]"
+            className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-[#F1F5F9] hover:text-[#007A55]"
             title="Duplicar planificación"
           >
             <DuplicateIcon />
@@ -90,7 +90,7 @@ export default function PlanningCard({
         <button
           type="button"
           onClick={() => setShowDelete(true)}
-          className="rounded-lg p-2 text-[#62748E] transition-colors hover:bg-red-50 hover:text-red-500"
+          className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
           title="Eliminar planificación"
         >
           <TrashIcon />

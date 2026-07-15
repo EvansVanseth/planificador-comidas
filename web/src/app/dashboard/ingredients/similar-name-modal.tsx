@@ -34,7 +34,7 @@ export default function SimilarNameWarning({
         <h2 className="mb-4 text-lg font-semibold text-[#0F172B]">
           Ingrediente similar encontrado
         </h2>
-        <p className="mb-3 text-sm text-[#62748E]">
+        <p className="mb-3 text-sm text-[#4F617B]">
           Ya existe uno o más ingredientes con nombres similares:
         </p>
         <ul className="mb-6 max-h-40 space-y-1 overflow-y-auto">
@@ -48,7 +48,7 @@ export default function SimilarNameWarning({
           <button
             type="button"
             onClick={cancel}
-            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#62748E] transition-colors hover:bg-gray-50"
+            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
           >
             Cancelar
           </button>
@@ -57,7 +57,7 @@ export default function SimilarNameWarning({
             <input type="hidden" name="name" value={proposedName} />
             <button
               type="submit"
-              className="rounded-lg bg-[#009966] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+              className="rounded-lg bg-[#007A55] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
             >
               Agregar de todas formas
             </button>

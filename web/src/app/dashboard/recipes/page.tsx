@@ -64,13 +64,13 @@ export default async function RecipesPage({
       <div className="mb-8 flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#0F172B]">Mis Recetas</h1>
-          <p className="mt-1 text-base text-[#62748E]">
+          <p className="mt-1 text-base text-[#4F617B]">
             Gestiona tu catálogo de recetas habituales.
           </p>
         </div>
         <Link
           href={`/dashboard/recipes/new?returnTo=${encodeURIComponent(returnTo)}`}
-          className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#009966] px-4 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+          className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-4 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
         >
           <PlusIcon />
           Nueva Receta
@@ -84,7 +84,7 @@ export default async function RecipesPage({
             height="16"
             viewBox="0 0 16 16"
             fill="none"
-            stroke="#62748E"
+            stroke="#4F617B"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -97,20 +97,20 @@ export default async function RecipesPage({
             name="q"
             defaultValue={query}
             placeholder="Buscar recetas por nombre..."
-            className="h-10 w-full rounded-[10px] border border-gray-200 bg-white pl-10 pr-3.5 text-sm text-[#0F172B] placeholder:text-[#62748E] focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+            className="h-10 w-full rounded-[10px] border border-gray-200 bg-white pl-10 pr-3.5 text-sm text-[#0F172B] placeholder:text-[#4F617B] focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
           />
         </div>
         <FilterToggle allTags={allTags} selectedTagIds={selectedTagIds} tagUrls={tagUrls} clearUrl={clearUrl} />
       </form>
 
-      <p className="mb-3 text-sm text-[#62748E]">
+      <p className="mb-3 text-sm text-[#4F617B]">
         Mostrando {recipes.length} receta{recipes.length !== 1 ? 's' : ''}
         {query || selectedTagIds.length > 0 ? ' filtradas' : ''}
       </p>
 
       {recipes.length === 0 ? (
         <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">
-          <p className="text-sm text-[#62748E]">
+          <p className="text-sm text-[#4F617B]">
             {query || selectedTagIds.length > 0
               ? 'No se encontraron recetas con esos filtros.'
               : 'No hay recetas todavía. ¡Creá la primera!'}

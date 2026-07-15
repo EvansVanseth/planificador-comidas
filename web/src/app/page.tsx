@@ -20,7 +20,7 @@ export default function LandingPage() {
           </Link>
           <Link
             href="/login"
-            className="rounded-[10px] bg-[#009966] px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-[#008055]"
+            className="rounded-[10px] bg-[#007A55] px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-[#008055]"
           >
             Pruébalo gratis
           </Link>
@@ -33,7 +33,7 @@ export default function LandingPage() {
             <h1 className="text-[60px] font-bold leading-[1.1] text-[#0F172B] max-lg:text-5xl max-sm:text-4xl">
               Deja de pensar
               <br />
-              <span className="text-[#009966]">qué comer hoy.</span>
+              <span className="text-[#007A55]">qué comer hoy.</span>
             </h1>
 
             <p className="mt-8 text-xl leading-relaxed text-[#45556C]">
@@ -43,7 +43,7 @@ export default function LandingPage() {
 
             <Link
               href="/login"
-              className="mt-10 inline-flex h-12 items-center justify-center rounded-[10px] bg-[#009966] px-7 text-lg font-medium text-white transition-colors hover:bg-[#008055]"
+              className="mt-10 inline-flex h-12 items-center justify-center rounded-[10px] bg-[#007A55] px-7 text-lg font-medium text-white transition-colors hover:bg-[#008055]"
             >
               Empieza a planificar
             </Link>
@@ -126,7 +126,7 @@ function FloatingCard({
       </div>
       <div>
         <p className="text-sm font-bold text-[#0F172B]">{title}</p>
-        <p className="text-xs text-[#62748E]">{subtitle}</p>
+        <p className="text-xs text-[#4F617B]">{subtitle}</p>
       </div>
     </div>
   );

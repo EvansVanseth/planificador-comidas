@@ -12,7 +12,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="h-10 w-full rounded-[10px] bg-[#009966] text-base font-medium text-white transition-colors hover:bg-[#008055] disabled:opacity-50"
+      className="h-10 w-full rounded-[10px] bg-[#007A55] text-base font-medium text-white transition-colors hover:bg-[#008055] disabled:opacity-50"
     >
       {pending ? 'Entrando...' : 'Iniciar sesión'}
     </button>
@@ -47,7 +47,7 @@ export default function LoginPage() {
                 type="email"
                 name="email"
                 placeholder="demo@plancomidas.com"
-                className="h-10 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[#0A0A0A] placeholder:text-gray-400 transition-colors focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+                className="h-10 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[#0A0A0A] placeholder:text-gray-400 transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
                 autoFocus
               />
             </div>
@@ -60,7 +60,7 @@ export default function LoginPage() {
                 type="password"
                 name="password"
                 placeholder="••••••••"
-                className="h-10 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[#0A0A0A] placeholder:text-gray-400 transition-colors focus:border-[#009966] focus:outline-none focus:ring-2 focus:ring-[#009966]/20"
+                className="h-10 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[#0A0A0A] placeholder:text-gray-400 transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
               />
             </div>
 
@@ -75,7 +75,7 @@ export default function LoginPage() {
                   Recordarme
                 </span>
               </label>
-              <span className="cursor-pointer text-sm font-medium text-[#009966] hover:underline">
+              <span className="cursor-pointer text-sm font-medium text-[#007A55] hover:underline">
                 ¿Olvidaste tu contraseña?
               </span>
             </div>
@@ -93,7 +93,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <p className="mb-4 text-center text-sm text-[#62748E]">
+          <p className="mb-4 text-center text-sm text-[#4F617B]">
             ¿No tienes cuenta?
           </p>
           <button
