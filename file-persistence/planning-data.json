@@ -479,7 +479,7 @@
     "id": "625f39cc-1428-4917-b1df-c7fabef0eba6",
     "userid": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Platos calientes",
-    "startdate": "2026-07-13",
+    "startdate": null,
     "weeks": 2,
     "hotColdBalance": 100,
     "days": [

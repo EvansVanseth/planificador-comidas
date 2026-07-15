@@ -22,13 +22,13 @@ export default function ToastNotification({
   }, [message]);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-20 left-4 right-4 z-50 md:bottom-6 md:left-auto md:right-6 md:w-auto">
       <div
-        className={`flex items-center gap-3 rounded-xl px-5 py-3.5 text-white shadow-lg ${
+        className={`flex items-start gap-3 rounded-xl px-5 py-3.5 text-white shadow-lg ${
           type === 'error' ? 'bg-[#DC2626]' : 'bg-[#007A55]'
         }`}
       >
-        <span className="text-sm font-medium">{toastDisplayText(message)}</span>
+        <span className="min-w-0 text-sm font-medium">{toastDisplayText(message)}</span>
         <button
           onClick={() => onDismissRef.current()}
           className="shrink-0 rounded-md p-0.5 transition-colors hover:bg-white/20"
