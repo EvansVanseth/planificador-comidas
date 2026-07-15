@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { getContainer } from '@/domain-container';
 import Link from 'next/link';
-import { getTodayDayOrder, getDayName, formatDate } from './helpers';
+import { getTodayDayOrder, getTomorrowDayOrder, getDayName, formatDate } from './helpers';
 import { PlusIcon, CalendarSmallIcon } from '@/components/icons';
 
 export default async function DashboardPage() {
@@ -19,8 +19,12 @@ export default async function DashboardPage() {
 
   const tagsById = new Map(tags.map((t) => [t.id, t]));
 
-  let todayMeals: { time: string; timeName: string; recipeName: string | null }[] = [];
+  type MealInfo = { time: string; timeName: string; recipeName: string | null };
+
+  let todayMeals: MealInfo[] = [];
   let todayName = '';
+  let tomorrowMeals: MealInfo[] = [];
+  let tomorrowName = '';
   if (activePlanning) {
     const dayOrder = getTodayDayOrder(
       activePlanning.startdate,
@@ -31,6 +35,28 @@ export default async function DashboardPage() {
       const day = activePlanning.days.find((d) => d.order === dayOrder);
       if (day) {
         todayMeals = day.services.map((s) => {
+          const timeTag = tagsById.get(s.time);
+          const recipe = s.recipeId
+            ? recipes.find((r) => r.id === s.recipeId)
+            : null;
+          return {
+            time: s.time,
+            timeName: timeTag?.name ?? s.time,
+            recipeName: recipe?.name ?? null,
+          };
+        });
+      }
+    }
+
+    const tomorrowDayOrder = getTomorrowDayOrder(
+      activePlanning.startdate,
+      activePlanning.weeks,
+    );
+    if (tomorrowDayOrder) {
+      tomorrowName = getDayName(tomorrowDayOrder);
+      const day = activePlanning.days.find((d) => d.order === tomorrowDayOrder);
+      if (day) {
+        tomorrowMeals = day.services.map((s) => {
           const timeTag = tagsById.get(s.time);
           const recipe = s.recipeId
             ? recipes.find((r) => r.id === s.recipeId)
@@ -115,6 +141,27 @@ export default async function DashboardPage() {
                 <Stat value={pantryCount} label="En despensa" />
                 <Stat value={shoppingPending} label="Por comprar" />
               </div>
+
+              <div className="mt-6 flex gap-3">
+                <Link
+                  href={`/dashboard/plannings/${activePlanning.id}/edit?tab=grid`}
+                  className="rounded-lg bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-white/25"
+                >
+                  Cuadrícula
+                </Link>
+                <Link
+                  href={`/dashboard/plannings/${activePlanning.id}/edit?tab=pantry`}
+                  className="rounded-lg bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-white/25"
+                >
+                  Despensa
+                </Link>
+                <Link
+                  href={`/dashboard/plannings/${activePlanning.id}/edit?tab=shopping`}
+                  className="rounded-lg bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-white/25"
+                >
+                  Lista de la compra
+                </Link>
+              </div>
             </>
           ) : (
             <>
@@ -148,7 +195,7 @@ export default async function DashboardPage() {
             {recipes.length !== 1 ? 's' : ''}
           </p>
           <Link
-            href="/recipes"
+            href="/dashboard/recipes"
             className="text-xs font-medium text-[#007A55] hover:underline"
           >
             Ver todas las recetas →
@@ -157,7 +204,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Today&apos;s meals */}
-      <section>
+      <section className="mb-8">
         <h2 className="mb-4 text-xl font-bold text-[#0F172B]">
           {todayName ? `Para hoy (${todayName})` : 'Para hoy'}
         </h2>
@@ -178,6 +225,33 @@ export default async function DashboardPage() {
               {activePlanning
                 ? 'No hay comidas planificadas para hoy.'
                 : 'Crea una planificación para ver las comidas de hoy.'}
+            </p>
+          </div>
+        )}
+      </section>
+
+      {/* Tomorrow&apos;s meals */}
+      <section>
+        <h2 className="mb-4 text-xl font-bold text-[#0F172B]">
+          {tomorrowName ? `Para mañana (${tomorrowName})` : 'Para mañana'}
+        </h2>
+
+        {tomorrowMeals.length > 0 ? (
+          <div className="grid grid-cols-4 gap-4">
+            {tomorrowMeals.map((meal, i) => (
+              <MealCard
+                key={i}
+                timeName={meal.timeName}
+                recipeName={meal.recipeName}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">
+            <p className="text-sm text-[#4F617B]">
+              {activePlanning
+                ? 'No hay comidas planificadas para mañana.'
+                : 'Crea una planificación para ver las comidas.'}
             </p>
           </div>
         )}

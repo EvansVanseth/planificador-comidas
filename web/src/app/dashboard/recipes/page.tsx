@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { PlusIcon } from '@/components/icons';
 import RecipeCard from './recipe-card';
 import { FilterToggle } from './filter-toggle';
+import DebouncedSearch from '@/components/debounced-search';
 
 const DIM_ORDER = ['MOMENTO_DIA', 'FORMATO', 'TIPO_PLATO', 'ESTILOS_VIDA'];
 
@@ -31,6 +32,8 @@ export default async function RecipesPage({
   if (selectedTagIds.length > 0) filtersParam.set('tag', selectedTagIds.join(','));
   const filtersQuery = filtersParam.toString();
   const returnTo = filtersQuery ? `/dashboard/recipes?${filtersQuery}` : '/dashboard/recipes';
+
+  const currentSearchStr = filtersParam.toString();
 
   let recipes = allRecipes;
   if (query) {
@@ -77,31 +80,16 @@ export default async function RecipesPage({
         </Link>
       </div>
 
-      <form className="mb-8 flex items-center gap-3">
-        <div className="relative flex-1">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="#4F617B"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2"
-          >
-            <circle cx="7" cy="7" r="4.5" />
-            <path d="M10.5 10.5l3 3" />
-          </svg>
-          <input
-            name="q"
-            defaultValue={query}
-            placeholder="Buscar recetas por nombre..."
-            className="h-10 w-full rounded-[10px] border border-gray-200 bg-white pl-10 pr-3.5 text-sm text-[#0F172B] placeholder:text-[#4F617B] focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
-          />
-        </div>
+      <div className="mb-8 flex items-center gap-3">
+        <DebouncedSearch
+          className="flex-1"
+          defaultValue={query}
+          placeholder="Buscar recetas por nombre..."
+          paramName="q"
+          currentSearch={currentSearchStr}
+        />
         <FilterToggle allTags={allTags} selectedTagIds={selectedTagIds} tagUrls={tagUrls} clearUrl={clearUrl} />
-      </form>
+      </div>
 
       <p className="mb-3 text-sm text-[#4F617B]">
         Mostrando {recipes.length} receta{recipes.length !== 1 ? 's' : ''}

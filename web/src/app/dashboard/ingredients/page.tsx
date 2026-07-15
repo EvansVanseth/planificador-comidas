@@ -4,6 +4,7 @@ import { createIngredient } from './actions';
 import IngredientRow from './ingredient-row';
 import SimilarNameWarning from './similar-name-modal';
 import { MergeButton } from './merge-modal';
+import DebouncedSearch from '@/components/debounced-search';
 
 export default async function IngredientsPage({
   searchParams,
@@ -71,30 +72,13 @@ export default async function IngredientsPage({
         </div>
       </div>
 
-      <form className="mb-6">
-        <div className="relative">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="#4F617B"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2"
-          >
-            <circle cx="7" cy="7" r="4.5" />
-            <path d="M10.5 10.5l3 3" />
-          </svg>
-          <input
-            name="q"
-            defaultValue={query}
-            placeholder="Buscar ingrediente..."
-            className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-3.5 text-sm transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
-          />
-        </div>
-      </form>
+      <DebouncedSearch
+        className="mb-6"
+        defaultValue={query}
+        placeholder="Buscar ingrediente..."
+        paramName="q"
+        currentSearch={searchParams.q ? `q=${encodeURIComponent(searchParams.q)}` : ''}
+      />
 
       {filtered.length === 0 ? (
         <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">

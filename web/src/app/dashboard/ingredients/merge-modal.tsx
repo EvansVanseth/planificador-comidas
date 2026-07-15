@@ -167,7 +167,7 @@ export function MergeButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-gray-200 px-3.5 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
+        className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-white px-3.5 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
       >
         <MergeIcon />
         Fusionar
