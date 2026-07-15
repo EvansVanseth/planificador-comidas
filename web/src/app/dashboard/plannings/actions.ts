@@ -260,6 +260,143 @@ export async function removeMeal(formData: FormData) {
   redirect(editPath);
 }
 
+export async function addPantryItem(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const ingredientId = formData.get('ingredientId') as string;
+  const ingredientName = formData.get('ingredientName') as string;
+
+  const c = getContainer();
+  try {
+    c.addPantryItem.execute(planningId, ingredientId);
+    await addToastToQueue(`${ingredientName} añadido a la despensa.`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al añadir a la despensa';
+    await addToastToQueue(msg, 'error');
+  }
+
+  const editPath = `/dashboard/plannings/${planningId}/edit?tab=pantry`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
+export async function removePantryItem(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const ingredientId = formData.get('ingredientId') as string;
+  const ingredientName = formData.get('ingredientName') as string;
+
+  const c = getContainer();
+  try {
+    c.removePantryItem.execute(planningId, ingredientId);
+    await addToastToQueue(`${ingredientName} eliminado de la despensa.`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al eliminar de la despensa';
+    await addToastToQueue(msg, 'error');
+  }
+
+  const editPath = `/dashboard/plannings/${planningId}/edit?tab=pantry`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
+export async function updatePantryItemCovers(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const ingredientId = formData.get('ingredientId') as string;
+  const ingredientName = formData.get('ingredientName') as string;
+  const covers = parseInt(formData.get('covers') as string, 10);
+
+  const c = getContainer();
+  try {
+    c.updatePantryItemCovers.execute(planningId, ingredientId, covers);
+    if (covers > 0) {
+      await addToastToQueue(`${ingredientName}: ${covers} comensal${covers !== 1 ? 'es' : ''} cubierto${covers !== 1 ? 's' : ''}.`);
+    }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al actualizar';
+    await addToastToQueue(msg, 'error');
+  }
+
+  const editPath = `/dashboard/plannings/${planningId}/edit?tab=pantry`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
+export async function markPantryItemAvailable(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const ingredientId = formData.get('ingredientId') as string;
+  const ingredientName = formData.get('ingredientName') as string;
+
+  const c = getContainer();
+  try {
+    c.markPantryItemAvailable.execute(planningId, ingredientId);
+    await addToastToQueue(`${ingredientName}: tienes de todo.`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al marcar disponible';
+    await addToastToQueue(msg, 'error');
+  }
+
+  const editPath = `/dashboard/plannings/${planningId}/edit?tab=pantry`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
+export async function addShoppingItem(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const ingredientId = formData.get('ingredientId') as string;
+  const ingredientName = formData.get('ingredientName') as string;
+
+  const c = getContainer();
+  try {
+    c.addShoppingItem.execute(planningId, ingredientId);
+    await addToastToQueue(`${ingredientName} añadido a la lista de la compra.`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al añadir';
+    await addToastToQueue(msg, 'error');
+  }
+
+  const editPath = `/dashboard/plannings/${planningId}/edit?tab=shopping`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
+export async function removeShoppingItem(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const ingredientId = formData.get('ingredientId') as string;
+  const ingredientName = formData.get('ingredientName') as string;
+
+  const c = getContainer();
+  try {
+    c.removeShoppingItem.execute(planningId, ingredientId);
+    await addToastToQueue(`${ingredientName} eliminado de la lista de la compra.`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al eliminar';
+    await addToastToQueue(msg, 'error');
+  }
+
+  const editPath = `/dashboard/plannings/${planningId}/edit?tab=shopping`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
+export async function toggleShoppingItem(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const ingredientId = formData.get('ingredientId') as string;
+  const ingredientName = formData.get('ingredientName') as string;
+  const completed = formData.get('completed') === 'true';
+
+  const c = getContainer();
+  try {
+    c.toggleShoppingItem.execute(planningId, ingredientId, completed);
+    await addToastToQueue(completed ? `${ingredientName} marcado como comprado.` : `${ingredientName} marcado como pendiente.`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al actualizar';
+    await addToastToQueue(msg, 'error');
+  }
+
+  const editPath = `/dashboard/plannings/${planningId}/edit?tab=shopping`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
 export async function getDeleteImpact(tagId: string, userId: string) {
   const c = getContainer();
 

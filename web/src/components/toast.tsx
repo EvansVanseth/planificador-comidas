@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { CloseIcon } from '@/components/icons';
+import { toastDisplayText } from '@/lib/toast-display';
 
 export default function ToastNotification({
   message,
@@ -27,7 +28,7 @@ export default function ToastNotification({
           type === 'error' ? 'bg-[#DC2626]' : 'bg-[#007A55]'
         }`}
       >
-        <span className="text-sm font-medium">{message}</span>
+        <span className="text-sm font-medium">{toastDisplayText(message)}</span>
         <button
           onClick={() => onDismissRef.current()}
           className="shrink-0 rounded-md p-0.5 transition-colors hover:bg-white/20"

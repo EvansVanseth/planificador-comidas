@@ -13,7 +13,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "4815e2e4-cb08-4e4d-8ea4-78e993ce9cb3",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -35,7 +35,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "0aa69320-75fc-4c73-bae4-f0615d649792",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -62,6 +62,17 @@
             "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
+          },
+          {
+            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+            "recipeId": "310d0fbe-ea93-4ab5-b8bc-b105827ec9ed",
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667",
+              "071476e0-9b0d-4d26-b782-b7ec38b0804f"
+            ],
+            "preferences": [],
+            "ignoreRestrictions": false
           }
         ]
       },
@@ -74,6 +85,17 @@
             "recipeId": "4815e2e4-cb08-4e4d-8ea4-78e993ce9cb3",
             "covers": 2,
             "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          },
+          {
+            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+            "recipeId": "39a47444-b2f9-4d44-af59-71e239b6c89f",
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667",
+              "071476e0-9b0d-4d26-b782-b7ec38b0804f"
+            ],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -90,6 +112,17 @@
             "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
+          },
+          {
+            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+            "recipeId": "f895593e-3b39-4b8b-be6e-395f0f599da1",
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667",
+              "071476e0-9b0d-4d26-b782-b7ec38b0804f"
+            ],
+            "preferences": [],
+            "ignoreRestrictions": false
           }
         ]
       },
@@ -102,6 +135,17 @@
             "recipeId": "43eca919-ef16-4e59-bdf6-42f886d02c76",
             "covers": 2,
             "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          },
+          {
+            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+            "recipeId": "dbeba650-ca10-4d13-be8c-546b5fa9ad27",
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667",
+              "071476e0-9b0d-4d26-b782-b7ec38b0804f"
+            ],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -118,6 +162,17 @@
             "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
+          },
+          {
+            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667",
+              "071476e0-9b0d-4d26-b782-b7ec38b0804f"
+            ],
+            "preferences": [],
+            "ignoreRestrictions": false
           }
         ]
       },
@@ -127,7 +182,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "7a3ff4cd-6d90-4f2d-9505-d34843c999c6",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -170,16 +225,22 @@
       {
         "id": "9a0f2716-0679-45d9-bad9-8ac2c0f0b8a4",
         "order": 5,
-        "services": []
+        "services": [
+          {
+            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
+            "recipeId": null,
+            "covers": 2,
+            "exclusions": [
+              "fb490465-763a-400f-8037-4c615669d667",
+              "071476e0-9b0d-4d26-b782-b7ec38b0804f"
+            ],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       }
     ],
     "pantryItems": [
-      {
-        "id": "ab25b672-3e5c-44a0-a847-f5b9f16aed0e",
-        "ingredientId": "9919e806-941c-40ce-8881-e3fa5a79ee10",
-        "available": false,
-        "covers": 0
-      },
       {
         "id": "dd84d13a-18a9-476d-a035-26ac964decf3",
         "ingredientId": "40bc593a-1061-4e74-b279-2dd3edaf30fc",
@@ -197,6 +258,36 @@
         "ingredientId": "60ed4804-d771-4a94-8b28-56f440871543",
         "available": false,
         "covers": 0
+      },
+      {
+        "id": "fbab3a05-0352-44c5-93e3-e765d476dd7e",
+        "ingredientId": "9919e806-941c-40ce-8881-e3fa5a79ee10",
+        "available": false,
+        "covers": 0
+      },
+      {
+        "id": "7999342b-9f21-4e82-8fd3-dbc61748143f",
+        "ingredientId": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
+        "available": false,
+        "covers": 5
+      },
+      {
+        "id": "46b6bd48-a2ef-4a46-b753-c3bcce19a573",
+        "ingredientId": "b2f9a068-2fdc-4adb-881c-13979cda7166",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "5ceec97c-365f-40df-bbbb-ecac8f625eea",
+        "ingredientId": "ec42b393-1809-41de-b295-78806b27ac7e",
+        "available": false,
+        "covers": 3
+      },
+      {
+        "id": "476da6b3-38e9-43f7-9f4e-f81aa301a2e9",
+        "ingredientId": "21b7de56-bb51-4903-b1d0-2f053d1fbd77",
+        "available": false,
+        "covers": 1
       }
     ],
     "shoppingItems": [
@@ -213,7 +304,22 @@
       {
         "id": "d1b8106c-3695-4ff3-b81a-0e74797b5f29",
         "ingredientId": "b4cfb7b9-6ffd-4d78-9148-1d326edf00aa",
-        "completed": true
+        "completed": false
+      },
+      {
+        "id": "d7a3222e-7df8-4010-8661-11e10ff50c43",
+        "ingredientId": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
+        "completed": false
+      },
+      {
+        "id": "f4e900cc-49f4-48ff-ae3b-901fd38b0a3c",
+        "ingredientId": "b2f9a068-2fdc-4adb-881c-13979cda7166",
+        "completed": false
+      },
+      {
+        "id": "4e75d1c4-4d7b-4c1a-8276-9607cff03e5f",
+        "ingredientId": "21b7de56-bb51-4903-b1d0-2f053d1fbd77",
+        "completed": false
       }
     ]
   },
