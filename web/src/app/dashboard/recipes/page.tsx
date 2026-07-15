@@ -64,7 +64,7 @@ export default async function RecipesPage({
 
   return (
     <>
-      <div className="mb-8 flex items-start justify-between">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#0F172B]">Mis Recetas</h1>
           <p className="mt-1 text-base text-[#4F617B]">
@@ -73,7 +73,7 @@ export default async function RecipesPage({
         </div>
         <Link
           href={`/dashboard/recipes/new?returnTo=${encodeURIComponent(returnTo)}`}
-          className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-4 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+          className="flex h-10 w-full items-center justify-center gap-2 rounded-[10px] bg-[#007A55] px-4 text-sm font-medium text-white transition-colors hover:bg-[#008055] md:inline-flex md:w-auto"
         >
           <PlusIcon />
           Nueva Receta
@@ -105,7 +105,7 @@ export default async function RecipesPage({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {recipes.map((recipe) => (
             <RecipeCard
               key={recipe.id}
