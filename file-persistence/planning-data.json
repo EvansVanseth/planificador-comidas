@@ -327,7 +327,7 @@
     "id": "d9f777ef-b63b-48e3-9215-af4e502a7af2",
     "userid": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Platos frios",
-    "startdate": null,
+    "startdate": "2026-07-12T22:00:00.000Z",
     "weeks": 2,
     "hotColdBalance": 0,
     "days": [
@@ -864,7 +864,7 @@
     "id": "d1bd98c3-70bf-4ddd-98e7-d9e1380c4bef",
     "userid": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Planificación corta",
-    "startdate": "2026-07-19T22:00:00.000Z",
+    "startdate": "2026-07-12T22:00:00.000Z",
     "weeks": 3,
     "hotColdBalance": 50,
     "days": [
