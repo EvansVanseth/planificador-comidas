@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from 'react';
 import type { PlanningPrimitives } from '@/domain/planning/aggregates/planning.aggregate';
-import { PeopleIcon, PlusIcon, MinusIcon, CloseIcon } from '@/components/icons';
-import { addDay, removeDay, addAllDays, removeMeal, clearAllRecipes } from '../../actions';
+import { PeopleIcon, PlusIcon, MinusIcon, CloseIcon, WandIcon } from '@/components/icons';
+import { addDay, removeDay, addAllDays, removeMeal, clearAllRecipes, autoSchedule } from '../../actions';
 import MealCellModal from './meal-cell-modal';
 import EditPlanningModal from './edit-planning-modal';
 import BulkAddServiceModal from './bulk-add-service-modal';
@@ -67,6 +67,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
   const [removeConfirmMeal, setRemoveConfirmMeal] = useState<{ dayOrder: number; momentTagId: string } | null>(null);
   const [showClearRecipesConfirm, setShowClearRecipesConfirm] = useState(false);
   const [showBulkAddService, setShowBulkAddService] = useState(false);
+  const [showAutoSchedule, setShowAutoSchedule] = useState(false);
   const [, startTransition] = useTransition();
   const totalDays = planning.weeks * 7;
 
@@ -155,6 +156,14 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
           className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-white px-3.5 text-sm font-medium text-[#0F172B] transition-colors hover:bg-gray-50"
         >
           Añadir servicio
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowAutoSchedule(true)}
+          className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#007A55] to-[#0D9488] px-4 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110"
+        >
+          <WandIcon size={16} />
+          Autoplanificar
         </button>
         <button
           type="button"
@@ -492,6 +501,44 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
           allTags={allTags}
           onClose={() => setShowBulkAddService(false)}
         />
+      )}
+
+      {showAutoSchedule && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setShowAutoSchedule(false)}
+          />
+          <div className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
+            <h2 className="mb-4 text-lg font-semibold text-[#0F172B]">
+              Autoplanificar
+            </h2>
+            <p className="mb-4 text-sm text-[#4F617B]">
+              ¿Estás seguro de que quieres autoplanificar? Se asignarán recetas a todos los servicios vacíos según las preferencias, exclusiones y balance establecidos.
+            </p>
+            <p className="mb-4 text-sm text-[#4F617B]">
+              Los servicios que ya tengan receta no se modificarán.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowAutoSchedule(false)}
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <form action={autoSchedule} onSubmit={() => setShowAutoSchedule(false)}>
+                <input type="hidden" name="planningId" value={planning.id} />
+                <button
+                  type="submit"
+                  className="rounded-lg bg-gradient-to-r from-[#007A55] to-[#0D9488] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110"
+                >
+                  Autoplanificar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

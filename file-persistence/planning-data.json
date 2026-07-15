@@ -231,11 +231,9 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "3c7d27e2-9278-4507-999f-6922b40080cb",
             "covers": 2,
-            "exclusions": [
-              "fb490465-763a-400f-8037-4c615669d667"
-            ],
+            "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -247,11 +245,9 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "3657db52-d4aa-48b0-8046-e4ab338b1652",
             "covers": 2,
-            "exclusions": [
-              "fb490465-763a-400f-8037-4c615669d667"
-            ],
+            "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -263,11 +259,9 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "b27e88f1-461e-43fd-92d0-73a33b27f96c",
             "covers": 2,
-            "exclusions": [
-              "fb490465-763a-400f-8037-4c615669d667"
-            ],
+            "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -279,7 +273,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "f895593e-3b39-4b8b-be6e-395f0f599da1",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -293,7 +287,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "de7ccb30-5fbd-4d8d-949f-d8fc02723b36",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -307,7 +301,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "7101906f-6092-4299-ae1e-9cf73909a9f6",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -321,7 +315,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "81760191-58fe-45f5-b0bc-4c1312ab51ad",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -335,7 +329,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "0aa69320-75fc-4c73-bae4-f0615d649792",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -349,11 +343,9 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "39a47444-b2f9-4d44-af59-71e239b6c89f",
             "covers": 2,
-            "exclusions": [
-              "fb490465-763a-400f-8037-4c615669d667"
-            ],
+            "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -365,11 +357,9 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "b8a62e23-a65f-42aa-8df4-aa951f13c67c",
             "covers": 2,
-            "exclusions": [
-              "fb490465-763a-400f-8037-4c615669d667"
-            ],
+            "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -393,11 +383,9 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "310d0fbe-ea93-4ab5-b8bc-b105827ec9ed",
             "covers": 2,
-            "exclusions": [
-              "fb490465-763a-400f-8037-4c615669d667"
-            ],
+            "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -409,11 +397,9 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "4815e2e4-cb08-4e4d-8ea4-78e993ce9cb3",
             "covers": 2,
-            "exclusions": [
-              "fb490465-763a-400f-8037-4c615669d667"
-            ],
+            "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -425,11 +411,9 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "0aa69320-75fc-4c73-bae4-f0615d649792",
             "covers": 2,
-            "exclusions": [
-              "fb490465-763a-400f-8037-4c615669d667"
-            ],
+            "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -441,7 +425,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "7a3ff4cd-6d90-4f2d-9505-d34843c999c6",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -455,7 +439,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "43eca919-ef16-4e59-bdf6-42f886d02c76",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -469,7 +453,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "ee05d182-e070-48ea-82f8-27c30a95823b",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -483,7 +467,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "42ecef19-d726-4844-b1f9-162a117b284f",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -497,7 +481,7 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "846b40d0-a46f-420d-afd0-c65f2ff21793",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -511,11 +495,9 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "3c7d27e2-9278-4507-999f-6922b40080cb",
             "covers": 2,
-            "exclusions": [
-              "fb490465-763a-400f-8037-4c615669d667"
-            ],
+            "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -527,11 +509,9 @@
         "services": [
           {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
+            "recipeId": "3657db52-d4aa-48b0-8046-e4ab338b1652",
             "covers": 2,
-            "exclusions": [
-              "fb490465-763a-400f-8037-4c615669d667"
-            ],
+            "exclusions": [],
             "preferences": [],
             "ignoreRestrictions": false
           }
@@ -565,16 +545,8 @@
         "order": 1,
         "services": [
           {
-            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
-            "covers": 2,
-            "exclusions": [],
-            "preferences": [],
-            "ignoreRestrictions": false
-          },
-          {
-            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
-            "recipeId": null,
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "5fb368e9-27d8-4b07-819d-a3993eba3e80",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -585,72 +557,198 @@
       {
         "id": "d5885a00-9bef-4e4c-82d3-1c3383097268",
         "order": 2,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "c0eab9b5-2960-46dd-befc-93b1b490e3f2",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "d658e974-78f5-4bbe-b9c1-e17672a9ff12",
         "order": 3,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "5fb368e9-27d8-4b07-819d-a3993eba3e80",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "47a46cc1-b093-47d6-92f4-e1ecf9f4fdf5",
         "order": 4,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "c0eab9b5-2960-46dd-befc-93b1b490e3f2",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "ae0b6e27-fe65-4dfd-a342-452cd34ba2ce",
         "order": 5,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "5fb368e9-27d8-4b07-819d-a3993eba3e80",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "42d10b97-b25a-48cc-a953-41370c10b10e",
         "order": 8,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "c0eab9b5-2960-46dd-befc-93b1b490e3f2",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "0562c9d3-3f7c-45cd-95fe-863e01b38c4f",
         "order": 9,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "5fb368e9-27d8-4b07-819d-a3993eba3e80",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "1ba8f47f-1eaa-422a-80b0-ad71ce905283",
         "order": 10,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "c0eab9b5-2960-46dd-befc-93b1b490e3f2",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "58ab24aa-6e0b-4c86-aadc-e07e98b19500",
         "order": 11,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "5fb368e9-27d8-4b07-819d-a3993eba3e80",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "222b1557-c17c-462d-833d-7f70811cc265",
         "order": 12,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "c0eab9b5-2960-46dd-befc-93b1b490e3f2",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "e720eb26-1ac7-4ae1-933b-b960d7963dba",
         "order": 15,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "5fb368e9-27d8-4b07-819d-a3993eba3e80",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "98cfcc82-2ec7-44b9-9e8f-7e8648701383",
         "order": 16,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "c0eab9b5-2960-46dd-befc-93b1b490e3f2",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "77367147-da38-4900-8154-6fd54947881a",
         "order": 17,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "5fb368e9-27d8-4b07-819d-a3993eba3e80",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "58166e8a-d6e0-4d0d-95f5-219603ed0aea",
         "order": 18,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "c0eab9b5-2960-46dd-befc-93b1b490e3f2",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "a4259b45-e5d8-4c63-b4c5-d2d0085e819f",
         "order": 19,
-        "services": []
+        "services": [
+          {
+            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
+            "recipeId": "5fb368e9-27d8-4b07-819d-a3993eba3e80",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       }
     ],
     "pantryItems": [],
@@ -660,8 +758,8 @@
     "id": "d1bd98c3-70bf-4ddd-98e7-d9e1380c4bef",
     "userid": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Planificación corta",
-    "startdate": null,
-    "weeks": 1,
+    "startdate": "2026-07-19T22:00:00.000Z",
+    "weeks": 3,
     "hotColdBalance": 50,
     "days": [
       {
@@ -669,24 +767,8 @@
         "order": 1,
         "services": [
           {
-            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
-            "recipeId": "5fb368e9-27d8-4b07-819d-a3993eba3e80",
-            "covers": 2,
-            "exclusions": [],
-            "preferences": [],
-            "ignoreRestrictions": false
-          },
-          {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
-            "covers": 2,
-            "exclusions": [],
-            "preferences": [],
-            "ignoreRestrictions": false
-          },
-          {
-            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
-            "recipeId": null,
+            "recipeId": "310d0fbe-ea93-4ab5-b8bc-b105827ec9ed",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -699,24 +781,8 @@
         "order": 2,
         "services": [
           {
-            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
-            "recipeId": null,
-            "covers": 2,
-            "exclusions": [],
-            "preferences": [],
-            "ignoreRestrictions": false
-          },
-          {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
-            "covers": 2,
-            "exclusions": [],
-            "preferences": [],
-            "ignoreRestrictions": false
-          },
-          {
-            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
-            "recipeId": null,
+            "recipeId": "3c7d27e2-9278-4507-999f-6922b40080cb",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -729,24 +795,8 @@
         "order": 3,
         "services": [
           {
-            "time": "de4ab7f6-c265-4cae-be38-5f690121098f",
-            "recipeId": null,
-            "covers": 2,
-            "exclusions": [],
-            "preferences": [],
-            "ignoreRestrictions": false
-          },
-          {
             "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
-            "recipeId": null,
-            "covers": 2,
-            "exclusions": [],
-            "preferences": [],
-            "ignoreRestrictions": false
-          },
-          {
-            "time": "fe48bd8d-18f7-4b16-8ff6-651c96bc9f4b",
-            "recipeId": null,
+            "recipeId": "4815e2e4-cb08-4e4d-8ea4-78e993ce9cb3",
             "covers": 2,
             "exclusions": [],
             "preferences": [],
@@ -757,12 +807,254 @@
       {
         "id": "1de68134-bf04-4649-9847-3f6fc497fd6f",
         "order": 4,
-        "services": []
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "3657db52-d4aa-48b0-8046-e4ab338b1652",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       },
       {
         "id": "a720c57e-2d86-47f3-bf1a-7283af23e2c6",
         "order": 5,
-        "services": []
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "0aa69320-75fc-4c73-bae4-f0615d649792",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "7d8a5fad-85f3-40a9-9410-1a1c25b5ea38",
+        "order": 6,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "b27e88f1-461e-43fd-92d0-73a33b27f96c",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "5f11af9f-470b-41f4-8f3d-5415b7e27b81",
+        "order": 7,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "43eca919-ef16-4e59-bdf6-42f886d02c76",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "975e8c52-5083-4fc9-8186-5e91599eaf70",
+        "order": 8,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "7101906f-6092-4299-ae1e-9cf73909a9f6",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "39479bf8-6ff8-4d70-878d-2f6b6c8cfcda",
+        "order": 9,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "7a3ff4cd-6d90-4f2d-9505-d34843c999c6",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "a3164464-61be-4492-84a6-0665a346f9cd",
+        "order": 10,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "de7ccb30-5fbd-4d8d-949f-d8fc02723b36",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "82823e1f-9565-48e9-91d3-a11d30d5b883",
+        "order": 11,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "846b40d0-a46f-420d-afd0-c65f2ff21793",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "f3a28f19-f67a-483b-b16e-e3c795a12117",
+        "order": 12,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "39a47444-b2f9-4d44-af59-71e239b6c89f",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "1304026b-4853-4fe7-82a9-6e137d436e77",
+        "order": 13,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "d476a51e-46cd-487b-8b41-fa993af1951a",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "aff8da5f-8ed1-4fc5-b9b8-72cff91404e1",
+        "order": 14,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "81760191-58fe-45f5-b0bc-4c1312ab51ad",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "5f11bf77-424f-4dea-a4a2-a2570801a20d",
+        "order": 15,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "42ecef19-d726-4844-b1f9-162a117b284f",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "03043cb1-57fd-41da-bea9-d432603c5514",
+        "order": 16,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "f895593e-3b39-4b8b-be6e-395f0f599da1",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "64e647a3-4335-4c41-a808-de22671eb47c",
+        "order": 17,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "ef739eb7-812e-40b3-a40c-c7867f053920",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "517530ec-ce6a-42d5-b8c0-f20b34a66d56",
+        "order": 18,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "b8a62e23-a65f-42aa-8df4-aa951f13c67c",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "a3851a08-d5c6-4e11-af97-a5ac9b2a3edb",
+        "order": 19,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "19b91d6a-8e13-4cbc-ab9c-ceeea11ba20f",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "a52e9259-2a90-492d-9b5f-f3e2bda17c4e",
+        "order": 20,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "dbeba650-ca10-4d13-be8c-546b5fa9ad27",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
+      },
+      {
+        "id": "f37e50db-b70a-4ddb-bf38-ecf3e08cad27",
+        "order": 21,
+        "services": [
+          {
+            "time": "4fdaaf01-da7d-495b-889f-35c6b8ece6d0",
+            "recipeId": "ee05d182-e070-48ea-82f8-27c30a95823b",
+            "covers": 2,
+            "exclusions": [],
+            "preferences": [],
+            "ignoreRestrictions": false
+          }
+        ]
       }
     ],
     "pantryItems": [],

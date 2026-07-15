@@ -457,3 +457,24 @@ export function ChevronRightIcon({ size = 16 }: { size?: number }) {
     </svg>
   );
 }
+
+export function WandIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M15 4V2m0 2v2m0-2h2m-2 0h-2" />
+      <path d="M5.5 9.5L9 13l-3.5 3.5L2 13l3.5-3.5z" />
+      <path d="M17.5 14L14 17.5 17.5 21 21 17.5 17.5 14z" />
+      <path d="M9 3L6 6" />
+      <path d="M18 15l3 3" />
+    </svg>
+  );
+}

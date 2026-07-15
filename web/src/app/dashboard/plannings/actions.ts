@@ -2,6 +2,7 @@
 
 import { getContainer } from '@/domain-container';
 import { addToastToQueue } from '@/lib/toast-utils';
+import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -182,6 +183,27 @@ export async function bulkAddMissingService(formData: FormData) {
     await addToastToQueue(`Servicio añadido a ${count} día${count !== 1 ? 's' : ''}.`);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al añadir servicio';
+    await addToastToQueue(msg, 'error');
+  }
+
+  const editPath = `/dashboard/plannings/${planningId}/edit`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
+export async function autoSchedule(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+  const cookieStore = await cookies();
+  const userId = cookieStore.get('userId')?.value ?? '';
+
+  const c = getContainer();
+  try {
+    const result = c.autoSchedule.execute({ planningId, userId });
+    const total = result.assignments.length + result.unassigned.length;
+    const done = result.assignments.length;
+    await addToastToQueue(`Autoplanificado: ${done} servicio${done !== 1 ? 's' : ''} asignado${done !== 1 ? 's' : ''} de ${total}.`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al autoplanificar';
     await addToastToQueue(msg, 'error');
   }
 
