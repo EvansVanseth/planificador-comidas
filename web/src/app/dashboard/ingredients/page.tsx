@@ -42,7 +42,7 @@ export default async function IngredientsPage({
         />
       )}
 
-      <div className="mb-8 flex items-start justify-between">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#0F172B]">Ingredientes</h1>
           <p className="mt-1 text-base text-[#4F617B]">
@@ -55,18 +55,18 @@ export default async function IngredientsPage({
             <MergeButton ingredients={ingredients} userId={userId} />
           )}
 
-          <form action={createIngredient} className="flex gap-2">
+          <form action={createIngredient} className="flex flex-1 gap-2 md:flex-none">
             <input type="hidden" name="userId" value={userId} />
             <input
               name="name"
               placeholder="Nuevo ingrediente..."
-              className="h-10 w-48 rounded-lg border border-gray-200 bg-white px-3.5 text-sm transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
+              className="h-10 min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-3.5 text-sm transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
             />
             <button
               type="submit"
-              className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+              className="inline-flex h-10 shrink-0 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
             >
-              + Añadir
+              + <span className="hidden md:inline">Añadir</span>
             </button>
           </form>
         </div>

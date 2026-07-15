@@ -170,7 +170,7 @@ export function MergeButton({
         className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-[#E2E8F0] bg-white px-3.5 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
       >
         <MergeIcon />
-        Fusionar
+        <span className="hidden md:inline">Fusionar</span>
       </button>
       {open && (
         <MergeModal
