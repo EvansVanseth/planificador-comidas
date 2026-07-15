@@ -2,12 +2,13 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { GridIcon, RecipeIcon, CalendarIcon, CatalogIcon } from '@/components/icons';
+import { GridIcon, RecipeIcon, CalendarIcon, CatalogIcon, FilterIcon } from '@/components/icons';
 import { logout } from '@/app/dashboard/actions';
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Panel', icon: GridIcon },
   { href: '/dashboard/ingredients', label: 'Ingredientes', icon: CatalogIcon },
+  { href: '/dashboard/tags', label: 'Etiquetas', icon: FilterIcon },
   { href: '/dashboard/recipes', label: 'Recetas', icon: RecipeIcon },
   { href: '/dashboard/plannings', label: 'Planificar', icon: CalendarIcon },
 ];

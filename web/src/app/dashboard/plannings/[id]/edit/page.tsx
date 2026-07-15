@@ -39,31 +39,33 @@ export default async function EditPlanningPage({
     tab === 'shopping' ? c.getShoppingList.execute(params.id) : [];
 
   return (
-    <div>
+    <div className="flex min-h-0 flex-1 flex-col">
       <TabNav planningId={params.id} activeTab={tab} />
 
-      {tab === 'grid' && (
-        <PlanningGrid
-          planning={primitives}
-          recipes={recipes}
-          momentTags={momentTags}
-          allTags={allTags}
-        />
-      )}
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        {tab === 'grid' && (
+          <PlanningGrid
+            planning={primitives}
+            recipes={recipes}
+            momentTags={momentTags}
+            allTags={allTags}
+          />
+        )}
 
-      {tab === 'pantry' && (
-        <PantryView
-          planning={primitives}
-          neededIngredients={neededIngredients}
-        />
-      )}
+        {tab === 'pantry' && (
+          <PantryView
+            planning={primitives}
+            neededIngredients={neededIngredients}
+          />
+        )}
 
-      {tab === 'shopping' && (
-        <ShoppingView
-          planning={primitives}
-          shoppingList={shoppingList}
-        />
-      )}
+        {tab === 'shopping' && (
+          <ShoppingView
+            planning={primitives}
+            shoppingList={shoppingList}
+          />
+        )}
+      </div>
     </div>
   );
 }
