@@ -1,6 +1,8 @@
 import { cookies } from 'next/headers';
 import { getContainer } from '@/domain-container';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { CloseIcon } from '@/components/icons';
 import PlanningGrid from './planning-grid';
 import PantryView from './pantry-view';
 import ShoppingView from './shopping-view';
@@ -40,7 +42,29 @@ export default async function EditPlanningPage({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <TabNav planningId={params.id} activeTab={tab} />
+      <div className="shrink-0 space-y-4 border-b border-gray-200 pb-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-[#0F172B]">
+              {primitives.name}
+            </h1>
+            <p className="mt-1 text-sm text-[#4F617B]">
+              {primitives.weeks} {primitives.weeks === 1 ? 'semana' : 'semanas'}
+              {primitives.startdate &&
+                ` — desde ${new Date(primitives.startdate + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}`}
+            </p>
+          </div>
+          <Link
+            href="/dashboard/plannings"
+            className="rounded-md p-2 text-[#4F617B] transition-colors hover:bg-gray-100"
+            title="Volver a planificaciones"
+          >
+            <CloseIcon />
+          </Link>
+        </div>
+
+        <TabNav planningId={params.id} activeTab={tab} />
+      </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto">
         {tab === 'grid' && (

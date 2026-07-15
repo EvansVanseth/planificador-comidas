@@ -272,43 +272,46 @@ export default function RecipeForm({
     }`;
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-2xl" noValidate>
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0F172B]">
-            {initialData ? 'Editar receta' : 'Nueva receta'}
-          </h1>
-          <p className="mt-1 text-base text-[#4F617B]">
-            {initialData
-              ? 'Modifica los datos de la receta.'
-              : 'Añade una receta a tu catálogo.'}
-          </p>
+    <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-2xl flex-1 flex-col min-h-0" noValidate>
+      <div className="shrink-0 space-y-4 border-b border-gray-200 pb-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-[#0F172B]">
+              {initialData ? 'Editar receta' : 'Nueva receta'}
+            </h1>
+            <p className="mt-1 text-base text-[#4F617B]">
+              {initialData
+                ? 'Modifica los datos de la receta.'
+                : 'Añade una receta a tu catálogo.'}
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="inline-flex h-10 items-center rounded-[10px] border border-[#E2E8F0] bg-white px-4 text-sm font-medium text-[#0F172B] transition-colors hover:bg-gray-50"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055] disabled:opacity-50"
+            >
+              {saving ? 'Guardando…' : initialData ? 'Guardar cambios' : 'Crear receta'}
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="inline-flex h-10 items-center rounded-[10px] border border-[#E2E8F0] bg-white px-4 text-sm font-medium text-[#0F172B] transition-colors hover:bg-gray-50"
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            disabled={saving}
-            className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055] disabled:opacity-50"
-          >
-            {saving ? 'Guardando…' : initialData ? 'Guardar cambios' : 'Crear receta'}
-          </button>
-        </div>
+
+        {errors.general && (
+          <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {errors.general}
+          </div>
+        )}
       </div>
 
-      {errors.general && (
-        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {errors.general}
-        </div>
-      )}
-
-      <div className="mb-8 space-y-6">
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="space-y-6">
         <div>
           <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
             Nombre de la receta <span className="text-red-500">*</span>
@@ -471,6 +474,7 @@ export default function RecipeForm({
             rows={5}
             className="w-full resize-none rounded-[10px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 text-sm text-[#0F172B] placeholder:text-[#4F617B] focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
           />
+        </div>
         </div>
       </div>
     </form>

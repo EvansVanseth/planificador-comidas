@@ -116,26 +116,6 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
 
   return (
     <div>
-      <div className="mb-6 flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0F172B]">
-            {planning.name}
-          </h1>
-          <p className="mt-1 text-sm text-[#4F617B]">
-            {planning.weeks} {planning.weeks === 1 ? 'semana' : 'semanas'}
-            {planning.startdate &&
-              ` — desde ${new Date(planning.startdate).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}`}
-          </p>
-        </div>
-        <a
-          href="/dashboard/plannings"
-          className="rounded-md p-2 text-[#4F617B] transition-colors hover:bg-gray-100"
-          title="Volver a planificaciones"
-        >
-          <CloseIcon />
-        </a>
-      </div>
-
       <div className="mb-4 flex items-center gap-2">
         <button
           type="button"

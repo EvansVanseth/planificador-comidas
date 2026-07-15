@@ -55,153 +55,159 @@ export default async function DashboardPage() {
     .map((p) => buildPlanningData(p, tagsById, recipesById, ingredientsById));
 
   return (
-    <>
+    <div className="flex min-h-0 flex-1 flex-col">
       {/* ===== DESKTOP VIEW ===== */}
-      <div className="hidden md:block">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-[#0F172B]">Panel</h1>
-            <p className="text-sm text-[#45556C]">
-              {user!.name}
-            </p>
+      <div className="hidden min-h-0 flex-1 flex-col md:flex">
+        <div className="shrink-0 border-b border-gray-200 pb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-[#0F172B]">Panel</h1>
+              <p className="text-sm text-[#45556C]">
+                {user!.name}
+              </p>
+            </div>
+            <Link
+              href="/plannings"
+              className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+            >
+              <PlusIcon />
+              Nueva planificación
+            </Link>
           </div>
-          <Link
-            href="/plannings"
-            className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
-          >
-            <PlusIcon />
-            Nueva planificación
-          </Link>
         </div>
 
-        {activePlanningsData.length > 0 ? (
-          <>
-            {/* Cards section */}
-            <div className="mb-8 flex gap-6">
-              <div className="flex flex-1 flex-col gap-6">
-                {activePlanningsData.map((pd) => (
-                  <DesktopPlanningCard key={pd.primitives.id} pd={pd} />
-                ))}
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          {activePlanningsData.length > 0 ? (
+            <>
+              {/* Cards section */}
+              <div className="mb-8 flex gap-6">
+                <div className="flex flex-1 flex-col gap-6">
+                  {activePlanningsData.map((pd) => (
+                    <DesktopPlanningCard key={pd.primitives.id} pd={pd} />
+                  ))}
+                </div>
+
+                {/* Recipe card */}
+                <DesktopRecipeCard recipesCount={recipes.length} tagsCount={tags.length} />
               </div>
 
-              {/* Recipe card */}
+              {/* Today&apos;s meals */}
+              <DesktopMealsSection
+                title={
+                  activePlanningsData.length === 1
+                    ? `Para hoy (${activePlanningsData[0].todayName})`
+                    : 'Para hoy'
+                }
+                planningsData={activePlanningsData}
+                getMeals={(pd) => pd.todayMeals}
+                emptyMsg="No hay comidas planificadas para hoy."
+              />
+
+              {/* Tomorrow&apos;s meals */}
+              <DesktopMealsSection
+                title={
+                  activePlanningsData.length === 1
+                    ? `Para mañana (${activePlanningsData[0].tomorrowName})`
+                    : 'Para mañana'
+                }
+                planningsData={activePlanningsData}
+                getMeals={(pd) => pd.tomorrowMeals}
+                emptyMsg="No hay comidas planificadas para mañana."
+              />
+            </>
+          ) : (
+            /* Welcome card */
+            <div className="flex gap-6">
+              <div className="flex-1 rounded-xl bg-[#007A55] p-8 text-white shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+                <h2 className="mb-2 text-xl font-bold">
+                  ¡Bienvenido a PlanComidas!
+                </h2>
+                <p className="mb-6 text-sm text-white/80">
+                  Crea tu primera planificación semanal para empezar a
+                  organizar tus comidas.
+                </p>
+                <Link
+                  href="/plannings"
+                  className="inline-flex h-10 items-center gap-2 rounded-lg bg-white/20 px-5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/30"
+                >
+                  Crear planificación
+                </Link>
+              </div>
               <DesktopRecipeCard recipesCount={recipes.length} tagsCount={tags.length} />
             </div>
-
-            {/* Today&apos;s meals */}
-            <DesktopMealsSection
-              title={
-                activePlanningsData.length === 1
-                  ? `Para hoy (${activePlanningsData[0].todayName})`
-                  : 'Para hoy'
-              }
-              planningsData={activePlanningsData}
-              getMeals={(pd) => pd.todayMeals}
-              emptyMsg="No hay comidas planificadas para hoy."
-            />
-
-            {/* Tomorrow&apos;s meals */}
-            <DesktopMealsSection
-              title={
-                activePlanningsData.length === 1
-                  ? `Para mañana (${activePlanningsData[0].tomorrowName})`
-                  : 'Para mañana'
-              }
-              planningsData={activePlanningsData}
-              getMeals={(pd) => pd.tomorrowMeals}
-              emptyMsg="No hay comidas planificadas para mañana."
-            />
-          </>
-        ) : (
-          /* Welcome card */
-          <div className="flex gap-6">
-            <div className="flex-1 rounded-xl bg-[#007A55] p-8 text-white shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-              <h2 className="mb-2 text-xl font-bold">
-                ¡Bienvenido a PlanComidas!
-              </h2>
-              <p className="mb-6 text-sm text-white/80">
-                Crea tu primera planificación semanal para empezar a
-                organizar tus comidas.
-              </p>
-              <Link
-                href="/plannings"
-                className="inline-flex h-10 items-center gap-2 rounded-lg bg-white/20 px-5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/30"
-              >
-                Crear planificación
-              </Link>
-            </div>
-            <DesktopRecipeCard recipesCount={recipes.length} tagsCount={tags.length} />
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* ===== MOBILE VIEW ===== */}
-      <div className="block md:hidden">
-        {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-[#0F172B]">Panel</h1>
-            <p className="text-sm text-[#45556C]">
-              {user!.name}
-            </p>
+      <div className="flex min-h-0 flex-1 flex-col md:hidden">
+        <div className="shrink-0 border-b border-gray-200 pb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-[#0F172B]">Panel</h1>
+              <p className="text-sm text-[#45556C]">
+                {user!.name}
+              </p>
+            </div>
+            <Link
+              href="/plannings"
+              className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+            >
+              <PlusIcon />
+              Nueva planificación
+            </Link>
           </div>
-          <Link
-            href="/plannings"
-            className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
-          >
-            <PlusIcon />
-            Nueva planificación
-          </Link>
         </div>
 
-        {activePlanningsData.length > 0 ? (
-          <>
-            {activePlanningsData.map((pd) => (
-              <MobilePlanningCard key={pd.primitives.id} pd={pd} />
-            ))}
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          {activePlanningsData.length > 0 ? (
+            <>
+              {activePlanningsData.map((pd) => (
+                <MobilePlanningCard key={pd.primitives.id} pd={pd} />
+              ))}
 
-            {/* Recipe card */}
-            <MobileRecipeCard recipesCount={recipes.length} tagsCount={tags.length} />
+              {/* Recipe card */}
+              <MobileRecipeCard recipesCount={recipes.length} tagsCount={tags.length} />
 
-            {/* Today&apos;s meals */}
-            <MobileMealsSection
-              title={activePlanningsData.length === 1 ? `Para hoy (${activePlanningsData[0].todayName})` : 'Para hoy'}
-              planningsData={activePlanningsData}
-              getMeals={(pd) => pd.todayMeals}
-              emptyMsg="No hay comidas planificadas para hoy."
-            />
+              {/* Today&apos;s meals */}
+              <MobileMealsSection
+                title={activePlanningsData.length === 1 ? `Para hoy (${activePlanningsData[0].todayName})` : 'Para hoy'}
+                planningsData={activePlanningsData}
+                getMeals={(pd) => pd.todayMeals}
+                emptyMsg="No hay comidas planificadas para hoy."
+              />
 
-            {/* Tomorrow&apos;s meals */}
-            <MobileMealsSection
-              title={activePlanningsData.length === 1 ? `Para mañana (${activePlanningsData[0].tomorrowName})` : 'Para mañana'}
-              planningsData={activePlanningsData}
-              getMeals={(pd) => pd.tomorrowMeals}
-              emptyMsg="No hay comidas planificadas para mañana."
-            />
-          </>
-        ) : (
-          <>
-            <div className="mb-4 w-full rounded-xl bg-[#007A55] px-6 py-5 text-white shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-              <h2 className="mb-2 text-xl font-bold">
-                ¡Bienvenido a PlanComidas!
-              </h2>
-              <p className="mb-6 text-sm text-white/80">
-                Crea tu primera planificación semanal para empezar a
-                organizar tus comidas.
-              </p>
-              <Link
-                href="/plannings"
-                className="inline-flex h-10 items-center gap-2 rounded-lg bg-white/20 px-5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/30"
-              >
-                Crear planificación
-              </Link>
-            </div>
-            <MobileRecipeCard recipesCount={recipes.length} tagsCount={tags.length} />
-          </>
-        )}
+              {/* Tomorrow&apos;s meals */}
+              <MobileMealsSection
+                title={activePlanningsData.length === 1 ? `Para mañana (${activePlanningsData[0].tomorrowName})` : 'Para mañana'}
+                planningsData={activePlanningsData}
+                getMeals={(pd) => pd.tomorrowMeals}
+                emptyMsg="No hay comidas planificadas para mañana."
+              />
+            </>
+          ) : (
+            <>
+              <div className="mb-4 w-full rounded-xl bg-[#007A55] px-6 py-5 text-white shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+                <h2 className="mb-2 text-xl font-bold">
+                  ¡Bienvenido a PlanComidas!
+                </h2>
+                <p className="mb-6 text-sm text-white/80">
+                  Crea tu primera planificación semanal para empezar a
+                  organizar tus comidas.
+                </p>
+                <Link
+                  href="/plannings"
+                  className="inline-flex h-10 items-center gap-2 rounded-lg bg-white/20 px-5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/30"
+                >
+                  Crear planificación
+                </Link>
+              </div>
+              <MobileRecipeCard recipesCount={recipes.length} tagsCount={tags.length} />
+            </>
+          )}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
