@@ -3,7 +3,7 @@
     "id": "b001ddac-5e78-4b2b-b62e-3b69266d0224",
     "userid": "58449777-6a4c-4851-981b-d5d00a209262",
     "name": "Balanceada",
-    "startdate": "2026-07-06T16:20:15.956Z",
+    "startdate": null,
     "weeks": 2,
     "hotColdBalance": 50,
     "days": [
