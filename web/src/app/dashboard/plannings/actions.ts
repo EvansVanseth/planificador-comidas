@@ -150,6 +150,23 @@ export async function removeDay(formData: FormData) {
   redirect(editPath);
 }
 
+export async function clearAllRecipes(formData: FormData) {
+  const planningId = formData.get('planningId') as string;
+
+  const c = getContainer();
+  try {
+    const count = c.clearAllRecipes.execute(planningId);
+    await addToastToQueue(`Recetas eliminadas de ${count} servicio${count !== 1 ? 's' : ''}.`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al limpiar las recetas';
+    await addToastToQueue(msg, 'error');
+  }
+
+  const editPath = `/dashboard/plannings/${planningId}/edit`;
+  revalidatePath(editPath);
+  redirect(editPath);
+}
+
 export async function assignMeal(formData: FormData) {
   const planningId = formData.get('planningId') as string;
   const orderDay = parseInt(formData.get('dayOrder') as string, 10);

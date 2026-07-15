@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import type { PlanningPrimitives } from '@/domain/planning/aggregates/planning.aggregate';
 import { PeopleIcon, PlusIcon, MinusIcon, CloseIcon } from '@/components/icons';
-import { addDay, removeDay, addAllDays, removeMeal } from '../../actions';
+import { addDay, removeDay, addAllDays, removeMeal, clearAllRecipes } from '../../actions';
 import MealCellModal from './meal-cell-modal';
 import EditPlanningModal from './edit-planning-modal';
 
@@ -64,7 +64,22 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
   const [showEditModal, setShowEditModal] = useState(false);
   const [removeConfirmDay, setRemoveConfirmDay] = useState<number | null>(null);
   const [removeConfirmMeal, setRemoveConfirmMeal] = useState<{ dayOrder: number; momentTagId: string } | null>(null);
+  const [showClearRecipesConfirm, setShowClearRecipesConfirm] = useState(false);
+  const [, startTransition] = useTransition();
   const totalDays = planning.weeks * 7;
+
+  function handleRemoveDay(order: number, servicesLength: number) {
+    if (servicesLength > 0) {
+      setRemoveConfirmDay(order);
+      return;
+    }
+    startTransition(() => {
+      const fd = new FormData();
+      fd.append('planningId', planning.id);
+      fd.append('dayOrder', String(order));
+      removeDay(fd);
+    });
+  }
 
   const recipeName = (id: string | null) =>
     id ? recipes.find((r) => r.id === id)?.name ?? null : null;
@@ -132,6 +147,13 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
             Añadir todos los días
           </button>
         </form>
+        <button
+          type="button"
+          onClick={() => setShowClearRecipesConfirm(true)}
+          className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-red-200 bg-white px-3.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+        >
+          Limpiar recetas
+        </button>
       </div>
 
       {showEditModal && (
@@ -197,7 +219,7 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                             {dayData && (
                               <button
                                 type="button"
-                                onClick={() => setRemoveConfirmDay(order)}
+                                onClick={() => handleRemoveDay(order, dayData.services.length)}
                                 className="rounded-md p-1 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
                                 title="Eliminar día"
                               >
@@ -412,6 +434,41 @@ export default function PlanningGrid({ planning, recipes, momentTags, allTags }:
                   className="rounded-lg bg-[#DC2626] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]"
                 >
                   Eliminar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showClearRecipesConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setShowClearRecipesConfirm(false)}
+          />
+          <div className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
+            <h2 className="mb-4 text-lg font-semibold text-[#0F172B]">
+              Limpiar todas las recetas
+            </h2>
+            <p className="mb-4 text-sm text-[#4F617B]">
+              ¿Estás seguro de que quieres eliminar las recetas de todos los servicios?
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowClearRecipesConfirm(false)}
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <form action={clearAllRecipes} onSubmit={() => setShowClearRecipesConfirm(false)}>
+                <input type="hidden" name="planningId" value={planning.id} />
+                <button
+                  type="submit"
+                  className="rounded-lg bg-[#DC2626] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]"
+                >
+                  Limpiar
                 </button>
               </form>
             </div>

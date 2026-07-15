@@ -260,6 +260,14 @@ export class Planning {
     return count;
   }
 
+  public clearAllRecipesFromAllServices(): number {
+    let count = 0;
+    for (const day of this.days.values()) {
+      count += day.clearAllRecipes();
+    }
+    return count;
+  }
+
   public removeServicesByMomentTag(momentTagId: string): number {
     let count = 0;
     for (const day of this.days.values()) {

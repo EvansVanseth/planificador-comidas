@@ -29,6 +29,7 @@ import { BulkRemoveDaysUseCase } from '@/application/planning/bulk-remove-days.u
 import { BulkAssignMealUseCase } from '@/application/planning/bulk-assign-meal.use-case';
 import { BulkRemoveMealUseCase } from '@/application/planning/bulk-remove-meal.use-case';
 import { DuplicatePlanningUseCase } from '@/application/planning/duplicate-planning.use-case';
+import { ClearAllRecipesUseCase } from '@/application/planning/clear-all-recipes.use-case';
 import { AutoScheduleUseCase } from '@/application/planning/auto-schedule.use-case';
 import { GreedyPlanner } from '@/infrastructure/planner/greedy-planner';
 import { GetNeededIngredientsUseCase } from '@/application/planning/get-needed-ingredients.use-case';
@@ -86,6 +87,7 @@ export interface IContainer {
   addDayToPlanning: AddDayToPlanningUseCase;
   removeDayFromPlanning: RemoveDayFromPlanningUseCase;
   removeMealFromDay: RemoveMealFromDayUseCase;
+  clearAllRecipes: ClearAllRecipesUseCase;
   setMealExclusions: SetMealExclusionsUseCase;
   setMealPreferences: SetMealPreferencesUseCase;
   bulkUpdateDays: BulkUpdateDaysUseCase;
@@ -177,6 +179,7 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     addDayToPlanning: new AddDayToPlanningUseCase(planningRepository),
     removeDayFromPlanning: new RemoveDayFromPlanningUseCase(planningRepository),
     removeMealFromDay: new RemoveMealFromDayUseCase(planningRepository),
+    clearAllRecipes: new ClearAllRecipesUseCase(planningRepository),
     getNeededIngredients: new GetNeededIngredientsUseCase(planningRepository, recipeRepository, ingredientRepository),
     getShoppingList: new GetShoppingListUseCase(planningRepository, recipeRepository, ingredientRepository),
     addPantryItem: new AddPantryItemUseCase(planningRepository),

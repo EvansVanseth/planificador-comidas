@@ -72,6 +72,17 @@ export class PlannedDay {
     return count;
   }
 
+  public clearAllRecipes(): number {
+    let count = 0;
+    for (const service of this.services.values()) {
+      if (service.getRecipeId() !== null) {
+        service.unassignRecipe();
+        count++;
+      }
+    }
+    return count;
+  }
+
   public removeServiceIfExists(momentTagId: string): boolean {
     if (this.services.has(momentTagId)) {
       this.services.delete(momentTagId);
