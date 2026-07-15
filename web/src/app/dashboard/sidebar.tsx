@@ -17,7 +17,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-gray-200 bg-white">
+    <aside className="hidden md:flex h-screen w-64 shrink-0 flex-col border-r border-gray-200 bg-white">
       <div className="flex h-16 items-center gap-2 px-6">
         <LogoIcon />
         <span className="text-xl font-bold text-[#0a0a0a]">PlanComidas</span>

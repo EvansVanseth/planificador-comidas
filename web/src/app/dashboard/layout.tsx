@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getContainer } from '@/domain-container';
 import Sidebar from './sidebar';
+import MobileNav from '@/components/mobile-nav';
 import ToastQueue from '@/components/toast-queue';
 
 export default async function DashboardLayout({
@@ -27,8 +28,8 @@ export default async function DashboardLayout({
   return (
     <div className="flex h-screen">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto bg-[#CCEDD5]">
-        <div className="mx-auto max-w-7xl px-6 py-6">
+      <main className="flex-1 overflow-y-auto bg-[#CCEDD5] pb-16 md:pb-0">
+        <div className="mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-6">
           {toasts.length > 0 && (
             <ToastQueue
               messages={toasts.map((t) => ({
@@ -40,6 +41,7 @@ export default async function DashboardLayout({
           {children}
         </div>
       </main>
+      <MobileNav />
     </div>
   );
 }

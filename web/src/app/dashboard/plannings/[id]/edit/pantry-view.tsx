@@ -111,14 +111,14 @@ export default function PantryView({ planning, neededIngredients }: Props) {
                           <button
                             type="submit"
                             disabled={currentCovers === 0}
-                            className="flex h-7 w-7 items-center justify-center rounded border border-[#E2E8F0] text-[#4F617B] transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
+                            className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#E2E8F0] text-[#4F617B] transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
                           >
-                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                               <path d="M3 8h10" />
                             </svg>
                           </button>
                         </form>
-                        <span className="mx-2 min-w-[1.5rem] text-center text-sm font-semibold text-[#0F172B]">
+                        <span className="mx-3 min-w-[1.5rem] text-center text-base font-semibold text-[#0F172B]">
                           {currentCovers}
                         </span>
                         <form action={updatePantryItemCovers}>
@@ -128,7 +128,7 @@ export default function PantryView({ planning, neededIngredients }: Props) {
                           <input type="hidden" name="covers" value={currentCovers + 1} />
                           <button
                             type="submit"
-                            className="flex h-7 w-7 items-center justify-center rounded border border-[#E2E8F0] text-[#4F617B] transition-colors hover:bg-gray-100"
+                            className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#E2E8F0] text-[#4F617B] transition-colors hover:bg-gray-100"
                           >
                             <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                               <path d="M8 3v10" />
@@ -147,7 +147,7 @@ export default function PantryView({ planning, neededIngredients }: Props) {
                         <input type="hidden" name="ingredientName" value={ing.ingredientName} />
                         <button
                           type="submit"
-                          className="whitespace-nowrap rounded-md border border-[#D1FAE5] bg-[#F0FDF4] px-3 py-1.5 text-xs font-medium text-[#007A55] transition-colors hover:bg-[#D1FAE5]"
+                          className="whitespace-nowrap rounded-lg border border-[#D1FAE5] bg-[#F0FDF4] px-4 py-2.5 text-sm font-medium text-[#007A55] transition-colors hover:bg-[#D1FAE5]"
                         >
                           Tengo de todo
                         </button>
@@ -161,7 +161,7 @@ export default function PantryView({ planning, neededIngredients }: Props) {
                         <input type="hidden" name="covers" value={1} />
                         <button
                           type="submit"
-                          className="whitespace-nowrap rounded-md border border-[#E2E8F0] bg-white px-3 py-1.5 text-xs font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
+                          className="whitespace-nowrap rounded-lg border border-[#E2E8F0] bg-white px-4 py-2.5 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
                         >
                           Quitar tengo de todo
                         </button>

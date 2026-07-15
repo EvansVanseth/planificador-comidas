@@ -222,8 +222,8 @@ Migración de la CLI a interfaz web basada en los mockups aprobados por la usuar
 
 **Paso 9: Despensa y lista de la compra**
 
-- [ ] 9.1: ^^ Vista de ingredientes necesarios y despensa (HU-06.3)
-- [ ] 9.2: ^^ Lista de la compra con checkboxes (HU-06.4)
+- [x] 9.1: ^^ Vista de ingredientes necesarios y despensa (HU-06.3)
+- [x] 9.2: ^^ Lista de la compra con checkboxes (HU-06.4)
 
 ### Fase 19: ^^ Versión WEB Mobile (responsive)
 

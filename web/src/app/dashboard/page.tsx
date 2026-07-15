@@ -135,31 +135,47 @@ export default async function DashboardPage() {
                 {activePlanning.weeks === 1 ? 'semana' : 'semanas'}
               </p>
 
-              <div className="flex gap-8">
+              <div className="flex gap-6">
                 <Stat value={totalMeals} label="Comidas planificadas" />
                 <Stat value={totalCovers} label="Raciones" />
                 <Stat value={pantryCount} label="En despensa" />
                 <Stat value={shoppingPending} label="Por comprar" />
               </div>
 
-              <div className="mt-6 flex gap-3">
+              <div className="mt-6 flex gap-2">
                 <Link
                   href={`/dashboard/plannings/${activePlanning.id}/edit?tab=grid`}
-                  className="rounded-lg bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-white/25"
+                  className="rounded-lg bg-white/15 p-2.5 backdrop-blur-sm transition-colors hover:bg-white/25"
+                  title="Ver cuadrícula"
                 >
-                  Cuadrícula
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="6" height="6" rx="1" />
+                    <rect x="12" y="2" width="6" height="6" rx="1" />
+                    <rect x="2" y="12" width="6" height="6" rx="1" />
+                    <rect x="12" y="12" width="6" height="6" rx="1" />
+                  </svg>
                 </Link>
                 <Link
                   href={`/dashboard/plannings/${activePlanning.id}/edit?tab=pantry`}
-                  className="rounded-lg bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-white/25"
+                  className="rounded-lg bg-white/15 p-2.5 backdrop-blur-sm transition-colors hover:bg-white/25"
+                  title="Ver despensa"
                 >
-                  Despensa
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 10h18l-2 10H5L3 10z" />
+                    <path d="M3 10l2-7h14l2 7" />
+                    <path d="M8 14h8" />
+                  </svg>
                 </Link>
                 <Link
                   href={`/dashboard/plannings/${activePlanning.id}/edit?tab=shopping`}
-                  className="rounded-lg bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-white/25"
+                  className="rounded-lg bg-white/15 p-2.5 backdrop-blur-sm transition-colors hover:bg-white/25"
+                  title="Ver lista de la compra"
                 >
-                  Lista de la compra
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 3h2l.5 2.5M7 13h10l3-7H5.5" />
+                    <circle cx="7" cy="20" r="1.5" />
+                    <circle cx="17" cy="20" r="1.5" />
+                  </svg>
                 </Link>
               </div>
             </>
@@ -210,7 +226,7 @@ export default async function DashboardPage() {
         </h2>
 
         {todayMeals.length > 0 ? (
-          <div className="grid grid-cols-4 gap-4">
+          <div className="flex flex-col gap-3">
             {todayMeals.map((meal, i) => (
               <MealCard
                 key={i}
@@ -237,7 +253,7 @@ export default async function DashboardPage() {
         </h2>
 
         {tomorrowMeals.length > 0 ? (
-          <div className="grid grid-cols-4 gap-4">
+          <div className="flex flex-col gap-3">
             {tomorrowMeals.map((meal, i) => (
               <MealCard
                 key={i}
@@ -263,7 +279,7 @@ export default async function DashboardPage() {
 function Stat({ value, label }: { value: number; label: string }) {
   return (
     <div>
-      <p className="text-2xl font-bold">{value}</p>
+      <p className="text-lg font-bold">{value}</p>
       <p className="text-xs text-white/80">{label}</p>
     </div>
   );
@@ -277,7 +293,7 @@ function MealCard({
   recipeName: string | null;
 }) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+    <div className="w-full rounded-xl border border-gray-200 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
       <p className="mb-1 text-xs font-medium uppercase tracking-wide text-[#4F617B]">
         {timeName}
       </p>

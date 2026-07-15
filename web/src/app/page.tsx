@@ -18,12 +18,7 @@ export default function LandingPage() {
           >
             Iniciar sesión
           </Link>
-          <Link
-            href="/login"
-            className="rounded-[10px] bg-[#007A55] px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-[#008055]"
-          >
-            Pruébalo gratis
-          </Link>
+
         </nav>
       </header>
 
@@ -45,7 +40,7 @@ export default function LandingPage() {
               href="/login"
               className="mt-10 inline-flex h-12 items-center justify-center rounded-[10px] bg-[#007A55] px-7 text-lg font-medium text-white transition-colors hover:bg-[#008055]"
             >
-              Empieza a planificar
+              Pruébalo gratis
             </Link>
 
             <div className="mt-14 space-y-5">

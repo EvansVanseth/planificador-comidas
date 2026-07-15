@@ -65,14 +65,14 @@ export default function ShoppingView({ planning, shoppingList }: Props) {
                       <input type="hidden" name="completed" value={String(!bought)} />
                       <button
                         type="submit"
-                        className={`flex h-5 w-5 items-center justify-center rounded border-2 transition-colors ${
+                        className={`flex h-11 w-11 items-center justify-center rounded-lg border-2 transition-colors ${
                           bought
                             ? 'border-[#007A55] bg-[#007A55] text-white'
                             : 'border-[#CBD5E1] bg-white hover:border-[#007A55]'
                         }`}
                       >
                         {bought && (
-                          <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 8l3 3 5-5" />
                           </svg>
                         )}

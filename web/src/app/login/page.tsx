@@ -2,6 +2,7 @@
 
 import { useFormState, useFormStatus } from 'react-dom';
 import { login } from './actions';
+import Link from 'next/link';
 import { LogoIcon } from '@/components/icons';
 
 const initialState = { error: '' };
@@ -27,7 +28,9 @@ export default function LoginPage() {
       <div className="w-full max-w-[448px]">
         <div className="mb-8 flex flex-col items-center">
           <div className="mb-6">
-            <LogoIcon size={48} />
+            <Link href="/">
+              <LogoIcon size={48} />
+            </Link>
           </div>
           <h1 className="mb-2 text-[30px] font-bold text-[#0F172B]">
             Bienvenido de nuevo
