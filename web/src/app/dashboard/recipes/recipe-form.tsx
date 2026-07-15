@@ -274,7 +274,7 @@ export default function RecipeForm({
   return (
     <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-2xl flex-1 flex-col min-h-0" noValidate>
       <div className="shrink-0 space-y-4 border-b border-gray-200 pb-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-[#0F172B]">
               {initialData ? 'Editar receta' : 'Nueva receta'}
@@ -331,8 +331,8 @@ export default function RecipeForm({
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
+        <div className="grid grid-cols-3 gap-4 md:grid-cols-2">
+          <div className="md:col-span-1">
             <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
               Raciones <span className="text-red-500">*</span>
             </label>
@@ -351,7 +351,7 @@ export default function RecipeForm({
               <p className="mt-1 text-xs text-red-500">{errors.baseServings}</p>
             )}
           </div>
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <label className="mb-1.5 block text-sm font-medium text-[#0F172B]">
               Tiempo de preparación (min) <span className="text-red-500">*</span>
             </label>

@@ -31,7 +31,7 @@ export function CreateTagForm({
         type="submit"
         className="inline-flex h-8 items-center rounded-md bg-[#007A55] px-3 text-xs font-medium text-white transition-colors hover:bg-[#008055]"
       >
-        + Añadir
+        + <span className="hidden md:inline">Añadir</span>
       </button>
     </form>
   );
