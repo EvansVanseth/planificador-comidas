@@ -66,14 +66,16 @@ export default async function EditPlanningPage({
         <TabNav planningId={params.id} activeTab={tab} />
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="min-h-0 flex-1">
         {tab === 'grid' && (
-          <PlanningGrid
-            planning={primitives}
-            recipes={recipes}
-            momentTags={momentTags}
-            allTags={allTags}
-          />
+          <div className="h-full overflow-y-auto">
+            <PlanningGrid
+              planning={primitives}
+              recipes={recipes}
+              momentTags={momentTags}
+              allTags={allTags}
+            />
+          </div>
         )}
 
         {tab === 'pantry' && (
@@ -84,10 +86,12 @@ export default async function EditPlanningPage({
         )}
 
         {tab === 'shopping' && (
-          <ShoppingView
-            planning={primitives}
-            shoppingList={shoppingList}
-          />
+          <div className="h-full overflow-y-auto">
+            <ShoppingView
+              planning={primitives}
+              shoppingList={shoppingList}
+            />
+          </div>
         )}
       </div>
     </div>

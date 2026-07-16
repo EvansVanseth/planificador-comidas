@@ -1163,7 +1163,14 @@
         ]
       }
     ],
-    "pantryItems": [],
+    "pantryItems": [
+      {
+        "id": "960f86fe-9f58-44a3-ab7a-cfd9595e3334",
+        "ingredientId": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
+        "available": true,
+        "covers": 0
+      }
+    ],
     "shoppingItems": [
       {
         "id": "fc150e9d-e732-43e4-8fb5-b505b1e25b92",

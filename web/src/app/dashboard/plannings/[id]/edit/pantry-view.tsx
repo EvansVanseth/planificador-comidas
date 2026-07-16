@@ -25,34 +25,33 @@ export default function PantryView({ planning, neededIngredients }: Props) {
   }
 
   return (
-    <div className="rounded-xl border border-[#CBD5E1] bg-white shadow-sm">
-      <div className="border-b border-[#E2E8F0] px-6 py-4">
+    <div className="flex min-h-0 flex-col rounded-xl border border-[#CBD5E1] bg-white shadow-sm">
+      <div className="shrink-0 border-b border-[#E2E8F0] px-6 py-4">
         <h2 className="text-lg font-semibold text-[#0F172B]">Despensa</h2>
         <p className="mt-1 text-sm text-[#4F617B]">
           Indica cuántos comensales cubres de cada ingrediente o márcalo como «tengo de todo».
         </p>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="min-h-0 flex-1 overflow-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC]">
+            <tr className="sticky top-0 z-10 border-b border-[#E2E8F0] bg-[#F8FAFC]">
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#475569]">
                 Ingrediente
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                Nota
-              </th>
-              <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                Necesitas
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                Recetas
               </th>
               <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[#475569]">
                 Cubres
               </th>
-              <th className="px-4 py-3" />
+              <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[#475569]">
+                Necesitas
+              </th>
+              <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[#475569]">
+                Tengo de todo
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#475569]">
+                Recetas que lo necesitan
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -71,30 +70,7 @@ export default function PantryView({ planning, neededIngredients }: Props) {
                       <span className="text-sm font-medium text-[#0F172B]">
                         {ing.ingredientName}
                       </span>
-                      {isAvailable && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-[#D1FAE5] px-2 py-0.5 text-[11px] font-medium text-[#007A55]">
-                          <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M4 8l3 3 5-5" />
-                          </svg>
-                          Tengo de todo
-                        </span>
-                      )}
                     </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="text-sm text-[#4F617B]">
-                      {ing.quantityNote ?? '—'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <span className="text-sm text-[#4F617B]">
-                      {ing.totalCovers}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="text-sm text-[#4F617B]">
-                      {ing.recipeNames.join(', ')}
-                    </span>
                   </td>
                   <td className="px-4 py-3">
                     {isAvailable ? (
@@ -139,21 +115,13 @@ export default function PantryView({ planning, neededIngredients }: Props) {
                       </div>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    {!isAvailable && (
-                      <form action={markPantryItemAvailable}>
-                        <input type="hidden" name="planningId" value={planning.id} />
-                        <input type="hidden" name="ingredientId" value={ing.ingredientId} />
-                        <input type="hidden" name="ingredientName" value={ing.ingredientName} />
-                        <button
-                          type="submit"
-                          className="whitespace-nowrap rounded-lg border border-[#D1FAE5] bg-[#F0FDF4] px-4 py-2.5 text-sm font-medium text-[#007A55] transition-colors hover:bg-[#D1FAE5]"
-                        >
-                          Tengo de todo
-                        </button>
-                      </form>
-                    )}
-                    {isAvailable && (
+                  <td className="px-4 py-3 text-center">
+                    <span className="text-sm text-[#4F617B]">
+                      {ing.totalCovers}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    {isAvailable ? (
                       <form action={updatePantryItemCovers}>
                         <input type="hidden" name="planningId" value={planning.id} />
                         <input type="hidden" name="ingredientId" value={ing.ingredientId} />
@@ -161,12 +129,29 @@ export default function PantryView({ planning, neededIngredients }: Props) {
                         <input type="hidden" name="covers" value={1} />
                         <button
                           type="submit"
+                          className="whitespace-nowrap rounded-lg border border-[#D1FAE5] bg-[#F0FDF4] px-4 py-2.5 text-sm font-medium text-[#007A55] transition-colors hover:bg-[#D1FAE5]"
+                        >
+                          Sí
+                        </button>
+                      </form>
+                    ) : (
+                      <form action={markPantryItemAvailable}>
+                        <input type="hidden" name="planningId" value={planning.id} />
+                        <input type="hidden" name="ingredientId" value={ing.ingredientId} />
+                        <input type="hidden" name="ingredientName" value={ing.ingredientName} />
+                        <button
+                          type="submit"
                           className="whitespace-nowrap rounded-lg border border-[#E2E8F0] bg-white px-4 py-2.5 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
                         >
-                          Quitar tengo de todo
+                          No
                         </button>
                       </form>
                     )}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="text-sm text-[#4F617B]">
+                      {ing.recipeNames.join(', ')}
+                    </span>
                   </td>
                 </tr>
               );

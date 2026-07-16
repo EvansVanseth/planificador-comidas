@@ -688,12 +688,12 @@
         "quantityNote": null
       },
       {
-        "ingredientId": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
+        "ingredientId": "3d214450-7323-4af7-b9ea-149d4a304f43",
         "quantityNote": null
       },
       {
-        "ingredientId": "3d214450-7323-4af7-b9ea-149d4a304f43",
-        "quantityNote": null
+        "ingredientId": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
+        "quantityNote": "una por tomate"
       }
     ],
     "tags": [
@@ -893,7 +893,7 @@
       },
       {
         "ingredientId": "8c1d7e5c-fcb5-4288-8aa7-79cd07047cb8",
-        "quantityNote": null
+        "quantityNote": "Al gusto"
       }
     ],
     "tags": [

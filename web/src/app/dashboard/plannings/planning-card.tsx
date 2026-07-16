@@ -167,7 +167,7 @@ export default function PlanningCard({
             title="Editar planificación"
           >
             <PencilIcon />
-            Editar datos
+            Editar
           </Link>
           <Link
             href={`/dashboard/plannings/${planning.id}/edit?tab=pantry`}
