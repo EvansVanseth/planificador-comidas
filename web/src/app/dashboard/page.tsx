@@ -233,7 +233,7 @@ function DesktopPlanningCard({ pd }: { pd: ActivePlanningData }) {
       </p>
 
       <div className="flex gap-8">
-        <StatDesktop value={pd.totalMeals} label="Comidas planificadas" />
+        <StatDesktop value={pd.totalMeals} label="Servicios" />
         <StatDesktop value={pd.totalCovers} label="Raciones" />
         <StatDesktop value={pd.pantryCount} label="En despensa" />
         <StatDesktop value={pd.shoppingPending} label="Por comprar" />
@@ -355,7 +355,7 @@ function MobilePlanningCard({ pd }: { pd: ActivePlanningData }) {
       </p>
 
       <div className="mb-4 flex">
-        <StatMobile value={pd.totalMeals} label="Comidas planificadas" />
+        <StatMobile value={pd.totalMeals} label="Servicios" />
         <StatMobile value={pd.totalCovers} label="Raciones" />
         <StatMobile value={pd.pantryCount} label="En despensa" />
         <StatMobile value={pd.shoppingPending} label="Por comprar" />
@@ -541,11 +541,12 @@ function buildPlanningData(
   }
 
   const pantryMap = new Map(p.pantryItems.map((item) => [item.ingredientId, item]));
+  const shoppingMap = new Map(p.shoppingItems.map((s) => [s.ingredientId, s]));
   const pantryCount = [...recipeIngredientIds].filter(
     (id) => pantryMap.get(id)?.available,
   ).length;
   const shoppingPending = [...recipeIngredientIds].filter(
-    (id) => !pantryMap.get(id)?.available,
+    (id) => !pantryMap.get(id)?.available && !shoppingMap.get(id)?.completed,
   ).length;
 
   return {

@@ -1274,6 +1274,24 @@
         "ingredientId": "9919e806-941c-40ce-8881-e3fa5a79ee10",
         "available": true,
         "covers": 0
+      },
+      {
+        "id": "f05ee31d-892a-4b39-829a-8d03959b357d",
+        "ingredientId": "b2f9a068-2fdc-4adb-881c-13979cda7166",
+        "available": false,
+        "covers": 1
+      },
+      {
+        "id": "44c8a5e5-4864-4db7-89f4-e97f03b7ba2d",
+        "ingredientId": "b86342af-d5c9-4608-81ba-16afd8d73d85",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "a6ee90fb-02a9-470a-ade3-bc7303334035",
+        "ingredientId": "b93372fa-c286-4078-aea8-f83c21597368",
+        "available": true,
+        "covers": 0
       }
     ],
     "shoppingItems": [
