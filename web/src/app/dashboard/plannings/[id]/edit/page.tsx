@@ -86,12 +86,10 @@ export default async function EditPlanningPage({
         )}
 
         {tab === 'shopping' && (
-          <div className="min-h-0 flex-1 overflow-y-auto">
-            <ShoppingView
-              planning={primitives}
-              shoppingList={shoppingList}
-            />
-          </div>
+          <ShoppingView
+            planning={primitives}
+            shoppingList={shoppingList}
+          />
         )}
       </div>
     </div>

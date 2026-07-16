@@ -22,24 +22,21 @@ export default function ShoppingView({ planning, shoppingList }: Props) {
   }
 
   return (
-    <div className="rounded-xl border border-[#CBD5E1] bg-white shadow-sm">
-      <div className="border-b border-[#E2E8F0] px-6 py-4">
+    <div className="flex min-h-0 flex-1 flex-col rounded-xl border border-[#CBD5E1] bg-white shadow-sm">
+      <div className="shrink-0 border-b border-[#E2E8F0] px-6 py-4">
         <h2 className="text-lg font-semibold text-[#0F172B]">Lista de la compra</h2>
         <p className="mt-1 text-sm text-[#4F617B]">
           Marca los ingredientes que has comprado.
         </p>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="min-h-0 flex-1 overflow-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC]">
-              <th className="w-10 px-4 py-3" />
+            <tr className="sticky top-0 z-10 border-b border-[#E2E8F0] bg-[#F8FAFC]">
+              <th className="w-8 px-2 py-3" />
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#475569]">
                 Ingrediente
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                Nota
               </th>
               <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[#475569]">
                 Necesitas
@@ -57,7 +54,7 @@ export default function ShoppingView({ planning, shoppingList }: Props) {
                   key={item.ingredientId}
                   className={`border-b border-[#E2E8F0] transition-colors last:border-0 hover:bg-[#F8FAFC] ${bought ? 'bg-[#F0FDF4]' : ''}`}
                 >
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-3">
                     <form action={toggleShoppingItem}>
                       <input type="hidden" name="planningId" value={planning.id} />
                       <input type="hidden" name="ingredientId" value={item.ingredientId} />
@@ -65,14 +62,14 @@ export default function ShoppingView({ planning, shoppingList }: Props) {
                       <input type="hidden" name="completed" value={String(!bought)} />
                       <button
                         type="submit"
-                        className={`flex h-11 w-11 items-center justify-center rounded-lg border-2 transition-colors ${
+                        className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${
                           bought
                             ? 'border-[#007A55] bg-[#007A55] text-white'
                             : 'border-[#CBD5E1] bg-white hover:border-[#007A55]'
                         }`}
                       >
                         {bought && (
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 8l3 3 5-5" />
                           </svg>
                         )}
@@ -88,14 +85,9 @@ export default function ShoppingView({ planning, shoppingList }: Props) {
                       {item.ingredientName}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
-                    <span className={`text-sm ${bought ? 'text-[#94A3B8]' : 'text-[#4F617B]'}`}>
-                      {item.quantityNote ?? '—'}
-                    </span>
-                  </td>
                   <td className="px-4 py-3 text-center">
                     <span className={`text-sm ${bought ? 'text-[#94A3B8]' : 'text-[#4F617B]'}`}>
-                      {item.neededAfterPantry} comensales
+                      {item.neededAfterPantry}
                     </span>
                   </td>
                   <td className="px-4 py-3">
