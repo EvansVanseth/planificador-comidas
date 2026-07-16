@@ -530,6 +530,24 @@ function buildPlanningData(
   const todayDay = todayDayOrder ? p.days.find((d) => d.order === todayDayOrder) : null;
   const tomorrowDay = tomorrowDayOrder ? p.days.find((d) => d.order === tomorrowDayOrder) : null;
 
+  const recipeIngredientIds = new Set<string>();
+  for (const day of p.days) {
+    for (const sv of day.services) {
+      if (!sv.recipeId) continue;
+      const recipe = recipesById.get(sv.recipeId);
+      if (!recipe) continue;
+      recipe.ingredients.forEach((ing) => recipeIngredientIds.add(ing.ingredientId));
+    }
+  }
+
+  const pantryMap = new Map(p.pantryItems.map((item) => [item.ingredientId, item]));
+  const pantryCount = [...recipeIngredientIds].filter(
+    (id) => pantryMap.get(id)?.available,
+  ).length;
+  const shoppingPending = [...recipeIngredientIds].filter(
+    (id) => !pantryMap.get(id)?.available,
+  ).length;
+
   return {
     primitives: p,
     totalMeals: p.days.reduce(
@@ -538,8 +556,8 @@ function buildPlanningData(
     totalCovers: p.days.reduce(
       (sum, d) => sum + d.services.reduce((s, sv) => s + sv.covers, 0), 0,
     ),
-    pantryCount: p.pantryItems.filter((item) => item.available).length,
-    shoppingPending: p.shoppingItems.filter((s) => !s.completed).length,
+    pantryCount,
+    shoppingPending,
     todayName: todayDayOrder ? getDayName(todayDayOrder) : '',
     todayMeals: todayDay
       ? todayDay.services.map((s) => buildMealInfo(s, tagsById, recipesById, ingredientsById))
