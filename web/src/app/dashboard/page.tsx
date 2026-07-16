@@ -354,7 +354,7 @@ function MobilePlanningCard({ pd }: { pd: ActivePlanningData }) {
         {pd.primitives.weeks === 1 ? 'semana' : 'semanas'}
       </p>
 
-      <div className="mb-4 flex gap-6">
+      <div className="mb-4 flex">
         <StatMobile value={pd.totalMeals} label="Comidas planificadas" />
         <StatMobile value={pd.totalCovers} label="Raciones" />
         <StatMobile value={pd.pantryCount} label="En despensa" />
@@ -490,7 +490,7 @@ function StatDesktop({ value, label }: { value: number; label: string }) {
 
 function StatMobile({ value, label }: { value: number; label: string }) {
   return (
-    <div>
+    <div className="flex flex-1 flex-col items-center justify-center text-center">
       <p className="text-lg font-bold">{value}</p>
       <p className="text-xs text-white/80">{label}</p>
     </div>
