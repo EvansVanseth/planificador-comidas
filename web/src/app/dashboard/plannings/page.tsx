@@ -14,7 +14,7 @@ export default async function PlanningsPage() {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="shrink-0 border-b border-gray-200 pb-4">
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-[#0F172B]">Planificaciones</h1>
             <p className="mt-1 text-base text-[#4F617B]">
@@ -23,7 +23,7 @@ export default async function PlanningsPage() {
           </div>
           <a
             href={`/dashboard/plannings/new`}
-            className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-4 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-[10px] bg-[#007A55] px-4 text-sm font-medium text-white transition-colors hover:bg-[#008055] md:w-auto"
           >
             <PlusIcon />
             Nueva planificación

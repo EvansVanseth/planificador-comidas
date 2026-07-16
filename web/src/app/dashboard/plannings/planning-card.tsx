@@ -119,14 +119,27 @@ export default function PlanningCard({
               </span>
             )}
           </div>
-          <button
-            type="button"
-            onClick={() => setShowDelete(true)}
-            className="rounded-lg p-1.5 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
-            title="Eliminar planificación"
-          >
-            <TrashIcon />
-          </button>
+          <div className="flex items-center gap-1">
+            <form action={duplicatePlanning} className="inline">
+              <input type="hidden" name="id" value={planning.id} />
+              <input type="hidden" name="userId" value={userId} />
+              <button
+                type="submit"
+                className="rounded-lg p-1.5 text-[#4F617B] transition-colors hover:bg-[#F1F5F9] hover:text-[#007A55]"
+                title="Duplicar planificación"
+              >
+                <DuplicateIcon />
+              </button>
+            </form>
+            <button
+              type="button"
+              onClick={() => setShowDelete(true)}
+              className="rounded-lg p-1.5 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
+              title="Eliminar planificación"
+            >
+              <TrashIcon />
+            </button>
+          </div>
         </div>
 
         <div className="flex items-center gap-2 text-xs text-[#4F617B]">
@@ -174,11 +187,6 @@ export default function PlanningCard({
           </Link>
         </div>
       </div>
-
-      <form ref={duplicateFormRef} action={duplicatePlanning} aria-hidden="true" className="hidden">
-        <input type="hidden" name="id" value={planning.id} />
-        <input type="hidden" name="userId" value={userId} />
-      </form>
 
       <form ref={deleteFormRef} action={deletePlanning} aria-hidden="true" className="hidden">
         <input type="hidden" name="id" value={planning.id} />
