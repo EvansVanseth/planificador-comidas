@@ -66,9 +66,9 @@ export default async function EditPlanningPage({
         <TabNav planningId={params.id} activeTab={tab} />
       </div>
 
-      <div className="min-h-0 flex-1">
+      <div className="flex min-h-0 flex-1 flex-col">
         {tab === 'grid' && (
-          <div className="h-full overflow-y-auto">
+          <div className="min-h-0 flex-1 overflow-y-auto">
             <PlanningGrid
               planning={primitives}
               recipes={recipes}
@@ -86,7 +86,7 @@ export default async function EditPlanningPage({
         )}
 
         {tab === 'shopping' && (
-          <div className="h-full overflow-y-auto">
+          <div className="min-h-0 flex-1 overflow-y-auto">
             <ShoppingView
               planning={primitives}
               shoppingList={shoppingList}

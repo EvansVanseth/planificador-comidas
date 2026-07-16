@@ -274,20 +274,92 @@
       {
         "id": "46b6bd48-a2ef-4a46-b753-c3bcce19a573",
         "ingredientId": "b2f9a068-2fdc-4adb-881c-13979cda7166",
-        "available": true,
-        "covers": 0
+        "available": false,
+        "covers": 1
       },
       {
         "id": "5ceec97c-365f-40df-bbbb-ecac8f625eea",
         "ingredientId": "ec42b393-1809-41de-b295-78806b27ac7e",
         "available": false,
-        "covers": 3
+        "covers": 1
       },
       {
         "id": "476da6b3-38e9-43f7-9f4e-f81aa301a2e9",
         "ingredientId": "21b7de56-bb51-4903-b1d0-2f053d1fbd77",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "b1d41baa-99e2-41e8-a98b-8ec7fac35463",
+        "ingredientId": "7c5adf43-1353-4c37-8653-a08c55d9ddbe",
         "available": false,
         "covers": 1
+      },
+      {
+        "id": "374fff4f-5497-4532-ad29-ac43c0b2de61",
+        "ingredientId": "ba48f61c-b4f6-49db-9c01-80b6ddfbcbe0",
+        "available": false,
+        "covers": 1
+      },
+      {
+        "id": "3d00c06d-fe8b-42dc-83c0-e7016d702b80",
+        "ingredientId": "2104a047-c8f4-40ad-a561-3a2eabebe58b",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "8fbe750a-5bdf-448e-9e3e-0443ef6a3639",
+        "ingredientId": "67e994e8-c52e-4a77-a845-241ae1c700cc",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "3b2c34cb-bfd6-439a-a956-e193c4ed0b7e",
+        "ingredientId": "f827ec38-93ac-440f-a7b4-ab66e54e5fd6",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "f578d250-4340-4d73-890e-08171d378d84",
+        "ingredientId": "b86342af-d5c9-4608-81ba-16afd8d73d85",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "fc9baf25-e2fe-4801-ab70-c6b65b033387",
+        "ingredientId": "b93372fa-c286-4078-aea8-f83c21597368",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "e599c9e9-fe2a-48d5-b62c-ea854ec222ee",
+        "ingredientId": "ae5b76d3-eb2d-4657-9d61-91f26ed05f9f",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "01c89989-bd4e-45a0-87fd-b3623386c98a",
+        "ingredientId": "3dceb0f4-6e82-4db6-9f74-f18b0166104c",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "5967535e-778f-456d-a567-f209ad045eef",
+        "ingredientId": "cdb68976-2fdb-4b4f-8d14-fa37374d31f9",
+        "available": true,
+        "covers": 0
+      },
+      {
+        "id": "b24a1614-7ab3-4201-9c4a-4fb300312507",
+        "ingredientId": "a3941c89-939f-49a4-b6cf-8b967e42f4de",
+        "available": false,
+        "covers": 1
+      },
+      {
+        "id": "fc9b41cb-49c1-473e-ac6a-b6996986695c",
+        "ingredientId": "67afefdd-67c7-4387-a933-7fb3f574106c",
+        "available": true,
+        "covers": 0
       }
     ],
     "shoppingItems": [

@@ -25,7 +25,7 @@ export default function PantryView({ planning, neededIngredients }: Props) {
   }
 
   return (
-    <div className="flex min-h-0 flex-col rounded-xl border border-[#CBD5E1] bg-white shadow-sm">
+    <div className="flex min-h-0 flex-1 flex-col rounded-xl border border-[#CBD5E1] bg-white shadow-sm">
       <div className="shrink-0 border-b border-[#E2E8F0] px-6 py-4">
         <h2 className="text-lg font-semibold text-[#0F172B]">Despensa</h2>
         <p className="mt-1 text-sm text-[#4F617B]">
