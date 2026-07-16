@@ -34,7 +34,8 @@ export default function PantryView({ planning, neededIngredients }: Props) {
       </div>
 
       <div className="min-h-0 flex-1 overflow-auto">
-        <table className="w-full">
+        {/* Desktop table */}
+        <table className="hidden w-full md:table">
           <thead>
             <tr className="sticky top-0 z-10 border-b border-[#E2E8F0] bg-[#F8FAFC]">
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#475569]">
@@ -158,6 +159,115 @@ export default function PantryView({ planning, neededIngredients }: Props) {
             })}
           </tbody>
         </table>
+
+        {/* Mobile cards */}
+        <div className="divide-y divide-[#E2E8F0] md:hidden">
+          {neededIngredients.map((ing) => {
+            const pantryItem = pantryMap.get(ing.ingredientId);
+            const isAvailable = pantryItem?.available ?? false;
+            const currentCovers = pantryItem?.covers ?? 0;
+
+            return (
+              <div key={ing.ingredientId} className="px-4 py-3">
+                <div className="mb-1.5 flex items-center justify-between">
+                  <span className="text-sm font-medium text-[#0F172B]">
+                    {ing.ingredientName}
+                  </span>
+                  <span className="text-sm text-[#4F617B]">
+                    {ing.totalCovers}
+                  </span>
+                </div>
+
+                <div className="mb-1.5 flex items-center gap-3">
+                  {isAvailable ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-[#007A55]">—</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <form action={updatePantryItemCovers}>
+                        <input type="hidden" name="planningId" value={planning.id} />
+                        <input type="hidden" name="ingredientId" value={ing.ingredientId} />
+                        <input type="hidden" name="ingredientName" value={ing.ingredientName} />
+                        <input type="hidden" name="covers" value={Math.max(0, currentCovers - 1)} />
+                        <button
+                          type="submit"
+                          disabled={currentCovers === 0}
+                          className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#E2E8F0] text-[#4F617B] transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                            <path d="M3 8h10" />
+                          </svg>
+                        </button>
+                      </form>
+                      <span className="mx-2 min-w-[1.25rem] text-center text-sm font-semibold text-[#0F172B]">
+                        {currentCovers}
+                      </span>
+                      <form action={updatePantryItemCovers}>
+                        <input type="hidden" name="planningId" value={planning.id} />
+                        <input type="hidden" name="ingredientId" value={ing.ingredientId} />
+                        <input type="hidden" name="ingredientName" value={ing.ingredientName} />
+                        <input type="hidden" name="covers" value={currentCovers + 1} />
+                        <button
+                          type="submit"
+                          className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#E2E8F0] text-[#4F617B] transition-colors hover:bg-gray-100"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                            <path d="M8 3v10" />
+                            <path d="M3 8h10" />
+                          </svg>
+                        </button>
+                      </form>
+                    </div>
+                  )}
+
+                  <div className="ml-auto">
+                    {isAvailable ? (
+                      <form action={updatePantryItemCovers}>
+                        <input type="hidden" name="planningId" value={planning.id} />
+                        <input type="hidden" name="ingredientId" value={ing.ingredientId} />
+                        <input type="hidden" name="ingredientName" value={ing.ingredientName} />
+                        <input type="hidden" name="covers" value={1} />
+                        <button
+                          type="submit"
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[#007A55] transition-colors hover:bg-[#F0FDF4]"
+                          title="Marcar como no disponible"
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M7 10v12" />
+                            <path d="M15 5.88L14 10h5.83a2 2 0 012 2.28l-1.26 6.64A3 3 0 0117.63 21H9.34a2 2 0 01-1.44-.61A2 2 0 017.5 19L7 10" />
+                          </svg>
+                        </button>
+                      </form>
+                    ) : (
+                      <form action={markPantryItemAvailable}>
+                        <input type="hidden" name="planningId" value={planning.id} />
+                        <input type="hidden" name="ingredientId" value={ing.ingredientId} />
+                        <input type="hidden" name="ingredientName" value={ing.ingredientName} />
+                        <button
+                          type="submit"
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[#4F617B] transition-colors hover:bg-[#F1F5F9]"
+                          title="Marcar como disponible"
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M7 10v12" />
+                            <path d="M15 5.88L14 10h5.83a2 2 0 012 2.28l-1.26 6.64A3 3 0 0117.63 21H9.34a2 2 0 01-1.44-.61A2 2 0 017.5 19L7 10" />
+                          </svg>
+                        </button>
+                      </form>
+                    )}
+                  </div>
+                </div>
+
+                {ing.recipeNames.length > 0 && (
+                  <div className="text-xs text-[#94A3B8]">
+                    {ing.recipeNames.join(', ')}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
