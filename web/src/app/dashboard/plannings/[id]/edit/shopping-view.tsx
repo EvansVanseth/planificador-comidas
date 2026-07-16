@@ -31,7 +31,8 @@ export default function ShoppingView({ planning, shoppingList }: Props) {
       </div>
 
       <div className="min-h-0 flex-1 overflow-auto">
-        <table className="w-full">
+        {/* Desktop table */}
+        <table className="hidden w-full md:table">
           <thead>
             <tr className="sticky top-0 z-10 border-b border-[#E2E8F0] bg-[#F8FAFC]">
               <th className="w-8 px-2 py-3" />
@@ -100,6 +101,58 @@ export default function ShoppingView({ planning, shoppingList }: Props) {
             })}
           </tbody>
         </table>
+
+        {/* Mobile cards */}
+        <div className="divide-y divide-[#E2E8F0] md:hidden">
+          {visibleItems.map((item) => {
+            const bought = item.inShoppingList && item.shoppingCompleted;
+            return (
+              <div
+                key={item.ingredientId}
+                className={`px-4 py-3 ${bought ? 'bg-[#F0FDF4]' : ''}`}
+              >
+                <div className="mb-1.5 flex items-center gap-3">
+                  <form action={toggleShoppingItem}>
+                    <input type="hidden" name="planningId" value={planning.id} />
+                    <input type="hidden" name="ingredientId" value={item.ingredientId} />
+                    <input type="hidden" name="ingredientName" value={item.ingredientName} />
+                    <input type="hidden" name="completed" value={String(!bought)} />
+                    <button
+                      type="submit"
+                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded border transition-colors ${
+                        bought
+                          ? 'border-[#007A55] bg-[#007A55] text-white'
+                          : 'border-[#CBD5E1] bg-white hover:border-[#007A55]'
+                      }`}
+                    >
+                      {bought && (
+                        <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 8l3 3 5-5" />
+                        </svg>
+                      )}
+                    </button>
+                  </form>
+                  <span
+                    className={`flex-1 text-sm font-medium ${
+                      bought ? 'text-[#94A3B8] line-through' : 'text-[#0F172B]'
+                    }`}
+                  >
+                    {item.ingredientName}
+                  </span>
+                  <span className={`text-sm ${bought ? 'text-[#94A3B8]' : 'text-[#4F617B]'}`}>
+                    {item.neededAfterPantry}
+                  </span>
+                </div>
+
+                {item.recipeNames.length > 0 && (
+                  <div className="pl-9 text-xs text-[#94A3B8]">
+                    {item.recipeNames.join(', ')}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
