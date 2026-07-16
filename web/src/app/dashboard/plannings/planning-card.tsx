@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { PencilIcon, TrashIcon, DuplicateIcon } from '@/components/icons';
+import { PencilIcon, TrashIcon, DuplicateIcon, CatalogIcon, CartIcon } from '@/components/icons';
 import { ConfirmModal } from '@/components/confirm-modal';
 import { duplicatePlanning, deletePlanning } from './actions';
 import type { PlanningPrimitives } from '@/domain/planning/aggregates/planning.aggregate';
@@ -43,25 +43,101 @@ export default function PlanningCard({
   const balance = planning.hotColdBalance ?? 50;
 
   return (
-    <div className="flex items-center gap-4 rounded-xl border border-[#E2E8F0] bg-white px-6 py-4 shadow-[0_1px_2px_-1px_rgba(0,0,0,0.1)]">
-      <div className="flex-1">
-        <div className="flex items-center gap-2">
-          <h3 className="text-base font-bold text-[#0F172B]">
-            {planning.name}
-          </h3>
-          {planning.startdate && (
-            <span className="rounded-full bg-[#ECFDF5] px-2 py-0.5 text-xs font-medium text-[#007A55]">
-              Activa
-            </span>
-          )}
+    <div className="rounded-xl border border-[#E2E8F0] bg-white px-6 py-4 shadow-[0_1px_2px_-1px_rgba(0,0,0,0.1)]">
+      {/* Desktop layout */}
+      <div className="hidden items-center gap-4 md:flex">
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <h3 className="text-base font-bold text-[#0F172B]">
+              {planning.name}
+            </h3>
+            {planning.startdate && (
+              <span className="rounded-full bg-[#ECFDF5] px-2 py-0.5 text-xs font-medium text-[#007A55]">
+                Activa
+              </span>
+            )}
+          </div>
+          <div className="mt-1 flex items-center gap-3 text-sm text-[#4F617B]">
+            <span>{planning.weeks} {planning.weeks === 1 ? 'semana' : 'semanas'}</span>
+            <span>·</span>
+            <span>{totalDays} días</span>
+            <span>·</span>
+            <span>{assignedMeals} comidas</span>
+            <span>·</span>
+            <span>{formatDate(planning.startdate)}</span>
+            {balance !== 50 && (
+              <>
+                <span>·</span>
+                <span>{balance}% caliente</span>
+              </>
+            )}
+          </div>
         </div>
-        <div className="mt-1 flex items-center gap-3 text-sm text-[#4F617B]">
+
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/dashboard/plannings/${planning.id}/edit`}
+            className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-[#F1F5F9] hover:text-[#007A55]"
+            title="Editar planificación"
+          >
+            <PencilIcon />
+          </Link>
+
+          <form ref={duplicateFormRef} action={duplicatePlanning} className="inline">
+            <input type="hidden" name="id" value={planning.id} />
+            <input type="hidden" name="userId" value={userId} />
+            <button
+              type="submit"
+              className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-[#F1F5F9] hover:text-[#007A55]"
+              title="Duplicar planificación"
+            >
+              <DuplicateIcon />
+            </button>
+          </form>
+
+          <button
+            type="button"
+            onClick={() => setShowDelete(true)}
+            className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
+            title="Eliminar planificación"
+          >
+            <TrashIcon />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile layout */}
+      <div className="flex flex-col gap-3 md:hidden">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-2">
+            <h3 className="text-base font-bold text-[#0F172B]">
+              {planning.name}
+            </h3>
+            {planning.startdate && (
+              <span className="rounded-full bg-[#ECFDF5] px-2 py-0.5 text-xs font-medium text-[#007A55]">
+                Activa
+              </span>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowDelete(true)}
+            className="rounded-lg p-1.5 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
+            title="Eliminar planificación"
+          >
+            <TrashIcon />
+          </button>
+        </div>
+
+        <div className="flex items-center gap-2 text-xs text-[#4F617B]">
           <span>{planning.weeks} {planning.weeks === 1 ? 'semana' : 'semanas'}</span>
           <span>·</span>
           <span>{totalDays} días</span>
           <span>·</span>
           <span>{assignedMeals} comidas</span>
-          <span>·</span>
+        </div>
+
+        <div className="flex items-center gap-2 text-xs text-[#4F617B]">
           <span>{formatDate(planning.startdate)}</span>
           {balance !== 50 && (
             <>
@@ -70,38 +146,39 @@ export default function PlanningCard({
             </>
           )}
         </div>
-      </div>
 
-      <div className="flex items-center gap-2">
-        <Link
-          href={`/dashboard/plannings/${planning.id}/edit`}
-          className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-[#F1F5F9] hover:text-[#007A55]"
-          title="Editar planificación"
-        >
-          <PencilIcon />
-        </Link>
-
-        <form ref={duplicateFormRef} action={duplicatePlanning} className="inline">
-          <input type="hidden" name="id" value={planning.id} />
-          <input type="hidden" name="userId" value={userId} />
-          <button
-            type="submit"
-            className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-[#F1F5F9] hover:text-[#007A55]"
-            title="Duplicar planificación"
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/dashboard/plannings/${planning.id}/edit`}
+            className="flex items-center gap-1.5 rounded-lg border border-[#E2E8F0] px-3 py-1.5 text-xs font-medium text-[#4F617B] transition-colors hover:bg-[#F1F5F9] hover:text-[#007A55]"
+            title="Editar planificación"
           >
-            <DuplicateIcon />
-          </button>
-        </form>
-
-        <button
-          type="button"
-          onClick={() => setShowDelete(true)}
-          className="rounded-lg p-2 text-[#4F617B] transition-colors hover:bg-red-50 hover:text-red-500"
-          title="Eliminar planificación"
-        >
-          <TrashIcon />
-        </button>
+            <PencilIcon />
+            Editar datos
+          </Link>
+          <Link
+            href={`/dashboard/plannings/${planning.id}/edit?tab=pantry`}
+            className="flex items-center gap-1.5 rounded-lg border border-[#E2E8F0] px-3 py-1.5 text-xs font-medium text-[#4F617B] transition-colors hover:bg-[#F1F5F9] hover:text-[#007A55]"
+            title="Despensa"
+          >
+            <CatalogIcon />
+            Despensa
+          </Link>
+          <Link
+            href={`/dashboard/plannings/${planning.id}/edit?tab=shopping`}
+            className="flex items-center gap-1.5 rounded-lg border border-[#E2E8F0] px-3 py-1.5 text-xs font-medium text-[#4F617B] transition-colors hover:bg-[#F1F5F9] hover:text-[#007A55]"
+            title="Lista de la compra"
+          >
+            <CartIcon />
+            Lista
+          </Link>
+        </div>
       </div>
+
+      <form ref={duplicateFormRef} action={duplicatePlanning} aria-hidden="true" className="hidden">
+        <input type="hidden" name="id" value={planning.id} />
+        <input type="hidden" name="userId" value={userId} />
+      </form>
 
       <form ref={deleteFormRef} action={deletePlanning} aria-hidden="true" className="hidden">
         <input type="hidden" name="id" value={planning.id} />
