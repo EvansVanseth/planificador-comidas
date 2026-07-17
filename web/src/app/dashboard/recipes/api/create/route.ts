@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     }
 
     const c = getContainer();
-    c.createRecipe.execute(
+    await c.createRecipe.execute(
       userId,
       name,
       baseServings ?? 4,

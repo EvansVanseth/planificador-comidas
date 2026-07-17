@@ -42,7 +42,7 @@ export default async function TagsPage() {
   const userId = cookieStore.get('userId')?.value ?? '';
 
   const c = getContainer();
-  const tags = c.listTags.execute(userId);
+  const tags = await c.listTags.execute(userId);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">

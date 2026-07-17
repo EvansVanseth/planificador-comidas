@@ -15,7 +15,7 @@ export default async function DashboardLayout({
   if (!userId) redirect('/login');
 
   const c = getContainer();
-  const users = c.listUsers.execute();
+  const users = await c.listUsers.execute();
   const user = users.find((u) => u.id === userId);
   if (!user) redirect('/login');
 

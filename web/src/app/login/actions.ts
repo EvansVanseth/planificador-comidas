@@ -13,7 +13,7 @@ export async function login(_prevState: State, formData: FormData): Promise<Stat
   }
 
   const container = getContainer();
-  const users = container.listUsers.execute();
+  const users = await container.listUsers.execute();
   const user = users.find(
     u => u.email.toLowerCase() === email.trim().toLowerCase()
   );

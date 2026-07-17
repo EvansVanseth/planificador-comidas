@@ -8,7 +8,7 @@ export default async function PlanningsPage() {
   const userId = cookieStore.get('userId')?.value ?? '';
 
   const c = getContainer();
-  const plannings = c.listPlannings.execute(userId);
+  const plannings = await c.listPlannings.execute(userId);
   const primitives = plannings.map((p) => p.toPrimitives());
 
   return (

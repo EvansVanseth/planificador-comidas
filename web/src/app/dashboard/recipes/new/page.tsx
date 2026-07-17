@@ -11,8 +11,8 @@ export default async function NewRecipePage({
   const userId = cookieStore.get('userId')?.value ?? '';
 
   const c = getContainer();
-  const allTags = c.listTags.execute(userId);
-  const allIngredients = c.listIngredients.execute(userId);
+  const allTags = await c.listTags.execute(userId);
+  const allIngredients = await c.listIngredients.execute(userId);
 
   return (
     <RecipeForm

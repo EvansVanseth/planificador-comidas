@@ -32,7 +32,7 @@ export async function createIngredient(formData: FormData) {
   const trimmed = nameVO.value;
   const c = getContainer();
 
-  const existing = c.listIngredients.execute(userId);
+  const existing = await c.listIngredients.execute(userId);
   if (existing.some((i) => i.name.toLowerCase() === trimmed.toLowerCase())) {
     await addToastToQueue('Ya existe un ingrediente con ese nombre', 'error');
     revalidatePath(PATH);
@@ -47,7 +47,7 @@ export async function createIngredient(formData: FormData) {
     );
   }
 
-  c.createIngredient.execute(userId, trimmed);
+  await c.createIngredient.execute(userId, trimmed);
 
   await addToastToQueue(`Ingrediente '${trimmed}' creado correctamente.`);
   revalidatePath(PATH);
@@ -69,7 +69,7 @@ export async function forceCreateIngredient(formData: FormData) {
   }
 
   const c = getContainer();
-  c.createIngredient.execute(userId, nameVO.value);
+  await c.createIngredient.execute(userId, nameVO.value);
 
   await addToastToQueue(`Ingrediente '${nameVO.value}' creado correctamente.`);
   revalidatePath(PATH);
@@ -93,7 +93,7 @@ export async function renameIngredient(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.updateIngredient.execute({ id, name: nameVO.value });
+    await c.updateIngredient.execute({ id, name: nameVO.value });
   } catch {
     await addToastToQueue('Ya existe un ingrediente con ese nombre', 'error');
     revalidatePath(PATH);
@@ -111,7 +111,7 @@ export async function deleteIngredient(formData: FormData) {
   const id = formData.get('id') as string;
 
   const c = getContainer();
-  const result = c.deleteIngredient.execute(id);
+  const result = await c.deleteIngredient.execute(id);
 
   await addToastToQueue(
     `Ingrediente eliminado. Afectó a ${result.recipesAffected} recetas y ${result.planningsAffected} planificaciones.`,
@@ -126,7 +126,7 @@ export async function mergeIngredients(formData: FormData) {
   const targetId = formData.get('targetId') as string;
 
   const c = getContainer();
-  c.mergeIngredients.execute(userId, sourceId, targetId);
+  await c.mergeIngredients.execute(userId, sourceId, targetId);
 
   await addToastToQueue('Ingredientes fusionados correctamente.');
   revalidatePath(PATH);
@@ -135,7 +135,7 @@ export async function mergeIngredients(formData: FormData) {
 
 export async function getMergePreview(sourceId: string, userId: string) {
   const c = getContainer();
-  const recipes = c.listRecipes.execute(userId);
+  const recipes = await c.listRecipes.execute(userId);
   const recipesAffected = recipes
     .filter((r) => r.ingredients.some((i) => i.ingredientId === sourceId))
     .map((r) => r.name);
@@ -145,12 +145,12 @@ export async function getMergePreview(sourceId: string, userId: string) {
 export async function getDeleteImpact(ingredientId: string, userId: string) {
   const c = getContainer();
 
-  const recipes = c.listRecipes.execute(userId);
+  const recipes = await c.listRecipes.execute(userId);
   const recipesAffected = recipes.filter((r) =>
     r.ingredients.some((i) => i.ingredientId === ingredientId),
   ).length;
 
-  const plannings = c.listPlannings.execute(userId);
+  const plannings = await c.listPlannings.execute(userId);
   const planningsAffected = plannings.filter((p) => {
     const primitives = p.toPrimitives();
     return (

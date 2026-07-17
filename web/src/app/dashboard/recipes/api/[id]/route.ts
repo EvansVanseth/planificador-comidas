@@ -14,7 +14,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     }
 
     const c = getContainer();
-    const current = c.listRecipes.execute(userId).find((r) => r.id === id);
+    const current = (await c.listRecipes.execute(userId)).find((r) => r.id === id);
     if (!current) {
       return NextResponse.json({ error: 'Receta no encontrada' }, { status: 404 });
     }
@@ -40,7 +40,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return !matched || matched.quantityNote !== ni.quantityNote;
     });
 
-    c.updateRecipe.execute({
+    await c.updateRecipe.execute({
       id,
       name,
       baseServings,

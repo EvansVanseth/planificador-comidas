@@ -26,7 +26,7 @@ export async function createTag(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.createTag.execute(userId, nameVO.value, dimension, false);
+    await c.createTag.execute(userId, nameVO.value, dimension, false);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al crear la etiqueta';
     await addToastToQueue(msg, 'error');
@@ -56,7 +56,7 @@ export async function updateTag(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.updateTag.execute({ id, name: nameVO.value });
+    await c.updateTag.execute({ id, name: nameVO.value });
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al editar la etiqueta';
     await addToastToQueue(msg, 'error');
@@ -77,7 +77,7 @@ export async function deleteTag(formData: FormData) {
 
   const c = getContainer();
   try {
-    const result = c.deleteTag.execute(id);
+    const result = await c.deleteTag.execute(id);
     await addToastToQueue(
       `Etiqueta '${tagName}' eliminada. Afectó a ${result.recipesAffected} recetas y ${result.planningsAffected} planificaciones.`,
     );
@@ -95,7 +95,7 @@ export async function moveTagUp(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.tagOrderMoveUp.execute(tagId);
+    await c.tagOrderMoveUp.execute(tagId);
     await addToastToQueue('Etiqueta movida arriba.');
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al mover la etiqueta';
@@ -110,7 +110,7 @@ export async function moveTagDown(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.tagOrderMoveDown.execute(tagId);
+    await c.tagOrderMoveDown.execute(tagId);
     await addToastToQueue('Etiqueta movida abajo.');
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al mover la etiqueta';
@@ -123,12 +123,12 @@ export async function moveTagDown(formData: FormData) {
 export async function getDeleteImpact(tagId: string, userId: string) {
   const c = getContainer();
 
-  const recipes = c.listRecipes.execute(userId);
+  const recipes = await c.listRecipes.execute(userId);
   const recipesWithTag = recipes
     .filter((r) => r.tags.some((t) => t.id === tagId))
     .map((r) => r.name);
 
-  const plannings = c.listPlannings.execute(userId);
+  const plannings = await c.listPlannings.execute(userId);
   let planningsAffected = 0;
   for (const planning of plannings) {
     for (const day of planning.getDays()) {

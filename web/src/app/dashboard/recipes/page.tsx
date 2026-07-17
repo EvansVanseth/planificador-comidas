@@ -17,8 +17,8 @@ export default async function RecipesPage({
   const userId = cookieStore.get('userId')?.value ?? '';
 
   const c = getContainer();
-  const allRecipes = c.listRecipes.execute(userId);
-  const allTags = c.listTags.execute(userId).sort((a, b) => {
+  const allRecipes = await c.listRecipes.execute(userId);
+  const allTags = (await c.listTags.execute(userId)).sort((a, b) => {
     const dimDiff = DIM_ORDER.indexOf(a.dimension) - DIM_ORDER.indexOf(b.dimension);
     if (dimDiff !== 0) return dimDiff;
     return a.name.localeCompare(b.name);

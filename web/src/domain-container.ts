@@ -8,7 +8,7 @@ export function getContainer(): IContainer {
     const originalCwd = process.cwd();
     const projectRoot = path.resolve(originalCwd, '..');
     process.chdir(projectRoot);
-    _container = createContainer('file');
+    _container = createContainer('postgres');
     process.chdir(originalCwd);
   }
   return _container;

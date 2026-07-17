@@ -20,7 +20,7 @@ export default async function IngredientsPage({
   const userId = cookie?.value ?? '';
 
   const c = getContainer();
-  const ingredients = c.listIngredients.execute(userId);
+  const ingredients = await c.listIngredients.execute(userId);
 
   const query = searchParams.q?.toLowerCase().trim() ?? '';
   const filtered = query

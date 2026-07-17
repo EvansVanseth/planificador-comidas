@@ -23,13 +23,13 @@ export default async function EditPlanningPage({
   const tab = searchParams.tab ?? 'grid';
 
   const c = getContainer();
-  const planningList = c.listPlannings.execute(userId);
+  const planningList = await c.listPlannings.execute(userId);
   const planning = planningList.find((p) => p.getId() === params.id);
   if (!planning) notFound();
 
   const primitives = planning.toPrimitives();
-  const recipes = c.listRecipes.execute(userId);
-  const tags = c.listTags.execute(userId);
+  const recipes = await c.listRecipes.execute(userId);
+  const tags = await c.listTags.execute(userId);
   const momentTags = tags
     .filter((t) => t.dimension === 'MOMENTO_DIA')
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -37,9 +37,9 @@ export default async function EditPlanningPage({
   const allTags = tags.map((t) => ({ id: t.id, name: t.name, dimension: t.dimension }));
 
   const neededIngredients =
-    tab === 'pantry' ? c.getNeededIngredients.execute(params.id) : [];
+    tab === 'pantry' ? await c.getNeededIngredients.execute(params.id) : [];
   const shoppingList =
-    tab === 'shopping' ? c.getShoppingList.execute(params.id) : [];
+    tab === 'shopping' ? await c.getShoppingList.execute(params.id) : [];
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">

@@ -38,12 +38,12 @@ export default async function DashboardPage() {
   const userId = cookie?.value ?? '';
 
   const c = getContainer();
-  const users = c.listUsers.execute();
+  const users = await c.listUsers.execute();
   const user = users.find((u) => u.id === userId);
-  const recipes = c.listRecipes.execute(userId);
-  const tags = c.listTags.execute(userId);
-  const ingredients = c.listIngredients.execute(userId);
-  const plannings = c.listPlannings.execute(userId);
+  const recipes = await c.listRecipes.execute(userId);
+  const tags = await c.listTags.execute(userId);
+  const ingredients = await c.listIngredients.execute(userId);
+  const plannings = await c.listPlannings.execute(userId);
 
   const tagsById = new Map(tags.map((t) => [t.id, t]));
   const recipesById = new Map(recipes.map((r) => [r.id, r]));

@@ -15,9 +15,9 @@ export default async function EditRecipePage({
   if (!userId) notFound();
 
   const c = getContainer();
-  const allTags = c.listTags.execute(userId);
-  const allIngredients = c.listIngredients.execute(userId);
-  const recipes = c.listRecipes.execute(userId);
+  const allTags = await c.listTags.execute(userId);
+  const allIngredients = await c.listIngredients.execute(userId);
+  const recipes = await c.listRecipes.execute(userId);
   const recipe = recipes.find((r) => r.id === params.id);
   if (!recipe) notFound();
 

@@ -22,7 +22,7 @@ export async function createPlanning(formData: FormData) {
 
   const c = getContainer();
   const displayName = name?.trim() || `Planificación ${weeks} semanas`;
-  c.createPlanning.execute(userId, displayName, startDate, weeks, balance);
+  await c.createPlanning.execute(userId, displayName, startDate, weeks, balance);
 
   await addToastToQueue('Planificación creada correctamente.');
   revalidatePath(PATH);
@@ -34,7 +34,7 @@ export async function duplicatePlanning(formData: FormData) {
   const userId = formData.get('userId') as string;
 
   const c = getContainer();
-  c.duplicatePlanning.execute(id, userId);
+  await c.duplicatePlanning.execute(id, userId);
 
   await addToastToQueue('Planificación duplicada correctamente.');
   revalidatePath(PATH);
@@ -45,7 +45,7 @@ export async function deletePlanning(formData: FormData) {
   const id = formData.get('id') as string;
 
   const c = getContainer();
-  c.deletePlanning.execute(id);
+  await c.deletePlanning.execute(id);
 
   await addToastToQueue('Planificación eliminada correctamente.');
   revalidatePath(PATH);
@@ -61,7 +61,7 @@ export async function updatePlanning(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.updatePlanning.execute({
+    await c.updatePlanning.execute({
       id,
       name: name || undefined,
       weeks: weeksRaw ? parseInt(weeksRaw, 10) : undefined,
@@ -103,7 +103,7 @@ export async function addAllDays(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.bulkCreateDays.execute({ planningId, orders: missing });
+    await c.bulkCreateDays.execute({ planningId, orders: missing });
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al añadir días';
     await addToastToQueue(msg, 'error');
@@ -121,7 +121,7 @@ export async function addDay(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.addDayToPlanning.execute(planningId, dayOrder);
+    await c.addDayToPlanning.execute(planningId, dayOrder);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al añadir el día';
     await addToastToQueue(msg, 'error');
@@ -139,7 +139,7 @@ export async function removeDay(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.removeDayFromPlanning.execute(planningId, dayOrder);
+    await c.removeDayFromPlanning.execute(planningId, dayOrder);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al eliminar el día';
     await addToastToQueue(msg, 'error');
@@ -156,7 +156,7 @@ export async function clearAllRecipes(formData: FormData) {
 
   const c = getContainer();
   try {
-    const count = c.clearAllRecipes.execute(planningId);
+    const count = await c.clearAllRecipes.execute(planningId);
     await addToastToQueue(`Recetas eliminadas de ${count} servicio${count !== 1 ? 's' : ''}.`);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al limpiar las recetas';
@@ -179,7 +179,7 @@ export async function bulkAddMissingService(formData: FormData) {
 
   const c = getContainer();
   try {
-    const count = c.bulkAddMissingService.execute({ planningId, momentTagId, covers, exclusions, preferences });
+    const count = await c.bulkAddMissingService.execute({ planningId, momentTagId, covers, exclusions, preferences });
     await addToastToQueue(`Servicio añadido a ${count} día${count !== 1 ? 's' : ''}.`);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al añadir servicio';
@@ -198,7 +198,7 @@ export async function autoSchedule(formData: FormData) {
 
   const c = getContainer();
   try {
-    const result = c.autoSchedule.execute({ planningId, userId });
+    const result = await c.autoSchedule.execute({ planningId, userId });
     const total = result.assignments.length + result.unassigned.length;
     const done = result.assignments.length;
     await addToastToQueue(`Autoplanificado: ${done} servicio${done !== 1 ? 's' : ''} asignado${done !== 1 ? 's' : ''} de ${total}.`);
@@ -226,7 +226,7 @@ export async function assignMeal(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.assignMeal.execute(planningId, orderDay, momentTagId, recipeId || null, covers, ignoreRestrictions, exclusions, preferences);
+    await c.assignMeal.execute(planningId, orderDay, momentTagId, recipeId || null, covers, ignoreRestrictions, exclusions, preferences);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al asignar la receta';
     await addToastToQueue(msg, 'error');
@@ -248,7 +248,7 @@ export async function removeMeal(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.removeMealFromDay.execute(planningId, orderDay, momentTagId);
+    await c.removeMealFromDay.execute(planningId, orderDay, momentTagId);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al eliminar el servicio';
     await addToastToQueue(msg, 'error');
@@ -267,7 +267,7 @@ export async function addPantryItem(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.addPantryItem.execute(planningId, ingredientId);
+    await c.addPantryItem.execute(planningId, ingredientId);
     await addToastToQueue(`${ingredientName} añadido a la despensa.`);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al añadir a la despensa';
@@ -286,7 +286,7 @@ export async function removePantryItem(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.removePantryItem.execute(planningId, ingredientId);
+    await c.removePantryItem.execute(planningId, ingredientId);
     await addToastToQueue(`${ingredientName} eliminado de la despensa.`);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al eliminar de la despensa';
@@ -306,7 +306,7 @@ export async function updatePantryItemCovers(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.updatePantryItemCovers.execute(planningId, ingredientId, covers);
+    await c.updatePantryItemCovers.execute(planningId, ingredientId, covers);
     if (covers > 0) {
       await addToastToQueue(`${ingredientName}: ${covers} comensal${covers !== 1 ? 'es' : ''} cubierto${covers !== 1 ? 's' : ''}.`);
     }
@@ -327,7 +327,7 @@ export async function markPantryItemAvailable(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.markPantryItemAvailable.execute(planningId, ingredientId);
+    await c.markPantryItemAvailable.execute(planningId, ingredientId);
     await addToastToQueue(`${ingredientName}: tienes de todo.`);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al marcar disponible';
@@ -346,7 +346,7 @@ export async function addShoppingItem(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.addShoppingItem.execute(planningId, ingredientId);
+    await c.addShoppingItem.execute(planningId, ingredientId);
     await addToastToQueue(`${ingredientName} añadido a la lista de la compra.`);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al añadir';
@@ -365,7 +365,7 @@ export async function removeShoppingItem(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.removeShoppingItem.execute(planningId, ingredientId);
+    await c.removeShoppingItem.execute(planningId, ingredientId);
     await addToastToQueue(`${ingredientName} eliminado de la lista de la compra.`);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al eliminar';
@@ -385,7 +385,7 @@ export async function toggleShoppingItem(formData: FormData) {
 
   const c = getContainer();
   try {
-    c.toggleShoppingItem.execute(planningId, ingredientId, completed);
+    await c.toggleShoppingItem.execute(planningId, ingredientId, completed);
     await addToastToQueue(completed ? `${ingredientName} marcado como comprado.` : `${ingredientName} marcado como pendiente.`);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al actualizar';
@@ -400,12 +400,12 @@ export async function toggleShoppingItem(formData: FormData) {
 export async function getDeleteImpact(tagId: string, userId: string) {
   const c = getContainer();
 
-  const recipes = c.listRecipes.execute(userId);
+  const recipes = await c.listRecipes.execute(userId);
   const recipesWithTag = recipes
     .filter((r) => r.tags.some((t) => t.id === tagId))
     .map((r) => r.name);
 
-  const plannings = c.listPlannings.execute(userId);
+  const plannings = await c.listPlannings.execute(userId);
   let planningsAffected = 0;
   for (const planning of plannings) {
     for (const day of planning.getDays()) {
