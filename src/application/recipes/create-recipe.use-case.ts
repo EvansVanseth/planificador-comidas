@@ -7,7 +7,7 @@ import { randomUUID } from 'crypto';
 export class CreateRecipeUseCase {
   constructor(private recipeRepository: RecipeRepository) {}
 
-  execute(
+  async execute(
     userId: string,
     name: string,
     baseServings: number,
@@ -15,8 +15,8 @@ export class CreateRecipeUseCase {
     preparation: string | null,
     ingredients: RecipeIngredientPrimitives[],
     tags: TagPrimitive[],
-  ): string {
-    const existing = this.recipeRepository.findByName(name);
+  ): Promise<string> {
+    const existing = await this.recipeRepository.findByName(name);
     if (existing) {
       throw new AppError(`Ya existe una receta con el nombre "${name}"`);
     }
@@ -24,7 +24,7 @@ export class CreateRecipeUseCase {
     const id = randomUUID();
     const recipeIngredients = ingredients.map(i => RecipeIngredient.fromPrimitives(i));
     const recipe = Recipe.create(id, userId, name, baseServings, prepTime, preparation, recipeIngredients, tags);
-    this.recipeRepository.save(recipe);
+    await this.recipeRepository.save(recipe);
     return id;
   }
 }

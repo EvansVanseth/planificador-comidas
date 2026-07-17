@@ -44,7 +44,7 @@ async function run() {
 }
 
 async function seleccionarUsuario(container: IContainer): Promise<string | null> {
-  const usuarios = container.listUsers.execute();
+  const usuarios = await container.listUsers.execute();
 
   const choices = usuarios.map(u => ({ title: u.name, value: u.id }));
   choices.push({ title: '(Crear nuevo usuario)', value: '__create__' });
@@ -77,15 +77,15 @@ async function seleccionarUsuario(container: IContainer): Promise<string | null>
 
     if (!nuevo?.name?.trim()) return null;
 
-    const newId = container.createUser.execute(nuevo.name.trim(), nuevo.email.trim());
-    container.seedTagsForUser(newId);
+    const newId = await container.createUser.execute(nuevo.name.trim(), nuevo.email.trim());
+    await container.seedTagsForUser(newId);
     await resolveSystemTagsMenu(container, newId);
     console.log(`Bienvenido, ${nuevo.name.trim()}!`);
     return newId;
   }
 
   const userName = usuarios.find(u => u.id === seleccion.userId)?.name ?? '';
-  container.seedTagsForUser(seleccion.userId);
+  await container.seedTagsForUser(seleccion.userId);
   await resolveSystemTagsMenu(container, seleccion.userId);
   console.log(`Bienvenido de nuevo, ${userName}!`);
   return seleccion.userId;

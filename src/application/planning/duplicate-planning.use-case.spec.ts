@@ -15,15 +15,15 @@ describe('DuplicatePlanningUseCase', () => {
     useCase = new DuplicatePlanningUseCase(repo);
   });
 
-  it('debe duplicar una planificación básica', () => {
+  it('debe duplicar una planificación básica', async () => {
     const originalId = 'b0000000-0000-4000-a000-000000000001';
     const original = Planning.create(originalId, userId, 'Semana 1', null, 2);
-    repo.save(original);
+    await repo.save(original);
 
-    const newId = useCase.execute(originalId, userId);
+    const newId = await useCase.execute(originalId, userId);
     expect(newId).not.toBe(originalId);
 
-    const copy = repo.findById(newId);
+    const copy = await repo.findById(newId);
     expect(copy).not.toBeNull();
     expect(copy!.getName()).toBe('Semana 1 (Copia)');
     expect(copy!.getUserId()).toBe(userId);
@@ -31,36 +31,36 @@ describe('DuplicatePlanningUseCase', () => {
     expect(copy!.getStartDate()).toBeNull();
   });
 
-  it('debe duplicar los días con nuevos IDs', () => {
+  it('debe duplicar los días con nuevos IDs', async () => {
     const originalId = 'b0000000-0000-4000-a000-000000000001';
     const original = Planning.create(originalId, userId, 'Semana 1', null, 2);
     original.addDay('d1000000-0000-4000-a000-000000000001', 1);
     original.addDay('d2000000-0000-4000-a000-000000000002', 2);
-    repo.save(original);
+    await repo.save(original);
 
-    const newId = useCase.execute(originalId, userId);
-    const copy = repo.findById(newId)!;
+    const newId = await useCase.execute(originalId, userId);
+    const copy = (await repo.findById(newId))!;
     const days = copy.getDays();
     expect(days).toHaveLength(2);
     expect(days[0].getId()).not.toBe('d1000000-0000-4000-a000-000000000001');
     expect(days[1].getId()).not.toBe('d2000000-0000-4000-a000-000000000002');
   });
 
-  it('no debe copiar pantry items ni shopping items', () => {
+  it('no debe copiar pantry items ni shopping items', async () => {
     const originalId = 'b0000000-0000-4000-a000-000000000001';
     const original = Planning.create(originalId, userId, 'Semana 1', null, 2);
     original.addDay('d1000000-0000-4000-a000-000000000001', 1);
     original.addPantryItem('a1000000-0000-4000-a000-000000000001', 'a2000000-0000-4000-a000-000000000001');
     original.addShoppingItem('a3000000-0000-4000-a000-000000000002', 'a4000000-0000-4000-a000-000000000001');
-    repo.save(original);
+    await repo.save(original);
 
-    const newId = useCase.execute(originalId, userId);
-    const copy = repo.findById(newId)!;
+    const newId = await useCase.execute(originalId, userId);
+    const copy = (await repo.findById(newId))!;
     expect(copy.getPantryItems()).toHaveLength(0);
     expect(copy.getShoppingItems()).toHaveLength(0);
   });
 
-  it('debe lanzar error si la planificación no existe', () => {
-    expect(() => useCase.execute('non-existent-id', userId)).toThrow(AppError);
+  it('debe lanzar error si la planificación no existe', async () => {
+    await expect(useCase.execute('non-existent-id', userId)).rejects.toThrow(AppError);
   });
 });

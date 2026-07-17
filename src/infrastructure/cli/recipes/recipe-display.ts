@@ -47,15 +47,15 @@ export function mostrarReceta(
 
 export { DIMENSION_LABELS };
 
-export function listarRecetas(container: IContainer, userId: string) {
-  const recipes = container.listRecipes.execute(userId);
+export async function listarRecetas(container: IContainer, userId: string) {
+  const recipes = await container.listRecipes.execute(userId);
   if (recipes.length === 0) {
     console.log('No hay recetas');
     return;
   }
 
-  const allIngredients = container.listIngredients.execute(userId);
-  const allTags = container.listTags.execute(userId);
+  const allIngredients = await container.listIngredients.execute(userId);
+  const allTags = await container.listTags.execute(userId);
 
   console.log('--- Recetas ---');
   recipes.forEach(r => mostrarReceta(r, allIngredients, allTags));

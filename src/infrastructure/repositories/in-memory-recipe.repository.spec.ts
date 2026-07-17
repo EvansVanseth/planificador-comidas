@@ -18,32 +18,32 @@ describe('InMemoryRecipeRepository', () => {
     repo = new InMemoryRecipeRepository();
   });
 
-  it('debe guardar y recuperar una receta por id', () => {
+  it('debe guardar y recuperar una receta por id', async () => {
     const recipe = Recipe.create(validId, validUserId, 'Arroz con Pollo', 4, 30, null, [], defaultTags);
-    repo.save(recipe);
-    const found = repo.findById(validId);
+    await repo.save(recipe);
+    const found = await repo.findById(validId);
     expect(found).not.toBeNull();
     expect(found!.getId()).toBe(validId);
   });
 
-  it('debe devolver null si no existe', () => {
-    expect(repo.findById(validId)).toBeNull();
+  it('debe devolver null si no existe', async () => {
+    expect(await repo.findById(validId)).toBeNull();
   });
 
-  it('debe listar todas las recetas', () => {
-    repo.save(Recipe.create(validId, validUserId, 'Receta 1', 2, 10, null, [], defaultTags));
+  it('debe listar todas las recetas', async () => {
+    await repo.save(Recipe.create(validId, validUserId, 'Receta 1', 2, 10, null, [], defaultTags));
     const id2 = '550e8400-e29b-41d4-a716-446655440002';
-    repo.save(Recipe.create(id2, validUserId, 'Receta 2', 4, 20, null, [], defaultTags));
-    expect(repo.findAll()).toHaveLength(2);
+    await repo.save(Recipe.create(id2, validUserId, 'Receta 2', 4, 20, null, [], defaultTags));
+    expect(await repo.findAll()).toHaveLength(2);
   });
 
-  it('debe devolver lista vacía si no hay recetas', () => {
-    expect(repo.findAll()).toHaveLength(0);
+  it('debe devolver lista vacía si no hay recetas', async () => {
+    expect(await repo.findAll()).toHaveLength(0);
   });
 
-  it('debe eliminar una receta por id', () => {
-    repo.save(Recipe.create(validId, validUserId, 'Test', 2, 10, null, [], defaultTags));
-    repo.delete(validId);
-    expect(repo.findById(validId)).toBeNull();
+  it('debe eliminar una receta por id', async () => {
+    await repo.save(Recipe.create(validId, validUserId, 'Test', 2, 10, null, [], defaultTags));
+    await repo.delete(validId);
+    expect(await repo.findById(validId)).toBeNull();
   });
 });

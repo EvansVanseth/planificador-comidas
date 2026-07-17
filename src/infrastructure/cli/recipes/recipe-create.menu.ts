@@ -9,7 +9,7 @@ const ON_CANCEL = () => {};
 
 export async function crearReceta(container: IContainer, userId: string) {
   try {
-    const tagsDisponibles = container.listTags.execute(userId);
+    const tagsDisponibles = await container.listTags.execute(userId);
     const datos = await prompts([
       { type: 'text', name: 'name', message: 'Nombre de la receta:' },
       { type: 'number', name: 'baseServings', message: 'Comensales base:', initial: 2 },
@@ -40,7 +40,7 @@ export async function crearReceta(container: IContainer, userId: string) {
       elegidas.ids.forEach((id: string) => seleccionTags.push({ id, dimension: dim as TagDimension }));
     }
 
-    const id = container.createRecipe.execute(
+    const id = await container.createRecipe.execute(
       userId, datos.name, datos.baseServings, datos.prepTime, datos.preparation || null, [], seleccionTags,
     );
     console.log('✓ ' + `Receta creada: ${id}`);

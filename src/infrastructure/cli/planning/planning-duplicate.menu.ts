@@ -6,7 +6,7 @@ const ON_CANCEL = () => {};
 
 export async function duplicarPlanificacion(container: IContainer, userId: string) {
   try {
-    const plannings = container.listPlannings.execute(userId);
+    const plannings = await container.listPlannings.execute(userId);
     if (plannings.length === 0) {
       console.log('No hay planificaciones para duplicar');
       return;
@@ -24,8 +24,8 @@ export async function duplicarPlanificacion(container: IContainer, userId: strin
 
     if (!response?.id || response.id === '__cancel__') return;
 
-    const newId = container.duplicatePlanning.execute(response.id, userId);
-    const copy = container.listPlannings.execute(userId).find(p => p.getId() === newId);
+    const newId = await container.duplicatePlanning.execute(response.id, userId);
+    const copy = (await container.listPlannings.execute(userId)).find(p => p.getId() === newId);
     console.log(`✓ Planificacion duplicada como "${copy?.getName()}"`);
 
   } catch (error) {

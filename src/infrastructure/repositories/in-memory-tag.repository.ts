@@ -5,30 +5,31 @@ import { TagDimension } from "@/domain/recipes/value-objects/tag-dimension.enum"
 export class InMemoryTagRepository implements TagRepository {
   private tags: Map<string, Tag> = new Map();
 
-  findById(id: string): Tag | null {
+  async findById(id: string): Promise<Tag | null> {
     return this.tags.get(id) || null;
   }
 
-  findAll(): Tag[] {
+  async findAll(): Promise<Tag[]> {
     return Array.from(this.tags.values());
   }
 
-  findAllByUserId(userId: string): Tag[] {
-    return this.findAll().filter(t => t.getUserId() === userId);
+  async findAllByUserId(userId: string): Promise<Tag[]> {
+    return (await this.findAll()).filter(t => t.getUserId() === userId);
   }
 
-  findByNameAndDimension(name: string, dimension: TagDimension): Tag | null {
+  async findByNameAndDimension(name: string, dimension: TagDimension): Promise<Tag | null> {
     const normalized = name.toLowerCase().trim();
-    return this.findAll().find(
+    const tags = await this.findAll();
+    return tags.find(
       t => t.getName().toLowerCase().trim() === normalized && t.getDimension() === dimension
     ) ?? null;
   }
 
-  save(tag: Tag): void {
+  async save(tag: Tag): Promise<void> {
     this.tags.set(tag.getId(), tag);
   }
 
-  delete(id: string): void {
+  async delete(id: string): Promise<void> {
     this.tags.delete(id);
   }
 }

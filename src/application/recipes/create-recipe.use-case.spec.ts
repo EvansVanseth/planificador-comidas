@@ -20,21 +20,21 @@ describe('CreateRecipeUseCase', () => {
     useCase = new CreateRecipeUseCase(repo);
   });
 
-  it('debe crear una receta y devolver un id', () => {
-    const id = useCase.execute(validUserId, 'Milanesas', 2, 20, null, [], defaultTags);
+  it('debe crear una receta y devolver un id', async () => {
+    const id = await useCase.execute(validUserId, 'Milanesas', 2, 20, null, [], defaultTags);
     expect(id).toBeDefined();
-    const saved = repo.findById(id);
+    const saved = await repo.findById(id);
     expect(saved).not.toBeNull();
     expect(saved!.getName()).toBe('Milanesas');
   });
 
-  it('debe rechazar nombre duplicado', () => {
-    useCase.execute(validUserId, 'Milanesas', 2, 20, null, [], defaultTags);
-    expect(() => useCase.execute(validUserId, 'Milanesas', 2, 20, null, [], defaultTags)).toThrow(AppError);
+  it('debe rechazar nombre duplicado', async () => {
+    await useCase.execute(validUserId, 'Milanesas', 2, 20, null, [], defaultTags);
+    await expect(useCase.execute(validUserId, 'Milanesas', 2, 20, null, [], defaultTags)).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar nombre duplicado ignorando mayúsculas', () => {
-    useCase.execute(validUserId, 'Milanesas', 2, 20, null, [], defaultTags);
-    expect(() => useCase.execute(validUserId, 'milanesas', 2, 20, null, [], defaultTags)).toThrow(AppError);
+  it('debe rechazar nombre duplicado ignorando mayúsculas', async () => {
+    await useCase.execute(validUserId, 'Milanesas', 2, 20, null, [], defaultTags);
+    await expect(useCase.execute(validUserId, 'milanesas', 2, 20, null, [], defaultTags)).rejects.toThrow(AppError);
   });
 });

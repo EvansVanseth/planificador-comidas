@@ -17,37 +17,37 @@ describe('BulkCreateDaysUseCase', () => {
     useCase = new BulkCreateDaysUseCase(planningRepo);
   });
 
-  it('debe crear varios dias correctamente', () => {
+  it('debe crear varios dias correctamente', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute({ planningId, orders: [1, 3, 5] });
+    await useCase.execute({ planningId, orders: [1, 3, 5] });
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDays()).toHaveLength(3);
     expect(updated.getDay(1)).not.toBeNull();
     expect(updated.getDay(3)).not.toBeNull();
     expect(updated.getDay(5)).not.toBeNull();
   });
 
-  it('debe fallar si un dia ya existe', () => {
+  it('debe fallar si un dia ya existe', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
     planning.addDay('550e8400-e29b-41d4-a716-446655440002', 1);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute({ planningId, orders: [1, 2] })).toThrow(DomainError);
-    const updated = planningRepo.findById(planningId)!;
+    await expect(useCase.execute({ planningId, orders: [1, 2] })).rejects.toThrow(DomainError);
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDays()).toHaveLength(1);
   });
 
-  it('debe fallar si un dia esta fuera del rango de semanas', () => {
+  it('debe fallar si un dia esta fuera del rango de semanas', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute({ planningId, orders: [8] })).toThrow(DomainError);
+    await expect(useCase.execute({ planningId, orders: [8] })).rejects.toThrow(DomainError);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute({ planningId, orders: [1] })).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute({ planningId, orders: [1] })).rejects.toThrow(AppError);
   });
 });

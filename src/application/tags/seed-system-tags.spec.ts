@@ -13,10 +13,10 @@ describe('seedSystemTags', () => {
     repo = new InMemoryTagRepository();
   });
 
-  it('debe crear las 15 etiquetas de sistema si no hay ninguna', () => {
-    seedSystemTags(repo, userId);
+  it('debe crear las 15 etiquetas de sistema si no hay ninguna', async () => {
+    await seedSystemTags(repo, userId);
 
-    const all = repo.findAll();
+    const all = await repo.findAll();
     const systemTags = all.filter(t => t.isSystemTag());
     expect(systemTags).toHaveLength(15);
 
@@ -39,15 +39,15 @@ describe('seedSystemTags', () => {
     expect(estilos).toHaveLength(3);
   });
 
-  it('no debe duplicar etiquetas si ya existen las de sistema', () => {
-    seedSystemTags(repo, userId);
-    expect(repo.findAll().filter(t => t.isSystemTag())).toHaveLength(15);
+  it('no debe duplicar etiquetas si ya existen las de sistema', async () => {
+    await seedSystemTags(repo, userId);
+    expect((await repo.findAll()).filter(t => t.isSystemTag())).toHaveLength(15);
 
-    seedSystemTags(repo, userId);
-    expect(repo.findAll().filter(t => t.isSystemTag())).toHaveLength(15);
+    await seedSystemTags(repo, userId);
+    expect((await repo.findAll()).filter(t => t.isSystemTag())).toHaveLength(15);
   });
 
-  it('debe crear etiquetas de sistema incluso si ya hay etiquetas de usuario', () => {
+  it('debe crear etiquetas de sistema incluso si ya hay etiquetas de usuario', async () => {
     const userTag = Tag.create(
       '550e8400-e29b-41d4-a716-446655440000',
       '550e8400-e29b-41d4-a716-446655440001',
@@ -55,26 +55,27 @@ describe('seedSystemTags', () => {
       TagDimension.TIPO_PLATO,
       false,
     );
-    repo.save(userTag);
+    await repo.save(userTag);
 
-    seedSystemTags(repo, userId);
+    await seedSystemTags(repo, userId);
 
-    const systemTags = repo.findAll().filter(t => t.isSystemTag());
+    const all = await repo.findAll();
+    const systemTags = all.filter(t => t.isSystemTag());
     expect(systemTags).toHaveLength(15);
-    expect(repo.findAll()).toHaveLength(16);
+    expect(all).toHaveLength(16);
   });
 
-  it('cada etiqueta de sistema debe tener isSystem=true', () => {
-    seedSystemTags(repo, userId);
+  it('cada etiqueta de sistema debe tener isSystem=true', async () => {
+    await seedSystemTags(repo, userId);
 
-    const systemTags = repo.findAll().filter(t => t.isSystemTag());
+    const systemTags = (await repo.findAll()).filter(t => t.isSystemTag());
     expect(systemTags).toHaveLength(15);
     for (const tag of systemTags) {
       expect(tag.isSystemTag()).toBe(true);
     }
   });
 
-  it('debe asignar ordenes contiguos a MOMENTO_DIA de datos antiguos (order=0)', () => {
+  it('debe asignar ordenes contiguos a MOMENTO_DIA de datos antiguos (order=0)', async () => {
     const desayuno = Tag.create(
       '550e8400-e29b-41d4-a716-446655440010', userId, 'Desayuno', TagDimension.MOMENTO_DIA, true, 'DESAYUNO', 0,
     );
@@ -87,14 +88,15 @@ describe('seedSystemTags', () => {
     const almuerzo = Tag.create(
       '550e8400-e29b-41d4-a716-446655440013', userId, 'Almuerzo', TagDimension.MOMENTO_DIA, false, undefined, 0,
     );
-    repo.save(desayuno);
-    repo.save(comida);
-    repo.save(cena);
-    repo.save(almuerzo);
+    await repo.save(desayuno);
+    await repo.save(comida);
+    await repo.save(cena);
+    await repo.save(almuerzo);
 
-    seedSystemTags(repo, userId);
+    await seedSystemTags(repo, userId);
 
-    const momentos = repo.findAll()
+    const all = await repo.findAll();
+    const momentos = all
       .filter(t => t.getDimension() === TagDimension.MOMENTO_DIA)
       .sort((a, b) => a.getOrder() - b.getOrder());
 
@@ -109,19 +111,19 @@ describe('seedSystemTags', () => {
     expect(momentos[3].getOrder()).toBe(4);
   });
 
-  it('no debe reasignar ordenes si ya tienen valores no cero', () => {
+  it('no debe reasignar ordenes si ya tienen valores no cero', async () => {
     const desayuno = Tag.create(
       '550e8400-e29b-41d4-a716-446655440010', userId, 'Desayuno', TagDimension.MOMENTO_DIA, true, 'DESAYUNO', 1,
     );
     const almuerzo = Tag.create(
       '550e8400-e29b-41d4-a716-446655440013', userId, 'Almuerzo', TagDimension.MOMENTO_DIA, false, undefined, 5,
     );
-    repo.save(desayuno);
-    repo.save(almuerzo);
+    await repo.save(desayuno);
+    await repo.save(almuerzo);
 
-    seedSystemTags(repo, userId);
+    await seedSystemTags(repo, userId);
 
-    expect(repo.findById('550e8400-e29b-41d4-a716-446655440010')!.getOrder()).toBe(1);
-    expect(repo.findById('550e8400-e29b-41d4-a716-446655440013')!.getOrder()).toBe(5);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440010'))!.getOrder()).toBe(1);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440013'))!.getOrder()).toBe(5);
   });
 });

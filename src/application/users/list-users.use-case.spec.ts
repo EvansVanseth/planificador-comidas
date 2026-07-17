@@ -12,18 +12,18 @@ describe('ListUsersUseCase', () => {
     useCase = new ListUsersUseCase(repo);
   });
 
-  it('debe devolver lista vacía cuando no hay usuarios', () => {
-    const result = useCase.execute();
+  it('debe devolver lista vacía cuando no hay usuarios', async () => {
+    const result = await useCase.execute();
     expect(result).toEqual([]);
   });
 
-  it('debe devolver todos los usuarios como primitives', () => {
+  it('debe devolver todos los usuarios como primitives', async () => {
     const user1 = User.create('550e8400-e29b-41d4-a716-446655440001', 'Alice', 'alice@test.com');
     const user2 = User.create('550e8400-e29b-41d4-a716-446655440002', 'Bob', 'bob@test.com');
-    repo.save(user1);
-    repo.save(user2);
+    await repo.save(user1);
+    await repo.save(user2);
 
-    const result = useCase.execute();
+    const result = await useCase.execute();
     expect(result).toHaveLength(2);
     expect(result).toEqual(
       expect.arrayContaining([

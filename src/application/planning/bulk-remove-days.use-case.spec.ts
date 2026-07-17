@@ -25,26 +25,26 @@ describe('BulkRemoveDaysUseCase', () => {
     return planning;
   }
 
-  it('debe eliminar varios dias correctamente', () => {
+  it('debe eliminar varios dias correctamente', async () => {
     const planning = setupPlanningWithDays();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute({ planningId, orders: [1, 3] });
+    await useCase.execute({ planningId, orders: [1, 3] });
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDays()).toHaveLength(1);
     expect(updated.getDay(1)).toBeNull();
     expect(updated.getDay(2)).not.toBeNull();
   });
 
-  it('debe fallar si un dia no existe', () => {
+  it('debe fallar si un dia no existe', async () => {
     const planning = setupPlanningWithDays();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute({ planningId, orders: [99] })).toThrow(DomainError);
+    await expect(useCase.execute({ planningId, orders: [99] })).rejects.toThrow(DomainError);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute({ planningId, orders: [1] })).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute({ planningId, orders: [1] })).rejects.toThrow(AppError);
   });
 });

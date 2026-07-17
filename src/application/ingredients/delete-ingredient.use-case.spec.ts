@@ -25,54 +25,54 @@ describe('DeleteIngredientUseCase', () => {
   let recipeRepo: InMemoryRecipeRepository;
   let planningRepo: InMemoryPlanningRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     ingredientRepo = new InMemoryIngredientRepository();
     recipeRepo = new InMemoryRecipeRepository();
     planningRepo = new InMemoryPlanningRepository();
     useCase = new DeleteIngredientUseCase(ingredientRepo, recipeRepo, planningRepo);
-    ingredientRepo.save(Ingredient.create(ingredientId, userId, 'Test'));
+    await ingredientRepo.save(Ingredient.create(ingredientId, userId, 'Test'));
   });
 
-  it('debe eliminar un ingrediente existente', () => {
-    const result = useCase.execute(ingredientId);
+  it('debe eliminar un ingrediente existente', async () => {
+    const result = await useCase.execute(ingredientId);
 
-    expect(ingredientRepo.findById(ingredientId)).toBeNull();
+    expect(await ingredientRepo.findById(ingredientId)).toBeNull();
     expect(result.recipesAffected).toBe(0);
     expect(result.planningsAffected).toBe(0);
   });
 
-  it('debe lanzar error si el ingrediente no existe', () => {
-    expect(() => useCase.execute('550e8400-e29b-41d4-a716-446655440099')).toThrow(AppError);
+  it('debe lanzar error si el ingrediente no existe', async () => {
+    await expect(useCase.execute('550e8400-e29b-41d4-a716-446655440099')).rejects.toThrow(AppError);
   });
 
-  it('debe eliminar el ingrediente de las recetas que lo usan', () => {
+  it('debe eliminar el ingrediente de las recetas que lo usan', async () => {
     const recipeId = '550e8400-e29b-41d4-a716-446655440010';
     const recipe = Recipe.create(recipeId, userId, 'Receta', 4, 30, null, [
       RecipeIngredient.create(ingredientId, 'al gusto'),
     ], defaultTags);
-    recipeRepo.save(recipe);
+    await recipeRepo.save(recipe);
 
-    const result = useCase.execute(ingredientId);
+    const result = await useCase.execute(ingredientId);
 
     expect(result.recipesAffected).toBe(1);
-    const saved = recipeRepo.findById(recipeId)!;
+    const saved = (await recipeRepo.findById(recipeId))!;
     expect(saved.getIngredients()).toHaveLength(0);
-    expect(ingredientRepo.findById(ingredientId)).toBeNull();
+    expect(await ingredientRepo.findById(ingredientId)).toBeNull();
   });
 
-  it('debe eliminar el ingrediente de la despensa y lista de la compra', () => {
+  it('debe eliminar el ingrediente de la despensa y lista de la compra', async () => {
     const planningId = '550e8400-e29b-41d4-a716-446655440010';
     const planning = Planning.create(planningId, userId, 'Semana', null, 1);
     planning.addPantryItem('550e8400-e29b-41d4-a716-446655440099', ingredientId);
     planning.addShoppingItem('550e8400-e29b-41d4-a716-446655440098', ingredientId);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    const result = useCase.execute(ingredientId);
+    const result = await useCase.execute(ingredientId);
 
     expect(result.planningsAffected).toBe(1);
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getPantryItems()).toHaveLength(0);
     expect(updated.getShoppingItems()).toHaveLength(0);
-    expect(ingredientRepo.findById(ingredientId)).toBeNull();
+    expect(await ingredientRepo.findById(ingredientId)).toBeNull();
   });
 });

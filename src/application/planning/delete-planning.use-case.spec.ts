@@ -16,13 +16,13 @@ describe('DeletePlanningUseCase', () => {
     useCase = new DeletePlanningUseCase(repo);
   });
 
-  it('debe eliminar un planning existente', () => {
-    repo.save(Planning.create(validId, validUserId, 'Test', null, 1));
-    useCase.execute(validId);
-    expect(repo.findById(validId)).toBeNull();
+  it('debe eliminar un planning existente', async () => {
+    await repo.save(Planning.create(validId, validUserId, 'Test', null, 1));
+    await useCase.execute(validId);
+    expect(await repo.findById(validId)).toBeNull();
   });
 
-  it('debe lanzar error si el planning no existe', () => {
-    expect(() => useCase.execute(validId)).toThrow(AppError);
+  it('debe lanzar error si el planning no existe', async () => {
+    await expect(useCase.execute(validId)).rejects.toThrow(AppError);
   });
 });

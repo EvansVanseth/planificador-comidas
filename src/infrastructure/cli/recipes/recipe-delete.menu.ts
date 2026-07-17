@@ -6,7 +6,7 @@ const ON_CANCEL = () => {};
 
 export async function eliminarReceta(container: IContainer, userId: string) {
   try {
-    const recipes = container.listRecipes.execute(userId);
+    const recipes = await container.listRecipes.execute(userId);
     if (recipes.length === 0) {
       console.log('No hay recetas para eliminar');
       return;
@@ -26,7 +26,7 @@ export async function eliminarReceta(container: IContainer, userId: string) {
     const recipeId = seleccion.id;
     const recipeName = recipes.find(r => r.id === recipeId)?.name ?? recipeId;
 
-    const plannings = container.listPlannings.execute(userId);
+    const plannings = await container.listPlannings.execute(userId);
     let planningsWithRecipe = 0;
     for (const planning of plannings) {
       for (const day of planning.getDays()) {
@@ -57,7 +57,7 @@ export async function eliminarReceta(container: IContainer, userId: string) {
       }
     }
 
-    const result = container.deleteRecipe.execute(recipeId);
+    const result = await container.deleteRecipe.execute(recipeId);
     console.log('✓ Receta eliminada correctamente');
     if (result.planningsAffected > 0) {
       console.log(`  - Desasignada de ${result.planningsAffected} planificación(es)`);

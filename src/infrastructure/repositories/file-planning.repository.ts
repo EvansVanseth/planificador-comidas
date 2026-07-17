@@ -21,28 +21,28 @@ export class FilePlanningRepository implements PlanningRepository {
     }
   }
 
-  findAll(): Planning[] {
+  async findAll(): Promise<Planning[]> {
     const fileContent = fs.readFileSync(this.filePath, 'utf-8');
     const rawData: any[] = JSON.parse(fileContent);
     return rawData.map(data => Planning.fromPrimitives(data));
   }
 
-  findAllByUserId(userId: string): Planning[] {
-    return this.findAll().filter(p => p.getUserId() === userId);
+  async findAllByUserId(userId: string): Promise<Planning[]> {
+    return (await this.findAll()).filter(p => p.getUserId() === userId);
   }
 
-  findByName(name: string): Planning | null {
+  async findByName(name: string): Promise<Planning | null> {
     const normalized = name.toLowerCase().trim();
-    return this.findAll().find(p => p.getName().toLowerCase().trim() === normalized) ?? null;
+    return (await this.findAll()).find(p => p.getName().toLowerCase().trim() === normalized) ?? null;
   }
 
-  findById(id: string): Planning | null {
-    const plannings = this.findAll();
+  async findById(id: string): Promise<Planning | null> {
+    const plannings = await this.findAll();
     return plannings.find(p => p.getId() === id) || null;
   }
 
-  save(planning: Planning): void {
-    const plannings = this.findAll();
+  async save(planning: Planning): Promise<void> {
+    const plannings = await this.findAll();
     
     const index = plannings.findIndex(p => p.getId() === planning.getId());
     
@@ -57,8 +57,8 @@ export class FilePlanningRepository implements PlanningRepository {
     fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
   }
 
-  delete(id: string): void {
-    const plannings = this.findAll();
+  async delete(id: string): Promise<void> {
+    const plannings = await this.findAll();
     const index = plannings.findIndex(p => p.getId() === id);
     if (index === -1) return;
 

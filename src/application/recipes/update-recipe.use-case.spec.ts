@@ -20,68 +20,68 @@ describe('UpdateRecipeUseCase', () => {
   let useCase: UpdateRecipeUseCase;
   let repo: InMemoryRecipeRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     repo = new InMemoryRecipeRepository();
     useCase = new UpdateRecipeUseCase(repo);
-    repo.save(Recipe.create(validId, validUserId, 'Original', 4, 30, null, [], defaultTags));
+    await repo.save(Recipe.create(validId, validUserId, 'Original', 4, 30, null, [], defaultTags));
   });
 
-  it('debe actualizar el nombre', () => {
-    useCase.execute({ id: validId, name: 'Renombrada' });
-    expect(repo.findById(validId)!.getName()).toBe('Renombrada');
+  it('debe actualizar el nombre', async () => {
+    await useCase.execute({ id: validId, name: 'Renombrada' });
+    expect((await repo.findById(validId))!.getName()).toBe('Renombrada');
   });
 
-  it('debe actualizar el userId', () => {
+  it('debe actualizar el userId', async () => {
     const newId = '550e8400-e29b-41d4-a716-446655440002';
-    useCase.execute({ id: validId, userId: newId });
-    expect(repo.findById(validId)!.getUserId()).toBe(newId);
+    await useCase.execute({ id: validId, userId: newId });
+    expect((await repo.findById(validId))!.getUserId()).toBe(newId);
   });
 
-  it('debe actualizar baseServings', () => {
-    useCase.execute({ id: validId, baseServings: 8 });
-    expect(repo.findById(validId)!.getBaseServings()).toBe(8);
+  it('debe actualizar baseServings', async () => {
+    await useCase.execute({ id: validId, baseServings: 8 });
+    expect((await repo.findById(validId))!.getBaseServings()).toBe(8);
   });
 
-  it('debe actualizar prepTime', () => {
-    useCase.execute({ id: validId, prepTime: 60 });
-    expect(repo.findById(validId)!.getPrepTime()).toBe(60);
+  it('debe actualizar prepTime', async () => {
+    await useCase.execute({ id: validId, prepTime: 60 });
+    expect((await repo.findById(validId))!.getPrepTime()).toBe(60);
   });
 
-  it('debe actualizar preparation', () => {
-    useCase.execute({ id: validId, preparation: 'Cocinar 30 min' });
-    expect(repo.findById(validId)!.getPreparation()).toBe('Cocinar 30 min');
+  it('debe actualizar preparation', async () => {
+    await useCase.execute({ id: validId, preparation: 'Cocinar 30 min' });
+    expect((await repo.findById(validId))!.getPreparation()).toBe('Cocinar 30 min');
   });
 
-  it('debe añadir y eliminar tags', () => {
+  it('debe añadir y eliminar tags', async () => {
     const tagMomento2 = '550e8400-e29b-41d4-a716-446655440013';
-    useCase.execute({
+    await useCase.execute({
       id: validId,
       addTags: [{ id: tagMomento2, dimension: TagDimension.MOMENTO_DIA }],
       removeTags: [tagMomento],
     });
-    const recipe = repo.findById(validId)!;
+    const recipe = (await repo.findById(validId))!;
     expect(recipe.getTagIds()).toHaveLength(3);
     expect(recipe.getTagIds()).toContain(tagMomento2);
   });
 
-  it('debe lanzar error si la receta no existe', () => {
-    expect(() => useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'X' })).toThrow(AppError);
+  it('debe lanzar error si la receta no existe', async () => {
+    await expect(useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'X' })).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar renombrar a un nombre duplicado', () => {
+  it('debe rechazar renombrar a un nombre duplicado', async () => {
     const otherId = '550e8400-e29b-41d4-a716-446655440020';
-    repo.save(Recipe.create(otherId, validUserId, 'Existente', 2, 10, null, [], defaultTags));
-    expect(() => useCase.execute({ id: validId, name: 'Existente' })).toThrow(AppError);
+    await repo.save(Recipe.create(otherId, validUserId, 'Existente', 2, 10, null, [], defaultTags));
+    await expect(useCase.execute({ id: validId, name: 'Existente' })).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', () => {
+  it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', async () => {
     const otherId = '550e8400-e29b-41d4-a716-446655440020';
-    repo.save(Recipe.create(otherId, validUserId, 'Existente', 2, 10, null, [], defaultTags));
-    expect(() => useCase.execute({ id: validId, name: 'existente' })).toThrow(AppError);
+    await repo.save(Recipe.create(otherId, validUserId, 'Existente', 2, 10, null, [], defaultTags));
+    await expect(useCase.execute({ id: validId, name: 'existente' })).rejects.toThrow(AppError);
   });
 
-  it('debe permitir mantener el mismo nombre al actualizar', () => {
-    useCase.execute({ id: validId, name: 'Original' });
-    expect(repo.findById(validId)!.getName()).toBe('Original');
+  it('debe permitir mantener el mismo nombre al actualizar', async () => {
+    await useCase.execute({ id: validId, name: 'Original' });
+    expect((await repo.findById(validId))!.getName()).toBe('Original');
   });
 });

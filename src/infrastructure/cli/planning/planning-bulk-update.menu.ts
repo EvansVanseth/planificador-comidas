@@ -9,7 +9,7 @@ const ON_CANCEL = () => {};
 
 export async function editarDias(container: IContainer, userId: string, planningId: string) {
   try {
-    const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
+    const planning = (await container.listPlannings.execute(userId)).find(p => p.getId() === planningId);
     if (!planning) { console.log('Planificacion no encontrada'); return; }
 
     const days = planning.getDays().sort((a, b) => a.getOrdenDia() - b.getOrdenDia());
@@ -18,7 +18,7 @@ export async function editarDias(container: IContainer, userId: string, planning
       return;
     }
 
-    mostrarPlanificacion(planning, container.listRecipes.execute(userId), container.listTags.execute(userId));
+    mostrarPlanificacion(planning, await container.listRecipes.execute(userId), await container.listTags.execute(userId));
 
     const seleccionDias = await prompts({
       type: 'multiselect',
@@ -37,13 +37,13 @@ export async function editarDias(container: IContainer, userId: string, planning
 
     let continuar = true;
     while (continuar) {
-      const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
+      const planning = (await container.listPlannings.execute(userId)).find(p => p.getId() === planningId);
       if (!planning) { console.log('Planificacion no encontrada'); return; }
 
-      const allTags = container.listTags.execute(userId);
+      const allTags = await container.listTags.execute(userId);
       const momentTags = allTags.filter(t => t.dimension === TagDimension.MOMENTO_DIA);
       const nonMomentTags = allTags.filter(t => t.dimension !== TagDimension.MOMENTO_DIA);
-      const allRecipes = container.listRecipes.execute(userId);
+      const allRecipes = await container.listRecipes.execute(userId);
 
       console.log(`\n--- Editando ${orders.length} dia(s) ---`);
       const recipeNameMap = new Map(allRecipes.map(r => [r.id, r.name]));
@@ -125,7 +125,7 @@ export async function editarDias(container: IContainer, userId: string, planning
               if (recipeResp?.id) recipeId = recipeResp.id;
             }
 
-            container.bulkAssignMeal.execute({ planningId, days: orders, momentTagId: momentResp.id, covers: coversResp.value, recipeId });
+            await container.bulkAssignMeal.execute({ planningId, days: orders, momentTagId: momentResp.id, covers: coversResp.value, recipeId });
             console.log('✓ ' + `Servicio asignado a ${orders.length} dia(s)`);
             break;
           }
@@ -165,7 +165,7 @@ export async function editarDias(container: IContainer, userId: string, planning
             const recipeId = recipeResp.id === '__unchanged__' ? undefined : recipeResp.id === '__clear__' ? undefined : recipeResp.id;
             const clearRecipe = recipeResp.id === '__clear__';
 
-            container.bulkAssignMeal.execute({ planningId, days: orders, momentTagId: momentResp.id, covers: coversResp.value, recipeId, clearRecipe });
+            await container.bulkAssignMeal.execute({ planningId, days: orders, momentTagId: momentResp.id, covers: coversResp.value, recipeId, clearRecipe });
             console.log('✓ ' + `Servicio modificado en ${orders.length} dia(s)`);
             break;
           }
@@ -190,7 +190,7 @@ export async function editarDias(container: IContainer, userId: string, planning
             }, { onCancel: ON_CANCEL });
             if (!confirmar?.value) break;
 
-            container.bulkRemoveMeal.execute({ planningId, days: orders, momentTagId: momentResp.id });
+            await container.bulkRemoveMeal.execute({ planningId, days: orders, momentTagId: momentResp.id });
             console.log('✓ ' + `Servicio eliminado de ${orders.length} dia(s)`);
             break;
           }
@@ -216,7 +216,7 @@ export async function editarDias(container: IContainer, userId: string, planning
             }, { onCancel: ON_CANCEL });
             if (!confirmar?.value) break;
 
-            container.bulkUpdateDays.execute({ planningId, days: orders, exclusions: exclResp.tags });
+            await container.bulkUpdateDays.execute({ planningId, days: orders, exclusions: exclResp.tags });
             console.log('✓ ' + `Exclusiones actualizadas en ${orders.length} dia(s)`);
             break;
           }
@@ -242,7 +242,7 @@ export async function editarDias(container: IContainer, userId: string, planning
             }, { onCancel: ON_CANCEL });
             if (!confirmar?.value) break;
 
-            container.bulkUpdateDays.execute({ planningId, days: orders, preferences: prefResp.tags });
+            await container.bulkUpdateDays.execute({ planningId, days: orders, preferences: prefResp.tags });
             console.log('✓ ' + `Preferencias actualizadas en ${orders.length} dia(s)`);
             break;
           }

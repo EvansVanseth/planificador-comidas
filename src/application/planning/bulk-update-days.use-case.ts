@@ -17,12 +17,12 @@ export class BulkUpdateDaysUseCase {
     private tagRepository: TagRepository,
   ) {}
 
-  execute(input: BulkUpdateDaysInput): void {
-    const planning = this.planningRepository.findById(input.planningId);
+  async execute(input: BulkUpdateDaysInput): Promise<void> {
+    const planning = await this.planningRepository.findById(input.planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
 
-    if (input.exclusions) this.validarSinMomentoDia(input.exclusions, 'exclusión');
-    if (input.preferences) this.validarSinMomentoDia(input.preferences, 'preferencia');
+    if (input.exclusions) await this.validarSinMomentoDia(input.exclusions, 'exclusión');
+    if (input.preferences) await this.validarSinMomentoDia(input.preferences, 'preferencia');
 
     planning.bulkUpdateServices(input.days, {
       covers: input.covers,
@@ -30,12 +30,12 @@ export class BulkUpdateDaysUseCase {
       preferences: input.preferences,
     });
 
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
   }
 
-  private validarSinMomentoDia(tagIds: string[], tipo: string): void {
+  private async validarSinMomentoDia(tagIds: string[], tipo: string): Promise<void> {
     for (const tagId of tagIds) {
-      const tag = this.tagRepository.findById(tagId);
+      const tag = await this.tagRepository.findById(tagId);
       if (tag && tag.getDimension() === TagDimension.MOMENTO_DIA) {
         throw new AppError(`No se puede usar la etiqueta de momento del día "${tag.getName()}" como ${tipo}`);
       }

@@ -33,66 +33,66 @@ describe('BulkUpdateDaysUseCase', () => {
     return planning;
   }
 
-  beforeEach(() => {
+  beforeEach(async () => {
     planningRepo = new InMemoryPlanningRepository();
     tagRepo = new InMemoryTagRepository();
-    tagRepo.save(Tag.create(momentoTagId, userId, 'Desayuno', TagDimension.MOMENTO_DIA, true));
+    await tagRepo.save(Tag.create(momentoTagId, userId, 'Desayuno', TagDimension.MOMENTO_DIA, true));
     useCase = new BulkUpdateDaysUseCase(planningRepo, tagRepo);
   });
 
-  it('debe actualizar comensales en todos los servicios de los dias seleccionados', () => {
+  it('debe actualizar comensales en todos los servicios de los dias seleccionados', async () => {
     const planning = setupPlanningWithServices();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute({ planningId, days: [1, 2], covers: 5 });
+    await useCase.execute({ planningId, days: [1, 2], covers: 5 });
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[lunchTagId]!.getCovers()).toBe(5);
     expect(updated.getDay(1)!.services[dinnerTagId]!.getCovers()).toBe(5);
     expect(updated.getDay(2)!.services[lunchTagId]!.getCovers()).toBe(5);
   });
 
-  it('debe actualizar exclusiones en todos los servicios de los dias seleccionados', () => {
+  it('debe actualizar exclusiones en todos los servicios de los dias seleccionados', async () => {
     const planning = setupPlanningWithServices();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute({ planningId, days: [1], exclusions: exclusionIds });
+    await useCase.execute({ planningId, days: [1], exclusions: exclusionIds });
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[lunchTagId]!.getExclusions()).toEqual(exclusionIds);
     expect(updated.getDay(1)!.services[dinnerTagId]!.getExclusions()).toEqual(exclusionIds);
     expect(updated.getDay(2)!.services[lunchTagId]!.getExclusions()).toEqual([]);
   });
 
-  it('debe actualizar preferencias en todos los servicios de los dias seleccionados', () => {
+  it('debe actualizar preferencias en todos los servicios de los dias seleccionados', async () => {
     const planning = setupPlanningWithServices();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute({ planningId, days: [1, 2], preferences: preferenceIds });
+    await useCase.execute({ planningId, days: [1, 2], preferences: preferenceIds });
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[lunchTagId]!.getPreferences()).toEqual(preferenceIds);
     expect(updated.getDay(2)!.services[lunchTagId]!.getPreferences()).toEqual(preferenceIds);
   });
 
-  it('debe actualizar solo los campos proporcionados (covers sin tocar exclusiones)', () => {
+  it('debe actualizar solo los campos proporcionados (covers sin tocar exclusiones)', async () => {
     const planning = setupPlanningWithServices();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute({ planningId, days: [1], covers: 6 });
+    await useCase.execute({ planningId, days: [1], covers: 6 });
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[lunchTagId]!.getCovers()).toBe(6);
     expect(updated.getDay(1)!.services[lunchTagId]!.getExclusions()).toEqual([]);
   });
 
-  it('debe manejar varios campos a la vez', () => {
+  it('debe manejar varios campos a la vez', async () => {
     const planning = setupPlanningWithServices();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute({ planningId, days: [1, 2], covers: 3, exclusions: exclusionIds, preferences: preferenceIds });
+    await useCase.execute({ planningId, days: [1, 2], covers: 3, exclusions: exclusionIds, preferences: preferenceIds });
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[lunchTagId]!.getCovers()).toBe(3);
     expect(updated.getDay(1)!.services[lunchTagId]!.getExclusions()).toEqual(exclusionIds);
     expect(updated.getDay(1)!.services[lunchTagId]!.getPreferences()).toEqual(preferenceIds);
@@ -101,28 +101,28 @@ describe('BulkUpdateDaysUseCase', () => {
     expect(updated.getDay(2)!.services[lunchTagId]!.getPreferences()).toEqual(preferenceIds);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute({ planningId, days: [1], covers: 5 })).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute({ planningId, days: [1], covers: 5 })).rejects.toThrow(AppError);
   });
 
-  it('debe fallar si un dia no existe', () => {
+  it('debe fallar si un dia no existe', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute({ planningId, days: [99], covers: 5 })).toThrow(DomainError);
+    await expect(useCase.execute({ planningId, days: [99], covers: 5 })).rejects.toThrow(DomainError);
   });
 
-  it('debe fallar si se intenta excluir una etiqueta de MOMENTO_DIA', () => {
+  it('debe fallar si se intenta excluir una etiqueta de MOMENTO_DIA', async () => {
     const planning = setupPlanningWithServices();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute({ planningId, days: [1], exclusions: [momentoTagId] })).toThrow(AppError);
+    await expect(useCase.execute({ planningId, days: [1], exclusions: [momentoTagId] })).rejects.toThrow(AppError);
   });
 
-  it('debe fallar si se intenta preferir una etiqueta de MOMENTO_DIA', () => {
+  it('debe fallar si se intenta preferir una etiqueta de MOMENTO_DIA', async () => {
     const planning = setupPlanningWithServices();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute({ planningId, days: [1], preferences: [momentoTagId] })).toThrow(AppError);
+    await expect(useCase.execute({ planningId, days: [1], preferences: [momentoTagId] })).rejects.toThrow(AppError);
   });
 });

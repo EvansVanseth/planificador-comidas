@@ -12,26 +12,26 @@ describe('MarkPantryItemAvailableUseCase', () => {
   let useCase: MarkPantryItemAvailableUseCase;
   let planningRepo: InMemoryPlanningRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     planningRepo = new InMemoryPlanningRepository();
     useCase = new MarkPantryItemAvailableUseCase(planningRepo);
 
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
     planning.addPantryItem('550e8400-e29b-41d4-a716-446655440099', ingredientId);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
   });
 
-  it('debe marcar un item de la despensa como disponible', () => {
-    useCase.execute(planningId, ingredientId);
+  it('debe marcar un item de la despensa como disponible', async () => {
+    await useCase.execute(planningId, ingredientId);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const items = updated.getPantryItems();
     const item = items.find(i => i.getIngredientId() === ingredientId);
     expect(item).toBeDefined();
     expect(item!.isAvailable()).toBe(true);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute('inexistente', ingredientId)).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute('inexistente', ingredientId)).rejects.toThrow(AppError);
   });
 });

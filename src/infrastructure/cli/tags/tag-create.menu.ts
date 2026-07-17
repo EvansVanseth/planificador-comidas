@@ -37,7 +37,7 @@ export async function crearEtiqueta(container: IContainer, userId: string) {
       if (orderResp?.value !== undefined) order = orderResp.value;
     }
 
-    const id = container.createTag.execute(userId, answers.name, answers.dimension, false, order);
+    const id = await container.createTag.execute(userId, answers.name, answers.dimension, false, order);
     console.log('✓ ' + `Etiqueta creada: ${id}`);
 
   } catch (error) {

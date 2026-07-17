@@ -41,9 +41,9 @@ export function mostrarPlanificacion(
   });
 }
 
-export function verIngredientesNecesarios(container: IContainer, planningId: string) {
+export async function verIngredientesNecesarios(container: IContainer, planningId: string) {
   try {
-    const items = container.getNeededIngredients.execute(planningId);
+    const items = await container.getNeededIngredients.execute(planningId);
     if (items.length === 0) {
       console.log('No hay ingredientes necesarios (sin recetas asignadas)');
       return;
@@ -60,9 +60,9 @@ export function verIngredientesNecesarios(container: IContainer, planningId: str
   }
 }
 
-export function verListaCompra(container: IContainer, planningId: string) {
+export async function verListaCompra(container: IContainer, planningId: string) {
   try {
-    const items = container.getShoppingList.execute(planningId);
+    const items = await container.getShoppingList.execute(planningId);
     if (items.length === 0) {
       console.log('No hay ingredientes en la lista de la compra');
       return;
@@ -84,14 +84,14 @@ export function verListaCompra(container: IContainer, planningId: string) {
   }
 }
 
-export function listarPlanificaciones(container: IContainer, userId: string) {
-  const plannings = container.listPlannings.execute(userId);
+export async function listarPlanificaciones(container: IContainer, userId: string) {
+  const plannings = await container.listPlannings.execute(userId);
   if (plannings.length === 0) {
     console.log('No hay planificaciones');
     return;
   }
-  const allRecipes = container.listRecipes.execute(userId);
-  const allTags = container.listTags.execute(userId);
+  const allRecipes = await container.listRecipes.execute(userId);
+  const allTags = await container.listTags.execute(userId);
 
   console.log('--- Planificaciones ---');
 

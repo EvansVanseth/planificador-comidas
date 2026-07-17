@@ -21,11 +21,11 @@ export class BulkAssignMealUseCase {
     private recipeRepository: RecipeRepository,
   ) {}
 
-  execute(input: BulkAssignMealInput): void {
-    const planning = this.planningRepository.findById(input.planningId);
+  async execute(input: BulkAssignMealInput): Promise<void> {
+    const planning = await this.planningRepository.findById(input.planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
 
-    const tag = this.tagRepository.findById(input.momentTagId);
+    const tag = await this.tagRepository.findById(input.momentTagId);
     if (!tag) throw new AppError('La etiqueta de momento del día no existe');
     if (tag.getDimension() !== TagDimension.MOMENTO_DIA) {
       throw new AppError('La etiqueta no es de tipo MOMENTO_DIA');
@@ -38,15 +38,19 @@ export class BulkAssignMealUseCase {
     const finalRecipeId = input.recipeId || undefined;
 
     if (finalRecipeId && !input.ignoreRestrictions) {
-      const recipe = this.recipeRepository.findById(finalRecipeId);
+      const recipe = await this.recipeRepository.findById(finalRecipeId);
       if (!recipe) throw new AppError('La receta no existe');
 
       const recipeTagIds = recipe.getTagIds();
 
-      const recipeMoments = recipeTagIds.filter(
-        (tid) => this.tagRepository.findById(tid)?.getDimension() === TagDimension.MOMENTO_DIA,
+      const moments = await Promise.all(
+        recipeTagIds.map(tid => this.tagRepository.findById(tid)),
       );
-      if (recipeMoments.length > 0 && !recipeMoments.some((tid) => tid === input.momentTagId)) {
+      const recipeMoments = moments.filter(
+        (t): t is NonNullable<typeof t> => t !== null && t.getDimension() === TagDimension.MOMENTO_DIA,
+      );
+      const recipeMomentIds = recipeMoments.map(t => t.getId());
+      if (recipeMoments.length > 0 && !recipeMomentIds.some(tid => tid === input.momentTagId)) {
         throw new AppError('La receta no está disponible para este momento del día');
       }
 
@@ -55,9 +59,12 @@ export class BulkAssignMealUseCase {
         const meal = day?.services[input.momentTagId];
         const exclusions = meal?.getExclusions() ?? [];
         if (exclusions.length > 0) {
-          const conflicted = exclusions.filter((e) => recipeTagIds.includes(e));
+          const tags = await Promise.all(
+            exclusions.map(id => this.tagRepository.findById(id)),
+          );
+          const conflicted = exclusions.filter((e, i) => tags[i] !== null && recipeTagIds.includes(e));
           if (conflicted.length > 0) {
-            const tagNames = conflicted.map((id) => this.tagRepository.findById(id)?.getName() ?? id).join(', ');
+            const tagNames = conflicted.map(id => tags.find(t => t?.getId() === id)?.getName() ?? id).join(', ');
             throw new AppError(`El día ${dayOrder} tiene exclusiones que coinciden con la receta: ${tagNames}`);
           }
         }
@@ -65,6 +72,6 @@ export class BulkAssignMealUseCase {
     }
 
     planning.assignMealToDays(input.days, input.momentTagId, input.covers, finalRecipeId, input.clearRecipe);
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
   }
 }

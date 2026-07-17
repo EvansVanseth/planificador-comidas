@@ -17,40 +17,40 @@ describe('CreateTagUseCase', () => {
     useCase = new CreateTagUseCase(repo);
   });
 
-  it('debe crear una etiqueta de sistema y devolver un id', () => {
-    const id = useCase.execute(systemUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true);
+  it('debe crear una etiqueta de sistema y devolver un id', async () => {
+    const id = await useCase.execute(systemUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true);
     expect(id).toBeDefined();
     expect(typeof id).toBe('string');
-    const saved = repo.findById(id);
+    const saved = await repo.findById(id);
     expect(saved).not.toBeNull();
     expect(saved!.getName()).toBe('Desayuno');
     expect(saved!.isSystemTag()).toBe(true);
   });
 
-  it('debe crear una etiqueta de usuario y devolver un id', () => {
+  it('debe crear una etiqueta de usuario y devolver un id', async () => {
     const userId = '550e8400-e29b-41d4-a716-446655440001';
-    const id = useCase.execute(userId, 'Vegano', TagDimension.ESTILOS_VIDA);
-    const saved = repo.findById(id);
+    const id = await useCase.execute(userId, 'Vegano', TagDimension.ESTILOS_VIDA);
+    const saved = await repo.findById(id);
     expect(saved!.getUserId()).toBe(userId);
   });
 
-  it('debe rechazar nombre duplicado en la misma dimensión', () => {
-    useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true);
-    expect(() => useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true)).toThrow(AppError);
+  it('debe rechazar nombre duplicado en la misma dimensión', async () => {
+    await useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true);
+    await expect(useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true)).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar nombre duplicado ignorando mayúsculas', () => {
-    useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true);
-    expect(() => useCase.execute(systemUserId, 'pasta', TagDimension.TIPO_PLATO, true)).toThrow(AppError);
+  it('debe rechazar nombre duplicado ignorando mayúsculas', async () => {
+    await useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true);
+    await expect(useCase.execute(systemUserId, 'pasta', TagDimension.TIPO_PLATO, true)).rejects.toThrow(AppError);
   });
 
-  it('debe permitir mismo nombre en distinta dimensión', () => {
-    useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true);
-    expect(() => useCase.execute(systemUserId, 'Pasta', TagDimension.MOMENTO_DIA, true)).not.toThrow();
+  it('debe permitir mismo nombre en distinta dimensión', async () => {
+    await useCase.execute(systemUserId, 'Pasta', TagDimension.TIPO_PLATO, true);
+    await expect(useCase.execute(systemUserId, 'Pasta', TagDimension.MOMENTO_DIA, true)).resolves.not.toThrow();
   });
 
-  it('debe rechazar crear etiqueta FORMATO que no sea de sistema', () => {
+  it('debe rechazar crear etiqueta FORMATO que no sea de sistema', async () => {
     const userId = '550e8400-e29b-41d4-a716-446655440001';
-    expect(() => useCase.execute(userId, 'Caliente', TagDimension.FORMATO, false)).toThrow(DomainError);
+    await expect(useCase.execute(userId, 'Caliente', TagDimension.FORMATO, false)).rejects.toThrow(DomainError);
   });
 });

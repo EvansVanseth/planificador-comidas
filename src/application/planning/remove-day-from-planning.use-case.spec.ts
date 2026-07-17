@@ -11,24 +11,24 @@ describe('RemoveDayFromPlanningUseCase', () => {
   let useCase: RemoveDayFromPlanningUseCase;
   let planningRepo: InMemoryPlanningRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     planningRepo = new InMemoryPlanningRepository();
     useCase = new RemoveDayFromPlanningUseCase(planningRepo);
 
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
     planning.addDay('550e8400-e29b-41d4-a716-446655440098', 1);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
   });
 
-  it('debe eliminar un dia existente', () => {
-    useCase.execute(planningId, 1);
+  it('debe eliminar un dia existente', async () => {
+    await useCase.execute(planningId, 1);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const day = updated.getDay(1);
     expect(day).toBeNull();
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute('inexistente', 1)).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute('inexistente', 1)).rejects.toThrow(AppError);
   });
 });

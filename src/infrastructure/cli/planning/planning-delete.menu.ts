@@ -6,7 +6,7 @@ const ON_CANCEL = () => {};
 
 export async function eliminarPlanificacion(container: IContainer, userId: string) {
   try {
-    const plannings = container.listPlannings.execute(userId);
+    const plannings = await container.listPlannings.execute(userId);
     if (plannings.length === 0) {
       console.log('No hay planificaciones para eliminar');
       return;
@@ -24,7 +24,7 @@ export async function eliminarPlanificacion(container: IContainer, userId: strin
 
     if (!response?.id || response.id === '__cancel__') return;
 
-    container.deletePlanning.execute(response.id);
+    await container.deletePlanning.execute(response.id);
     console.log('✓ Planificacion eliminada');
 
   } catch (error) {

@@ -5,7 +5,7 @@ import { DomainError } from '../../../domain/shared/errors/domain-error';
 
 const ON_CANCEL = () => {};
 
-function mostrarOrden(tags: { id: string; name: string; order: number }[]) {
+function mostrarOrden(tags: { id: string; name: string; order?: number }[]) {
   console.log('\n--- Orden actual (MOMENTO_DIA) ---');
   tags.forEach((t, i) => console.log(`  ${i + 1}. ${t.name} (orden: ${t.order})`));
   console.log();
@@ -15,7 +15,7 @@ export async function reordenarMomentos(container: IContainer, userId: string) {
   try {
     let continuar = true;
     while (continuar) {
-      const allTags = container.listTags.execute(userId);
+      const allTags = await container.listTags.execute(userId);
       const momentTags = allTags
         .filter(t => t.dimension === 'MOMENTO_DIA')
         .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -59,10 +59,10 @@ export async function reordenarMomentos(container: IContainer, userId: string) {
       if (!accion?.value || accion.value === '__cancel__') continue;
 
       if (accion.value === 'up') {
-        container.tagOrderMoveUp.execute(seleccion.id);
+        await container.tagOrderMoveUp.execute(seleccion.id);
         console.log('✓ Etiqueta subida una posicion');
       } else {
-        container.tagOrderMoveDown.execute(seleccion.id);
+        await container.tagOrderMoveDown.execute(seleccion.id);
         console.log('✓ Etiqueta bajada una posicion');
       }
     }

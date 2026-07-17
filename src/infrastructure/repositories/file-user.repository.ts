@@ -21,33 +21,35 @@ export class FileUserRepository implements UserRepository {
     }
   }
 
-  findAll(): User[] {
+  async findAll(): Promise<User[]> {
     const fileContent = fs.readFileSync(this.filePath, 'utf-8');
     const rawData = JSON.parse(fileContent);
     return rawData.map((data: any) => User.fromPrimitives(data));
   }
 
-  findById(id: string): User | null {
-    const users = this.findAll();
+  async findById(id: string): Promise<User | null> {
+    const users = await this.findAll();
     return users.find(u => u.getId() === id) || null;
   }
 
-  findByName(name: string): User | null {
+  async findByName(name: string): Promise<User | null> {
     const normalized = name.toLowerCase().trim();
-    return this.findAll().find(
+    const users = await this.findAll();
+    return users.find(
       u => u.getName().toLowerCase().trim() === normalized
     ) ?? null;
   }
 
-  findByEmail(email: string): User | null {
+  async findByEmail(email: string): Promise<User | null> {
     const normalized = email.toLowerCase().trim();
-    return this.findAll().find(
+    const users = await this.findAll();
+    return users.find(
       u => u.getEmail().toLowerCase().trim() === normalized
     ) ?? null;
   }
 
-  save(user: User): void {
-    const users = this.findAll();
+  async save(user: User): Promise<void> {
+    const users = await this.findAll();
     const index = users.findIndex(u => u.getId() === user.getId());
 
     if (index >= 0) {
@@ -60,8 +62,8 @@ export class FileUserRepository implements UserRepository {
     fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
   }
 
-  delete(id: string): void {
-    const users = this.findAll();
+  async delete(id: string): Promise<void> {
+    const users = await this.findAll();
     const index = users.findIndex(u => u.getId() === id);
     if (index === -1) return;
 

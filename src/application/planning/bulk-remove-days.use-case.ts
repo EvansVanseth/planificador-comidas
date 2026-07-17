@@ -9,11 +9,11 @@ export type BulkRemoveDaysInput = {
 export class BulkRemoveDaysUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(input: BulkRemoveDaysInput): void {
-    const planning = this.planningRepository.findById(input.planningId);
+  async execute(input: BulkRemoveDaysInput): Promise<void> {
+    const planning = await this.planningRepository.findById(input.planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
 
     planning.removeDays(input.orders);
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
   }
 }

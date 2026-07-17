@@ -15,11 +15,11 @@ type NeededItem = {
 export async function gestionarNeededYPantry(container: IContainer, userId: string, planningId: string) {
   let continuar = true;
   while (continuar) {
-    const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
+    const planning = (await container.listPlannings.execute(userId)).find(p => p.getId() === planningId);
     if (!planning) return;
     const pantry = planning.getPantryItems();
 
-    const needed: NeededItem[] = container.getNeededIngredients.execute(planningId);
+    const needed: NeededItem[] = await container.getNeededIngredients.execute(planningId);
 
     console.log('\n--- Ingredientes necesarios y despensa ---');
     if (needed.length === 0) {
@@ -85,7 +85,7 @@ export async function gestionarNeededYPantry(container: IContainer, userId: stri
 
     if (respTiene.value) {
       try {
-        container.markPantryItemAvailable.execute(planningId, ingredientId);
+        await container.markPantryItemAvailable.execute(planningId, ingredientId);
         console.log('✓ Marcado como "tengo de todo"');
       } catch (error) {
         if (error instanceof AppError) console.log('✗ ' + error.message);
@@ -103,11 +103,11 @@ export async function gestionarNeededYPantry(container: IContainer, userId: stri
 
       try {
         if (pantryItem) {
-          container.updatePantryItemCovers.execute(planningId, ingredientId, respCovers.value);
+          await container.updatePantryItemCovers.execute(planningId, ingredientId, respCovers.value);
           console.log('✓ ' + `Cobertura actualizada: ${respCovers.value} comensales`);
         } else {
-          container.addPantryItem.execute(planningId, ingredientId);
-          container.updatePantryItemCovers.execute(planningId, ingredientId, respCovers.value);
+          await container.addPantryItem.execute(planningId, ingredientId);
+          await container.updatePantryItemCovers.execute(planningId, ingredientId, respCovers.value);
           console.log('✓ ' + `Agregado a despensa: ${respCovers.value} comensales`);
         }
       } catch (error) {

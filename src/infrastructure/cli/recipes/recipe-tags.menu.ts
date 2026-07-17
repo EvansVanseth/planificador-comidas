@@ -40,10 +40,10 @@ export async function gestionarEtiquetas(container: IContainer, userId: string, 
     }
 
     if (opcion.value !== 'back') {
-      const recipe = container.listRecipes.execute(userId).find(r => r.id === recipeId);
+      const recipe = (await container.listRecipes.execute(userId)).find(r => r.id === recipeId);
       if (recipe) {
-        const allIngredients = container.listIngredients.execute(userId);
-        const allTags = container.listTags.execute(userId);
+        const allIngredients = await container.listIngredients.execute(userId);
+        const allTags = await container.listTags.execute(userId);
         mostrarReceta(recipe, allIngredients, allTags);
       }
     }
@@ -52,7 +52,7 @@ export async function gestionarEtiquetas(container: IContainer, userId: string, 
 
 async function agregarEtiquetaExistente(container: IContainer, userId: string, recipeId: string) {
   try {
-    const disponibles = container.listTags.execute(userId);
+    const disponibles = await container.listTags.execute(userId);
     if (disponibles.length === 0) {
       console.log('No hay etiquetas disponibles. Crea una primero.');
       return;
@@ -71,7 +71,7 @@ async function agregarEtiquetaExistente(container: IContainer, userId: string, r
     if (!elegida?.id || elegida.id === '__cancel__') return;
 
     const tag = disponibles.find(t => t.id === elegida.id)!;
-    container.updateRecipe.execute({
+    await container.updateRecipe.execute({
       id: recipeId,
       addTags: [{ id: elegida.id, dimension: tag.dimension as TagDimension }],
     });
@@ -101,7 +101,7 @@ async function agregarNuevaEtiqueta(container: IContainer, userId: string, recip
 
     if (!datos?.name?.trim() || datos.dimension === '__cancel__') return;
 
-    container.addNewTagToRecipe.execute(
+    await container.addNewTagToRecipe.execute(
       userId,
       recipeId,
       datos.name.trim(),
@@ -117,10 +117,10 @@ async function agregarNuevaEtiqueta(container: IContainer, userId: string, recip
 
 async function quitarEtiqueta(container: IContainer, userId: string, recipeId: string) {
   try {
-    const receta = container.listRecipes.execute(userId).find(r => r.id === recipeId);
+    const receta = (await container.listRecipes.execute(userId)).find(r => r.id === recipeId);
     if (!receta) return;
 
-    const allTags = container.listTags.execute(userId);
+    const allTags = await container.listTags.execute(userId);
     const currentTags = receta.tags.map(rt => {
       const tag = allTags.find(t => t.id === rt.id);
       return { id: rt.id, display: tag ? `${tag.name} (${DIMENSION_LABELS[rt.dimension] || rt.dimension})` : rt.id };
@@ -143,7 +143,7 @@ async function quitarEtiqueta(container: IContainer, userId: string, recipeId: s
 
     if (!elegida?.id || elegida.id === '__cancel__') return;
 
-    container.updateRecipe.execute({ id: recipeId, removeTags: [elegida.id] });
+    await container.updateRecipe.execute({ id: recipeId, removeTags: [elegida.id] });
     console.log('✓ Etiqueta quitada de la receta');
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {

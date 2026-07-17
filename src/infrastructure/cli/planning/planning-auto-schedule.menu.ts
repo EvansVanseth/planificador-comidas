@@ -10,7 +10,7 @@ import { RecipePrimitives } from '@/domain/recipes/aggregates/recipe.aggregate';
 const ON_CANCEL = () => {};
 
 async function seleccionarPlanificacion(container: IContainer, userId: string): Promise<string | null> {
-  const plannings = container.listPlannings.execute(userId);
+  const plannings = await container.listPlannings.execute(userId);
   if (plannings.length === 0) {
     console.log('No hay planificaciones');
     return null;
@@ -56,11 +56,11 @@ export async function autoPlanificar(container: IContainer, userId: string, plan
     const id = planningId ?? await seleccionarPlanificacion(container, userId);
     if (!id) return;
 
-    const allRecipes = container.listRecipes.execute(userId);
-    const allTags = container.listTags.execute(userId);
+    const allRecipes = await container.listRecipes.execute(userId);
+    const allTags = await container.listTags.execute(userId);
     const momentTags = allTags.filter(t => t.dimension === TagDimension.MOMENTO_DIA);
 
-    const preview = container.autoSchedule.execute({ planningId: id, userId, dryRun: true });
+    const preview = await container.autoSchedule.execute({ planningId: id, userId, dryRun: true });
 
     if (preview.assignments.length === 0) {
       console.log('\n--- Vista previa: no se pudo asignar ningun servicio ---');
@@ -84,7 +84,7 @@ export async function autoPlanificar(container: IContainer, userId: string, plan
       return;
     }
 
-    container.autoSchedule.execute({ planningId: id, userId });
+    await container.autoSchedule.execute({ planningId: id, userId });
 
     console.log('\n--- Autoplanificacion aplicada ---');
 

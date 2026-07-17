@@ -38,7 +38,7 @@ export async function gestionarExclusiones(
     if (!elegido?.tagId || elegido.tagId === '__cancel__') return;
     const momentTagId = elegido.tagId;
 
-    const allUserTags = container.listTags.execute(userId).filter(
+    const allUserTags = (await container.listTags.execute(userId)).filter(
       t => t.dimension !== TagDimension.MOMENTO_DIA
     );
     const currentExclusions = meals.find(([id]) => id === momentTagId)?.[1]?.getExclusions() ?? [];
@@ -57,7 +57,7 @@ export async function gestionarExclusiones(
 
     if (!seleccion?.tags) return;
 
-    container.setMealExclusions.execute(planningId, ordenDia, momentTagId, seleccion.tags);
+    await container.setMealExclusions.execute(planningId, ordenDia, momentTagId, seleccion.tags);
     console.log('✓ ' + `Exclusiones actualizadas (${seleccion.tags.length} etiquetas)`);
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {

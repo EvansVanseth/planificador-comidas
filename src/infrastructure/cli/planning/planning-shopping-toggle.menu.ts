@@ -6,13 +6,13 @@ const ON_CANCEL = () => {};
 export async function gestionarListaCompraUnificada(container: IContainer, userId: string, planningId: string) {
   let continuar = true;
   while (continuar) {
-    const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
+    const planning = (await container.listPlannings.execute(userId)).find(p => p.getId() === planningId);
     if (!planning) return;
     const pantry = planning.getPantryItems();
     const shopping = planning.getShoppingItems();
 
     const needed: { ingredientId: string; ingredientName: string; totalCovers: number; recipeNames: string[] }[]
-      = container.getNeededIngredients.execute(planningId);
+      = await container.getNeededIngredients.execute(planningId);
 
     const aComprar = needed.filter(n => {
       const pantryItem = pantry.find(p => p.getIngredientId() === n.ingredientId);
@@ -75,10 +75,10 @@ export async function gestionarListaCompraUnificada(container: IContainer, userI
     if (!item) continue;
 
     if (!item.inShoppingList) {
-      container.addShoppingItem.execute(planningId, item.ingredientId);
+      await container.addShoppingItem.execute(planningId, item.ingredientId);
       console.log('✓ ' + `${item.ingredientName} agregado a la lista como pendiente`);
     } else {
-      container.toggleShoppingItem.execute(planningId, item.ingredientId, !item.completed);
+      await container.toggleShoppingItem.execute(planningId, item.ingredientId, !item.completed);
       console.log('✓ ' + `${item.ingredientName} marcado como ${item.completed ? 'pendiente' : 'comprado'}`);
     }
   }

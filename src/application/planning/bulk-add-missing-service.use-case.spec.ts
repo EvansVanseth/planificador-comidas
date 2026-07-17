@@ -27,65 +27,65 @@ describe('BulkAddMissingServiceUseCase', () => {
     ...overrides,
   });
 
-  it('debe agregar el servicio a días que no lo tienen', () => {
+  it('debe agregar el servicio a días que no lo tienen', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
     planning.addDay('550e8400-e29b-41d4-a716-446655440100', 1);
     planning.addDay('550e8400-e29b-41d4-a716-446655440101', 2);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    const count = useCase.execute(input());
+    const count = await useCase.execute(input());
 
     expect(count).toBe(2);
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[momentTagId]).not.toBeNull();
     expect(updated.getDay(2)!.services[momentTagId]).not.toBeNull();
   });
 
-  it('debe saltar días que ya tienen el servicio', () => {
+  it('debe saltar días que ya tienen el servicio', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay('550e8400-e29b-41d4-a716-446655440100', 1);
     planning.assignMealToDay(1, momentTagId, 2);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    const count = useCase.execute(input());
+    const count = await useCase.execute(input());
 
     expect(count).toBe(0);
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[momentTagId]!.getCovers()).toBe(2);
   });
 
-  it('debe mezclar días con y sin el servicio', () => {
+  it('debe mezclar días con y sin el servicio', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay('550e8400-e29b-41d4-a716-446655440100', 1);
     planning.addDay('550e8400-e29b-41d4-a716-446655440101', 2);
     planning.assignMealToDay(1, momentTagId, 2);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    const count = useCase.execute(input({ covers: 6 }));
+    const count = await useCase.execute(input({ covers: 6 }));
 
     expect(count).toBe(1);
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[momentTagId]!.getCovers()).toBe(2);
     expect(updated.getDay(2)!.services[momentTagId]!.getCovers()).toBe(6);
   });
 
-  it('debe asignar exclusiones y preferencias', () => {
+  it('debe asignar exclusiones y preferencias', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay('550e8400-e29b-41d4-a716-446655440100', 1);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute(input({
+    await useCase.execute(input({
       exclusions: ['550e8400-e29b-41d4-a716-446655440200'],
       preferences: ['550e8400-e29b-41d4-a716-446655440201'],
     }));
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const service = updated.getDay(1)!.services[momentTagId]!;
     expect(service.getExclusions()).toEqual(['550e8400-e29b-41d4-a716-446655440200']);
     expect(service.getPreferences()).toEqual(['550e8400-e29b-41d4-a716-446655440201']);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute(input({ planningId: 'inexistente' }))).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute(input({ planningId: 'inexistente' }))).rejects.toThrow(AppError);
   });
 });

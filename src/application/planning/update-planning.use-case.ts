@@ -12,14 +12,14 @@ export type UpdatePlanningInput = {
 export class UpdatePlanningUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(input: UpdatePlanningInput): void {
-    const planning = this.planningRepository.findById(input.id);
+  async execute(input: UpdatePlanningInput): Promise<void> {
+    const planning = await this.planningRepository.findById(input.id);
     if (!planning) {
       throw new AppError(`Planning not found: ${input.id}`);
     }
 
     if (input.name !== undefined) {
-      const existing = this.planningRepository.findByName(input.name);
+      const existing = await this.planningRepository.findByName(input.name);
       if (existing && existing.getId() !== input.id) {
         throw new AppError(`Ya existe una planificación con el nombre "${input.name}"`);
       }
@@ -38,6 +38,6 @@ export class UpdatePlanningUseCase {
       planning.changeHotColdBalance(input.hotColdBalance);
     }
 
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
   }
 }

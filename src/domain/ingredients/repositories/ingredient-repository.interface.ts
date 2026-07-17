@@ -1,10 +1,10 @@
 import { Ingredient } from "@/domain/ingredients/aggregates/ingredient.aggregate"
 
 export interface IngredientRepository {
-  findById(id: string): Ingredient | null;
-  findAll(): Ingredient[];
-  findAllByUserId(userId: string): Ingredient[];
-  findByName(name: string): Ingredient | null;
-  save(ingredient: Ingredient): void;
-  delete(id: string): void;
+  findById(id: string): Promise<Ingredient | null>;
+  findAll(): Promise<Ingredient[]>;
+  findAllByUserId(userId: string): Promise<Ingredient[]>;
+  findByName(name: string): Promise<Ingredient | null>;
+  save(ingredient: Ingredient): Promise<void>;
+  delete(id: string): Promise<void>;
 }

@@ -13,25 +13,25 @@ describe('UpdateUserUseCase', () => {
     useCase = new UpdateUserUseCase(repo);
   });
 
-  it('debe renombrar un usuario', () => {
+  it('debe renombrar un usuario', async () => {
     const user = User.create('550e8400-e29b-41d4-a716-446655440001', 'Alice', 'alice@test.com');
-    repo.save(user);
+    await repo.save(user);
 
-    useCase.execute({ id: user.getId(), name: 'Alice Updated' });
-    const saved = repo.findById(user.getId());
+    await useCase.execute({ id: user.getId(), name: 'Alice Updated' });
+    const saved = await repo.findById(user.getId());
     expect(saved!.getName()).toBe('Alice Updated');
   });
 
-  it('debe rechazar rename con nombre duplicado', () => {
+  it('debe rechazar rename con nombre duplicado', async () => {
     const user1 = User.create('550e8400-e29b-41d4-a716-446655440001', 'Alice', 'alice@test.com');
     const user2 = User.create('550e8400-e29b-41d4-a716-446655440002', 'Bob', 'bob@test.com');
-    repo.save(user1);
-    repo.save(user2);
+    await repo.save(user1);
+    await repo.save(user2);
 
-    expect(() => useCase.execute({ id: user1.getId(), name: 'Bob' })).toThrow(AppError);
+    await expect(useCase.execute({ id: user1.getId(), name: 'Bob' })).rejects.toThrow(AppError);
   });
 
-  it('debe lanzar error si el usuario no existe', () => {
-    expect(() => useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'Ghost' })).toThrow(AppError);
+  it('debe lanzar error si el usuario no existe', async () => {
+    await expect(useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'Ghost' })).rejects.toThrow(AppError);
   });
 });

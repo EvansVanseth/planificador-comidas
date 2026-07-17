@@ -6,7 +6,7 @@ const ON_CANCEL = () => {};
 
 export async function eliminarUsuario(container: IContainer) {
   try {
-    const users = container.listUsers.execute();
+    const users = await container.listUsers.execute();
     if (users.length === 0) {
       console.log('No hay usuarios para eliminar');
       return;
@@ -26,10 +26,10 @@ export async function eliminarUsuario(container: IContainer) {
     const userId = seleccion.id;
     const userName = users.find(u => u.id === userId)?.name ?? userId;
 
-    const tags = container.listTags.execute(userId);
-    const ingredients = container.listIngredients.execute(userId);
-    const recipes = container.listRecipes.execute(userId);
-    const plannings = container.listPlannings.execute(userId);
+    const tags = await container.listTags.execute(userId);
+    const ingredients = await container.listIngredients.execute(userId);
+    const recipes = await container.listRecipes.execute(userId);
+    const plannings = await container.listPlannings.execute(userId);
 
     console.log(`\n⚠️  Se eliminará el usuario "${userName}" y TODOS sus datos:`);
     console.log(`  - ${tags.length} etiqueta(s)`);
@@ -50,7 +50,7 @@ export async function eliminarUsuario(container: IContainer) {
       return;
     }
 
-    const result = container.deleteUser.execute(userId);
+    const result = await container.deleteUser.execute(userId);
     console.log('✓ Usuario eliminado correctamente');
     if (result.tagsDeleted > 0) console.log(`  - ${result.tagsDeleted} etiqueta(s) eliminada(s)`);
     if (result.ingredientsDeleted > 0) console.log(`  - ${result.ingredientsDeleted} ingrediente(s) eliminado(s)`);

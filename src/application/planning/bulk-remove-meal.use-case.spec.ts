@@ -29,33 +29,33 @@ describe('BulkRemoveMealUseCase', () => {
     useCase = new BulkRemoveMealUseCase(planningRepo);
   });
 
-  it('debe eliminar el mismo servicio de varios dias', () => {
+  it('debe eliminar el mismo servicio de varios dias', async () => {
     const planning = setupPlanningWithServices();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute({ planningId, days: [1, 2], momentTagId: lunchTagId });
+    await useCase.execute({ planningId, days: [1, 2], momentTagId: lunchTagId });
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[lunchTagId]).toBeUndefined();
     expect(updated.getDay(1)!.services[dinnerTagId]).not.toBeNull();
     expect(updated.getDay(2)!.services[lunchTagId]).toBeUndefined();
   });
 
-  it('debe fallar si un dia no tiene el servicio', () => {
+  it('debe fallar si un dia no tiene el servicio', async () => {
     const planning = setupPlanningWithServices();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute({ planningId, days: [1, 2], momentTagId: dinnerTagId })).toThrow(DomainError);
+    await expect(useCase.execute({ planningId, days: [1, 2], momentTagId: dinnerTagId })).rejects.toThrow(DomainError);
   });
 
-  it('debe fallar si un dia no existe', () => {
+  it('debe fallar si un dia no existe', async () => {
     const planning = setupPlanningWithServices();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute({ planningId, days: [99], momentTagId: lunchTagId })).toThrow(DomainError);
+    await expect(useCase.execute({ planningId, days: [99], momentTagId: lunchTagId })).rejects.toThrow(DomainError);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute({ planningId, days: [1], momentTagId: lunchTagId })).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute({ planningId, days: [1], momentTagId: lunchTagId })).rejects.toThrow(AppError);
   });
 });

@@ -10,7 +10,7 @@ import { autoPlanificar } from './planning-auto-schedule.menu';
 const ON_CANCEL = () => {};
 
 export async function editarPlanificacion(container: IContainer, userId: string) {
-  const plannings = container.listPlannings.execute(userId);
+  const plannings = await container.listPlannings.execute(userId);
   if (plannings.length === 0) {
     console.log('No hay planificaciones para editar');
     return;
@@ -31,13 +31,13 @@ export async function editarPlanificacion(container: IContainer, userId: string)
 
   let continuar = true;
   while (continuar) {
-    const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
+    const planning = (await container.listPlannings.execute(userId)).find(p => p.getId() === planningId);
     if (!planning) {
       console.log('Planificacion no encontrada');
       return;
     }
 
-    mostrarPlanificacion(planning, container.listRecipes.execute(userId), container.listTags.execute(userId));
+    mostrarPlanificacion(planning, await container.listRecipes.execute(userId), await container.listTags.execute(userId));
 
     const opcion = await prompts({
       type: 'select',

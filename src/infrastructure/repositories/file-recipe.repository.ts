@@ -21,28 +21,28 @@ export class FileRecipeRepository implements RecipeRepository {
     }
   }
 
-  findAll(): Recipe[] {
+  async findAll(): Promise<Recipe[]> {
     const fileContent = fs.readFileSync(this.filePath, 'utf-8');
     const rawData: RecipePrimitives[] = JSON.parse(fileContent);
     return rawData.map(data => Recipe.fromPrimitives(data));
   }
 
-  findAllByUserId(userId: string): Recipe[] {
-    return this.findAll().filter(r => r.getUserId() === userId);
+  async findAllByUserId(userId: string): Promise<Recipe[]> {
+    return (await this.findAll()).filter(r => r.getUserId() === userId);
   }
 
-  findByName(name: string): Recipe | null {
+  async findByName(name: string): Promise<Recipe | null> {
     const normalized = name.toLowerCase().trim();
-    return this.findAll().find(r => r.getName().toLowerCase().trim() === normalized) ?? null;
+    return (await this.findAll()).find(r => r.getName().toLowerCase().trim() === normalized) ?? null;
   }
 
-  findById(id: string): Recipe | null {
-    const recipes = this.findAll();
+  async findById(id: string): Promise<Recipe | null> {
+    const recipes = await this.findAll();
     return recipes.find(r => r.getId() === id) || null;
   }
 
-  save(recipe: Recipe): void {
-    const recipes = this.findAll();
+  async save(recipe: Recipe): Promise<void> {
+    const recipes = await this.findAll();
 
     const index = recipes.findIndex(r => r.getId() === recipe.getId());
 
@@ -56,8 +56,8 @@ export class FileRecipeRepository implements RecipeRepository {
     fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
   }
 
-  delete(id: string): void {
-    const recipes = this.findAll();
+  async delete(id: string): Promise<void> {
+    const recipes = await this.findAll();
     const index = recipes.findIndex(r => r.getId() === id);
     if (index === -1) return;
 

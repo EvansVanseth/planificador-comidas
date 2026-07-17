@@ -33,15 +33,15 @@ describe('BulkAssignMealUseCase', () => {
     return planning;
   }
 
-  beforeEach(() => {
+  beforeEach(async () => {
     planningRepo = new InMemoryPlanningRepository();
     tagRepo = new InMemoryTagRepository();
     recipeRepo = new InMemoryRecipeRepository();
 
-    tagRepo.save(Tag.create(lunchTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
-    tagRepo.save(Tag.create(recipeTagFormato, userId, 'Plato', TagDimension.FORMATO, true));
-    tagRepo.save(Tag.create(recipeTagTipo, userId, 'Carne', TagDimension.TIPO_PLATO, true));
-    recipeRepo.save(Recipe.create(
+    await tagRepo.save(Tag.create(lunchTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
+    await tagRepo.save(Tag.create(recipeTagFormato, userId, 'Plato', TagDimension.FORMATO, true));
+    await tagRepo.save(Tag.create(recipeTagTipo, userId, 'Carne', TagDimension.TIPO_PLATO, true));
+    await recipeRepo.save(Recipe.create(
       recipeId, userId, 'Tortilla', 4, 15, 'Cocinar',
       [RecipeIngredient.create('550e8400-e29b-41d4-a716-446655440031', '3 ud')],
       [
@@ -54,13 +54,13 @@ describe('BulkAssignMealUseCase', () => {
     useCase = new BulkAssignMealUseCase(planningRepo, tagRepo, recipeRepo);
   });
 
-  it('debe asignar el mismo servicio a varios dias', () => {
+  it('debe asignar el mismo servicio a varios dias', async () => {
     const planning = setupPlanningWithDays();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute({ planningId, days: [1, 2], momentTagId: lunchTagId, covers: 4, recipeId });
+    await useCase.execute({ planningId, days: [1, 2], momentTagId: lunchTagId, covers: 4, recipeId });
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[lunchTagId]!.getCovers()).toBe(4);
     expect(updated.getDay(1)!.services[lunchTagId]!.getRecipeId()).toBe(recipeId);
     expect(updated.getDay(2)!.services[lunchTagId]!.getCovers()).toBe(4);
@@ -68,34 +68,34 @@ describe('BulkAssignMealUseCase', () => {
     expect(updated.getDay(3)!.services[lunchTagId]).toBeUndefined();
   });
 
-  it('debe asignar sin receta si no se proporciona', () => {
+  it('debe asignar sin receta si no se proporciona', async () => {
     const planning = setupPlanningWithDays();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute({ planningId, days: [1, 2], momentTagId: lunchTagId, covers: 2 });
+    await useCase.execute({ planningId, days: [1, 2], momentTagId: lunchTagId, covers: 2 });
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     expect(updated.getDay(1)!.services[lunchTagId]!.getCovers()).toBe(2);
     expect(updated.getDay(1)!.services[lunchTagId]!.getRecipeId()).toBeNull();
   });
 
-  it('debe fallar si un dia no existe', () => {
+  it('debe fallar si un dia no existe', async () => {
     const planning = setupPlanningWithDays();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute({ planningId, days: [99], momentTagId: lunchTagId, covers: 4 })).toThrow(DomainError);
+    await expect(useCase.execute({ planningId, days: [99], momentTagId: lunchTagId, covers: 4 })).rejects.toThrow(DomainError);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute({ planningId, days: [1], momentTagId: lunchTagId, covers: 4 })).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute({ planningId, days: [1], momentTagId: lunchTagId, covers: 4 })).rejects.toThrow(AppError);
   });
 
-  it('debe fallar si la etiqueta no es MOMENTO_DIA', () => {
+  it('debe fallar si la etiqueta no es MOMENTO_DIA', async () => {
     const planning = setupPlanningWithDays();
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
     const estiloTagId = '550e8400-e29b-41d4-a716-446655440050';
-    tagRepo.save(Tag.create(estiloTagId, userId, 'Vegano', TagDimension.ESTILOS_VIDA, false));
+    await tagRepo.save(Tag.create(estiloTagId, userId, 'Vegano', TagDimension.ESTILOS_VIDA, false));
 
-    expect(() => useCase.execute({ planningId, days: [1], momentTagId: estiloTagId, covers: 4 })).toThrow(AppError);
+    await expect(useCase.execute({ planningId, days: [1], momentTagId: estiloTagId, covers: 4 })).rejects.toThrow(AppError);
   });
 });

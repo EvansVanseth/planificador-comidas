@@ -9,20 +9,20 @@ export type UpdateUserInput = {
 export class UpdateUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  execute(input: UpdateUserInput): void {
-    const user = this.userRepository.findById(input.id);
+  async execute(input: UpdateUserInput): Promise<void> {
+    const user = await this.userRepository.findById(input.id);
     if (!user) {
       throw new AppError(`User not found: ${input.id}`);
     }
 
     if (input.name !== undefined) {
-      const existing = this.userRepository.findByName(input.name);
+      const existing = await this.userRepository.findByName(input.name);
       if (existing && existing.getId() !== input.id) {
         throw new AppError(`Ya existe un usuario con el nombre "${input.name}"`);
       }
       user.rename(input.name);
     }
 
-    this.userRepository.save(user);
+    await this.userRepository.save(user);
   }
 }

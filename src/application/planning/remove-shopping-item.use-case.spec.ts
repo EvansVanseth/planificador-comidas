@@ -12,24 +12,24 @@ describe('RemoveShoppingItemUseCase', () => {
   let useCase: RemoveShoppingItemUseCase;
   let planningRepo: InMemoryPlanningRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     planningRepo = new InMemoryPlanningRepository();
     useCase = new RemoveShoppingItemUseCase(planningRepo);
 
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
     planning.addShoppingItem('550e8400-e29b-41d4-a716-446655440099', ingredientId);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
   });
 
-  it('debe eliminar un item de la lista de la compra', () => {
-    useCase.execute(planningId, ingredientId);
+  it('debe eliminar un item de la lista de la compra', async () => {
+    await useCase.execute(planningId, ingredientId);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const items = updated.getShoppingItems();
     expect(items.find(i => i.getIngredientId() === ingredientId)).toBeUndefined();
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute('inexistente', ingredientId)).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute('inexistente', ingredientId)).rejects.toThrow(AppError);
   });
 });

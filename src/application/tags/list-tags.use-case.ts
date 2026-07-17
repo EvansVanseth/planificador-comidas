@@ -4,8 +4,8 @@ import { TagPrimitives } from '@/domain/tags/aggregates/tag.aggregate';
 export class ListTagsUseCase {
   constructor(private tagRepository: TagRepository) {}
 
-  execute(userId: string): TagPrimitives[] {
-    const tags = this.tagRepository.findAllByUserId(userId);
+  async execute(userId: string): Promise<TagPrimitives[]> {
+    const tags = await this.tagRepository.findAllByUserId(userId);
     return tags.map(tag => tag.toPrimitives());
   }
 }

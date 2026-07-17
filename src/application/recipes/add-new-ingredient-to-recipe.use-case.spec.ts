@@ -25,34 +25,34 @@ describe('AddNewIngredientToRecipeUseCase', () => {
     useCase = new AddNewIngredientToRecipeUseCase(recipeRepo, ingredientRepo);
   });
 
-  it('debe crear un ingrediente y añadirlo a la receta', () => {
+  it('debe crear un ingrediente y añadirlo a la receta', async () => {
     const recipe = Recipe.create(recipeId, userId, 'Pasta', 2, 20, null, [], defaultTags);
-    recipeRepo.save(recipe);
+    await recipeRepo.save(recipe);
 
-    const ingredientId = useCase.execute(userId, recipeId, 'Tomate', '2 unidades');
+    const ingredientId = await useCase.execute(userId, recipeId, 'Tomate', '2 unidades');
 
-    const savedIngredient = ingredientRepo.findById(ingredientId);
+    const savedIngredient = await ingredientRepo.findById(ingredientId);
     expect(savedIngredient).not.toBeNull();
     expect(savedIngredient!.getName()).toBe('Tomate');
 
-    const savedRecipe = recipeRepo.findById(recipeId)!;
+    const savedRecipe = (await recipeRepo.findById(recipeId))!;
     const ingredients = savedRecipe.getIngredients();
     expect(ingredients).toHaveLength(1);
     expect(ingredients[0].ingredientId).toBe(ingredientId);
     expect(ingredients[0].quantityNote).toBe('2 unidades');
   });
 
-  it('debe crear un ingrediente sin quantityNote', () => {
+  it('debe crear un ingrediente sin quantityNote', async () => {
     const recipe = Recipe.create(recipeId, userId, 'Pasta', 2, 20, null, [], defaultTags);
-    recipeRepo.save(recipe);
+    await recipeRepo.save(recipe);
 
-    const ingredientId = useCase.execute(userId, recipeId, 'Sal');
+    const ingredientId = await useCase.execute(userId, recipeId, 'Sal');
 
-    const savedRecipe = recipeRepo.findById(recipeId)!;
+    const savedRecipe = (await recipeRepo.findById(recipeId))!;
     expect(savedRecipe.getIngredients()[0].quantityNote).toBeNull();
   });
 
-  it('debe lanzar error si la receta no existe', () => {
-    expect(() => useCase.execute(userId, recipeId, 'Tomate')).toThrow(AppError);
+  it('debe lanzar error si la receta no existe', async () => {
+    await expect(useCase.execute(userId, recipeId, 'Tomate')).rejects.toThrow(AppError);
   });
 });

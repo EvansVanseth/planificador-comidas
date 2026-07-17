@@ -30,13 +30,13 @@ export async function gestionarServicios(container: IContainer, userId: string, 
 
   let continuar = true;
   while (continuar) {
-    const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
+    const planning = (await container.listPlannings.execute(userId)).find(p => p.getId() === planningId);
     if (!planning) return;
     const day = planning.getDay(ordenDia);
     const meals = day ? Object.entries(day.services).filter(([_, s]) => s !== null) : [];
 
-    const allTags = container.listTags.execute(userId).filter(t => t.dimension === TagDimension.MOMENTO_DIA);
-    const allRecipes = container.listRecipes.execute(userId);
+    const allTags = (await container.listTags.execute(userId)).filter(t => t.dimension === TagDimension.MOMENTO_DIA);
+    const allRecipes = await container.listRecipes.execute(userId);
 
     console.log(`\n--- Dia ${ordenDia} ---`);
     if (meals.length === 0) {

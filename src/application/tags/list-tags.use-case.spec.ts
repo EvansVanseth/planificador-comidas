@@ -16,27 +16,27 @@ describe('ListTagsUseCase', () => {
     useCase = new ListTagsUseCase(repo);
   });
 
-  it('debe devolver lista vacía si no hay etiquetas', () => {
-    expect(useCase.execute(userId)).toEqual([]);
+  it('debe devolver lista vacía si no hay etiquetas', async () => {
+    expect(await useCase.execute(userId)).toEqual([]);
   });
 
-  it('debe devolver solo las etiquetas del usuario', () => {
+  it('debe devolver solo las etiquetas del usuario', async () => {
     const tag1 = Tag.create('550e8400-e29b-41d4-a716-446655440001', userId, 'Desayuno', TagDimension.MOMENTO_DIA, true);
     const tag2 = Tag.create('550e8400-e29b-41d4-a716-446655440002', userId, 'Cena', TagDimension.MOMENTO_DIA, true);
-    repo.save(tag1);
-    repo.save(tag2);
+    await repo.save(tag1);
+    await repo.save(tag2);
 
-    const result = useCase.execute(userId);
+    const result = await useCase.execute(userId);
     expect(result).toHaveLength(2);
     expect(result[0]).toEqual(tag1.toPrimitives());
     expect(result[1]).toEqual(tag2.toPrimitives());
   });
 
-  it('no debe devolver etiquetas de otro usuario', () => {
+  it('no debe devolver etiquetas de otro usuario', async () => {
     const tag = Tag.create('550e8400-e29b-41d4-a716-446655440001', otherUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true);
-    repo.save(tag);
+    await repo.save(tag);
 
-    const result = useCase.execute(userId);
+    const result = await useCase.execute(userId);
     expect(result).toHaveLength(0);
   });
 });

@@ -20,14 +20,14 @@ export type UpdateRecipeInput = {
 export class UpdateRecipeUseCase {
   constructor(private recipeRepository: RecipeRepository) {}
 
-  execute(input: UpdateRecipeInput): void {
-    const recipe = this.recipeRepository.findById(input.id);
+  async execute(input: UpdateRecipeInput): Promise<void> {
+    const recipe = await this.recipeRepository.findById(input.id);
     if (!recipe) {
       throw new AppError(`Recipe not found: ${input.id}`);
     }
 
     if (input.name !== undefined) {
-      const existing = this.recipeRepository.findByName(input.name);
+      const existing = await this.recipeRepository.findByName(input.name);
       if (existing && existing.getId() !== input.id) {
         throw new AppError(`Ya existe una receta con el nombre "${input.name}"`);
       }
@@ -74,6 +74,6 @@ export class UpdateRecipeUseCase {
       }
     }
 
-    this.recipeRepository.save(recipe);
+    await this.recipeRepository.save(recipe);
   }
 }

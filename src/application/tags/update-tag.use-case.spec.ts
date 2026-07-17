@@ -14,59 +14,63 @@ describe('UpdateTagUseCase', () => {
   let useCase: UpdateTagUseCase;
   let repo: InMemoryTagRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     repo = new InMemoryTagRepository();
     useCase = new UpdateTagUseCase(repo);
 
     const tag = Tag.create(validId, validUserId, 'Original', TagDimension.MOMENTO_DIA, true);
-    repo.save(tag);
+    await repo.save(tag);
   });
 
-  it('debe actualizar el nombre', () => {
-    useCase.execute({ id: validId, name: 'Renombrado' });
-    expect(repo.findById(validId)!.getName()).toBe('Renombrado');
+  it('debe actualizar el nombre', async () => {
+    await useCase.execute({ id: validId, name: 'Renombrado' });
+    const saved = await repo.findById(validId);
+    expect(saved!.getName()).toBe('Renombrado');
   });
 
-  it('debe actualizar el userId', () => {
-    useCase.execute({ id: validId, userId: validUserId });
-    expect(repo.findById(validId)!.getUserId()).toBe(validUserId);
+  it('debe actualizar el userId', async () => {
+    await useCase.execute({ id: validId, userId: validUserId });
+    const saved = await repo.findById(validId);
+    expect(saved!.getUserId()).toBe(validUserId);
   });
 
-  it('debe actualizar la dimensión', () => {
+  it('debe actualizar la dimensión', async () => {
     const userTagId = '550e8400-e29b-41d4-a716-446655440030';
-    repo.save(Tag.create(userTagId, validUserId, 'Arroz', TagDimension.TIPO_PLATO, false));
-    useCase.execute({ id: userTagId, dimension: TagDimension.MOMENTO_DIA });
-    expect(repo.findById(userTagId)!.getDimension()).toBe(TagDimension.MOMENTO_DIA);
+    await repo.save(Tag.create(userTagId, validUserId, 'Arroz', TagDimension.TIPO_PLATO, false));
+    await useCase.execute({ id: userTagId, dimension: TagDimension.MOMENTO_DIA });
+    const saved = await repo.findById(userTagId);
+    expect(saved!.getDimension()).toBe(TagDimension.MOMENTO_DIA);
   });
 
-  it('debe lanzar error si la etiqueta no existe', () => {
-    expect(() => useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'X' })).toThrow(AppError);
+  it('debe lanzar error si la etiqueta no existe', async () => {
+    await expect(useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'X' })).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar renombrar a un nombre duplicado en la misma dimensión', () => {
-    repo.save(Tag.create(otherTagId, validUserId, 'Existente', TagDimension.MOMENTO_DIA, true));
-    expect(() => useCase.execute({ id: validId, name: 'Existente' })).toThrow(AppError);
+  it('debe rechazar renombrar a un nombre duplicado en la misma dimensión', async () => {
+    await repo.save(Tag.create(otherTagId, validUserId, 'Existente', TagDimension.MOMENTO_DIA, true));
+    await expect(useCase.execute({ id: validId, name: 'Existente' })).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', () => {
-    repo.save(Tag.create(otherTagId, validUserId, 'Existente', TagDimension.MOMENTO_DIA, true));
-    expect(() => useCase.execute({ id: validId, name: 'existente' })).toThrow(AppError);
+  it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', async () => {
+    await repo.save(Tag.create(otherTagId, validUserId, 'Existente', TagDimension.MOMENTO_DIA, true));
+    await expect(useCase.execute({ id: validId, name: 'existente' })).rejects.toThrow(AppError);
   });
 
-  it('debe permitir mantener el mismo nombre al actualizar', () => {
-    useCase.execute({ id: validId, name: 'Original' });
-    expect(repo.findById(validId)!.getName()).toBe('Original');
+  it('debe permitir mantener el mismo nombre al actualizar', async () => {
+    await useCase.execute({ id: validId, name: 'Original' });
+    const saved = await repo.findById(validId);
+    expect(saved!.getName()).toBe('Original');
   });
 
-  it('debe rechazar cambiar una etiqueta de usuario a FORMATO', () => {
+  it('debe rechazar cambiar una etiqueta de usuario a FORMATO', async () => {
     const userTagId = '550e8400-e29b-41d4-a716-446655440010';
-    repo.save(Tag.create(userTagId, validUserId, 'Pasta', TagDimension.TIPO_PLATO, false));
-    expect(() => useCase.execute({ id: userTagId, dimension: TagDimension.FORMATO })).toThrow(DomainError);
+    await repo.save(Tag.create(userTagId, validUserId, 'Pasta', TagDimension.TIPO_PLATO, false));
+    await expect(useCase.execute({ id: userTagId, dimension: TagDimension.FORMATO })).rejects.toThrow(DomainError);
   });
 
-  it('debe rechazar asignar userId a una etiqueta FORMATO', () => {
+  it('debe rechazar asignar userId a una etiqueta FORMATO', async () => {
     const formatTagId = '550e8400-e29b-41d4-a716-446655440020';
-    repo.save(Tag.create(formatTagId, validUserId, 'Caliente', TagDimension.FORMATO, true));
-    expect(() => useCase.execute({ id: formatTagId, userId: validUserId })).toThrow(DomainError);
+    await repo.save(Tag.create(formatTagId, validUserId, 'Caliente', TagDimension.FORMATO, true));
+    await expect(useCase.execute({ id: formatTagId, userId: validUserId })).rejects.toThrow(DomainError);
   });
 });

@@ -14,22 +14,22 @@ describe('CreatePlanningUseCase', () => {
     useCase = new CreatePlanningUseCase(repo);
   });
 
-  it('debe crear una planificación y devolver un id', () => {
-    const id = useCase.execute(validUserId, 'Semana 1', null, 2);
+  it('debe crear una planificación y devolver un id', async () => {
+    const id = await useCase.execute(validUserId, 'Semana 1', null, 2);
     expect(id).toBeDefined();
-    const saved = repo.findById(id);
+    const saved = await repo.findById(id);
     expect(saved).not.toBeNull();
     expect(saved!.getName()).toBe('Semana 1');
     expect(saved!.getUserId()).toBe(validUserId);
   });
 
-  it('debe rechazar nombre duplicado', () => {
-    useCase.execute(validUserId, 'Semana 1', null, 2);
-    expect(() => useCase.execute(validUserId, 'Semana 1', null, 2)).toThrow(AppError);
+  it('debe rechazar nombre duplicado', async () => {
+    await useCase.execute(validUserId, 'Semana 1', null, 2);
+    await expect(useCase.execute(validUserId, 'Semana 1', null, 2)).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar nombre duplicado ignorando mayúsculas', () => {
-    useCase.execute(validUserId, 'Semana 1', null, 2);
-    expect(() => useCase.execute(validUserId, 'semana 1', null, 2)).toThrow(AppError);
+  it('debe rechazar nombre duplicado ignorando mayúsculas', async () => {
+    await useCase.execute(validUserId, 'Semana 1', null, 2);
+    await expect(useCase.execute(validUserId, 'semana 1', null, 2)).rejects.toThrow(AppError);
   });
 });

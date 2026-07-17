@@ -11,23 +11,23 @@ export class AddNewTagToRecipeUseCase {
     private tagRepository: TagRepository,
   ) {}
 
-  execute(userId: string, recipeId: string, tagName: string, tagDimension: TagDimension): string {
-    const recipe = this.recipeRepository.findById(recipeId);
+  async execute(userId: string, recipeId: string, tagName: string, tagDimension: TagDimension): Promise<string> {
+    const recipe = await this.recipeRepository.findById(recipeId);
     if (!recipe) {
       throw new AppError(`Recipe not found: ${recipeId}`);
     }
 
-    const existing = this.tagRepository.findByNameAndDimension(tagName, tagDimension);
+    const existing = await this.tagRepository.findByNameAndDimension(tagName, tagDimension);
     if (existing) {
       throw new AppError(`Ya existe una etiqueta con el nombre "${tagName}" en la dimensión ${tagDimension}`);
     }
 
     const tagId = randomUUID();
     const tag = Tag.create(tagId, userId, tagName, tagDimension, false);
-    this.tagRepository.save(tag);
+    await this.tagRepository.save(tag);
 
     recipe.addTag(tagId, tagDimension);
-    this.recipeRepository.save(recipe);
+    await this.recipeRepository.save(recipe);
 
     return tagId;
   }

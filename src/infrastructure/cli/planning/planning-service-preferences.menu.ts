@@ -38,7 +38,7 @@ export async function gestionarPreferencias(
     if (!elegido?.tagId || elegido.tagId === '__cancel__') return;
     const momentTagId = elegido.tagId;
 
-    const allUserTags = container.listTags.execute(userId).filter(
+    const allUserTags = (await container.listTags.execute(userId)).filter(
       t => t.dimension !== TagDimension.MOMENTO_DIA
     );
     const currentPreferences = meals.find(([id]) => id === momentTagId)?.[1]?.getPreferences() ?? [];
@@ -57,7 +57,7 @@ export async function gestionarPreferencias(
 
     if (!seleccion?.tags) return;
 
-    container.setMealPreferences.execute(planningId, ordenDia, momentTagId, seleccion.tags);
+    await container.setMealPreferences.execute(planningId, ordenDia, momentTagId, seleccion.tags);
     console.log('✓ ' + `Preferencias actualizadas (${seleccion.tags.length} etiquetas)`);
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {

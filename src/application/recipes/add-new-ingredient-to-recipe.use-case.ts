@@ -11,19 +11,19 @@ export class AddNewIngredientToRecipeUseCase {
     private ingredientRepository: IngredientRepository,
   ) {}
 
-  execute(userId: string, recipeId: string, ingredientName: string, quantityNote?: string): string {
-    const recipe = this.recipeRepository.findById(recipeId);
+  async execute(userId: string, recipeId: string, ingredientName: string, quantityNote?: string): Promise<string> {
+    const recipe = await this.recipeRepository.findById(recipeId);
     if (!recipe) {
       throw new AppError(`Recipe not found: ${recipeId}`);
     }
 
     const ingredientId = randomUUID();
     const ingredient = Ingredient.create(ingredientId, userId, ingredientName);
-    this.ingredientRepository.save(ingredient);
+    await this.ingredientRepository.save(ingredient);
 
     const recipeIngredient = RecipeIngredient.create(ingredientId, quantityNote);
     recipe.addIngredient(recipeIngredient);
-    this.recipeRepository.save(recipe);
+    await this.recipeRepository.save(recipe);
 
     return ingredientId;
   }

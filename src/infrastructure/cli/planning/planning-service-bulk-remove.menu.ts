@@ -13,7 +13,7 @@ export async function eliminarServicioEnLote(container: IContainer, userId: stri
       return;
     }
 
-    const allTags = container.listTags.execute(userId).filter(
+    const allTags = (await container.listTags.execute(userId)).filter(
       t => t.dimension === TagDimension.MOMENTO_DIA
     );
 
@@ -51,7 +51,7 @@ export async function eliminarServicioEnLote(container: IContainer, userId: stri
 
     if (!confirmar?.value) return;
 
-    container.bulkRemoveMeal.execute({
+    await container.bulkRemoveMeal.execute({
       planningId,
       days: seleccionDias.orders,
       momentTagId: momentResp.id,

@@ -12,25 +12,25 @@ describe('RemoveMealFromDayUseCase', () => {
   let useCase: RemoveMealFromDayUseCase;
   let planningRepo: InMemoryPlanningRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     planningRepo = new InMemoryPlanningRepository();
     useCase = new RemoveMealFromDayUseCase(planningRepo);
 
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
     planning.addDay('550e8400-e29b-41d4-a716-446655440098', 1);
     planning.assignMealToDay(1, momentTagId, 4);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
   });
 
-  it('debe eliminar una comida de un dia', () => {
-    useCase.execute(planningId, 1, momentTagId);
+  it('debe eliminar una comida de un dia', async () => {
+    await useCase.execute(planningId, 1, momentTagId);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const day = updated.getDay(1);
     expect(day!.services[momentTagId]).toBeUndefined();
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute('inexistente', 1, momentTagId)).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute('inexistente', 1, momentTagId)).rejects.toThrow(AppError);
   });
 });

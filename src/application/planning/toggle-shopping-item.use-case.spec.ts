@@ -12,34 +12,34 @@ describe('ToggleShoppingItemUseCase', () => {
   let useCase: ToggleShoppingItemUseCase;
   let planningRepo: InMemoryPlanningRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     planningRepo = new InMemoryPlanningRepository();
     useCase = new ToggleShoppingItemUseCase(planningRepo);
 
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
     planning.addShoppingItem('550e8400-e29b-41d4-a716-446655440099', ingredientId);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
   });
 
-  it('debe marcar un item como completado', () => {
-    useCase.execute(planningId, ingredientId, true);
+  it('debe marcar un item como completado', async () => {
+    await useCase.execute(planningId, ingredientId, true);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const items = updated.getShoppingItems();
     const item = items.find(i => i.getIngredientId() === ingredientId);
     expect(item!.isCompleted()).toBe(true);
   });
 
-  it('debe marcar un item como pendiente', () => {
-    useCase.execute(planningId, ingredientId, false);
+  it('debe marcar un item como pendiente', async () => {
+    await useCase.execute(planningId, ingredientId, false);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const items = updated.getShoppingItems();
     const item = items.find(i => i.getIngredientId() === ingredientId);
     expect(item!.isCompleted()).toBe(false);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute('inexistente', ingredientId, true)).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute('inexistente', ingredientId, true)).rejects.toThrow(AppError);
   });
 });

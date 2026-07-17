@@ -203,7 +203,8 @@ describe('Planning (Aggregate)', () => {
           recipeId: validId,
           covers: 4,
           exclusions: [],
-          preferences: []
+          preferences: [],
+          ignoreRestrictions: false
         }]
       }],
       pantryItems: [],

@@ -60,38 +60,38 @@ describe('AutoScheduleUseCase', () => {
     useCase = new AutoScheduleUseCase(planningRepo, recipeRepo, tagRepo, planner);
   });
 
-  it('debe asignar recetas a servicios vacios', () => {
+  it('debe asignar recetas a servicios vacios', async () => {
     const planning = Planning.create(PLANNING_ID, USER_ID, 'Prueba', null, 2);
     planning.addDay('c0000000-0000-4000-a000-000000000001', 1);
     planning.assignMealToDay(1, DESAYUNO_TAG, 2);
     planning.assignMealToDay(1, COMIDA_TAG, 2);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    recipeRepo.save(buildRecipe(RECIPE_1, 'Tortilla', DESAYUNO_TAG, CALIENTE_TAG, CARNE_TAG));
+    await recipeRepo.save(buildRecipe(RECIPE_1, 'Tortilla', DESAYUNO_TAG, CALIENTE_TAG, CARNE_TAG));
 
-    const result = useCase.execute({ planningId: PLANNING_ID, userId: USER_ID });
+    const result = await useCase.execute({ planningId: PLANNING_ID, userId: USER_ID });
 
     expect(result.assignments).toHaveLength(2);
     expect(result.unassigned).toHaveLength(0);
 
-    const updated = planningRepo.findById(PLANNING_ID)!;
+    const updated = (await planningRepo.findById(PLANNING_ID))!;
     const dayDTO = updated.getDay(1)!;
     expect(dayDTO.services[DESAYUNO_TAG]!.getRecipeId()).toBe(RECIPE_1);
     expect(dayDTO.services[COMIDA_TAG]!.getRecipeId()).toBe(RECIPE_1);
   });
 
-  it('debe devolver vacio si todos los servicios ya tienen receta', () => {
+  it('debe devolver vacio si todos los servicios ya tienen receta', async () => {
     const planning = Planning.create(PLANNING_ID, USER_ID, 'Prueba', null, 2);
     planning.addDay('c0000000-0000-4000-a000-000000000001', 1);
     planning.assignMealToDay(1, DESAYUNO_TAG, 2, RECIPE_1);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    const result = useCase.execute({ planningId: PLANNING_ID, userId: USER_ID });
+    const result = await useCase.execute({ planningId: PLANNING_ID, userId: USER_ID });
     expect(result.assignments).toHaveLength(0);
     expect(result.unassigned).toHaveLength(0);
   });
 
-  it('debe lanzar error si la planificacion no existe', () => {
-    expect(() => useCase.execute({ planningId: 'unknown', userId: USER_ID })).toThrow(AppError);
+  it('debe lanzar error si la planificacion no existe', async () => {
+    await expect(useCase.execute({ planningId: 'unknown', userId: USER_ID })).rejects.toThrow(AppError);
   });
 });

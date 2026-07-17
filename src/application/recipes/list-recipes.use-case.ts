@@ -4,8 +4,9 @@ import { RecipePrimitives } from '@/domain/recipes/aggregates/recipe.aggregate';
 export class ListRecipesUseCase {
   constructor(private recipeRepository: RecipeRepository) {}
 
-  execute(userId: string): RecipePrimitives[] {
-    return this.recipeRepository.findAllByUserId(userId)
+  async execute(userId: string): Promise<RecipePrimitives[]> {
+    const recipes = await this.recipeRepository.findAllByUserId(userId);
+    return recipes
       .map(r => r.toPrimitives())
       .sort((a, b) => a.name.localeCompare(b.name));
   }

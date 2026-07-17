@@ -11,11 +11,11 @@ export class AssignMealUseCase {
     private recipeRepository: RecipeRepository,
   ) {}
 
-  execute(planningId: string, orderDay: number, momentTagId: string, recipeId: string | null, covers: number, ignoreRestrictions = false, exclusions?: string[], preferences?: string[]) {
-    const planning = this.planningRepository.findById(planningId);
+  async execute(planningId: string, orderDay: number, momentTagId: string, recipeId: string | null, covers: number, ignoreRestrictions = false, exclusions?: string[], preferences?: string[]) {
+    const planning = await this.planningRepository.findById(planningId);
     if (planning === null) throw new AppError('El Id del planning no existe');
 
-    const tag = this.tagRepository.findById(momentTagId);
+    const tag = await this.tagRepository.findById(momentTagId);
     if (tag === null) throw new AppError('La etiqueta de momento del día no existe');
     if (tag.getDimension() !== TagDimension.MOMENTO_DIA) {
       throw new AppError('La etiqueta no es de tipo MOMENTO_DIA');
@@ -25,19 +25,20 @@ export class AssignMealUseCase {
 
     if (recipeId && !ignoreRestrictions) {
       if (effectiveExclusions.length > 0) {
-        const recipe = this.recipeRepository.findById(recipeId);
+        const recipe = await this.recipeRepository.findById(recipeId);
         if (!recipe) throw new AppError('La receta no existe');
 
         const recipeTagIds = recipe.getTagIds();
         const conflicted = effectiveExclusions.filter(e => recipeTagIds.includes(e));
         if (conflicted.length > 0) {
-          const tagNames = conflicted.map(id => this.tagRepository.findById(id)?.getName() ?? id).join(', ');
+          const tags = await Promise.all(conflicted.map(id => this.tagRepository.findById(id)));
+          const tagNames = tags.map(t => t?.getName() ?? 'desconocida').join(', ');
           throw new AppError(`La receta contiene etiquetas excluidas: ${tagNames}`);
         }
       }
     }
 
     planning.assignMealToDay(orderDay, momentTagId, covers, recipeId, effectiveExclusions, preferences, ignoreRestrictions);
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
   }
 }

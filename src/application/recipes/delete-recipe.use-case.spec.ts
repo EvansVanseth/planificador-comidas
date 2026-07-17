@@ -27,34 +27,34 @@ describe('DeleteRecipeUseCase', () => {
     useCase = new DeleteRecipeUseCase(recipeRepo, planningRepo);
   });
 
-  it('debe eliminar una receta existente', () => {
-    recipeRepo.save(Recipe.create(recipeId, userId, 'Receta', 4, 30, null, [], defaultTags));
+  it('debe eliminar una receta existente', async () => {
+    await recipeRepo.save(Recipe.create(recipeId, userId, 'Receta', 4, 30, null, [], defaultTags));
 
-    const result = useCase.execute(recipeId);
+    const result = await useCase.execute(recipeId);
 
-    expect(recipeRepo.findById(recipeId)).toBeNull();
+    expect(await recipeRepo.findById(recipeId)).toBeNull();
     expect(result.planningsAffected).toBe(0);
   });
 
-  it('debe lanzar error si la receta no existe', () => {
-    expect(() => useCase.execute(recipeId)).toThrow(AppError);
+  it('debe lanzar error si la receta no existe', async () => {
+    await expect(useCase.execute(recipeId)).rejects.toThrow(AppError);
   });
 
-  it('debe desasignar la receta de los servicios de planificacion', () => {
-    recipeRepo.save(Recipe.create(recipeId, userId, 'Receta', 4, 30, null, [], defaultTags));
+  it('debe desasignar la receta de los servicios de planificacion', async () => {
+    await recipeRepo.save(Recipe.create(recipeId, userId, 'Receta', 4, 30, null, [], defaultTags));
 
     const planningId = '550e8400-e29b-41d4-a716-446655440010';
     const planning = Planning.create(planningId, userId, 'Semana', null, 1);
     planning.addDay('550e8400-e29b-41d4-a716-446655440020', 1);
     planning.assignMealToDay(1, 'momento-tag', 4, recipeId);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    const result = useCase.execute(recipeId);
+    const result = await useCase.execute(recipeId);
 
     expect(result.planningsAffected).toBe(1);
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const day = updated.getDay(1);
     expect(day!.services['momento-tag']!.getRecipeId()).toBeNull();
-    expect(recipeRepo.findById(recipeId)).toBeNull();
+    expect(await recipeRepo.findById(recipeId)).toBeNull();
   });
 });

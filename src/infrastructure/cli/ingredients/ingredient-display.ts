@@ -1,7 +1,7 @@
 import { IContainer } from '../../container';
 
-export function listarIngredientes(container: IContainer, userId: string) {
-  const ingredients = container.listIngredients.execute(userId);
+export async function listarIngredientes(container: IContainer, userId: string) {
+  const ingredients = await container.listIngredients.execute(userId);
   if (ingredients.length === 0) {
     console.log('No hay ingredientes');
     return;

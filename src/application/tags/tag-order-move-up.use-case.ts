@@ -6,8 +6,8 @@ import { AppError } from '../shared/errors/app-error';
 export class TagOrderMoveUpUseCase {
   constructor(private tagRepository: TagRepository) {}
 
-  execute(tagId: string): void {
-    const tag = this.tagRepository.findById(tagId);
+  async execute(tagId: string): Promise<void> {
+    const tag = await this.tagRepository.findById(tagId);
     if (!tag) {
       throw new AppError(`Etiqueta no encontrada: ${tagId}`);
     }
@@ -15,8 +15,8 @@ export class TagOrderMoveUpUseCase {
       throw new AppError('Solo etiquetas de dimensión MOMENTO_DIA pueden reordenarse');
     }
 
-    const momentoTags = this.tagRepository
-      .findAll()
+    const allTags = await this.tagRepository.findAll();
+    const momentoTags = allTags
       .filter(t => t.getDimension() === TagDimension.MOMENTO_DIA)
       .sort((a, b) => a.getOrder() - b.getOrder());
 
@@ -32,7 +32,7 @@ export class TagOrderMoveUpUseCase {
     tag.changeOrder(aboveOrder);
     above.changeOrder(currentOrder);
 
-    this.tagRepository.save(tag);
-    this.tagRepository.save(above);
+    await this.tagRepository.save(tag);
+    await this.tagRepository.save(above);
   }
 }

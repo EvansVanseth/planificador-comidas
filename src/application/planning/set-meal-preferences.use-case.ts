@@ -9,8 +9,8 @@ export class SetMealPreferencesUseCase {
     private tagRepository: TagRepository,
   ) {}
 
-  execute(planningId: string, orderDay: number, momentTagId: string, preferences: string[]): void {
-    const planning = this.planningRepository.findById(planningId);
+  async execute(planningId: string, orderDay: number, momentTagId: string, preferences: string[]): Promise<void> {
+    const planning = await this.planningRepository.findById(planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
 
     const dayDTO = planning.getDay(orderDay);
@@ -19,15 +19,15 @@ export class SetMealPreferencesUseCase {
     const meal = dayDTO.services[momentTagId];
     if (!meal) throw new AppError('No existe un servicio en ese momento del día');
 
-    this.validarSinMomentoDia(preferences);
+    await this.validarSinMomentoDia(preferences);
 
     meal.setPreferences(preferences);
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
   }
 
-  private validarSinMomentoDia(tagIds: string[]): void {
+  private async validarSinMomentoDia(tagIds: string[]): Promise<void> {
     for (const tagId of tagIds) {
-      const tag = this.tagRepository.findById(tagId);
+      const tag = await this.tagRepository.findById(tagId);
       if (tag && tag.getDimension() === TagDimension.MOMENTO_DIA) {
         throw new AppError(`No se puede usar la etiqueta de momento del día "${tag.getName()}" como preferencia`);
       }

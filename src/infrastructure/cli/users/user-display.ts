@@ -1,7 +1,7 @@
 import { IContainer } from '../../container';
 
-export function listarUsuarios(container: IContainer) {
-  const users = container.listUsers.execute();
+export async function listarUsuarios(container: IContainer) {
+  const users = await container.listUsers.execute();
   if (users.length === 0) {
     console.log('No hay usuarios');
     return;

@@ -5,8 +5,8 @@ import { randomUUID } from 'crypto';
 export class UpdatePantryItemCoversUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(planningId: string, ingredientId: string, covers: number): void {
-    const planning = this.planningRepository.findById(planningId);
+  async execute(planningId: string, ingredientId: string, covers: number): Promise<void> {
+    const planning = await this.planningRepository.findById(planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
 
     const exists = planning.getPantryItems().some(p => p.getIngredientId() === ingredientId);
@@ -17,6 +17,6 @@ export class UpdatePantryItemCoversUseCase {
       planning.updatePantryItemCovers(ingredientId, covers);
     }
 
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
   }
 }

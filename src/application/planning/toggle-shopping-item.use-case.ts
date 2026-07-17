@@ -5,8 +5,8 @@ import { randomUUID } from 'crypto';
 export class ToggleShoppingItemUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(planningId: string, ingredientId: string, completed: boolean): void {
-    const planning = this.planningRepository.findById(planningId);
+  async execute(planningId: string, ingredientId: string, completed: boolean): Promise<void> {
+    const planning = await this.planningRepository.findById(planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
 
     if (completed) {
@@ -19,6 +19,6 @@ export class ToggleShoppingItemUseCase {
       planning.markShoppingItemAsPending(ingredientId);
     }
 
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
   }
 }

@@ -12,22 +12,22 @@ describe('CreateUserUseCase', () => {
     useCase = new CreateUserUseCase(repo);
   });
 
-  it('debe crear un usuario y devolver un id', () => {
-    const id = useCase.execute('Alice');
+  it('debe crear un usuario y devolver un id', async () => {
+    const id = await useCase.execute('Alice');
     expect(id).toBeDefined();
     expect(typeof id).toBe('string');
-    const saved = repo.findById(id);
+    const saved = await repo.findById(id);
     expect(saved).not.toBeNull();
     expect(saved!.getName()).toBe('Alice');
   });
 
-  it('debe rechazar email duplicado', () => {
-    useCase.execute('Alice', 'alice@test.com');
-    expect(() => useCase.execute('Alice2', 'alice@test.com')).toThrow(AppError);
+  it('debe rechazar email duplicado', async () => {
+    await useCase.execute('Alice', 'alice@test.com');
+    await expect(useCase.execute('Alice2', 'alice@test.com')).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar email duplicado ignorando mayúsculas', () => {
-    useCase.execute('Alice', 'alice@test.com');
-    expect(() => useCase.execute('Alice2', 'ALICE@test.com')).toThrow(AppError);
+  it('debe rechazar email duplicado ignorando mayúsculas', async () => {
+    await useCase.execute('Alice', 'alice@test.com');
+    await expect(useCase.execute('Alice2', 'ALICE@test.com')).rejects.toThrow(AppError);
   });
 });

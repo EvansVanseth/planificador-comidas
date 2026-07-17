@@ -7,7 +7,7 @@ const ON_CANCEL = () => {};
 
 export async function editarIngrediente(container: IContainer, userId: string) {
   try {
-    const ingredients = container.listIngredients.execute(userId);
+    const ingredients = await container.listIngredients.execute(userId);
     if (ingredients.length === 0) {
       console.log('No hay ingredientes para editar');
       return;
@@ -33,7 +33,7 @@ export async function editarIngrediente(container: IContainer, userId: string) {
 
     if (!cambios) return;
     if (!cambios.name.trim()) return;
-    container.updateIngredient.execute({ id: seleccion.id, name: cambios.name.trim() });
+    await container.updateIngredient.execute({ id: seleccion.id, name: cambios.name.trim() });
     console.log('✓ Ingrediente actualizado correctamente');
 
   } catch (error) {

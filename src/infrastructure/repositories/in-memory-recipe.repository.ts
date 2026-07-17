@@ -4,28 +4,28 @@ import { Recipe } from "@/domain/recipes/aggregates/recipe.aggregate";
 export class InMemoryRecipeRepository implements RecipeRepository {
   private recipes: Map<string, Recipe> = new Map();
 
-  findById(id: string): Recipe | null {
+  async findById(id: string): Promise<Recipe | null> {
     return this.recipes.get(id) || null;
   }
 
-  findAll(): Recipe[] {
+  async findAll(): Promise<Recipe[]> {
     return Array.from(this.recipes.values());
   }
 
-  findAllByUserId(userId: string): Recipe[] {
-    return this.findAll().filter(r => r.getUserId() === userId);
+  async findAllByUserId(userId: string): Promise<Recipe[]> {
+    return (await this.findAll()).filter(r => r.getUserId() === userId);
   }
 
-  findByName(name: string): Recipe | null {
+  async findByName(name: string): Promise<Recipe | null> {
     const normalized = name.toLowerCase().trim();
-    return this.findAll().find(r => r.getName().toLowerCase().trim() === normalized) ?? null;
+    return (await this.findAll()).find(r => r.getName().toLowerCase().trim() === normalized) ?? null;
   }
 
-  save(recipe: Recipe): void {
+  async save(recipe: Recipe): Promise<void> {
     this.recipes.set(recipe.getId(), recipe);
   }
 
-  delete(id: string): void {
+  async delete(id: string): Promise<void> {
     this.recipes.delete(id);
   }
 }

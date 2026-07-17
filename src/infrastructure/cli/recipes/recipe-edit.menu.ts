@@ -9,7 +9,7 @@ import { mostrarReceta } from './recipe-display';
 const ON_CANCEL = () => {};
 
 export async function editarReceta(container: IContainer, userId: string) {
-  const recipes = container.listRecipes.execute(userId);
+  const recipes = await container.listRecipes.execute(userId);
   if (recipes.length === 0) {
     console.log('No hay recetas para editar');
     return;
@@ -30,14 +30,14 @@ export async function editarReceta(container: IContainer, userId: string) {
 
   let continuar = true;
   while (continuar) {
-    const recipe = container.listRecipes.execute(userId).find(r => r.id === recipeId);
+    const recipe = (await container.listRecipes.execute(userId)).find(r => r.id === recipeId);
     if (!recipe) {
       console.log('Receta no encontrada');
       return;
     }
 
-    const allIngredients = container.listIngredients.execute(userId);
-    const allTags = container.listTags.execute(userId);
+    const allIngredients = await container.listIngredients.execute(userId);
+    const allTags = await container.listTags.execute(userId);
 
     mostrarReceta(recipe, allIngredients, allTags);
 
@@ -86,7 +86,7 @@ async function editarDatosReceta(container: IContainer, recipeId: string) {
     if (cambios.name.trim()) input.name = cambios.name.trim();
     if (cambios.baseServings > 0) input.baseServings = cambios.baseServings;
     if (cambios.prepTime > 0) input.prepTime = cambios.prepTime;
-    container.updateRecipe.execute(input);
+    await container.updateRecipe.execute(input);
     } catch (error) {
       if (error instanceof DomainError || error instanceof AppError) {
         console.log('✗ ' + error.message);

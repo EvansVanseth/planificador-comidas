@@ -15,24 +15,24 @@ export class DeleteIngredientUseCase {
     private planningRepository: PlanningRepository,
   ) {}
 
-  execute(id: string): DeleteIngredientResult {
-    const ingredient = this.ingredientRepository.findById(id);
+  async execute(id: string): Promise<DeleteIngredientResult> {
+    const ingredient = await this.ingredientRepository.findById(id);
     if (!ingredient) throw new AppError(`Ingredient not found: ${id}`);
 
     const userId = ingredient.getUserId();
     let recipesAffected = 0;
     let planningsAffected = 0;
 
-    const recipes = this.recipeRepository.findAllByUserId(userId);
+    const recipes = await this.recipeRepository.findAllByUserId(userId);
     for (const recipe of recipes) {
       if (recipe.getIngredients().some(i => i.ingredientId === id)) {
         recipe.removeIngredient(id);
-        this.recipeRepository.save(recipe);
+        await this.recipeRepository.save(recipe);
         recipesAffected++;
       }
     }
 
-    const plannings = this.planningRepository.findAllByUserId(userId);
+    const plannings = await this.planningRepository.findAllByUserId(userId);
     for (const planning of plannings) {
       let planningChanged = false;
 
@@ -47,12 +47,12 @@ export class DeleteIngredientUseCase {
       }
 
       if (planningChanged) {
-        this.planningRepository.save(planning);
+        await this.planningRepository.save(planning);
         planningsAffected++;
       }
     }
 
-    this.ingredientRepository.delete(id);
+    await this.ingredientRepository.delete(id);
 
     return { recipesAffected, planningsAffected };
   }

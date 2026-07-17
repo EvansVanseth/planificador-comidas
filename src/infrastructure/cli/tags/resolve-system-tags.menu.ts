@@ -10,7 +10,7 @@ function getResolvedKeys(tags: TagPrimitives[]): Set<string> {
 }
 
 export async function resolveSystemTagsMenu(container: IContainer, userId: string): Promise<void> {
-  const allTags = container.listTags.execute(userId);
+  const allTags = await container.listTags.execute(userId);
   const unresolved = allTags.filter(t => t.isSystem && !t.systemKey);
 
   if (unresolved.length === 0) return;
@@ -59,7 +59,7 @@ export async function resolveSystemTagsMenu(container: IContainer, userId: strin
 
       if (!response?.tagId) continue;
 
-      container.setSystemKey(response.tagId, seed.systemKey);
+      await container.setSystemKey(response.tagId, seed.systemKey);
 
       // Remove from remaining candidates
       const idx = candidates.findIndex(c => c.id === response.tagId);

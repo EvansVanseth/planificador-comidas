@@ -11,51 +11,51 @@ describe('UpdatePlanningUseCase', () => {
   let useCase: UpdatePlanningUseCase;
   let repo: InMemoryPlanningRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     repo = new InMemoryPlanningRepository();
     useCase = new UpdatePlanningUseCase(repo);
-    repo.save(Planning.create(validId, validUserId, 'Original', null, 2));
+    await repo.save(Planning.create(validId, validUserId, 'Original', null, 2));
   });
 
-  it('debe actualizar el nombre', () => {
-    useCase.execute({ id: validId, name: 'Renombrada' });
-    expect(repo.findById(validId)!.getName()).toBe('Renombrada');
+  it('debe actualizar el nombre', async () => {
+    await useCase.execute({ id: validId, name: 'Renombrada' });
+    expect((await repo.findById(validId))!.getName()).toBe('Renombrada');
   });
 
-  it('debe actualizar startDate', () => {
+  it('debe actualizar startDate', async () => {
     const date = new Date(2026, 5, 29);
-    useCase.execute({ id: validId, startDate: date });
-    expect(repo.findById(validId)!.getStartDate()).toEqual(date);
+    await useCase.execute({ id: validId, startDate: date });
+    expect((await repo.findById(validId))!.getStartDate()).toEqual(date);
   });
 
-  it('debe actualizar startDate a null', () => {
-    useCase.execute({ id: validId, startDate: null });
-    expect(repo.findById(validId)!.getStartDate()).toBeNull();
+  it('debe actualizar startDate a null', async () => {
+    await useCase.execute({ id: validId, startDate: null });
+    expect((await repo.findById(validId))!.getStartDate()).toBeNull();
   });
 
-  it('debe actualizar weeks', () => {
-    useCase.execute({ id: validId, weeks: 4 });
-    expect(repo.findById(validId)!.getWeeks()).toBe(4);
+  it('debe actualizar weeks', async () => {
+    await useCase.execute({ id: validId, weeks: 4 });
+    expect((await repo.findById(validId))!.getWeeks()).toBe(4);
   });
 
-  it('debe lanzar error si el planning no existe', () => {
-    expect(() => useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'X' })).toThrow(AppError);
+  it('debe lanzar error si el planning no existe', async () => {
+    await expect(useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'X' })).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar renombrar a un nombre duplicado', () => {
+  it('debe rechazar renombrar a un nombre duplicado', async () => {
     const otherId = '550e8400-e29b-41d4-a716-446655440010';
-    repo.save(Planning.create(otherId, validUserId, 'Existente', null, 2));
-    expect(() => useCase.execute({ id: validId, name: 'Existente' })).toThrow(AppError);
+    await repo.save(Planning.create(otherId, validUserId, 'Existente', null, 2));
+    await expect(useCase.execute({ id: validId, name: 'Existente' })).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', () => {
+  it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', async () => {
     const otherId = '550e8400-e29b-41d4-a716-446655440010';
-    repo.save(Planning.create(otherId, validUserId, 'Existente', null, 2));
-    expect(() => useCase.execute({ id: validId, name: 'existente' })).toThrow(AppError);
+    await repo.save(Planning.create(otherId, validUserId, 'Existente', null, 2));
+    await expect(useCase.execute({ id: validId, name: 'existente' })).rejects.toThrow(AppError);
   });
 
-  it('debe permitir mantener el mismo nombre al actualizar', () => {
-    useCase.execute({ id: validId, name: 'Original' });
-    expect(repo.findById(validId)!.getName()).toBe('Original');
+  it('debe permitir mantener el mismo nombre al actualizar', async () => {
+    await useCase.execute({ id: validId, name: 'Original' });
+    expect((await repo.findById(validId))!.getName()).toBe('Original');
   });
 });

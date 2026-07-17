@@ -6,7 +6,8 @@ const ON_CANCEL = () => {};
 
 export async function eliminarEtiqueta(container: IContainer, userId: string) {
   try {
-    const tags = container.listTags.execute(userId).filter(t => !t.isSystem);
+    const allTags = await container.listTags.execute(userId);
+    const tags = allTags.filter(t => !t.isSystem);
     if (tags.length === 0) {
       console.log('No hay etiquetas de usuario para eliminar');
       return;
@@ -26,9 +27,9 @@ export async function eliminarEtiqueta(container: IContainer, userId: string) {
     const tagId = seleccion.id;
     const tagName = tags.find(t => t.id === tagId)?.name ?? tagId;
 
-    const recipes = container.listRecipes.execute(userId);
+    const recipes = await container.listRecipes.execute(userId);
     const recipesWithTag = recipes.filter(r => r.tags.some(t => t.id === tagId));
-    const planningCount = contarPlanificacionesConEtiqueta(container, userId, tagId);
+    const planningCount = await contarPlanificacionesConEtiqueta(container, userId, tagId);
 
     if (recipesWithTag.length > 0 || planningCount > 0) {
       console.log(`\nLa etiqueta "${tagName}" está en uso:`);
@@ -53,7 +54,7 @@ export async function eliminarEtiqueta(container: IContainer, userId: string) {
       }
     }
 
-    const result = container.deleteTag.execute(tagId);
+    const result = await container.deleteTag.execute(tagId);
     console.log('✓ Etiqueta eliminada correctamente');
     if (result.recipesAffected > 0) {
       console.log(`  - Eliminada de ${result.recipesAffected} receta(s)`);
@@ -71,8 +72,8 @@ export async function eliminarEtiqueta(container: IContainer, userId: string) {
   }
 }
 
-function contarPlanificacionesConEtiqueta(container: IContainer, userId: string, tagId: string): number {
-  const plannings = container.listPlannings.execute(userId);
+async function contarPlanificacionesConEtiqueta(container: IContainer, userId: string, tagId: string): Promise<number> {
+  const plannings = await container.listPlannings.execute(userId);
   let count = 0;
   for (const planning of plannings) {
     for (const day of planning.getDays()) {

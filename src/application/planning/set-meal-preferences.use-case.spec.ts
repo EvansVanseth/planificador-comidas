@@ -19,64 +19,64 @@ describe('SetMealPreferencesUseCase', () => {
   let planningRepo: InMemoryPlanningRepository;
   let tagRepo: InMemoryTagRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     planningRepo = new InMemoryPlanningRepository();
     tagRepo = new InMemoryTagRepository();
-    tagRepo.save(Tag.create(momentoTagId, userId, 'Desayuno', TagDimension.MOMENTO_DIA, true));
+    await tagRepo.save(Tag.create(momentoTagId, userId, 'Desayuno', TagDimension.MOMENTO_DIA, true));
     useCase = new SetMealPreferencesUseCase(planningRepo, tagRepo);
   });
 
-  it('debe asignar preferencias a un servicio correctamente', () => {
+  it('debe asignar preferencias a un servicio correctamente', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
     planning.assignMealToDay(1, lunchTagId, 4);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute(planningId, 1, lunchTagId, preferences);
+    await useCase.execute(planningId, 1, lunchTagId, preferences);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const day = updated.getDay(1)!;
     expect(day.services[lunchTagId]!.getPreferences()).toEqual(preferences);
   });
 
-  it('debe reemplazar preferencias anteriores', () => {
+  it('debe reemplazar preferencias anteriores', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
     planning.assignMealToDay(1, lunchTagId, 4, undefined, undefined, [preferences[0]]);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute(planningId, 1, lunchTagId, [preferences[1]]);
+    await useCase.execute(planningId, 1, lunchTagId, [preferences[1]]);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const day = updated.getDay(1)!;
     expect(day.services[lunchTagId]!.getPreferences()).toEqual([preferences[1]]);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute(planningId, 1, lunchTagId, preferences)).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute(planningId, 1, lunchTagId, preferences)).rejects.toThrow(AppError);
   });
 
-  it('debe fallar si el día no existe', () => {
+  it('debe fallar si el día no existe', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute(planningId, 1, lunchTagId, preferences)).toThrow(AppError);
+    await expect(useCase.execute(planningId, 1, lunchTagId, preferences)).rejects.toThrow(AppError);
   });
 
-  it('debe fallar si el servicio no existe', () => {
+  it('debe fallar si el servicio no existe', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute(planningId, 1, lunchTagId, preferences)).toThrow(AppError);
+    await expect(useCase.execute(planningId, 1, lunchTagId, preferences)).rejects.toThrow(AppError);
   });
 
-  it('debe fallar si se intenta preferir una etiqueta de MOMENTO_DIA', () => {
+  it('debe fallar si se intenta preferir una etiqueta de MOMENTO_DIA', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
     planning.assignMealToDay(1, lunchTagId, 4);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute(planningId, 1, lunchTagId, [momentoTagId])).toThrow(AppError);
+    await expect(useCase.execute(planningId, 1, lunchTagId, [momentoTagId])).rejects.toThrow(AppError);
   });
 });

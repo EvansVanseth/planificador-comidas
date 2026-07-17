@@ -6,8 +6,8 @@ import { AppError } from '../shared/errors/app-error';
 export class DuplicatePlanningUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(planningId: string, userId: string): string {
-    const original = this.planningRepository.findById(planningId);
+  async execute(planningId: string, userId: string): Promise<string> {
+    const original = await this.planningRepository.findById(planningId);
     if (!original) throw new AppError('Planificacion no encontrada');
 
     const primitives = original.toPrimitives();
@@ -15,7 +15,7 @@ export class DuplicatePlanningUseCase {
 
     let clonedName = `${primitives.name} (Copia)`;
     let counter = 2;
-    while (this.planningRepository.findByName(clonedName)) {
+    while (await this.planningRepository.findByName(clonedName)) {
       clonedName = `${primitives.name} (Copia ${counter})`;
       counter++;
     }
@@ -38,7 +38,7 @@ export class DuplicatePlanningUseCase {
     };
 
     const planning = Planning.fromPrimitives(cloned);
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
     return newId;
   }
 }

@@ -15,26 +15,26 @@ describe('ListPlanningsUseCase', () => {
     useCase = new ListPlanningsUseCase(planningRepo);
   });
 
-  it('debe listar todas las planificaciones de un usuario', () => {
-    planningRepo.save(Planning.create('550e8400-e29b-41d4-a716-446655440010', userId, 'Semana 1', null, 2));
-    planningRepo.save(Planning.create('550e8400-e29b-41d4-a716-446655440011', userId, 'Semana 2', null, 2));
+  it('debe listar todas las planificaciones de un usuario', async () => {
+    await planningRepo.save(Planning.create('550e8400-e29b-41d4-a716-446655440010', userId, 'Semana 1', null, 2));
+    await planningRepo.save(Planning.create('550e8400-e29b-41d4-a716-446655440011', userId, 'Semana 2', null, 2));
 
-    const result = useCase.execute(userId);
+    const result = await useCase.execute(userId);
 
     expect(result).toHaveLength(2);
   });
 
-  it('debe filtrar por usuario', () => {
-    planningRepo.save(Planning.create('550e8400-e29b-41d4-a716-446655440020', userId, 'Semana 1', null, 2));
-    planningRepo.save(Planning.create('550e8400-e29b-41d4-a716-446655440021', otherUserId, 'Semana 2', null, 2));
+  it('debe filtrar por usuario', async () => {
+    await planningRepo.save(Planning.create('550e8400-e29b-41d4-a716-446655440020', userId, 'Semana 1', null, 2));
+    await planningRepo.save(Planning.create('550e8400-e29b-41d4-a716-446655440021', otherUserId, 'Semana 2', null, 2));
 
-    const result = useCase.execute(userId);
+    const result = await useCase.execute(userId);
 
     expect(result).toHaveLength(1);
   });
 
-  it('debe devolver lista vacia si no hay planificaciones', () => {
-    const result = useCase.execute(userId);
+  it('debe devolver lista vacia si no hay planificaciones', async () => {
+    const result = await useCase.execute(userId);
 
     expect(result).toHaveLength(0);
   });

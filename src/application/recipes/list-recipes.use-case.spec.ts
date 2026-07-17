@@ -21,22 +21,22 @@ describe('ListRecipesUseCase', () => {
     useCase = new ListRecipesUseCase(repo);
   });
 
-  it('debe devolver lista vacía si no hay recetas', () => {
-    expect(useCase.execute(userId)).toEqual([]);
+  it('debe devolver lista vacía si no hay recetas', async () => {
+    expect(await useCase.execute(userId)).toEqual([]);
   });
 
-  it('debe devolver solo las recetas del usuario', () => {
+  it('debe devolver solo las recetas del usuario', async () => {
     const r1 = Recipe.create('550e8400-e29b-41d4-a716-446655440001', userId, 'Receta Uno', 2, 10, null, [], defaultTags);
-    repo.save(r1);
-    const result = useCase.execute(userId);
+    await repo.save(r1);
+    const result = await useCase.execute(userId);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual(r1.toPrimitives());
   });
 
-  it('no debe devolver recetas de otro usuario', () => {
+  it('no debe devolver recetas de otro usuario', async () => {
     const r1 = Recipe.create('550e8400-e29b-41d4-a716-446655440001', otherUserId, 'Receta Otro', 2, 10, null, [], defaultTags);
-    repo.save(r1);
-    const result = useCase.execute(userId);
+    await repo.save(r1);
+    const result = await useCase.execute(userId);
     expect(result).toHaveLength(0);
   });
 });

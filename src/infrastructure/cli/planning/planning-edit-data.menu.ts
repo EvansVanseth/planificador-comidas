@@ -7,7 +7,7 @@ const ON_CANCEL = () => {};
 
 export async function editarDatosPlanificacion(container: IContainer, planningId: string, userId: string) {
   try {
-    const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
+    const planning = (await container.listPlannings.execute(userId)).find(p => p.getId() === planningId);
     if (!planning) {
       console.log('Planificacion no encontrada');
       return;
@@ -66,7 +66,7 @@ export async function editarDatosPlanificacion(container: IContainer, planningId
       if (balanceResp?.value !== undefined) input.hotColdBalance = balanceResp.value;
     }
 
-    container.updatePlanning.execute(input);
+    await container.updatePlanning.execute(input);
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {
       console.log('✗ ' + error.message);

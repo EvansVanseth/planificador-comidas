@@ -4,28 +4,29 @@ import { Ingredient } from "@/domain/ingredients/aggregates/ingredient.aggregate
 export class InMemoryIngredientRepository implements IngredientRepository {
   private ingredients: Map<string, Ingredient> = new Map();
 
-  findById(id: string): Ingredient | null {
+  async findById(id: string): Promise<Ingredient | null> {
     return this.ingredients.get(id) || null;
   }
 
-  findAll(): Ingredient[] {
+  async findAll(): Promise<Ingredient[]> {
     return Array.from(this.ingredients.values());
   }
 
-  findAllByUserId(userId: string): Ingredient[] {
-    return this.findAll().filter(i => i.getUserId() === userId);
+  async findAllByUserId(userId: string): Promise<Ingredient[]> {
+    return (await this.findAll()).filter(i => i.getUserId() === userId);
   }
 
-  findByName(name: string): Ingredient | null {
+  async findByName(name: string): Promise<Ingredient | null> {
     const normalized = name.toLowerCase().trim();
-    return this.findAll().find(i => i.getName().toLowerCase().trim() === normalized) ?? null;
+    const ingredients = await this.findAll();
+    return ingredients.find(i => i.getName().toLowerCase().trim() === normalized) ?? null;
   }
 
-  save(ingredient: Ingredient): void {
+  async save(ingredient: Ingredient): Promise<void> {
     this.ingredients.set(ingredient.getId(), ingredient);
   }
 
-  delete(id: string): void {
+  async delete(id: string): Promise<void> {
     this.ingredients.delete(id);
   }
 }

@@ -7,7 +7,7 @@ const ON_CANCEL = () => {};
 
 export async function editarUsuario(container: IContainer) {
   try {
-    const users = container.listUsers.execute();
+    const users = await container.listUsers.execute();
     if (users.length === 0) {
       console.log('No hay usuarios para editar');
       return;
@@ -35,7 +35,7 @@ export async function editarUsuario(container: IContainer) {
 
     const input: any = { id: seleccion.id };
     if (cambios.name.trim()) input.name = cambios.name.trim();
-    container.updateUser.execute(input);
+    await container.updateUser.execute(input);
     console.log('✓ Usuario actualizado correctamente');
 
   } catch (error) {

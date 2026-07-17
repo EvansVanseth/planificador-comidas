@@ -12,24 +12,24 @@ describe('AddPantryItemUseCase', () => {
   let useCase: AddPantryItemUseCase;
   let planningRepo: InMemoryPlanningRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     planningRepo = new InMemoryPlanningRepository();
     useCase = new AddPantryItemUseCase(planningRepo);
 
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
   });
 
-  it('debe añadir un item a la despensa', () => {
-    useCase.execute(planningId, ingredientId);
+  it('debe añadir un item a la despensa', async () => {
+    await useCase.execute(planningId, ingredientId);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const items = updated.getPantryItems();
     expect(items).toHaveLength(1);
     expect(items[0].getIngredientId()).toBe(ingredientId);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute('inexistente', ingredientId)).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute('inexistente', ingredientId)).rejects.toThrow(AppError);
   });
 });

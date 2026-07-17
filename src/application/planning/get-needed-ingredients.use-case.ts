@@ -18,8 +18,8 @@ export class GetNeededIngredientsUseCase {
     private ingredientRepository: IngredientRepository,
   ) {}
 
-  execute(planningId: string): NeededIngredientEntry[] {
-    const planning = this.planningRepository.findById(planningId);
+  async execute(planningId: string): Promise<NeededIngredientEntry[]> {
+    const planning = await this.planningRepository.findById(planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
 
     // Recolectar todas las recetas asignadas con sus covers
@@ -41,7 +41,7 @@ export class GetNeededIngredientsUseCase {
     const ingredientTotals = new Map<string, number>(); // ingredientId → totalCovers
 
     for (const [recipeId, totalCovers] of recipeCovers) {
-      const recipe = this.recipeRepository.findById(recipeId);
+      const recipe = await this.recipeRepository.findById(recipeId);
       if (!recipe) continue;
 
       recipeNames.set(recipeId, recipe.getName());
@@ -57,7 +57,7 @@ export class GetNeededIngredientsUseCase {
     // Resolver nombres de ingredientes
     const ingredientNames = new Map<string, string>();
     for (const id of ingredientRecipes.keys()) {
-      const ing = this.ingredientRepository.findById(id);
+      const ing = await this.ingredientRepository.findById(id);
       ingredientNames.set(id, ing?.getName() ?? '?');
     }
 

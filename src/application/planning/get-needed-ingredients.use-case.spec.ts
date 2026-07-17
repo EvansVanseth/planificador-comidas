@@ -38,18 +38,18 @@ describe('GetNeededIngredientsUseCase', () => {
     { id: randomUUID(), dimension: TagDimension.TIPO_PLATO },
   ];
 
-  it('debe sumar covers de un ingrediente usado en una receta', () => {
-    ingredientRepo.save(Ingredient.create(ingId1, userId, 'Tomate'));
-    recipeRepo.save(Recipe.create(recipeId, userId, 'Salsa', 2, 10, null, [
+  it('debe sumar covers de un ingrediente usado en una receta', async () => {
+    await ingredientRepo.save(Ingredient.create(ingId1, userId, 'Tomate'));
+    await recipeRepo.save(Recipe.create(recipeId, userId, 'Salsa', 2, 10, null, [
       RecipeIngredient.create(ingId1, '2 unidades'),
     ], defaultTags()));
 
     const planning = Planning.create(planningId, userId, 'Mi plan', null, 1);
     planning.addDay(randomUUID(), 1);
     planning.assignMealToDay(1, breakfastTagId, 4, recipeId);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    const result = useCase.execute(planningId);
+    const result = await useCase.execute(planningId);
     expect(result).toHaveLength(1);
     expect(result[0].totalCovers).toBe(4);
     expect(result[0].ingredientName).toBe('Tomate');
@@ -57,15 +57,15 @@ describe('GetNeededIngredientsUseCase', () => {
     expect(result[0].recipeNames).toEqual(['Salsa']);
   });
 
-  it('debe acumular covers de un ingrediente usado en varias recetas', () => {
-    ingredientRepo.save(Ingredient.create(ingId1, userId, 'Tomate'));
+  it('debe acumular covers de un ingrediente usado en varias recetas', async () => {
+    await ingredientRepo.save(Ingredient.create(ingId1, userId, 'Tomate'));
 
-    recipeRepo.save(Recipe.create(recipeId, userId, 'Salsa', 2, 10, null, [
+    await recipeRepo.save(Recipe.create(recipeId, userId, 'Salsa', 2, 10, null, [
       RecipeIngredient.create(ingId1, '2 unidades'),
     ], defaultTags()));
 
     const recipe2Id = '550e8400-e29b-41d4-a716-446655440011';
-    recipeRepo.save(Recipe.create(recipe2Id, userId, 'Ensalada', 1, 5, null, [
+    await recipeRepo.save(Recipe.create(recipe2Id, userId, 'Ensalada', 1, 5, null, [
       RecipeIngredient.create(ingId1),
     ], defaultTags()));
 
@@ -74,20 +74,20 @@ describe('GetNeededIngredientsUseCase', () => {
     planning.assignMealToDay(1, breakfastTagId, 4, recipeId);
     planning.addDay(randomUUID(), 2);
     planning.assignMealToDay(2, lunchTagId, 2, recipe2Id);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    const result = useCase.execute(planningId);
+    const result = await useCase.execute(planningId);
     expect(result).toHaveLength(1);
     expect(result[0].totalCovers).toBe(6);
     expect(result[0].recipeNames).toContain('Salsa');
     expect(result[0].recipeNames).toContain('Ensalada');
   });
 
-  it('debe ordenar por nombre de ingrediente', () => {
-    ingredientRepo.save(Ingredient.create(ingId2, userId, 'Cebolla'));
-    ingredientRepo.save(Ingredient.create(ingId1, userId, 'Tomate'));
+  it('debe ordenar por nombre de ingrediente', async () => {
+    await ingredientRepo.save(Ingredient.create(ingId2, userId, 'Cebolla'));
+    await ingredientRepo.save(Ingredient.create(ingId1, userId, 'Tomate'));
 
-    recipeRepo.save(Recipe.create(recipeId, userId, 'Salsa', 2, 10, null, [
+    await recipeRepo.save(Recipe.create(recipeId, userId, 'Salsa', 2, 10, null, [
       RecipeIngredient.create(ingId1),
       RecipeIngredient.create(ingId2),
     ], defaultTags()));
@@ -95,20 +95,20 @@ describe('GetNeededIngredientsUseCase', () => {
     const planning = Planning.create(planningId, userId, 'Mi plan', null, 1);
     planning.addDay(randomUUID(), 1);
     planning.assignMealToDay(1, breakfastTagId, 2, recipeId);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    const result = useCase.execute(planningId);
+    const result = await useCase.execute(planningId);
     expect(result.map(i => i.ingredientName)).toEqual(['Cebolla', 'Tomate']);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute(planningId)).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute(planningId)).rejects.toThrow(AppError);
   });
 
-  it('debe devolver lista vacia si no hay recetas', () => {
+  it('debe devolver lista vacia si no hay recetas', async () => {
     const planning = Planning.create(planningId, userId, 'Mi plan', null, 1);
     planning.addDay(randomUUID(), 1);
-    planningRepo.save(planning);
-    expect(useCase.execute(planningId)).toHaveLength(0);
+    await planningRepo.save(planning);
+    expect(await useCase.execute(planningId)).toHaveLength(0);
   });
 });

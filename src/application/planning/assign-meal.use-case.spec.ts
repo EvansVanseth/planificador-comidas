@@ -32,50 +32,50 @@ describe('AssignMealUseCase', () => {
     useCase = new AssignMealUseCase(planningRepo, tagRepo, recipeRepo);
   });
 
-  it('debe asignar una comida a un día correctamente', () => {
-    tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
-    recipeRepo.save(Recipe.create(recipeId, userId, 'Arroz', 4, 30, null, [], [
+  it('debe asignar una comida a un día correctamente', async () => {
+    await tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
+    await recipeRepo.save(Recipe.create(recipeId, userId, 'Arroz', 4, 30, null, [], [
       { id: momentTagId, dimension: TagDimension.MOMENTO_DIA },
       { id: formatoTagId, dimension: TagDimension.FORMATO },
       { id: tipoPlatoTagId, dimension: TagDimension.TIPO_PLATO },
     ]));
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute(planningId, 1, momentTagId, recipeId, 2);
+    await useCase.execute(planningId, 1, momentTagId, recipeId, 2);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const day = updated.getDay(1);
     expect(day!.services[momentTagId]).not.toBeNull();
     expect(day!.services[momentTagId]!.getCovers()).toBe(2);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute(planningId, 1, momentTagId, recipeId, 2)).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute(planningId, 1, momentTagId, recipeId, 2)).rejects.toThrow(AppError);
   });
 
-  it('debe fallar si la tag de momento no existe', () => {
+  it('debe fallar si la tag de momento no existe', async () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute(planningId, 1, momentTagId, recipeId, 2)).toThrow(AppError);
+    await expect(useCase.execute(planningId, 1, momentTagId, recipeId, 2)).rejects.toThrow(AppError);
   });
 
-  it('debe fallar si la tag no es de tipo MOMENTO_DIA', () => {
-    tagRepo.save(Tag.create(otherTagId, userId, 'Asiático', TagDimension.TIPO_PLATO, true));
+  it('debe fallar si la tag no es de tipo MOMENTO_DIA', async () => {
+    await tagRepo.save(Tag.create(otherTagId, userId, 'Asiático', TagDimension.TIPO_PLATO, true));
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute(planningId, 1, otherTagId, recipeId, 2)).toThrow(AppError);
+    await expect(useCase.execute(planningId, 1, otherTagId, recipeId, 2)).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar receta con etiqueta excluida', () => {
-    tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
-    tagRepo.save(Tag.create(excludedTagId, userId, 'Carne', TagDimension.TIPO_PLATO, true));
-    recipeRepo.save(Recipe.create(recipeId, userId, 'Arroz con pollo', 4, 30, null, [], [
+  it('debe rechazar receta con etiqueta excluida', async () => {
+    await tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
+    await tagRepo.save(Tag.create(excludedTagId, userId, 'Carne', TagDimension.TIPO_PLATO, true));
+    await recipeRepo.save(Recipe.create(recipeId, userId, 'Arroz con pollo', 4, 30, null, [], [
       { id: momentTagId, dimension: TagDimension.MOMENTO_DIA },
       { id: formatoTagId, dimension: TagDimension.FORMATO },
       { id: excludedTagId, dimension: TagDimension.TIPO_PLATO },
@@ -83,15 +83,15 @@ describe('AssignMealUseCase', () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
     planning.assignMealToDay(1, momentTagId, 4, undefined, [excludedTagId]);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    expect(() => useCase.execute(planningId, 1, momentTagId, recipeId, 4)).toThrow(AppError);
+    await expect(useCase.execute(planningId, 1, momentTagId, recipeId, 4)).rejects.toThrow(AppError);
   });
 
-  it('debe permitir receta con ignoreRestrictions=true aunque tenga exclusiones', () => {
-    tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
-    tagRepo.save(Tag.create(excludedTagId, userId, 'Carne', TagDimension.TIPO_PLATO, true));
-    recipeRepo.save(Recipe.create(recipeId, userId, 'Arroz con pollo', 4, 30, null, [], [
+  it('debe permitir receta con ignoreRestrictions=true aunque tenga exclusiones', async () => {
+    await tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
+    await tagRepo.save(Tag.create(excludedTagId, userId, 'Carne', TagDimension.TIPO_PLATO, true));
+    await recipeRepo.save(Recipe.create(recipeId, userId, 'Arroz con pollo', 4, 30, null, [], [
       { id: momentTagId, dimension: TagDimension.MOMENTO_DIA },
       { id: formatoTagId, dimension: TagDimension.FORMATO },
       { id: excludedTagId, dimension: TagDimension.TIPO_PLATO },
@@ -99,20 +99,20 @@ describe('AssignMealUseCase', () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
     planning.assignMealToDay(1, momentTagId, 4, undefined, [excludedTagId]);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute(planningId, 1, momentTagId, recipeId, 4, true);
+    await useCase.execute(planningId, 1, momentTagId, recipeId, 4, true);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const day = updated.getDay(1)!;
     const meal = day.services[momentTagId]!;
     expect(meal.getRecipeId()).toBe(recipeId);
     expect(meal.getIgnoreRestrictions()).toBe(true);
   });
 
-  it('debe permitir receta si exclusiones no coinciden con tags de la receta', () => {
-    tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
-    recipeRepo.save(Recipe.create(recipeId, userId, 'Arroz', 4, 30, null, [], [
+  it('debe permitir receta si exclusiones no coinciden con tags de la receta', async () => {
+    await tagRepo.save(Tag.create(momentTagId, userId, 'Almuerzo', TagDimension.MOMENTO_DIA, true));
+    await recipeRepo.save(Recipe.create(recipeId, userId, 'Arroz', 4, 30, null, [], [
       { id: momentTagId, dimension: TagDimension.MOMENTO_DIA },
       { id: formatoTagId, dimension: TagDimension.FORMATO },
       { id: tipoPlatoTagId, dimension: TagDimension.TIPO_PLATO },
@@ -120,11 +120,11 @@ describe('AssignMealUseCase', () => {
     const planning = Planning.create(planningId, userId, 'Test', null, 1);
     planning.addDay(dayId, 1);
     planning.assignMealToDay(1, momentTagId, 4, undefined, [excludedTagId]);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
 
-    useCase.execute(planningId, 1, momentTagId, recipeId, 4);
+    await useCase.execute(planningId, 1, momentTagId, recipeId, 4);
 
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const day = updated.getDay(1)!;
     expect(day.services[momentTagId]!.getRecipeId()).toBe(recipeId);
   });

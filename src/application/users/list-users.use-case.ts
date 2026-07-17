@@ -4,7 +4,8 @@ import { UserPrimitives } from '@/domain/users/aggregates/user.aggregate';
 export class ListUsersUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  execute(): UserPrimitives[] {
-    return this.userRepository.findAll().map(u => u.toPrimitives());
+  async execute(): Promise<UserPrimitives[]> {
+    const users = await this.userRepository.findAll();
+    return users.map(u => u.toPrimitives());
   }
 }

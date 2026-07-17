@@ -22,47 +22,47 @@ describe('TagOrderMoveDownUseCase', () => {
     useCase = new TagOrderMoveDownUseCase(repo);
   });
 
-  it('debe intercambiar orden con la etiqueta inferior', () => {
+  it('debe intercambiar orden con la etiqueta inferior', async () => {
     seedTag('550e8400-e29b-41d4-a716-446655440010', 'Desayuno', 1);
     seedTag('550e8400-e29b-41d4-a716-446655440011', 'Comida', 2);
     seedTag('550e8400-e29b-41d4-a716-446655440012', 'Cena', 3);
 
-    useCase.execute('550e8400-e29b-41d4-a716-446655440010');
+    await useCase.execute('550e8400-e29b-41d4-a716-446655440010');
 
-    expect(repo.findById('550e8400-e29b-41d4-a716-446655440010')!.getOrder()).toBe(2);
-    expect(repo.findById('550e8400-e29b-41d4-a716-446655440011')!.getOrder()).toBe(1);
-    expect(repo.findById('550e8400-e29b-41d4-a716-446655440012')!.getOrder()).toBe(3);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440010'))!.getOrder()).toBe(2);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440011'))!.getOrder()).toBe(1);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440012'))!.getOrder()).toBe(3);
   });
 
-  it('debe lanzar error si ya está en última posición', () => {
+  it('debe lanzar error si ya está en última posición', async () => {
     seedTag('550e8400-e29b-41d4-a716-446655440010', 'Desayuno', 1);
     seedTag('550e8400-e29b-41d4-a716-446655440011', 'Comida', 2);
 
-    expect(() => useCase.execute('550e8400-e29b-41d4-a716-446655440011')).toThrow(AppError);
+    await expect(useCase.execute('550e8400-e29b-41d4-a716-446655440011')).rejects.toThrow(AppError);
   });
 
-  it('debe lanzar error si la etiqueta no es MOMENTO_DIA', () => {
+  it('debe lanzar error si la etiqueta no es MOMENTO_DIA', async () => {
     const tag = Tag.create('550e8400-e29b-41d4-a716-446655440010', userId, 'Vegano', TagDimension.ESTILOS_VIDA, false);
-    repo.save(tag);
+    await repo.save(tag);
 
-    expect(() => useCase.execute('550e8400-e29b-41d4-a716-446655440010')).toThrow(AppError);
+    await expect(useCase.execute('550e8400-e29b-41d4-a716-446655440010')).rejects.toThrow(AppError);
   });
 
-  it('debe lanzar error si la etiqueta no existe', () => {
-    expect(() => useCase.execute('550e8400-e29b-41d4-a716-446655440099')).toThrow(AppError);
+  it('debe lanzar error si la etiqueta no existe', async () => {
+    await expect(useCase.execute('550e8400-e29b-41d4-a716-446655440099')).rejects.toThrow(AppError);
   });
 
-  it('debe funcionar correctamente en el medio de la lista', () => {
+  it('debe funcionar correctamente en el medio de la lista', async () => {
     seedTag('550e8400-e29b-41d4-a716-446655440010', 'Uno', 1);
     seedTag('550e8400-e29b-41d4-a716-446655440011', 'Dos', 2);
     seedTag('550e8400-e29b-41d4-a716-446655440012', 'Tres', 3);
     seedTag('550e8400-e29b-41d4-a716-446655440013', 'Cuatro', 4);
 
-    useCase.execute('550e8400-e29b-41d4-a716-446655440011');
+    await useCase.execute('550e8400-e29b-41d4-a716-446655440011');
 
-    expect(repo.findById('550e8400-e29b-41d4-a716-446655440010')!.getOrder()).toBe(1);
-    expect(repo.findById('550e8400-e29b-41d4-a716-446655440011')!.getOrder()).toBe(3);
-    expect(repo.findById('550e8400-e29b-41d4-a716-446655440012')!.getOrder()).toBe(2);
-    expect(repo.findById('550e8400-e29b-41d4-a716-446655440013')!.getOrder()).toBe(4);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440010'))!.getOrder()).toBe(1);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440011'))!.getOrder()).toBe(3);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440012'))!.getOrder()).toBe(2);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440013'))!.getOrder()).toBe(4);
   });
 });

@@ -40,10 +40,10 @@ export async function gestionarIngredientes(container: IContainer, userId: strin
     }
 
     if (opcion.value !== 'back') {
-      const recipe = container.listRecipes.execute(userId).find(r => r.id === recipeId);
+      const recipe = (await container.listRecipes.execute(userId)).find(r => r.id === recipeId);
       if (recipe) {
-        const allIngredients = container.listIngredients.execute(userId);
-        const allTags = container.listTags.execute(userId);
+        const allIngredients = await container.listIngredients.execute(userId);
+        const allTags = await container.listTags.execute(userId);
         mostrarReceta(recipe, allIngredients, allTags);
       }
     }
@@ -52,7 +52,7 @@ export async function gestionarIngredientes(container: IContainer, userId: strin
 
 async function agregarIngredienteExistente(container: IContainer, userId: string, recipeId: string) {
   try {
-    const disponibles = container.listIngredients.execute(userId);
+    const disponibles = await container.listIngredients.execute(userId);
     if (disponibles.length === 0) {
       console.log('No hay ingredientes disponibles. Crea uno primero.');
       return;
@@ -76,7 +76,7 @@ async function agregarIngredienteExistente(container: IContainer, userId: string
       message: 'Nota de cantidad (opcional):',
     }, { onCancel: ON_CANCEL });
 
-    container.updateRecipe.execute({
+    await container.updateRecipe.execute({
       id: recipeId,
       addIngredients: [{ ingredientId: elegido.id, quantityNote: note?.value?.trim() || null }],
     });
@@ -98,7 +98,7 @@ async function agregarNuevoIngrediente(container: IContainer, userId: string, re
 
     if (!datos?.name?.trim()) return;
 
-    const similares = findSimilarIngredients(container.listIngredients.execute(userId), datos.name.trim());
+    const similares = findSimilarIngredients(await container.listIngredients.execute(userId), datos.name.trim());
     if (similares.length > 0) {
       console.log('⚠ Ingredientes similares existentes:');
       similares.forEach(i => console.log(`  - ${i.name}`));
@@ -114,7 +114,7 @@ async function agregarNuevoIngrediente(container: IContainer, userId: string, re
       }
     }
 
-    container.addNewIngredientToRecipe.execute(
+    await container.addNewIngredientToRecipe.execute(
       userId,
       recipeId,
       datos.name.trim(),
@@ -130,10 +130,10 @@ async function agregarNuevoIngrediente(container: IContainer, userId: string, re
 
 async function quitarIngrediente(container: IContainer, userId: string, recipeId: string) {
   try {
-    const receta = container.listRecipes.execute(userId).find(r => r.id === recipeId);
+    const receta = (await container.listRecipes.execute(userId)).find(r => r.id === recipeId);
     if (!receta) return;
 
-    const allIngredients = container.listIngredients.execute(userId);
+    const allIngredients = await container.listIngredients.execute(userId);
     const currentIngredients = receta.ingredients.map(ri => {
       const ing = allIngredients.find(i => i.id === ri.ingredientId);
       return { id: ri.ingredientId, display: ing ? `${ing.name}${ri.quantityNote ? ` (${ri.quantityNote})` : ''}` : ri.ingredientId };
@@ -156,7 +156,7 @@ async function quitarIngrediente(container: IContainer, userId: string, recipeId
 
     if (!elegido?.id || elegido.id === '__cancel__') return;
 
-    container.updateRecipe.execute({ id: recipeId, removeIngredients: [elegido.id] });
+    await container.updateRecipe.execute({ id: recipeId, removeIngredients: [elegido.id] });
     console.log('✓ Ingrediente quitado de la receta');
   } catch (error) {
     if (error instanceof DomainError || error instanceof AppError) {

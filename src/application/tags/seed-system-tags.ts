@@ -28,15 +28,15 @@ export const SYSTEM_TAG_SEEDS: SystemTagSeed[] = [
   { name: 'Vegano', dimension: TagDimension.ESTILOS_VIDA, systemKey: 'VEGANO' },
 ];
 
-export function seedSystemTags(tagRepository: TagRepository, userId: string): void {
-  const existing = tagRepository.findAll();
+export async function seedSystemTags(tagRepository: TagRepository, userId: string): Promise<void> {
+  const existing = await tagRepository.findAll();
 
   // Create missing system tags
   const hasSystemTags = existing.some(t => t.getUserId() === userId && t.isSystemTag());
   if (!hasSystemTags) {
     for (const seed of SYSTEM_TAG_SEEDS) {
       const tag = Tag.create(randomUUID(), userId, seed.name, seed.dimension, true, seed.systemKey, seed.order ?? 0);
-      tagRepository.save(tag);
+      await tagRepository.save(tag);
     }
     return;
   }
@@ -53,16 +53,16 @@ export function seedSystemTags(tagRepository: TagRepository, userId: string): vo
     if (tag.getSystemKey() !== null && tag.getOrder() === (match.order ?? 0)) continue;
 
     const migrated = Tag.create(tag.getId(), tag.getUserId(), match.name, tag.getDimension(), true, match.systemKey, match.order ?? 0);
-    tagRepository.save(migrated);
+    await tagRepository.save(migrated);
   }
 
   // Migrate MOMENTO_DIA tags with order === 0 to a contiguous sequence
   // (old data, user-created tags, etc.)
-  migrateMomentTagOrders(tagRepository, userId);
+  await migrateMomentTagOrders(tagRepository, userId);
 }
 
-function migrateMomentTagOrders(tagRepository: TagRepository, userId: string): void {
-  const allTags = tagRepository.findAllByUserId(userId);
+async function migrateMomentTagOrders(tagRepository: TagRepository, userId: string): Promise<void> {
+  const allTags = await tagRepository.findAllByUserId(userId);
   const momentTags = allTags.filter(t => t.getDimension() === TagDimension.MOMENTO_DIA);
 
   const needsMigration = momentTags.some(t => t.getOrder() === 0);
@@ -100,6 +100,6 @@ function migrateMomentTagOrders(tagRepository: TagRepository, userId: string): v
   }
 
   for (const tag of toUpdate) {
-    tagRepository.save(tag);
+    await tagRepository.save(tag);
   }
 }

@@ -4,33 +4,35 @@ import { User } from "@/domain/users/aggregates/user.aggregate";
 export class InMemoryUserRepository implements UserRepository {
   private users: Map<string, User> = new Map();
 
-  findById(id: string): User | null {
+  async findById(id: string): Promise<User | null> {
     return this.users.get(id) || null;
   }
 
-  findAll(): User[] {
+  async findAll(): Promise<User[]> {
     return Array.from(this.users.values());
   }
 
-  findByName(name: string): User | null {
+  async findByName(name: string): Promise<User | null> {
     const normalized = name.toLowerCase().trim();
-    return this.findAll().find(
+    const users = await this.findAll();
+    return users.find(
       u => u.getName().toLowerCase().trim() === normalized
     ) ?? null;
   }
 
-  findByEmail(email: string): User | null {
+  async findByEmail(email: string): Promise<User | null> {
     const normalized = email.toLowerCase().trim();
-    return this.findAll().find(
+    const users = await this.findAll();
+    return users.find(
       u => u.getEmail().toLowerCase().trim() === normalized
     ) ?? null;
   }
 
-  save(user: User): void {
+  async save(user: User): Promise<void> {
     this.users.set(user.getId(), user);
   }
 
-  delete(id: string): void {
+  async delete(id: string): Promise<void> {
     this.users.delete(id);
   }
 }

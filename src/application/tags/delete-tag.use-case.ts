@@ -23,8 +23,8 @@ export class DeleteTagUseCase {
     private planningRepository: PlanningRepository,
   ) {}
 
-  execute(id: string): DeleteTagResult {
-    const tag = this.tagRepository.findById(id);
+  async execute(id: string): Promise<DeleteTagResult> {
+    const tag = await this.tagRepository.findById(id);
     if (!tag) throw new AppError(`Tag not found: ${id}`);
     if (tag.isSystemTag()) throw new AppError('No se puede eliminar una etiqueta del sistema');
 
@@ -34,7 +34,7 @@ export class DeleteTagUseCase {
     const isMomentTag = tagDimension === TagDimension.MOMENTO_DIA;
 
     // Check recipes — blocked if this tag is the last of a required dimension
-    const recipes = this.recipeRepository.findAllByUserId(userId);
+    const recipes = await this.recipeRepository.findAllByUserId(userId);
     const blockedRecipes: string[] = [];
     const removableRecipes: typeof recipes = [];
 
@@ -61,11 +61,11 @@ export class DeleteTagUseCase {
     }
 
     for (const recipe of removableRecipes) {
-      this.recipeRepository.save(recipe);
+      await this.recipeRepository.save(recipe);
     }
 
     // Clean up planning services
-    const plannings = this.planningRepository.findAllByUserId(userId);
+    const plannings = await this.planningRepository.findAllByUserId(userId);
     let planningsAffected = 0;
     let servicesRemoved = 0;
 
@@ -84,12 +84,12 @@ export class DeleteTagUseCase {
       if (refsCleaned > 0) planningChanged = true;
 
       if (planningChanged) {
-        this.planningRepository.save(planning);
+        await this.planningRepository.save(planning);
         planningsAffected++;
       }
     }
 
-    this.tagRepository.delete(id);
+    await this.tagRepository.delete(id);
 
     return { recipesAffected: removableRecipes.length, planningsAffected, servicesRemoved };
   }

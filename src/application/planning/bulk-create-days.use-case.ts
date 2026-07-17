@@ -10,12 +10,12 @@ export type BulkCreateDaysInput = {
 export class BulkCreateDaysUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(input: BulkCreateDaysInput): void {
-    const planning = this.planningRepository.findById(input.planningId);
+  async execute(input: BulkCreateDaysInput): Promise<void> {
+    const planning = await this.planningRepository.findById(input.planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
 
     const entries = input.orders.map(o => ({ id: randomUUID(), ordenDia: o }));
     planning.addDays(entries);
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
   }
 }

@@ -26,7 +26,7 @@ export async function agregarServicioEnLote(container: IContainer, userId: strin
 
     if (!seleccionDias?.orders || seleccionDias.orders.length === 0) return;
 
-    const allTags = container.listTags.execute(userId).filter(
+    const allTags = (await container.listTags.execute(userId)).filter(
       t => t.dimension === TagDimension.MOMENTO_DIA
     );
 
@@ -51,7 +51,7 @@ export async function agregarServicioEnLote(container: IContainer, userId: strin
 
     if (!coversResp) return;
 
-    const allRecipes = container.listRecipes.execute(userId);
+    const allRecipes = await container.listRecipes.execute(userId);
     let recipeId: string | undefined;
 
     if (coversResp.value > 0 && allRecipes.length > 0) {
@@ -76,7 +76,7 @@ export async function agregarServicioEnLote(container: IContainer, userId: strin
 
     if (!confirmar?.value) return;
 
-    container.bulkAssignMeal.execute({
+    await container.bulkAssignMeal.execute({
       planningId,
       days: seleccionDias.orders,
       momentTagId: momentResp.id,

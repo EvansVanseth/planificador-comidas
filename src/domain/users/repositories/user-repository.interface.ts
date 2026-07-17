@@ -1,10 +1,10 @@
 import { User } from '@/domain/users/aggregates/user.aggregate'
 
 export interface UserRepository {
-  findById(id: string): User | null;
-  findAll(): User[];
-  findByName(name: string): User | null;
-  findByEmail(email: string): User | null;
-  save(user: User): void;
-  delete(id: string): void;
+  findById(id: string): Promise<User | null>;
+  findAll(): Promise<User[]>;
+  findByName(name: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
+  save(user: User): Promise<void>;
+  delete(id: string): Promise<void>;
 }

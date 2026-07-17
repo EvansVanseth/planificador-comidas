@@ -13,14 +13,14 @@ export type UpdateTagInput = {
 export class UpdateTagUseCase {
   constructor(private tagRepository: TagRepository) {}
 
-  execute(input: UpdateTagInput): void {
-    const tag = this.tagRepository.findById(input.id);
+  async execute(input: UpdateTagInput): Promise<void> {
+    const tag = await this.tagRepository.findById(input.id);
     if (!tag) {
       throw new AppError(`Tag not found: ${input.id}`);
     }
 
     if (input.name !== undefined) {
-      const existing = this.tagRepository.findByNameAndDimension(
+      const existing = await this.tagRepository.findByNameAndDimension(
         input.name,
         input.dimension ?? tag.getDimension(),
       );
@@ -43,6 +43,6 @@ export class UpdateTagUseCase {
       tag.changeOrder(input.order);
     }
 
-    this.tagRepository.save(tag);
+    await this.tagRepository.save(tag);
   }
 }

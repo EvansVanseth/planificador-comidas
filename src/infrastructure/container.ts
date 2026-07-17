@@ -15,6 +15,11 @@ import { InMemoryRecipeRepository } from './repositories/in-memory-recipe.reposi
 import { FileRecipeRepository } from './repositories/file-recipe.repository';
 import { InMemoryUserRepository } from './repositories/in-memory-user.repository';
 import { FileUserRepository } from './repositories/file-user.repository';
+import { PostgresTagRepository } from './repositories/postgres-tag.repository';
+import { PostgresIngredientRepository } from './repositories/postgres-ingredient.repository';
+import { PostgresRecipeRepository } from './repositories/postgres-recipe.repository';
+import { PostgresUserRepository } from './repositories/postgres-user.repository';
+import { PostgresPlanningRepository } from './repositories/postgres-planning.repository';
 //Use-cases
 import { CreatePlanningUseCase } from '@/application/planning/create-planning.use-case';
 import { AssignMealUseCase } from '@/application/planning/assign-meal.use-case';
@@ -74,7 +79,7 @@ import { DeleteUserUseCase } from '@/application/users/delete-user.use-case';
 // Init
 
 
-export type RepositoryType = 'memory' | 'file';
+export type RepositoryType = 'memory' | 'file' | 'postgres';
 
 export interface IContainer {
   // Planning
@@ -132,8 +137,8 @@ export interface IContainer {
   updateUser: UpdateUserUseCase;
   deleteUser: DeleteUserUseCase;
   // Seed helpers
-  seedTagsForUser: (userId: string) => void;
-  setSystemKey: (tagId: string, systemKey: string) => void;
+  seedTagsForUser: (userId: string) => Promise<void>;
+  setSystemKey: (tagId: string, systemKey: string) => Promise<void>;
 }
 
 export const createContainer = (mode: RepositoryType = 'memory') => {
@@ -151,6 +156,13 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
       ingredientRepository = new FileIngredientRepository('ingredients-db.json');
       recipeRepository = new FileRecipeRepository('recipes-db.json');
       userRepository = new FileUserRepository('users-db.json');
+      break;
+    case 'postgres':
+      tagRepository = new PostgresTagRepository();
+      planningRepository = new PostgresPlanningRepository();
+      ingredientRepository = new PostgresIngredientRepository();
+      recipeRepository = new PostgresRecipeRepository();
+      userRepository = new PostgresUserRepository();
       break;
     case 'memory':
     default:
@@ -218,11 +230,11 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     updateUser: new UpdateUserUseCase(userRepository),
     deleteUser: new DeleteUserUseCase(userRepository, tagRepository, ingredientRepository, recipeRepository, planningRepository),
     seedTagsForUser: (userId: string) => seedSystemTags(tagRepository, userId),
-    setSystemKey: (tagId: string, systemKey: string) => {
-      const tag = tagRepository.findById(tagId);
+    setSystemKey: async (tagId: string, systemKey: string) => {
+      const tag = await tagRepository.findById(tagId);
       if (!tag) throw new AppError(`Tag no encontrada: ${tagId}`);
       const migrated = Tag.create(tag.getId(), tag.getUserId(), tag.getName(), tag.getDimension(), true, systemKey);
-      tagRepository.save(migrated);
+      await tagRepository.save(migrated);
     },
   };
 

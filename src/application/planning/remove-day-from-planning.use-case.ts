@@ -4,11 +4,11 @@ import { AppError } from '../shared/errors/app-error';
 export class RemoveDayFromPlanningUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(planningId: string, ordenDia: number): void {
-    const planning = this.planningRepository.findById(planningId);
+  async execute(planningId: string, ordenDia: number): Promise<void> {
+    const planning = await this.planningRepository.findById(planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
 
     planning.removeDay(ordenDia);
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
   }
 }

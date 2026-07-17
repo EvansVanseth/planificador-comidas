@@ -14,7 +14,7 @@ export async function crearIngrediente(container: IContainer, userId: string) {
 
     if (!answers) return;
 
-    const similares = findSimilarIngredients(container.listIngredients.execute(userId), answers.name);
+    const similares = findSimilarIngredients(await container.listIngredients.execute(userId), answers.name);
     if (similares.length > 0) {
       console.log('⚠ Ingredientes similares existentes:');
       similares.forEach(i => console.log(`  - ${i.name}`));
@@ -30,7 +30,7 @@ export async function crearIngrediente(container: IContainer, userId: string) {
       }
     }
 
-    const id = container.createIngredient.execute(userId, answers.name);
+    const id = await container.createIngredient.execute(userId, answers.name);
     console.log('✓ ' + `Ingrediente creado: ${id}`);
 
   } catch (error) {

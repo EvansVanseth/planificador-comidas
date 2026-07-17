@@ -12,8 +12,8 @@ export type BulkAddMissingServiceInput = {
 export class BulkAddMissingServiceUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(input: BulkAddMissingServiceInput): number {
-    const planning = this.planningRepository.findById(input.planningId);
+  async execute(input: BulkAddMissingServiceInput): Promise<number> {
+    const planning = await this.planningRepository.findById(input.planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
 
     const count = planning.addMissingServiceToAllDays(
@@ -22,7 +22,7 @@ export class BulkAddMissingServiceUseCase {
       input.exclusions,
       input.preferences,
     );
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
     return count;
   }
 }

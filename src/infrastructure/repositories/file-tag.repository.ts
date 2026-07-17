@@ -23,30 +23,32 @@ export class FileTagRepository implements TagRepository {
     }
   }
 
-  findAll(): Tag[] {
+  async findAll(): Promise<Tag[]> {
     const fileContent = fs.readFileSync(this.filePath, 'utf-8');
     const rawData: TagPrimitives[] = JSON.parse(fileContent);
     return rawData.map(data => Tag.fromPrimitives(data));
   }
 
-  findAllByUserId(userId: string): Tag[] {
-    return this.findAll().filter(t => t.getUserId() === userId);
+  async findAllByUserId(userId: string): Promise<Tag[]> {
+    const tags = await this.findAll();
+    return tags.filter(t => t.getUserId() === userId);
   }
 
-  findById(id: string): Tag | null {
-    const tags = this.findAll();
+  async findById(id: string): Promise<Tag | null> {
+    const tags = await this.findAll();
     return tags.find(t => t.getId() === id) || null;
   }
 
-  findByNameAndDimension(name: string, dimension: TagDimension): Tag | null {
+  async findByNameAndDimension(name: string, dimension: TagDimension): Promise<Tag | null> {
+    const tags = await this.findAll();
     const normalized = name.toLowerCase().trim();
-    return this.findAll().find(
+    return tags.find(
       t => t.getName().toLowerCase().trim() === normalized && t.getDimension() === dimension
     ) ?? null;
   }
 
-  save(tag: Tag): void {
-    const tags = this.findAll();
+  async save(tag: Tag): Promise<void> {
+    const tags = await this.findAll();
 
     const index = tags.findIndex(t => t.getId() === tag.getId());
 
@@ -60,8 +62,8 @@ export class FileTagRepository implements TagRepository {
     fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
   }
 
-  delete(id: string): void {
-    const tags = this.findAll();
+  async delete(id: string): Promise<void> {
+    const tags = await this.findAll();
     const index = tags.findIndex(t => t.getId() === id);
     if (index === -1) return;
 

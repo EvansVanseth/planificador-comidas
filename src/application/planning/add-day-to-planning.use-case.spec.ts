@@ -11,25 +11,25 @@ describe('AddDayToPlanningUseCase', () => {
   let useCase: AddDayToPlanningUseCase;
   let planningRepo: InMemoryPlanningRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     planningRepo = new InMemoryPlanningRepository();
     useCase = new AddDayToPlanningUseCase(planningRepo);
 
     const planning = Planning.create(planningId, userId, 'Test', null, 2);
-    planningRepo.save(planning);
+    await planningRepo.save(planning);
   });
 
-  it('debe añadir un dia y devolver su id', () => {
-    const dayId = useCase.execute(planningId, 1);
+  it('debe añadir un dia y devolver su id', async () => {
+    const dayId = await useCase.execute(planningId, 1);
 
     expect(dayId).toBeDefined();
-    const updated = planningRepo.findById(planningId)!;
+    const updated = (await planningRepo.findById(planningId))!;
     const day = updated.getDay(1);
     expect(day).not.toBeNull();
     expect(day!.id).toBe(dayId);
   });
 
-  it('debe fallar si el planning no existe', () => {
-    expect(() => useCase.execute('inexistente', 1)).toThrow(AppError);
+  it('debe fallar si el planning no existe', async () => {
+    await expect(useCase.execute('inexistente', 1)).rejects.toThrow(AppError);
   });
 });

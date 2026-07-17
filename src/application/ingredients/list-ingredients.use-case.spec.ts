@@ -15,26 +15,26 @@ describe('ListIngredientsUseCase', () => {
     useCase = new ListIngredientsUseCase(repo);
   });
 
-  it('debe devolver lista vacía si no hay ingredientes', () => {
-    expect(useCase.execute(userId)).toEqual([]);
+  it('debe devolver lista vacía si no hay ingredientes', async () => {
+    expect(await useCase.execute(userId)).toEqual([]);
   });
 
-  it('debe devolver solo los ingredientes del usuario', () => {
+  it('debe devolver solo los ingredientes del usuario', async () => {
     const ing1 = Ingredient.create('550e8400-e29b-41d4-a716-446655440001', userId, 'Arroz');
     const ing2 = Ingredient.create('550e8400-e29b-41d4-a716-446655440002', userId, 'Frijoles');
-    repo.save(ing1);
-    repo.save(ing2);
+    await repo.save(ing1);
+    await repo.save(ing2);
 
-    const result = useCase.execute(userId);
+    const result = await useCase.execute(userId);
     expect(result).toHaveLength(2);
     expect(result[0]).toEqual(ing1.toPrimitives());
   });
 
-  it('no debe devolver ingredientes de otro usuario', () => {
+  it('no debe devolver ingredientes de otro usuario', async () => {
     const ing = Ingredient.create('550e8400-e29b-41d4-a716-446655440001', otherUserId, 'Arroz');
-    repo.save(ing);
+    await repo.save(ing);
 
-    const result = useCase.execute(userId);
+    const result = await useCase.execute(userId);
     expect(result).toHaveLength(0);
   });
 });

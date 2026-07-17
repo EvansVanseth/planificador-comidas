@@ -6,8 +6,8 @@ import { randomUUID } from 'crypto';
 export class CreatePlanningUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
-  execute(userId: string, name: string, startDate: Date | null, weeks: number, hotColdBalance?: number): string {
-    const existing = this.planningRepository.findByName(name);
+  async execute(userId: string, name: string, startDate: Date | null, weeks: number, hotColdBalance?: number): Promise<string> {
+    const existing = await this.planningRepository.findByName(name);
     if (existing) {
       throw new AppError(`Ya existe una planificación con el nombre "${name}"`);
     }
@@ -15,7 +15,7 @@ export class CreatePlanningUseCase {
     const id = randomUUID();
     const planning = Planning.create(id, userId, name, startDate, weeks, hotColdBalance);
 
-    this.planningRepository.save(planning);
+    await this.planningRepository.save(planning);
     return id;
   }
 }

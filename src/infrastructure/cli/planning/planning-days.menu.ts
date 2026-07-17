@@ -11,11 +11,11 @@ const ON_CANCEL = () => {};
 export async function gestionarDias(container: IContainer, userId: string, planningId: string) {
   let continuar = true;
   while (continuar) {
-    const planning = container.listPlannings.execute(userId).find(p => p.getId() === planningId);
+    const planning = (await container.listPlannings.execute(userId)).find(p => p.getId() === planningId);
     if (!planning) { console.log('Planificacion no encontrada'); return; }
 
     const days = planning.getDays().sort((a, b) => a.getOrdenDia() - b.getOrdenDia());
-    mostrarPlanificacion(planning, container.listRecipes.execute(userId), container.listTags.execute(userId));
+    mostrarPlanificacion(planning, await container.listRecipes.execute(userId), await container.listTags.execute(userId));
 
     const opcion = await prompts({
       type: 'select',

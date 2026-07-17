@@ -7,7 +7,7 @@ const ON_CANCEL = () => {};
 
 export async function fusionarIngredientes(container: IContainer, userId: string) {
   try {
-    const ingredients = container.listIngredients.execute(userId);
+    const ingredients = await container.listIngredients.execute(userId);
     if (ingredients.length < 2) {
       console.log('Se necesitan al menos 2 ingredientes para fusionar');
       return;
@@ -37,7 +37,7 @@ export async function fusionarIngredientes(container: IContainer, userId: string
     const sourceName = ingredients.find(i => i.id === sourceResp.id)!.name;
     const targetName = ingredients.find(i => i.id === targetResp.id)!.name;
 
-    const allRecipes = container.listRecipes.execute(userId);
+    const allRecipes = await container.listRecipes.execute(userId);
     const affectedRecipes = allRecipes.filter(r =>
       r.ingredients.some(ing => ing.ingredientId === sourceResp.id)
     );
@@ -64,7 +64,7 @@ export async function fusionarIngredientes(container: IContainer, userId: string
       return;
     }
 
-    container.mergeIngredients.execute(userId, sourceResp.id, targetResp.id);
+    await container.mergeIngredients.execute(userId, sourceResp.id, targetResp.id);
     console.log(`✓ "${sourceName}" fusionado en "${targetName}"`);
 
   } catch (error) {

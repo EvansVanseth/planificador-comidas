@@ -18,8 +18,8 @@ export class AutoScheduleUseCase {
     private planner: AutoPlanner,
   ) {}
 
-  execute(input: AutoScheduleInput): PlannerResult {
-    const planning = this.planningRepository.findById(input.planningId);
+  async execute(input: AutoScheduleInput): Promise<PlannerResult> {
+    const planning = await this.planningRepository.findById(input.planningId);
     if (!planning) throw new AppError('Planificacion no encontrada');
 
     const slots = planning.getDays()
@@ -40,10 +40,11 @@ export class AutoScheduleUseCase {
       return { assignments: [], unassigned: [] };
     }
 
-    const recipes = this.recipeRepository.findAllByUserId(input.userId)
+    const recipes = (await this.recipeRepository.findAllByUserId(input.userId))
       .map(r => r.toPrimitives());
 
-    const hotTags = this.tagRepository.findAllByUserId(input.userId)
+    const allTags = await this.tagRepository.findAllByUserId(input.userId);
+    const hotTags = allTags
       .filter(t => t.getSystemKey() === 'CALIENTE')
       .map(t => t.getId());
 
@@ -62,7 +63,7 @@ export class AutoScheduleUseCase {
         if (!svc) continue;
         planning.assignMealToDay(a.dayOrder, a.momentTagId, svc.getCovers(), a.recipeId);
       }
-      this.planningRepository.save(planning);
+      await this.planningRepository.save(planning);
     }
     return result;
   }

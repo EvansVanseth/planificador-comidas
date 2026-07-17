@@ -26,31 +26,31 @@ describe('AddNewTagToRecipeUseCase', () => {
     useCase = new AddNewTagToRecipeUseCase(recipeRepo, tagRepo);
   });
 
-  it('debe crear una tag y añadirla a la receta', () => {
+  it('debe crear una tag y añadirla a la receta', async () => {
     const recipe = Recipe.create(recipeId, userId, 'Pasta', 2, 20, null, [], defaultTags);
-    recipeRepo.save(recipe);
+    await recipeRepo.save(recipe);
 
-    const tagId = useCase.execute(userId, recipeId, 'Italiana', TagDimension.TIPO_PLATO);
+    const tagId = await useCase.execute(userId, recipeId, 'Italiana', TagDimension.TIPO_PLATO);
 
-    const savedTag = tagRepo.findById(tagId);
+    const savedTag = await tagRepo.findById(tagId);
     expect(savedTag).not.toBeNull();
     expect(savedTag!.getName()).toBe('Italiana');
 
-    const savedRecipe = recipeRepo.findById(recipeId)!;
+    const savedRecipe = (await recipeRepo.findById(recipeId))!;
     expect(savedRecipe.getTagIds()).toContain(tagId);
   });
 
-  it('debe lanzar error si la receta no existe', () => {
-    expect(() => useCase.execute(userId, recipeId, 'Italiana', TagDimension.TIPO_PLATO)).toThrow(AppError);
+  it('debe lanzar error si la receta no existe', async () => {
+    await expect(useCase.execute(userId, recipeId, 'Italiana', TagDimension.TIPO_PLATO)).rejects.toThrow(AppError);
   });
 
-  it('debe lanzar error si ya existe una tag con el mismo nombre y dimensión', () => {
+  it('debe lanzar error si ya existe una tag con el mismo nombre y dimensión', async () => {
     const recipe = Recipe.create(recipeId, userId, 'Pasta', 2, 20, null, [], defaultTags);
-    recipeRepo.save(recipe);
+    await recipeRepo.save(recipe);
 
     const existingTagId = '550e8400-e29b-41d4-a716-446655440020';
-    tagRepo.save(Tag.create(existingTagId, userId, 'Italiana', TagDimension.TIPO_PLATO, false));
+    await tagRepo.save(Tag.create(existingTagId, userId, 'Italiana', TagDimension.TIPO_PLATO, false));
 
-    expect(() => useCase.execute(userId, recipeId, 'Italiana', TagDimension.TIPO_PLATO)).toThrow(AppError);
+    await expect(useCase.execute(userId, recipeId, 'Italiana', TagDimension.TIPO_PLATO)).rejects.toThrow(AppError);
   });
 });

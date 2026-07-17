@@ -21,28 +21,30 @@ export class FileIngredientRepository implements IngredientRepository {
     }
   }
 
-  findAll(): Ingredient[] {
+  async findAll(): Promise<Ingredient[]> {
     const fileContent = fs.readFileSync(this.filePath, 'utf-8');
     const rawData: IngredientPrimitives[] = JSON.parse(fileContent);
     return rawData.map(data => Ingredient.fromPrimitives(data));
   }
 
-  findAllByUserId(userId: string): Ingredient[] {
-    return this.findAll().filter(i => i.getUserId() === userId);
+  async findAllByUserId(userId: string): Promise<Ingredient[]> {
+    const ingredients = await this.findAll();
+    return ingredients.filter(i => i.getUserId() === userId);
   }
 
-  findByName(name: string): Ingredient | null {
+  async findByName(name: string): Promise<Ingredient | null> {
     const normalized = name.toLowerCase().trim();
-    return this.findAll().find(i => i.getName().toLowerCase().trim() === normalized) ?? null;
+    const ingredients = await this.findAll();
+    return ingredients.find(i => i.getName().toLowerCase().trim() === normalized) ?? null;
   }
 
-  findById(id: string): Ingredient | null {
-    const ingredients = this.findAll();
+  async findById(id: string): Promise<Ingredient | null> {
+    const ingredients = await this.findAll();
     return ingredients.find(i => i.getId() === id) || null;
   }
 
-  save(ingredient: Ingredient): void {
-    const ingredients = this.findAll();
+  async save(ingredient: Ingredient): Promise<void> {
+    const ingredients = await this.findAll();
 
     const index = ingredients.findIndex(i => i.getId() === ingredient.getId());
 
@@ -56,8 +58,8 @@ export class FileIngredientRepository implements IngredientRepository {
     fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
   }
 
-  delete(id: string): void {
-    const ingredients = this.findAll();
+  async delete(id: string): Promise<void> {
+    const ingredients = await this.findAll();
     const index = ingredients.findIndex(i => i.getId() === id);
     if (index === -1) return;
 

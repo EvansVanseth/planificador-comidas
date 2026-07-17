@@ -11,42 +11,42 @@ describe('UpdateIngredientUseCase', () => {
   let useCase: UpdateIngredientUseCase;
   let repo: InMemoryIngredientRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     repo = new InMemoryIngredientRepository();
     useCase = new UpdateIngredientUseCase(repo);
 
-    repo.save(Ingredient.create(validId, validUserId, 'Original'));
+    await repo.save(Ingredient.create(validId, validUserId, 'Original'));
   });
 
-  it('debe actualizar el nombre', () => {
-    useCase.execute({ id: validId, name: 'Renombrado' });
-    expect(repo.findById(validId)!.getName()).toBe('Renombrado');
+  it('debe actualizar el nombre', async () => {
+    await useCase.execute({ id: validId, name: 'Renombrado' });
+    expect((await repo.findById(validId))!.getName()).toBe('Renombrado');
   });
 
-  it('debe actualizar el userId', () => {
+  it('debe actualizar el userId', async () => {
     const newUserId = '550e8400-e29b-41d4-a716-446655440002';
-    useCase.execute({ id: validId, userId: newUserId });
-    expect(repo.findById(validId)!.getUserId()).toBe(newUserId);
+    await useCase.execute({ id: validId, userId: newUserId });
+    expect((await repo.findById(validId))!.getUserId()).toBe(newUserId);
   });
 
-  it('debe lanzar error si el ingrediente no existe', () => {
-    expect(() => useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'X' })).toThrow(AppError);
+  it('debe lanzar error si el ingrediente no existe', async () => {
+    await expect(useCase.execute({ id: '550e8400-e29b-41d4-a716-446655449999', name: 'X' })).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar renombrar a un nombre duplicado', () => {
+  it('debe rechazar renombrar a un nombre duplicado', async () => {
     const otherId = '550e8400-e29b-41d4-a716-446655440010';
-    repo.save(Ingredient.create(otherId, validUserId, 'Existente'));
-    expect(() => useCase.execute({ id: validId, name: 'Existente' })).toThrow(AppError);
+    await repo.save(Ingredient.create(otherId, validUserId, 'Existente'));
+    await expect(useCase.execute({ id: validId, name: 'Existente' })).rejects.toThrow(AppError);
   });
 
-  it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', () => {
+  it('debe rechazar renombrar a un nombre duplicado ignorando mayúsculas', async () => {
     const otherId = '550e8400-e29b-41d4-a716-446655440010';
-    repo.save(Ingredient.create(otherId, validUserId, 'Existente'));
-    expect(() => useCase.execute({ id: validId, name: 'existente' })).toThrow(AppError);
+    await repo.save(Ingredient.create(otherId, validUserId, 'Existente'));
+    await expect(useCase.execute({ id: validId, name: 'existente' })).rejects.toThrow(AppError);
   });
 
-  it('debe permitir mantener el mismo nombre al actualizar', () => {
-    useCase.execute({ id: validId, name: 'Original' });
-    expect(repo.findById(validId)!.getName()).toBe('Original');
+  it('debe permitir mantener el mismo nombre al actualizar', async () => {
+    await useCase.execute({ id: validId, name: 'Original' });
+    expect((await repo.findById(validId))!.getName()).toBe('Original');
   });
 });

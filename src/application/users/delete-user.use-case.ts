@@ -21,23 +21,23 @@ export class DeleteUserUseCase {
     private planningRepository: PlanningRepository,
   ) {}
 
-  execute(id: string): DeleteUserResult {
-    const user = this.userRepository.findById(id);
+  async execute(id: string): Promise<DeleteUserResult> {
+    const user = await this.userRepository.findById(id);
     if (!user) throw new AppError(`User not found: ${id}`);
 
-    const tags = this.tagRepository.findAllByUserId(id);
-    tags.forEach(t => this.tagRepository.delete(t.getId()));
+    const tags = await this.tagRepository.findAllByUserId(id);
+    await Promise.all(tags.map(t => this.tagRepository.delete(t.getId())));
 
-    const ingredients = this.ingredientRepository.findAllByUserId(id);
-    ingredients.forEach(i => this.ingredientRepository.delete(i.getId()));
+    const ingredients = await this.ingredientRepository.findAllByUserId(id);
+    await Promise.all(ingredients.map(i => this.ingredientRepository.delete(i.getId())));
 
-    const recipes = this.recipeRepository.findAllByUserId(id);
-    recipes.forEach(r => this.recipeRepository.delete(r.getId()));
+    const recipes = await this.recipeRepository.findAllByUserId(id);
+    await Promise.all(recipes.map(r => this.recipeRepository.delete(r.getId())));
 
-    const plannings = this.planningRepository.findAllByUserId(id);
-    plannings.forEach(p => this.planningRepository.delete(p.getId()));
+    const plannings = await this.planningRepository.findAllByUserId(id);
+    await Promise.all(plannings.map(p => this.planningRepository.delete(p.getId())));
 
-    this.userRepository.delete(id);
+    await this.userRepository.delete(id);
 
     return {
       tagsDeleted: tags.length,

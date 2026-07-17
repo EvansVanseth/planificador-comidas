@@ -39,49 +39,49 @@ describe('DeleteUserUseCase', () => {
     useCase = new DeleteUserUseCase(userRepo, tagRepo, ingredientRepo, recipeRepo, planningRepo);
   });
 
-  it('debe eliminar un usuario existente', () => {
-    userRepo.save(User.create(userId, 'Alice', 'alice@test.com'));
+  it('debe eliminar un usuario existente', async () => {
+    await userRepo.save(User.create(userId, 'Alice', 'alice@test.com'));
 
-    const result = useCase.execute(userId);
+    const result = await useCase.execute(userId);
 
-    expect(userRepo.findById(userId)).toBeNull();
+    expect(await userRepo.findById(userId)).toBeNull();
     expect(result.tagsDeleted).toBe(0);
   });
 
-  it('debe lanzar error si el usuario no existe', () => {
-    expect(() => useCase.execute('550e8400-e29b-41d4-a716-446655449999')).toThrow(AppError);
+  it('debe lanzar error si el usuario no existe', async () => {
+    await expect(useCase.execute('550e8400-e29b-41d4-a716-446655449999')).rejects.toThrow(AppError);
   });
 
-  it('debe eliminar todos los datos del usuario', () => {
-    userRepo.save(User.create(userId, 'Alice', 'alice@test.com'));
+  it('debe eliminar todos los datos del usuario', async () => {
+    await userRepo.save(User.create(userId, 'Alice', 'alice@test.com'));
 
-    tagRepo.save(Tag.create('00000000-0000-4000-a000-000000000001', userId, 'Vegano', TagDimension.ESTILOS_VIDA, false));
-    tagRepo.save(Tag.create('00000000-0000-4000-a000-000000000002', userId, 'Celiaco', TagDimension.ESTILOS_VIDA, false));
-    tagRepo.save(Tag.create('00000000-0000-4000-a000-000000000009', otherUserId, 'Otro', TagDimension.ESTILOS_VIDA, false));
+    await tagRepo.save(Tag.create('00000000-0000-4000-a000-000000000001', userId, 'Vegano', TagDimension.ESTILOS_VIDA, false));
+    await tagRepo.save(Tag.create('00000000-0000-4000-a000-000000000002', userId, 'Celiaco', TagDimension.ESTILOS_VIDA, false));
+    await tagRepo.save(Tag.create('00000000-0000-4000-a000-000000000009', otherUserId, 'Otro', TagDimension.ESTILOS_VIDA, false));
 
-    ingredientRepo.save(Ingredient.create('00000000-0000-4000-a000-000000000010', userId, 'Arroz'));
-    ingredientRepo.save(Ingredient.create('00000000-0000-4000-a000-000000000011', userId, 'Pollo'));
-    ingredientRepo.save(Ingredient.create('00000000-0000-4000-a000-000000000019', otherUserId, 'Aceite'));
+    await ingredientRepo.save(Ingredient.create('00000000-0000-4000-a000-000000000010', userId, 'Arroz'));
+    await ingredientRepo.save(Ingredient.create('00000000-0000-4000-a000-000000000011', userId, 'Pollo'));
+    await ingredientRepo.save(Ingredient.create('00000000-0000-4000-a000-000000000019', otherUserId, 'Aceite'));
 
-    recipeRepo.save(Recipe.create('00000000-0000-4000-a000-000000000020', userId, 'Arroz', 4, 30, null, [], defaultTags));
-    recipeRepo.save(Recipe.create('00000000-0000-4000-a000-000000000021', userId, 'Pollo', 4, 30, null, [], defaultTags));
-    recipeRepo.save(Recipe.create('00000000-0000-4000-a000-000000000029', otherUserId, 'Otro', 4, 30, null, [], defaultTags));
+    await recipeRepo.save(Recipe.create('00000000-0000-4000-a000-000000000020', userId, 'Arroz', 4, 30, null, [], defaultTags));
+    await recipeRepo.save(Recipe.create('00000000-0000-4000-a000-000000000021', userId, 'Pollo', 4, 30, null, [], defaultTags));
+    await recipeRepo.save(Recipe.create('00000000-0000-4000-a000-000000000029', otherUserId, 'Otro', 4, 30, null, [], defaultTags));
 
-    planningRepo.save(Planning.create('00000000-0000-4000-a000-000000000030', userId, 'Semana', null, 2));
-    planningRepo.save(Planning.create('00000000-0000-4000-a000-000000000039', otherUserId, 'Otra', null, 2));
+    await planningRepo.save(Planning.create('00000000-0000-4000-a000-000000000030', userId, 'Semana', null, 2));
+    await planningRepo.save(Planning.create('00000000-0000-4000-a000-000000000039', otherUserId, 'Otra', null, 2));
 
-    const result = useCase.execute(userId);
+    const result = await useCase.execute(userId);
 
     expect(result.tagsDeleted).toBe(2);
     expect(result.ingredientsDeleted).toBe(2);
     expect(result.recipesDeleted).toBe(2);
     expect(result.planningsDeleted).toBe(1);
 
-    expect(tagRepo.findById('00000000-0000-4000-a000-000000000009')).not.toBeNull();
-    expect(ingredientRepo.findById('00000000-0000-4000-a000-000000000019')).not.toBeNull();
-    expect(recipeRepo.findById('00000000-0000-4000-a000-000000000029')).not.toBeNull();
-    expect(planningRepo.findById('00000000-0000-4000-a000-000000000039')).not.toBeNull();
+    expect(await tagRepo.findById('00000000-0000-4000-a000-000000000009')).not.toBeNull();
+    expect(await ingredientRepo.findById('00000000-0000-4000-a000-000000000019')).not.toBeNull();
+    expect(await recipeRepo.findById('00000000-0000-4000-a000-000000000029')).not.toBeNull();
+    expect(await planningRepo.findById('00000000-0000-4000-a000-000000000039')).not.toBeNull();
 
-    expect(userRepo.findById(userId)).toBeNull();
+    expect(await userRepo.findById(userId)).toBeNull();
   });
 });

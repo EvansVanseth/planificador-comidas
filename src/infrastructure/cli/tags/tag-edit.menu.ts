@@ -7,7 +7,7 @@ const ON_CANCEL = () => {};
 
 export async function editarEtiqueta(container: IContainer, userId: string) {
   try {
-    const tags = container.listTags.execute(userId);
+    const tags = await container.listTags.execute(userId);
     if (tags.length === 0) {
       console.log('No hay etiquetas para editar');
       return;
@@ -62,7 +62,7 @@ export async function editarEtiqueta(container: IContainer, userId: string) {
     if (cambios.name.trim()) input.name = cambios.name.trim();
     if (!isSystemTag && cambios.dimension !== '__skip__') input.dimension = cambios.dimension;
     if (!isSystemTag && cambios.order > 0) input.order = cambios.order;
-    container.updateTag.execute(input);
+    await container.updateTag.execute(input);
     console.log('✓ Etiqueta actualizada correctamente');
 
   } catch (error) {

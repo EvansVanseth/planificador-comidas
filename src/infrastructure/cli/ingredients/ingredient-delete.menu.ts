@@ -6,7 +6,7 @@ const ON_CANCEL = () => {};
 
 export async function eliminarIngrediente(container: IContainer, userId: string) {
   try {
-    const ingredients = container.listIngredients.execute(userId);
+    const ingredients = await container.listIngredients.execute(userId);
     if (ingredients.length === 0) {
       console.log('No hay ingredientes para eliminar');
       return;
@@ -26,9 +26,9 @@ export async function eliminarIngrediente(container: IContainer, userId: string)
     const ingredientId = seleccion.id;
     const ingredientName = ingredients.find(i => i.id === ingredientId)?.name ?? ingredientId;
 
-    const recipes = container.listRecipes.execute(userId);
+    const recipes = await container.listRecipes.execute(userId);
     const recipesWithIngredient = recipes.filter(r => r.ingredients.some(i => i.ingredientId === ingredientId));
-    const plannings = container.listPlannings.execute(userId);
+    const plannings = await container.listPlannings.execute(userId);
     let planningsWithIngredient = 0;
     for (const planning of plannings) {
       if (planning.getPantryItems().some(i => i.getIngredientId() === ingredientId) ||
@@ -60,7 +60,7 @@ export async function eliminarIngrediente(container: IContainer, userId: string)
       }
     }
 
-    const result = container.deleteIngredient.execute(ingredientId);
+    const result = await container.deleteIngredient.execute(ingredientId);
     console.log('✓ Ingrediente eliminado correctamente');
     if (result.recipesAffected > 0) {
       console.log(`  - Eliminado de ${result.recipesAffected} receta(s)`);
