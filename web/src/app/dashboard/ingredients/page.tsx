@@ -87,7 +87,7 @@ export default async function IngredientsPage({
             <p className="text-sm text-[#4F617B]">
               {query
                 ? `No se encontraron ingredientes para "${query}".`
-                : 'No hay ingredientes todavía. ¡Añadí el primero!'}
+                : 'No hay ingredientes todavía. ¡Añade el primero!'}
             </p>
           </div>
         ) : (

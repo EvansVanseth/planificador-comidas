@@ -22,6 +22,8 @@ export async function signup(_prevState: State, formData: FormData): Promise<Sta
   try {
     const userId = await container.createUser.execute(name.trim(), email.trim());
 
+    await container.seedTagsForUser(userId);
+
     const cookieStore = await cookies();
     cookieStore.set('userId', userId, {
       httpOnly: true,

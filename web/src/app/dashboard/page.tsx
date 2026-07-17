@@ -518,9 +518,20 @@ function MealCardDesktop({
   );
 }
 
+function sortServicesByTagOrder(
+  services: { time: string; recipeId: string | null; covers: number }[],
+  tagsById: Map<string, { name: string; order?: number }>,
+) {
+  return [...services].sort((a, b) => {
+    const orderA = tagsById.get(a.time)?.order ?? 999;
+    const orderB = tagsById.get(b.time)?.order ?? 999;
+    return orderA - orderB;
+  });
+}
+
 function buildPlanningData(
   p: PlanningPrimitives,
-  tagsById: Map<string, { name: string }>,
+  tagsById: Map<string, { name: string; order?: number }>,
   recipesById: Map<string, RecipePrimitives>,
   ingredientsById: Map<string, IngredientPrimitives>,
 ): ActivePlanningData {
@@ -561,18 +572,18 @@ function buildPlanningData(
     shoppingPending,
     todayName: todayDayOrder ? getDayName(todayDayOrder) : '',
     todayMeals: todayDay
-      ? todayDay.services.map((s) => buildMealInfo(s, tagsById, recipesById, ingredientsById))
+      ? sortServicesByTagOrder(todayDay.services, tagsById).map((s) => buildMealInfo(s, tagsById, recipesById, ingredientsById))
       : [],
     tomorrowName: tomorrowDayOrder ? getDayName(tomorrowDayOrder) : '',
     tomorrowMeals: tomorrowDay
-      ? tomorrowDay.services.map((s) => buildMealInfo(s, tagsById, recipesById, ingredientsById))
+      ? sortServicesByTagOrder(tomorrowDay.services, tagsById).map((s) => buildMealInfo(s, tagsById, recipesById, ingredientsById))
       : [],
   };
 }
 
 function buildMealInfo(
   s: { time: string; recipeId: string | null; covers: number },
-  tagsById: Map<string, { name: string }>,
+  tagsById: Map<string, { name: string; order?: number }>,
   recipesById: Map<string, RecipePrimitives>,
   ingredientsById: Map<string, IngredientPrimitives>,
 ): MealInfo {

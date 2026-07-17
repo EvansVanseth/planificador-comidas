@@ -35,7 +35,7 @@ export default async function PlanningsPage() {
         {primitives.length === 0 ? (
           <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">
             <p className="text-sm text-[#4F617B]">
-              No hay planificaciones todavía. ¡Creá la primera!
+              No hay planificaciones todavía. ¡Crea la primera!
             </p>
           </div>
         ) : (

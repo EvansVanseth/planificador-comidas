@@ -36,7 +36,7 @@ export default function SignupPage() {
             Crear tu cuenta
           </h1>
           <p className="text-sm text-[#45556C]">
-            Empezá a organizar tus comidas en segundos.
+            Empieza a organizar tus comidas en segundos.
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default function SignupPage() {
           </div>
 
           <p className="mb-4 text-center text-sm text-[#4F617B]">
-            ¿Ya tenés cuenta?
+            ¿Ya tienes cuenta?
           </p>
           <Link
             href="/login"

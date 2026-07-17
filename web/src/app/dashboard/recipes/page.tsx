@@ -99,7 +99,7 @@ export default async function RecipesPage({
             <p className="text-sm text-[#4F617B]">
               {query || selectedTagIds.length > 0
                 ? 'No se encontraron recetas con esos filtros.'
-                : 'No hay recetas todavía. ¡Creá la primera!'}
+                : 'No hay recetas todavía. ¡Crea la primera!'}
             </p>
           </div>
         ) : (
