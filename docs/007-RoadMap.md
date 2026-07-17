@@ -22,7 +22,8 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 - [x] Fase 1 a 10: Implementación completa del dominio, CLI, persistencia, CRUD, vistas proyectadas y gestión de usuarios
 
 ```
-Estado actual: 378 tests, 61 ficheros de test, todo verde. CLI sin picocolors (no funciona en Windows con tsx).
+Estado actual: 437 unit tests (76 ficheros) + 52 integration tests (5 ficheros), todo verde.
+Postgres vía Prisma v7 en Docker. CLI sin picocolors (no funciona en Windows con tsx).
 ```
 
 ## Próximas fases
@@ -237,17 +238,17 @@ Adaptación de la UI de escritorio a contexto móvil usando solo Tailwind breakp
 
 Sustitución de la persistencia por archivos por una base de datos Postgres. Se usa Prisma ORM como capa de acceso a datos (schema declarativo, migraciones automáticas, cliente tipado).
 
-- [ ] Paso 1: Docker Compose para Postgres local (docker-compose.yml con postgres:16-alpine)
-- [ ] Paso 2: Inicializar Prisma (`npx prisma init`) con `schema.prisma` mapeando el Domain Model
-- [ ] Paso 3: Crear migración inicial y generar Prisma Client
-- [ ] Paso 4: Implementar `PostgresTagRepository` (siguiendo `TagRepository` interface)
-- [ ] Paso 5: Implementar `PostgresIngredientRepository`
-- [ ] Paso 6: Implementar `PostgresRecipeRepository`
-- [ ] Paso 7: Implementar `PostgresUserRepository`
-- [ ] Paso 8: Implementar `PostgresPlanningRepository`
-- [ ] Paso 9: Migrar seed de etiquetas de sistema a Prisma
-- [ ] Paso 10: Tests de integración con base de datos real
-- [ ] Paso 11: Actualizar `container.ts` para soportar `PERSISTENCE_TYPE=POSTGRES`
+- [x] Paso 1: Docker Compose para Postgres local (docker-compose.yml con postgres:16-alpine)
+- [x] Paso 2: Inicializar Prisma (`npx prisma init`) con `schema.prisma` mapeando el Domain Model
+- [x] Paso 3: Crear migración inicial y generar Prisma Client
+- [x] Paso 4: Implementar `PostgresTagRepository` (siguiendo `TagRepository` interface)
+- [x] Paso 5: Implementar `PostgresIngredientRepository`
+- [x] Paso 6: Implementar `PostgresRecipeRepository`
+- [x] Paso 7: Implementar `PostgresUserRepository`
+- [x] Paso 8: Implementar `PostgresPlanningRepository`
+- [x] Paso 9: Migrar seed de etiquetas de sistema a Prisma
+- [x] Paso 10: Tests de integración con base de datos real
+- [x] Paso 11: Actualizar `container.ts` para soportar `PERSISTENCE_TYPE=POSTGRES`
 
 ### Fase 21: ^^ Despliegue en cloud (Supabase + Vercel)
 

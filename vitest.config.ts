@@ -1,10 +1,7 @@
 import { defineConfig } from 'vitest/config';
-import path from 'path'; // Asegúrate de tener este import
+import path from 'path';
 
 export default defineConfig({
-  test: {
-    // ... tus otras configs
-  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

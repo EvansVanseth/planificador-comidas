@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx vitest",
+    "test": "npx vitest --exclude '**/*.integration.spec.ts'",
+    "test:integration": "npx vitest run --fileParallelism false --exclude='**/node_modules/**' src/infrastructure/repositories/__tests__/postgres-tag.repository.integration.spec.ts src/infrastructure/repositories/__tests__/postgres-ingredient.repository.integration.spec.ts src/infrastructure/repositories/__tests__/postgres-user.repository.integration.spec.ts src/infrastructure/repositories/__tests__/postgres-recipe.repository.integration.spec.ts src/infrastructure/repositories/__tests__/postgres-planning.repository.integration.spec.ts",
+    "test:all": "npx vitest run --fileParallelism false",
     "cli": "npx tsx src/infrastructure/cli/cli.ts"
   },
   "keywords": [],
@@ -22,6 +24,7 @@
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
     "dotenv": "^17.4.2",
     "pg": "^8.22.0",
     "prompts": "^2.4.2"
