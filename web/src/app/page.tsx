@@ -37,7 +37,7 @@ export default function LandingPage() {
             </p>
 
             <Link
-              href="/login"
+              href="/signup"
               className="mt-10 inline-flex h-12 items-center justify-center rounded-[10px] bg-[#007A55] px-7 text-lg font-medium text-white transition-colors hover:bg-[#008055]"
             >
               Pruébalo gratis
