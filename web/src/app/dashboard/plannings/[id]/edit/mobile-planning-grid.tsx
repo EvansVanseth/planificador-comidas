@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import type { PlanningPrimitives } from '@/domain/planning/aggregates/planning.aggregate';
 import {
-  PeopleIcon, PlusIcon, CloseIcon, WandIcon,
+  PeopleIcon, PlusIcon, MinusIcon, CloseIcon, WandIcon,
   PencilIcon, TrashIcon, ChevronLeftIcon, ChevronRightIcon,
 } from '@/components/icons';
 import { addDay, removeDay, addAllDays, removeMeal, clearAllRecipes, autoSchedule } from '../../actions';
@@ -165,13 +165,38 @@ export default function MobilePlanningGrid({ planning, recipes, momentTags, allT
         >
           <WandIcon size={18} />
         </button>
+
+        <div className="mx-1 h-6 w-px bg-gray-200" />
+
+        <button
+          type="button"
+          onClick={() => {
+            const order = dayOrders[selectedIndex];
+            const dd = dayMap.get(order);
+            if (dd && dd.services.length > 0) {
+              setRemoveConfirmDay(order);
+            } else {
+              const fd = new FormData();
+              fd.append('planningId', planning.id);
+              fd.append('dayOrder', String(order));
+              removeDay(fd);
+            }
+          }}
+          disabled={!dayMap.has(dayOrders[selectedIndex])}
+          className="flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 rounded-lg border border-red-200 bg-white text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-30"
+          title="Eliminar día actual"
+        >
+          <MinusIcon size={16} />
+          <span className="text-[9px] font-medium leading-none">Día</span>
+        </button>
         <button
           type="button"
           onClick={() => setShowClearRecipesConfirm(true)}
-          className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-red-200 bg-white text-red-600 transition-colors hover:bg-red-50"
+          className="flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 rounded-lg border border-red-200 bg-white text-red-600 transition-colors hover:bg-red-50"
           title="Limpiar recetas"
         >
           <TrashIcon />
+          <span className="text-[9px] font-medium leading-none">Recetas</span>
         </button>
       </div>
 
