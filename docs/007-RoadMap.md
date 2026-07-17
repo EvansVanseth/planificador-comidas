@@ -229,9 +229,9 @@ Migración de la CLI a interfaz web basada en los mockups aprobados por la usuar
 
 Adaptación de la UI de escritorio a contexto móvil usando solo Tailwind breakpoints. Sin cambios estructurales.
 
-- [ ] Paso 1: Adaptar layout a mobile-first con Tailwind (`sm:` / `md:` breakpoints)
-- [ ] Paso 2: Optimizar lista de la compra para uso en supermercado (target táctil 44x44px, contraste 4.5:1)
-- [ ] Paso 3: Validar contraste WCAG 2.1 AA en toda la UI
+- [x] Paso 1: Adaptar layout a mobile-first con Tailwind (`sm:` / `md:` breakpoints)
+- [x] Paso 2: Optimizar lista de la compra para uso en supermercado (target táctil 44x44px, contraste 4.5:1)
+- [x] Paso 3: Validar contraste WCAG 2.1 AA en toda la UI
 
 ### Fase 20: ^^ Persistencia con Postgres + Prisma
 
