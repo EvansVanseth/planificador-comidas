@@ -3,3 +3,5 @@ node_modules/
 Thumbs.db
 .atl/
 nul
+/src/generated/prisma
+.env

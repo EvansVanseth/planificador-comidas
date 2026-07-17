@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id    String @id @default(uuid())
+  name  String
+  email String
+
+  recipes     Recipe[]
+  tags        Tag[]
+  ingredients Ingredient[]
+  plannings   Planning[]
+}
+
+model Ingredient {
+  id     String @id @default(uuid())
+  userId String
+  name   String
+
+  user            User              @relation(fields: [userId], references: [id])
+  recipeIngredients RecipeIngredient[]
+  pantryItems       PlanningPantryItem[]
+  shoppingItems     PlanningShoppingItem[]
+}
+
+model Tag {
+  id        String @id @default(uuid())
+  userId    String
+  name      String
+  dimension String
+  isSystem  Boolean @default(false)
+  systemKey String?
+  order     Int     @default(0)
+
+  user        User       @relation(fields: [userId], references: [id])
+  recipeTags  RecipeTag[]
+  mealServices MealService[]
+}
+
+model Recipe {
+  id           String @id @default(uuid())
+  userId       String
+  name         String
+  baseServings Int
+  prepTime     Int
+  preparation  String?
+
+  user        User              @relation(fields: [userId], references: [id])
+  ingredients RecipeIngredient[]
+  tags        RecipeTag[]
+  mealServices MealService[]
+}
+
+model RecipeIngredient {
+  recipeId     String
+  ingredientId String
+  quantityNote String?
+
+  recipe     Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+
+  @@id([recipeId, ingredientId])
+}
+
+model RecipeTag {
+  recipeId String
+  tagId    String
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id])
+
+  @@id([recipeId, tagId])
+}
+
+model Planning {
+  id             String @id @default(uuid())
+  userid         String
+  name           String
+  startdate      String?
+  weeks          Int
+  hotColdBalance Int    @default(50)
+
+  user          User                  @relation(fields: [userid], references: [id])
+  days          PlannedDay[]
+  pantryItems   PlanningPantryItem[]
+  shoppingItems PlanningShoppingItem[]
+}
+
+model PlannedDay {
+  id          String @id @default(uuid())
+  planningId  String
+  order       Int
+
+  planning Planning      @relation(fields: [planningId], references: [id], onDelete: Cascade)
+  services  MealService[]
+}
+
+model MealService {
+  id                  String   @id @default(uuid())
+  dayId               String
+  time                String
+  recipeId            String?
+  covers              Int      @default(1)
+  exclusions          String[] @default([])
+  preferences         String[] @default([])
+  ignoreRestrictions  Boolean  @default(false)
+
+  day     PlannedDay @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  recipe  Recipe?    @relation(fields: [recipeId], references: [id])
+  momentTag Tag      @relation(fields: [time], references: [id])
+}
+
+model PlanningPantryItem {
+  id           String @id @default(uuid())
+  planningId   String
+  ingredientId String
+  available    Boolean @default(false)
+  covers       Int     @default(0)
+
+  planning   Planning   @relation(fields: [planningId], references: [id], onDelete: Cascade)
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+}
+
+model PlanningShoppingItem {
+  id           String @id @default(uuid())
+  planningId   String
+  ingredientId String
+  completed    Boolean @default(false)
+
+  planning   Planning   @relation(fields: [planningId], references: [id], onDelete: Cascade)
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+}

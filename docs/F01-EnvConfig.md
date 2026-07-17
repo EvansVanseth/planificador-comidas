@@ -156,4 +156,98 @@ ls web
 npm run dev
 ```
 (Ejecutamos dentro de /web)
+
+---
+
+# Configuración de Postgres local con Docker (Fase 20 — Persistencia)
+
+## Prerrequisito: Docker Desktop instalado
+
+Verificar que Docker está disponible:
+``` bash
+docker --version
+docker compose version
 ```
+
+Si no está instalado, descargar Docker Desktop desde https://www.docker.com/products/docker-desktop/ e instalarlo.
+
+## Paso 1: Crear `docker-compose.yml` en la raíz del proyecto
+
+Archivo: `TFM/docker-compose.yml`
+
+``` yaml
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: planificador-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: planificador
+      POSTGRES_PASSWORD: planificador
+      POSTGRES_DB: planificador
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+```
+
+## Paso 2: Levantar el contenedor
+
+``` bash
+docker compose up -d
+```
+
+Flags:
+- `-d` — modo detached (corre en segundo plano)
+- La primera vez descarga la imagen `postgres:16-alpine` (~100 MB)
+- Crea el volumen `pgdata` para persistir datos entre reinicios
+
+## Paso 3: Verificar que el contenedor está corriendo
+
+``` bash
+docker compose ps
+# Debería mostrar "planificador-db" con estado "Up"
+
+docker compose logs postgres
+# Debería mostrar "database system is ready to accept connections"
+```
+
+## Paso 4: Conectarse a Postgres para probar (opcional)
+
+``` bash
+docker exec -it planificador-db psql -U planificador -d planificador
+```
+
+Comandos útiles dentro de psql:
+``` sql
+\dt   -- listar tablas (vacío por ahora, no hay nada)
+\q    -- salir de psql
+```
+
+## Paso 5: Frenar / borrar el contenedor
+
+``` bash
+docker compose down       # frena el contenedor (los datos persisten)
+docker compose down -v    # frena y borra el volumen (pierde los datos)
+```
+
+## Notas importantes
+
+- **Puerto**: `5432` es el default de Postgres. Si ya hay otro Postgres en ese puerto, cambiar el mapeo a `"5433:5432"` y ajustar la URL de conexión.
+- **Credenciales** (solo para desarrollo):
+  ```
+  Host: localhost
+  Port: 5432
+  User: planificador
+  Password: planificador
+  Database: planificador
+  ```
+- **URL de conexión** (formato Prisma/psql):
+  ```
+  postgresql://planificador:planificador@localhost:5432/planificador
+  ```
+- El volumen `pgdata` mantiene los datos aunque el contenedor se detenga. Solo se borran con `docker compose down -v`.
+- Para desarrollo diario: `docker compose up -d` una vez y se deja corriendo. Solo se detiene cuando no se necesita la base de datos.
