@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { CloseIcon } from '@/components/icons';
 import PlanningGrid from './planning-grid';
+import MobilePlanningGrid from './mobile-planning-grid';
 import PantryView from './pantry-view';
 import ShoppingView from './shopping-view';
 import TabNav from './tab-nav';
@@ -68,14 +69,24 @@ export default async function EditPlanningPage({
 
       <div className="flex min-h-0 flex-1 flex-col">
         {tab === 'grid' && (
-          <div className="min-h-0 flex-1 overflow-y-auto">
-            <PlanningGrid
-              planning={primitives}
-              recipes={recipes}
-              momentTags={momentTags}
-              allTags={allTags}
-            />
-          </div>
+          <>
+            <div className="hidden min-h-0 flex-1 overflow-y-auto md:block">
+              <PlanningGrid
+                planning={primitives}
+                recipes={recipes}
+                momentTags={momentTags}
+                allTags={allTags}
+              />
+            </div>
+            <div className="flex min-h-0 flex-1 flex-col md:hidden">
+              <MobilePlanningGrid
+                planning={primitives}
+                recipes={recipes}
+                momentTags={momentTags}
+                allTags={allTags}
+              />
+            </div>
+          </>
         )}
 
         {tab === 'pantry' && (
