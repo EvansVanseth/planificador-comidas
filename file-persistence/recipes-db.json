@@ -613,7 +613,7 @@
     "name": "Ensalada campera",
     "baseServings": 2,
     "prepTime": 30,
-    "preparation": null,
+    "preparation": "Hervir las patatas y dejar enfriar. \nMientras, cortar el pimiento y la cebolla en taquitos pequeños. \nCortar los huevos en trozos pequeños. \nCortar los tomates. \nEchar todo junto a un par de botes de atún en un bol grande y remover bien. \nAliñar con aceite y un poquito de vinagre de modena.",
     "ingredients": [
       {
         "ingredientId": "f827ec38-93ac-440f-a7b4-ab66e54e5fd6",

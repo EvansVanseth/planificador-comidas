@@ -68,6 +68,7 @@ export default function MobilePlanningGrid({ planning, recipes, momentTags, allT
   const [removeConfirmDay, setRemoveConfirmDay] = useState<number | null>(null);
   const [removeConfirmMeal, setRemoveConfirmMeal] = useState<{ dayOrder: number; momentTagId: string } | null>(null);
   const [showClearRecipesConfirm, setShowClearRecipesConfirm] = useState(false);
+  const [showAddDaysConfirm, setShowAddDaysConfirm] = useState(false);
   const [showBulkAddService, setShowBulkAddService] = useState(false);
   const [showAutoSchedule, setShowAutoSchedule] = useState(false);
 
@@ -134,18 +135,14 @@ export default function MobilePlanningGrid({ planning, recipes, momentTags, allT
         >
           <PencilIcon />
         </button>
-        <form action={addAllDays}>
-          <input type="hidden" name="planningId" value={planning.id} />
-          <input type="hidden" name="weeks" value={planning.weeks} />
-          <input type="hidden" name="existingDays" value={planning.days.map((d) => d.order).join(',')} />
-          <button
-            type="submit"
-            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#E2E8F0] bg-white text-[#0F172B] transition-colors hover:bg-gray-50"
-            title="Añadir todos los días"
-          >
-            <PlusIcon size={18} />
-          </button>
-        </form>
+        <button
+          type="button"
+          onClick={() => setShowAddDaysConfirm(true)}
+          className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#E2E8F0] bg-white text-[#0F172B] transition-colors hover:bg-gray-50"
+          title="Añadir todos los días"
+        >
+          <PlusIcon size={18} />
+        </button>
         <button
           type="button"
           onClick={() => setShowBulkAddService(true)}
@@ -445,6 +442,27 @@ export default function MobilePlanningGrid({ planning, recipes, momentTags, allT
                 <input type="hidden" name="dayOrder" value={removeConfirmMeal.dayOrder} />
                 <input type="hidden" name="momentTagId" value={removeConfirmMeal.momentTagId} />
                 <button type="submit" className="rounded-lg bg-[#DC2626] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]">Eliminar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showAddDaysConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setShowAddDaysConfirm(false)} />
+          <div className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
+            <h2 className="mb-4 text-lg font-semibold text-[#0F172B]">Añadir todos los días</h2>
+            <p className="mb-4 text-sm text-[#4F617B]">
+              Se añadirán los {planning.weeks * 7 - planning.days.length} días que faltan para completar las {planning.weeks} {planning.weeks === 1 ? 'semana' : 'semanas'} del planning.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button type="button" onClick={() => setShowAddDaysConfirm(false)} className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50">Cancelar</button>
+              <form action={addAllDays} onSubmit={() => setShowAddDaysConfirm(false)}>
+                <input type="hidden" name="planningId" value={planning.id} />
+                <input type="hidden" name="weeks" value={planning.weeks} />
+                <input type="hidden" name="existingDays" value={planning.days.map((d) => d.order).join(',')} />
+                <button type="submit" className="rounded-lg bg-[#007A55] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#008055]">Añadir</button>
               </form>
             </div>
           </div>
