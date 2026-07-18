@@ -2,7 +2,9 @@
 
 import { useFormState, useFormStatus } from 'react-dom';
 import { useState } from 'react';
+import { logout } from '@/app/dashboard/actions';
 import { updateName, changePassword, deleteAccount } from './actions';
+import { LogoutIcon } from '@/components/icons';
 
 function SubmitButton({ label, busyLabel }: { label: string; busyLabel: string }) {
   const { pending } = useFormStatus();
@@ -125,6 +127,18 @@ export function SettingsForm({ name, email }: { name: string; email: string }) {
           </div>
         </div>
       )}
+
+      <hr className="my-8 border-t border-gray-200 md:hidden" />
+
+      <form action={logout} className="md:hidden">
+        <button
+          type="submit"
+          className="flex h-10 w-full items-center justify-center gap-2 rounded-[10px] border border-gray-200 bg-white px-5 text-sm font-medium text-[#4F617B] transition-colors hover:bg-gray-50"
+        >
+          <LogoutIcon />
+          Cerrar sesión
+        </button>
+      </form>
     </>
   );
 }

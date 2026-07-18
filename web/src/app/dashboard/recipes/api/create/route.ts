@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { getContainer } from '@/domain-container';
 
 export async function POST(req: NextRequest) {
@@ -22,13 +21,13 @@ export async function POST(req: NextRequest) {
       tags,
     );
 
-    const cookieStore = await cookies();
-    cookieStore.set('toast_queue', JSON.stringify([{ message: 'Receta creada correctamente.', type: 'success' }]), {
+    const response = NextResponse.json({ ok: true });
+    response.cookies.set('toast_queue', JSON.stringify([{ message: 'Receta creada correctamente.', type: 'success' }]), {
       path: '/dashboard',
       maxAge: 10,
     });
 
-    return NextResponse.json({ ok: true });
+    return response;
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Error al crear la receta';
     return NextResponse.json({ error: msg }, { status: 400 });

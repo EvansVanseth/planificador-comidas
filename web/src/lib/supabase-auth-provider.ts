@@ -1,5 +1,4 @@
 import { createServerClient } from '@supabase/ssr';
-import { createBrowserClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import type { AuthProvider } from '@/application/auth/auth-provider.interface';
@@ -100,10 +99,7 @@ export class SupabaseAuthProvider implements AuthProvider {
   }
 
   async updatePassword(password: string): Promise<void> {
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    );
+    const supabase = await getSupabase();
     const { error } = await supabase.auth.updateUser({ password });
     if (error) throw error;
   }

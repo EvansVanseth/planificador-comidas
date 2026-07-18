@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { getContainer } from '@/domain-container';
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';
 
@@ -52,13 +51,13 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       removeIngredients: ingredientsToRemove,
     });
 
-    const cookieStore = await cookies();
-    cookieStore.set('toast_queue', JSON.stringify([{ message: 'Receta actualizada correctamente.', type: 'success' }]), {
+    const response = NextResponse.json({ ok: true });
+    response.cookies.set('toast_queue', JSON.stringify([{ message: 'Receta actualizada correctamente.', type: 'success' }]), {
       path: '/dashboard',
       maxAge: 10,
     });
 
-    return NextResponse.json({ ok: true });
+    return response;
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Error al actualizar la receta';
     return NextResponse.json({ error: msg }, { status: 400 });
