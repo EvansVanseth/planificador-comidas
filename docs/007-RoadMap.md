@@ -269,20 +269,25 @@ Migración a Supabase Auth y Postgres, primero local para desarrollo y luego a p
     - [x] 3.6: ^^ Añadir flujo de restablecimiento de contraseña (vía email)
     - [x] 3.7: ^^ Añadir flujo de eliminación de cuenta (service_role key)
     - [x] 3.8: ^^ Eliminar código legacy (ListUsersUseCase, mock login)
-- [ ] Paso 4: Verificación manual del flujo completo de usuario (local)
-    - [ ] 4.1: Probar registro, login, logout
-    - [ ] 4.2: Probar restablecimiento de contraseña (Mailpit)
-    - [ ] 4.3: Probar eliminación de cuenta y verificar cascade
-    - [ ] 4.4: Probar acceso a dashboard con sesión real
-- [ ] Paso 5: Migrar esquema a Supabase Postgres (producción)
-    - [ ] 5.1: `supabase link --project-ref <ref>` (vincular proyecto cloud)
-    - [ ] 5.2: `supabase db push` (migrar schema a producción)
-    - [ ] 5.3: Actualizar `.env` con credenciales de producción
-- [ ] Paso 6: Implementar políticas RLS (Row-Level Security)
-- [ ] Paso 7: Desplegar en Vercel (CI/CD desde GitHub)
-- [ ] Paso 8: Rate limiting en endpoints de auth (OWASP)
-- [ ] Paso 9: Sanitización XSS (`isomorphic-dompurify`)
-- [ ] Paso 10: Revisión de seguridad y robustez
+- [x] Paso 4: ^^ Reemplazar "Eliminar cuenta" por panel de usuario /dashboard/settings
+    - [x] 4.1: Crear página /dashboard/settings con info personal, cambio de nombre y email
+    - [x] 4.2: Sección "Cambiar contraseña" (verifica contraseña actual + actualiza)
+    - [x] 4.3: Sección "Eliminar cuenta" con confirmación en dos pasos (sin window.confirm)
+    - [x] 4.4: Enlace "Mi cuenta" en sidebar con icono de ajustes
+- [ ] Paso 5: Verificación manual del flujo completo de usuario (local)
+    - [ ] 5.1: Probar registro, login, logout
+    - [ ] 5.2: Probar restablecimiento de contraseña (Mailpit)
+    - [ ] 5.3: Probar panel de usuario (cambiar nombre, contraseña)
+    - [ ] 5.4: Probar eliminación de cuenta y verificar cascade
+- [ ] Paso 6: Migrar esquema a Supabase Postgres (producción)
+    - [ ] 6.1: `supabase link --project-ref <ref>` (vincular proyecto cloud)
+    - [ ] 6.2: `supabase db push` (migrar schema a producción)
+    - [ ] 6.3: Actualizar `.env` con credenciales de producción
+- [ ] Paso 7: Implementar políticas RLS (Row-Level Security)
+- [ ] Paso 8: Desplegar en Vercel (CI/CD desde GitHub)
+- [ ] Paso 9: Rate limiting en endpoints de auth (OWASP)
+- [ ] Paso 10: Sanitización XSS (`isomorphic-dompurify`)
+- [ ] Paso 11: Revisión de seguridad y robustez
 
 ### Fase 22: Preparación académica final
 

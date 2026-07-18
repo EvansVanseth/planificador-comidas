@@ -2,8 +2,8 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { logout, deleteAccount } from './actions';
-import { GridIcon, RecipeIcon, CalendarIcon, CatalogIcon, LogoutIcon, TrashIcon, LogoIcon } from '@/components/icons';
+import { logout } from './actions';
+import { GridIcon, RecipeIcon, CalendarIcon, CatalogIcon, SettingsIcon, LogoutIcon, LogoIcon } from '@/components/icons';
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Panel', icon: GridIcon },
@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/tags', label: 'Etiquetas', icon: CatalogIcon },
   { href: '/dashboard/recipes', label: 'Recetas', icon: RecipeIcon },
   { href: '/dashboard/plannings', label: 'Planificador', icon: CalendarIcon },
+  { href: '/dashboard/settings', label: 'Mi cuenta', icon: SettingsIcon },
 ];
 
 export default function Sidebar() {
@@ -46,7 +47,7 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="border-t border-gray-200 px-4 py-3 space-y-1">
+      <div className="border-t border-gray-200 px-4 py-3">
         <form action={logout}>
           <button
             type="submit"
@@ -54,22 +55,6 @@ export default function Sidebar() {
           >
             <LogoutIcon />
             Cerrar sesión
-          </button>
-        </form>
-        <form
-          action={deleteAccount}
-          onSubmit={(e) => {
-            if (!window.confirm('¿Estás seguro? Se eliminarán todos tus datos (recetas, planificaciones, etc.)')) {
-              e.preventDefault();
-            }
-          }}
-        >
-          <button
-            type="submit"
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#DC2626] transition-colors hover:bg-red-50"
-          >
-            <TrashIcon />
-            Eliminar cuenta
           </button>
         </form>
       </div>
