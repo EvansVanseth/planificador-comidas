@@ -67,6 +67,18 @@ export default function SignupPage() {
               />
             </div>
 
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-[#314158]">
+                Contraseña
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Mínimo 6 caracteres"
+                className="h-10 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[#0A0A0A] placeholder:text-gray-400 transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
+              />
+            </div>
+
             {state?.error && (
               <p className="text-sm text-red-500">{state.error}</p>
             )}

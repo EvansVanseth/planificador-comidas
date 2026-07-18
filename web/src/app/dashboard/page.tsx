@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import { createServerClient } from '@supabase/ssr';
 import { getContainer } from '@/domain-container';
 import Link from 'next/link';
 import { getTodayDayOrder, getTomorrowDayOrder, getDayName, formatDate } from './helpers';
@@ -34,12 +35,26 @@ type ActivePlanningData = {
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
-  const cookie = cookieStore.get('userId');
-  const userId = cookie?.value ?? '';
+  const supabase = createServerClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return cookieStore.getAll() },
+        setAll(cookiesToSet) {
+          for (const { name, value, options } of cookiesToSet) {
+            cookieStore.set(name, value, options)
+          }
+        },
+      },
+    },
+  )
+
+  const { data: { user: sessionUser } } = await supabase.auth.getUser();
+  const userId = sessionUser?.id ?? '';
+  const userName = sessionUser?.user_metadata?.name as string ?? '';
 
   const c = getContainer();
-  const users = await c.listUsers.execute();
-  const user = users.find((u) => u.id === userId);
   const recipes = await c.listRecipes.execute(userId);
   const tags = await c.listTags.execute(userId);
   const ingredients = await c.listIngredients.execute(userId);
@@ -63,7 +78,7 @@ export default async function DashboardPage() {
             <div>
               <h1 className="text-2xl font-bold text-[#0F172B]">Panel</h1>
               <p className="text-sm text-[#45556C]">
-                {user!.name}
+                {userName}
               </p>
             </div>
             <Link
@@ -146,7 +161,7 @@ export default async function DashboardPage() {
             <div>
               <h1 className="text-2xl font-bold text-[#0F172B]">Panel</h1>
               <p className="text-sm text-[#45556C]">
-                {user!.name}
+                {userName}
               </p>
             </div>
             <Link

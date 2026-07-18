@@ -1,34 +1,34 @@
 'use server';
 
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getContainer } from '@/domain-container';
+import { createClient } from '@/lib/supabase';
 
 type State = { error: string };
 
 export async function login(_prevState: State, formData: FormData): Promise<State> {
   const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
   if (!email || email.trim().length === 0) {
     return { error: 'Escribe tu email' };
   }
-
-  const container = getContainer();
-  const users = await container.listUsers.execute();
-  const user = users.find(
-    u => u.email.toLowerCase() === email.trim().toLowerCase()
-  );
-
-  if (!user) {
-    return { error: 'No existe un usuario con ese email. ¿Quieres crear una cuenta?' };
+  if (!password) {
+    return { error: 'Escribe tu contraseña' };
   }
 
-  const cookieStore = await cookies();
-  cookieStore.set('userId', user.id, {
-    httpOnly: true,
-    secure: false,
-    sameSite: 'lax',
-    path: '/',
+  const supabase = await createClient();
+
+  const { error: authError } = await supabase.auth.signInWithPassword({
+    email: email.trim(),
+    password,
   });
+
+  if (authError) {
+    if (authError.message.includes('Invalid login credentials')) {
+      return { error: 'Email o contraseña incorrectos' };
+    }
+    return { error: authError.message };
+  }
 
   redirect('/dashboard');
 }

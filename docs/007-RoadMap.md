@@ -250,19 +250,39 @@ Sustitución de la persistencia por archivos por una base de datos Postgres. Se 
 - [x] Paso 10: Tests de integración con base de datos real
 - [x] Paso 11: Actualizar `container.ts` para soportar `PERSISTENCE_TYPE=POSTGRES`
 
-### Fase 21: ^^ Despliegue en cloud (Supabase + Vercel)
+### Fase 21: ^^ Supabase Auth local + despliegue en cloud
 
-Paso a producción usando los servicios donde el usuario ya tiene cuenta.
+Migración a Supabase Auth y Postgres, primero local para desarrollo y luego a producción. Se usa Supabase CLI para levantar un entorno completo (Postgres + Auth + Storage) en Docker.
 
-- [ ] Paso 1: Crear proyecto Supabase y obtener DATABASE_URL
-- [ ] Paso 2: Migrar esquema a Supabase Postgres (producción)
-- [ ] Paso 3: Configurar Supabase Auth (login/registro real con email)
-- [ ] Paso 4: Implementar políticas RLS (Row-Level Security) para aislamiento multitenant
-- [ ] Paso 5: Reemplazar mock login por Supabase Auth en la web
-- [ ] Paso 6: Desplegar en Vercel (CI/CD desde GitHub)
-- [ ] Paso 7: Rate limiting en endpoints de auth (OWASP)
-- [ ] Paso 8: Sanitización XSS (`isomorphic-dompurify`)
-- [ ] Paso 9: Revisión de seguridad y robustez
+- [x] Paso 1: Crear proyecto Supabase y obtener DATABASE_URL
+- [x] Paso 2: ^^ Entorno local con Supabase CLI
+    - [x] 2.1: ^^ Instalar Supabase CLI (scoop install supabase)
+    - [x] 2.2: ^^ `supabase init` y `supabase start` — Postgres 17 + Auth + Studio + Mailpit local
+    - [x] 2.3: ^^ Configurar `.env` root y `web/.env.local` con credenciales locales
+    - [x] 2.4: ^^ Migrar esquema a Supabase local con `npx prisma migrate deploy`
+- [x] Paso 3: ^^ Implementar Supabase Auth en la web (entorno local)
+    - [x] 3.1: ^^ Instalar `@supabase/supabase-js` y `@supabase/ssr`
+    - [x] 3.2: ^^ Crear cliente Supabase server-side para Next.js App Router
+    - [x] 3.3: ^^ Reemplazar signup mock por registro real con Supabase Auth + sincronización con User
+    - [x] 3.4: ^^ Reemplazar login mock por autenticación email/password con sesión
+    - [x] 3.5: ^^ Añadir logout con cierre de sesión en Supabase
+    - [x] 3.6: ^^ Añadir flujo de restablecimiento de contraseña (vía email)
+    - [x] 3.7: ^^ Añadir flujo de eliminación de cuenta (service_role key)
+    - [x] 3.8: ^^ Eliminar código legacy (ListUsersUseCase, mock login)
+- [ ] Paso 4: Verificación manual del flujo completo de usuario (local)
+    - [ ] 4.1: Probar registro, login, logout
+    - [ ] 4.2: Probar restablecimiento de contraseña (Mailpit)
+    - [ ] 4.3: Probar eliminación de cuenta y verificar cascade
+    - [ ] 4.4: Probar acceso a dashboard con sesión real
+- [ ] Paso 5: Migrar esquema a Supabase Postgres (producción)
+    - [ ] 5.1: `supabase link --project-ref <ref>` (vincular proyecto cloud)
+    - [ ] 5.2: `supabase db push` (migrar schema a producción)
+    - [ ] 5.3: Actualizar `.env` con credenciales de producción
+- [ ] Paso 6: Implementar políticas RLS (Row-Level Security)
+- [ ] Paso 7: Desplegar en Vercel (CI/CD desde GitHub)
+- [ ] Paso 8: Rate limiting en endpoints de auth (OWASP)
+- [ ] Paso 9: Sanitización XSS (`isomorphic-dompurify`)
+- [ ] Paso 10: Revisión de seguridad y robustez
 
 ### Fase 22: Preparación académica final
 

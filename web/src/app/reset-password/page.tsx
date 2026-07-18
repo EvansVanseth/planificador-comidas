@@ -1,11 +1,11 @@
 'use client';
 
 import { useFormState, useFormStatus } from 'react-dom';
-import { login } from './actions';
+import { resetPassword, type State } from './actions';
 import Link from 'next/link';
 import { LogoIcon } from '@/components/icons';
 
-const initialState = { error: '' };
+const initialState: State = { error: '' };
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -15,13 +15,37 @@ function SubmitButton() {
       disabled={pending}
       className="h-10 w-full rounded-[10px] bg-[#007A55] text-base font-medium text-white transition-colors hover:bg-[#008055] disabled:opacity-50"
     >
-      {pending ? 'Entrando...' : 'Iniciar sesión'}
+      {pending ? 'Enviando...' : 'Enviar correo'}
     </button>
   );
 }
 
-export default function LoginPage() {
-  const [state, formAction] = useFormState(login, initialState);
+export default function ResetPasswordPage() {
+  const [state, formAction] = useFormState(resetPassword, initialState);
+
+  if (state.success) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#F8FAFC] px-4">
+        <div className="w-full max-w-[448px] text-center">
+          <div className="mb-6">
+            <LogoIcon size={48} />
+          </div>
+          <h1 className="mb-2 text-[30px] font-bold text-[#0F172B]">
+            Revisa tu email
+          </h1>
+          <p className="mb-6 text-sm text-[#45556C]">
+            Si existe una cuenta con ese email, recibirás un enlace para restablecer tu contraseña.
+          </p>
+          <Link
+            href="/login"
+            className="text-sm font-medium text-[#007A55] hover:underline"
+          >
+            Volver a iniciar sesión
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#F8FAFC] px-4">
@@ -33,10 +57,10 @@ export default function LoginPage() {
             </Link>
           </div>
           <h1 className="mb-2 text-[30px] font-bold text-[#0F172B]">
-            Bienvenido de nuevo
+            Restablecer contraseña
           </h1>
           <p className="text-sm text-[#45556C]">
-            Ingresa para ver tu planificación de esta semana.
+            Te enviaremos un enlace para crear una nueva.
           </p>
         </div>
 
@@ -55,27 +79,6 @@ export default function LoginPage() {
               />
             </div>
 
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#314158]">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                name="password"
-                placeholder="••••••••"
-                className="h-10 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[#0A0A0A] placeholder:text-gray-400 transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
-              />
-            </div>
-
-            <div className="flex items-center justify-end">
-              <Link
-                href="/reset-password"
-                className="text-sm font-medium text-[#007A55] hover:underline"
-              >
-                ¿Olvidaste tu contraseña?
-              </Link>
-            </div>
-
             {state?.error && (
               <p className="text-sm text-red-500">{state.error}</p>
             )}
@@ -90,13 +93,13 @@ export default function LoginPage() {
           </div>
 
           <p className="mb-4 text-center text-sm text-[#4F617B]">
-            ¿No tienes cuenta?
+            ¿Recordaste tu contraseña?
           </p>
           <Link
-            href="/signup"
+            href="/login"
             className="flex h-10 w-full items-center justify-center rounded-[10px] border border-gray-200 bg-white text-base font-medium text-[#0F172B] transition-colors hover:bg-gray-50"
           >
-            Crear una cuenta gratis
+            Iniciar sesión
           </Link>
         </div>
       </div>

@@ -6,16 +6,16 @@ import { randomUUID } from 'crypto';
 export class CreateUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(name: string, email?: string): Promise<string> {
+  async execute(name: string, email?: string, id?: string): Promise<string> {
     const userEmail = email ?? `${name.toLowerCase().replace(/\s+/g, '.')}@plancomidas.com`;
     const existingEmail = await this.userRepository.findByEmail(userEmail);
     if (existingEmail) {
       throw new AppError(`Ya existe un usuario con el email "${userEmail}"`);
     }
 
-    const id = randomUUID();
-    const user = User.create(id, name, userEmail);
+    const userId = id ?? randomUUID();
+    const user = User.create(userId, name, userEmail);
     await this.userRepository.save(user);
-    return id;
+    return userId;
   }
 }

@@ -1,6 +1,6 @@
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getContainer } from '@/domain-container';
+import { cookies } from 'next/headers';
+import { createServerClient } from '@supabase/ssr';
 import Sidebar from './sidebar';
 import MobileNav from '@/components/mobile-nav';
 import ToastQueue from '@/components/toast-queue';
@@ -11,12 +11,23 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value;
-  if (!userId) redirect('/login');
 
-  const c = getContainer();
-  const users = await c.listUsers.execute();
-  const user = users.find((u) => u.id === userId);
+  const supabase = createServerClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return cookieStore.getAll() },
+        setAll(cookiesToSet) {
+          for (const { name, value, options } of cookiesToSet) {
+            cookieStore.set(name, value, options)
+          }
+        },
+      },
+    },
+  )
+
+  const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
   let toasts: { message: string; type: string }[] = [];
