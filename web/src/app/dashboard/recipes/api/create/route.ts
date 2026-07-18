@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import { getContainer } from '@/domain-container';
 
@@ -20,6 +21,8 @@ export async function POST(req: NextRequest) {
       ingredients,
       tags,
     );
+
+    revalidatePath('/dashboard/recipes');
 
     const response = NextResponse.json({ ok: true });
     response.cookies.set('toast_queue', JSON.stringify([{ message: 'Receta creada correctamente.', type: 'success' }]), {

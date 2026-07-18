@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import { getContainer } from '@/domain-container';
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';
@@ -50,6 +51,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       addIngredients: ingredientsToAdd,
       removeIngredients: ingredientsToRemove,
     });
+
+    revalidatePath('/dashboard/recipes');
 
     const response = NextResponse.json({ ok: true });
     response.cookies.set('toast_queue', JSON.stringify([{ message: 'Receta actualizada correctamente.', type: 'success' }]), {

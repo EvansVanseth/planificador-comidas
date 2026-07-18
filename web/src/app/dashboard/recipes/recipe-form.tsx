@@ -236,7 +236,7 @@ export default function RecipeForm({
         return;
       }
 
-      router.push(returnTo ?? '/dashboard/recipes');
+      window.location.href = returnTo ?? '/dashboard/recipes';
     } catch {
       setErrors({ general: 'Error inesperado. Inténtalo de nuevo.' });
     } finally {

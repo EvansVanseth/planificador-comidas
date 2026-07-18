@@ -274,11 +274,11 @@ Migración a Supabase Auth y Postgres, primero local para desarrollo y luego a p
     - [x] 4.2: Sección "Cambiar contraseña" (verifica contraseña actual + actualiza)
     - [x] 4.3: Sección "Eliminar cuenta" con confirmación en dos pasos (sin window.confirm)
     - [x] 4.4: Enlace "Mi cuenta" en sidebar con icono de ajustes
-- [ ] Paso 5: Verificación manual del flujo completo de usuario (local)
-    - [ ] 5.1: Probar registro, login, logout
-    - [ ] 5.2: Probar restablecimiento de contraseña (Mailpit)
-    - [ ] 5.3: Probar panel de usuario (cambiar nombre, contraseña)
-    - [ ] 5.4: Probar eliminación de cuenta y verificar cascade
+- [x] Paso 5: Verificación manual del flujo completo de usuario (local)
+    - [x] 5.1: Probar registro, login, logout
+    - [x] 5.2: Probar restablecimiento de contraseña (Mailpit)
+    - [x] 5.3: Probar panel de usuario (cambiar nombre, contraseña)
+    - [x] 5.4: Probar eliminación de cuenta y verificar cascade
 - [ ] Paso 6: Migrar esquema a Supabase Postgres (producción)
     - [ ] 6.1: `supabase link --project-ref <ref>` (vincular proyecto cloud)
     - [ ] 6.2: `supabase db push` (migrar schema a producción)
