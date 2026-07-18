@@ -279,11 +279,11 @@ Migración a Supabase Auth y Postgres, primero local para desarrollo y luego a p
     - [x] 5.2: Probar restablecimiento de contraseña (Mailpit)
     - [x] 5.3: Probar panel de usuario (cambiar nombre, contraseña)
     - [x] 5.4: Probar eliminación de cuenta y verificar cascade
-- [ ] Paso 6: Migrar esquema a Supabase Postgres (producción)
-    - [ ] 6.1: `supabase link --project-ref <ref>` (vincular proyecto cloud)
-    - [ ] 6.2: `supabase db push` (migrar schema a producción)
-    - [ ] 6.3: Actualizar `.env` con credenciales de producción
-- [ ] Paso 7: Implementar políticas RLS (Row-Level Security)
+- [x] Paso 6: Migrar esquema a Supabase Postgres (producción)
+    - [x] 6.1: `supabase link --project-ref <ref>` (vincular proyecto cloud)
+    - [x] 6.2: `supabase db push` via migration file (prisma SQL → supabase/migrations/)
+    - [x] 6.3: Actualizar `.env` y `web/.env.local` con credenciales de producción
+- [x] Paso 7: Implementar políticas RLS (Row-Level Security)
 - [ ] Paso 8: Desplegar en Vercel (CI/CD desde GitHub)
 - [ ] Paso 9: Rate limiting en endpoints de auth (OWASP)
 - [ ] Paso 10: Sanitización XSS (`isomorphic-dompurify`)
