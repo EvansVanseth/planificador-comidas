@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { getUserId } from '@/lib/auth';
 import { getContainer } from '@/domain-container';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -16,8 +16,7 @@ export default async function EditPlanningPage({
   params: { id: string };
   searchParams: { tab?: string };
 }) {
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value ?? '';
+  const userId = await getUserId();
   if (!userId) notFound();
 
   const tab = searchParams.tab ?? 'grid';

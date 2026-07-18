@@ -1,8 +1,8 @@
 'use server';
 
 import { getContainer } from '@/domain-container';
+import { getUserId } from '@/lib/auth';
 import { addToastToQueue } from '@/lib/toast-utils';
-import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -193,8 +193,7 @@ export async function bulkAddMissingService(formData: FormData) {
 
 export async function autoSchedule(formData: FormData) {
   const planningId = formData.get('planningId') as string;
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value ?? '';
+  const userId = await getUserId();
 
   const c = getContainer();
   try {

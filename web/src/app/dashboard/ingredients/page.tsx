@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { getUserId } from '@/lib/auth';
 import { getContainer } from '@/domain-container';
 import { createIngredient } from './actions';
 import IngredientRow from './ingredient-row';
@@ -15,9 +15,7 @@ export default async function IngredientsPage({
     name?: string;
   };
 }) {
-  const cookieStore = await cookies();
-  const cookie = cookieStore.get('userId');
-  const userId = cookie?.value ?? '';
+  const userId = await getUserId();
 
   const c = getContainer();
   const ingredients = await c.listIngredients.execute(userId);

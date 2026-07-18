@@ -1,11 +1,10 @@
-import { cookies } from 'next/headers';
+import { getUserId } from '@/lib/auth';
 import { getContainer } from '@/domain-container';
 import { PlusIcon } from '@/components/icons';
 import PlanningCard from './planning-card';
 
 export default async function PlanningsPage() {
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value ?? '';
+  const userId = await getUserId();
 
   const c = getContainer();
   const plannings = await c.listPlannings.execute(userId);

@@ -1,30 +1,13 @@
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
+import { getAuthProvider } from '@/lib/auth';
 import { SettingsForm } from './settings-form';
 
 export default async function SettingsPage() {
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll(cookiesToSet) {
-          for (const { name, value, options } of cookiesToSet) {
-            cookieStore.set(name, value, options)
-          }
-        },
-      },
-    },
-  )
-
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthProvider().getUser();
   if (!user) redirect('/login');
 
-  const name = user.user_metadata?.name as string ?? '';
-  const email = user.email ?? '';
+  const name = user.name;
+  const email = user.email;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">

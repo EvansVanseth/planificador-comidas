@@ -12,6 +12,7 @@ export class Id {
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
     if (!uuidRegex.test(value)) {
+      console.log(`El ID proporcionado no es un UUID válido: ${value}`);
       throw new DomainError('El ID proporcionado no es un UUID válido.');
     }
 

@@ -2,32 +2,15 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
-import { createServiceRoleClient } from '../service-role';
+import { getAuthProvider } from '@/lib/auth';
 import { getContainer } from '@/domain-container';
 import { addToastToQueue } from '@/lib/toast-utils';
 
 const PATH = '/dashboard/settings';
 
 async function getAuthUser() {
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll(cookiesToSet) {
-          for (const { name, value, options } of cookiesToSet) {
-            cookieStore.set(name, value, options)
-          }
-        },
-      },
-    },
-  )
-  const { data: { user } } = await supabase.auth.getUser();
-  return { supabase, user };
+  const user = await getAuthProvider().getUser();
+  return { user };
 }
 
 export async function updateName(_prevState: { error: string }, formData: FormData): Promise<{ error: string }> {
@@ -36,17 +19,12 @@ export async function updateName(_prevState: { error: string }, formData: FormDa
     return { error: 'Escribe tu nombre' };
   }
 
-  const { supabase, user } = await getAuthUser();
+  const { user } = await getAuthUser();
   if (!user) redirect('/login');
-
-  const { error } = await supabase.auth.updateUser({
-    data: { name: name.trim() },
-  });
-
-  if (error) return { error: error.message };
 
   const container = getContainer();
   try {
+    await getAuthProvider().updateName(user.id, name.trim());
     await container.updateUser.execute({ id: user.id, name: name.trim() });
   } catch {
     return { error: 'Error al actualizar el nombre' };
@@ -64,18 +42,21 @@ export async function changePassword(_prevState: { error: string }, formData: Fo
   if (!currentPassword) return { error: 'Escribe tu contraseña actual' };
   if (!newPassword || newPassword.length < 6) return { error: 'La nueva contraseña debe tener al menos 6 caracteres' };
 
-  const { supabase, user } = await getAuthUser();
+  const { user } = await getAuthUser();
   if (!user) redirect('/login');
 
-  const { error: signInError } = await supabase.auth.signInWithPassword({
-    email: user.email!,
-    password: currentPassword,
-  });
-
-  if (signInError) return { error: 'La contraseña actual no es correcta' };
-
-  const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
-  if (updateError) return { error: updateError.message };
+  try {
+    // Verify current password by attempting sign-in
+    await getAuthProvider().signIn(user.email, currentPassword);
+    // Set new password
+    await getAuthProvider().updatePassword(newPassword);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : '';
+    if (msg.includes('incorrectos') || msg.includes('Invalid')) {
+      return { error: 'La contraseña actual no es correcta' };
+    }
+    return { error: msg || 'Error al cambiar la contraseña' };
+  }
 
   await addToastToQueue('Contraseña actualizada correctamente', 'success');
   revalidatePath(PATH);
@@ -83,31 +64,13 @@ export async function changePassword(_prevState: { error: string }, formData: Fo
 }
 
 export async function deleteAccount() {
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll(cookiesToSet) {
-          for (const { name, value, options } of cookiesToSet) {
-            cookieStore.set(name, value, options)
-          }
-        },
-      },
-    },
-  )
-
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) redirect('/login');
 
   const container = getContainer();
   await container.deleteUser.execute(user.id);
 
-  const adminClient = createServiceRoleClient();
-  const { error: deleteError } = await adminClient.auth.admin.deleteUser(user.id);
-  if (deleteError) throw new Error(deleteError.message);
+  await getAuthProvider().deleteUser(user.id);
 
   redirect('/');
 }

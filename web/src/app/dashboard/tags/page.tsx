@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { getUserId } from '@/lib/auth';
 import { getContainer } from '@/domain-container';
 import { CreateTagForm } from './create-tag-form';
 import TagRow from './tag-row';
@@ -38,8 +38,7 @@ const DIMENSIONS: {
 ];
 
 export default async function TagsPage() {
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value ?? '';
+  const userId = await getUserId();
 
   const c = getContainer();
   const tags = await c.listTags.execute(userId);

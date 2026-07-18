@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { getUserId } from '@/lib/auth';
 import { getContainer } from '@/domain-container';
 import RecipeForm from '../../recipe-form';
 import { notFound } from 'next/navigation';
@@ -10,8 +10,7 @@ export default async function EditRecipePage({
   params: { id: string };
   searchParams: { returnTo?: string };
 }) {
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value ?? '';
+  const userId = await getUserId();
   if (!userId) notFound();
 
   const c = getContainer();

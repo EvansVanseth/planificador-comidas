@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { getUserId } from '@/lib/auth';
 import { getContainer } from '@/domain-container';
 import Link from 'next/link';
 import { PlusIcon } from '@/components/icons';
@@ -13,8 +13,7 @@ export default async function RecipesPage({
 }: {
   searchParams: { q?: string; tag?: string };
 }) {
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value ?? '';
+  const userId = await getUserId();
 
   const c = getContainer();
   const allRecipes = await c.listRecipes.execute(userId);

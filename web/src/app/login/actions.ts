@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { createClient } from '@/lib/supabase';
+import { getAuthProvider } from '@/lib/auth';
 
 type State = { error: string };
 
@@ -16,18 +16,10 @@ export async function login(_prevState: State, formData: FormData): Promise<Stat
     return { error: 'Escribe tu contraseña' };
   }
 
-  const supabase = await createClient();
-
-  const { error: authError } = await supabase.auth.signInWithPassword({
-    email: email.trim(),
-    password,
-  });
-
-  if (authError) {
-    if (authError.message.includes('Invalid login credentials')) {
-      return { error: 'Email o contraseña incorrectos' };
-    }
-    return { error: authError.message };
+  try {
+    await getAuthProvider().signIn(email.trim(), password);
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : 'Email o contraseña incorrectos' };
   }
 
   redirect('/dashboard');

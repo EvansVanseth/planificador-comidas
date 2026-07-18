@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { getContainer } from '@/domain-container';
-import { createClient } from '@/lib/supabase';
+import { getAuthProvider } from '@/lib/auth';
 
 type State = { error: string };
 
@@ -21,21 +21,11 @@ export async function signup(_prevState: State, formData: FormData): Promise<Sta
     return { error: 'La contraseña debe tener al menos 6 caracteres' };
   }
 
-  const supabase = await createClient();
-
-  const { data: authData, error: authError } = await supabase.auth.signUp({
-    email: email.trim(),
-    password,
-    options: { data: { name: name.trim() } },
-  });
-
-  if (authError) {
-    return { error: authError.message };
-  }
-
-  const authUserId = authData.user?.id;
-  if (!authUserId) {
-    return { error: 'Error al crear la cuenta' };
+  let authUserId: string;
+  try {
+    authUserId = await getAuthProvider().signUp(email.trim(), password, name.trim());
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : 'Error al crear la cuenta' };
   }
 
   const container = getContainer();

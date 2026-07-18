@@ -8,7 +8,8 @@ export function getContainer(): IContainer {
     const originalCwd = process.cwd();
     const projectRoot = path.resolve(originalCwd, '..');
     process.chdir(projectRoot);
-    _container = createContainer('postgres');
+    const mode = (process.env.STORAGE_BACKEND ?? 'postgres') as 'memory' | 'file' | 'postgres';
+    _container = createContainer(mode);
     process.chdir(originalCwd);
   }
   return _container;

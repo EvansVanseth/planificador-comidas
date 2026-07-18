@@ -1,9 +1,8 @@
-import { cookies } from 'next/headers';
+import { getUserId } from '@/lib/auth';
 import CreatePlanningForm from './create-planning-form';
 
 export default async function NewPlanningPage() {
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value ?? '';
+  const userId = await getUserId();
 
   return <CreatePlanningForm userId={userId} />;
 }

@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase';
+import { getAuthProvider } from '@/lib/auth';
 
 export type State = { error: string; success?: boolean };
 
@@ -11,14 +11,10 @@ export async function resetPassword(_prevState: State, formData: FormData): Prom
     return { error: 'Escribe tu email' };
   }
 
-  const supabase = await createClient();
-
-  const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-    redirectTo: `http://127.0.0.1:3000/update-password`,
-  });
-
-  if (error) {
-    return { error: error.message };
+  try {
+    await getAuthProvider().resetPassword(email.trim());
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : 'Error al enviar el email' };
   }
 
   return { error: '', success: true };

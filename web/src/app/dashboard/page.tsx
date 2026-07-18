@@ -1,5 +1,4 @@
-import { cookies } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
+import { getAuthProvider } from '@/lib/auth';
 import { getContainer } from '@/domain-container';
 import Link from 'next/link';
 import { getTodayDayOrder, getTomorrowDayOrder, getDayName, formatDate } from './helpers';
@@ -34,25 +33,9 @@ type ActivePlanningData = {
 };
 
 export default async function DashboardPage() {
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll(cookiesToSet) {
-          for (const { name, value, options } of cookiesToSet) {
-            cookieStore.set(name, value, options)
-          }
-        },
-      },
-    },
-  )
-
-  const { data: { user: sessionUser } } = await supabase.auth.getUser();
+  const sessionUser = await getAuthProvider().getUser();
   const userId = sessionUser?.id ?? '';
-  const userName = sessionUser?.user_metadata?.name as string ?? '';
+  const userName = sessionUser?.name ?? '';
 
   const c = getContainer();
   const recipes = await c.listRecipes.execute(userId);
