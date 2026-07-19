@@ -4,6 +4,16 @@ Aplicación para planificar comidas semanales: gestiona recetas, ingredientes, e
 
 Proyecto de fin del máster **"Máster de desarrollo con IA"** de Brais Moure.
 
+## Proyecto desplegado
+URL: **https://planificador-comidas-rho.vercel.app/**  
+Usuario: **evansvanseth@gmail.com**  
+Contraseña: **J83a13g11_a**  
+
+## SLIDE de presentación
+URL:   
+
+## VIDEO de presentación
+URL:   
 ---
 
 ## Stack tecnológico
@@ -163,12 +173,21 @@ TFM/
 ## Tests
 
 ```bash
-# Tests unitarios (437 tests)
+# Tests unitarios (437 tests) — sin base de datos
 npm test
 
-# Tests de integración (requiere Postgres local)
-npx vitest run --include '**/*.integration.spec.ts'
+# Tests de integración con Postgres (52 tests)
+# 1. Arrancar Postgres con Docker
+docker compose up -d
+
+# 2. Ejecutar migraciones (crea las tablas si no existen)
+DATABASE_URL="postgresql://planificador:planificador@localhost:5432/planificador" npx prisma migrate deploy
+
+# 3. Ejecutar los tests en serie (comparten la misma BD)
+DATABASE_URL="postgresql://planificador:planificador@localhost:5432/planificador" npx vitest run integration --no-fileParallelism
 ```
+
+> Los tests de integración verifican que los repositorios Postgres (`PostgresTagRepository`, `PostgresRecipeRepository`, etc.) persisten y recuperan correctamente los aggregates. Usan la base de datos `planificador` con el usuario `planificador` y contraseña `planificador`, que son los valores por defecto del `docker-compose.yml`.
 
 ---
 

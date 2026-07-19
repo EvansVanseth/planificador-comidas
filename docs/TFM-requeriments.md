@@ -23,17 +23,17 @@ que el TFM sea revisado y calificado.
 
 ### 1. Documentación completa y detallada (`README.md`)
 
-- [ ] Descripción general del proyecto.
-- [ ] Stack tecnológico utilizado.
-- [ ] Información sobre su instalación y ejecución.
-- [ ] Estructura del proyecto.
-- [ ] Funcionalidades principales.
-- [ ] Usuario y contraseña de prueba (en caso de que el proyecto tenga un login).
+- [x] Descripción general del proyecto.
+- [x] Stack tecnológico utilizado.
+- [x] Información sobre su instalación y ejecución.
+- [x] Estructura del proyecto.
+- [x] Funcionalidades principales.
+- [x] Usuario y contraseña de prueba (en caso de que el proyecto tenga un login).
 
 ### 2. Código Fuente
 
-- [ ] Repositorio público en GitHub.
-- [ ] Repositorio privado en GitHub → Sólo se permitirá la opción de un
+- [x] Repositorio público en GitHub. URL codigo fuente en readme.md 
+- [-] Repositorio privado en GitHub → Sólo se permitirá la opción de un
       repositorio privado si está perfectamente justificado (deberás conceder
       permisos al email `mouredev@gmail.com`).
 
@@ -41,7 +41,7 @@ que el TFM sea revisado y calificado.
 
 Recomendado siempre que sea posible.
 
-- [ ] URL o acceso al proyecto real (añádela también en la documentación).
+- [x] URL o acceso al proyecto real (añádela también en la documentación).
 
 ### 4. Slides de presentación
 
@@ -60,8 +60,8 @@ Con captura de pantalla (YouTube, Drive, o equivalente).
 
 ### Contenido obligatorio en el repositorio
 
-- [ ] La documentación.
-- [ ] La información del despliegue (puede ser dentro de la documentación).
+- [x] La documentación.
+- [x] La información del despliegue (puede ser dentro de la documentación).
 - [ ] Las slides (puede ser como un enlace a la documentación o subir
       directamente el documento con dicha presentación).
 

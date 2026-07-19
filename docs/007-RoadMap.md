@@ -325,30 +325,30 @@ Migración a Supabase Auth y Postgres, primero local para desarrollo y luego a p
 Entrega del TFM según los requisitos del máster.
 
 - [ ] Paso 1: Documentación completa y detallada (`README.md`)
-    - [ ] Descripción general del proyecto
-    - [ ] Stack tecnológico utilizado
-    - [ ] Información sobre instalación y ejecución
-    - [ ] Estructura del proyecto
-    - [ ] Funcionalidades principales
-    - [ ] Usuario y contraseña de prueba
+    - [x] Descripción general del proyecto
+    - [x] Stack tecnológico utilizado
+    - [x] Información sobre instalación y ejecución
+    - [x] Estructura del proyecto
+    - [x] Funcionalidades principales
+    - [x] Usuario y contraseña de prueba
 - [ ] Paso 2: Código fuente
-    - [ ] Repositorio público en GitHub
-    - [ ] Permisos concedidos a `mouredev@gmail.com` (si es privado)
+    - [x] Repositorio público en GitHub
+    - [-] Permisos concedidos a `mouredev@gmail.com` (si es privado)
 - [ ] Paso 3: Despliegue o publicación funcional
-    - [ ] URL del proyecto desplegado (añadir en README)
+    - [x] URL del proyecto desplegado (añadir en README)
 - [ ] Paso 4: Slides de presentación (Google Slides, PowerPoint, Canva…)
     - [ ] URL pública de las slides (añadir en README)
 - [ ] Paso 5: Vídeo explicativo con captura de pantalla
     - [ ] URL pública del vídeo (añadir en README)
 - [ ] Paso 6: Contenido en el repositorio
-    - [ ] Documentación incluida
-    - [ ] Información del despliegue (dentro de documentación)
+    - [x] Documentación incluida
+    - [x] Información del despliegue (dentro de documentación)
     - [ ] Slides (enlace o archivo adjunto)
 - [ ] Paso 7: Envío del formulario de entrega
-    - [ ] Nombre completo del alumno
-    - [ ] Email de inscripción al máster
-    - [ ] URL del repositorio
-    - [ ] URL de despliegue (si existe)
+    - [x] Nombre completo del alumno
+    - [x] Email de inscripción al máster
+    - [x] URL del repositorio
+    - [x] URL de despliegue (si existe)
     - [ ] URL de las slides
     - [ ] URL del vídeo
-    - [ ] Usuario y contraseña de prueba
+    - [x] Usuario y contraseña de prueba
