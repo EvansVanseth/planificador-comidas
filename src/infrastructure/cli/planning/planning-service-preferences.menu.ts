@@ -39,7 +39,7 @@ export async function gestionarPreferencias(
     const momentTagId = elegido.tagId;
 
     const allUserTags = (await container.listTags.execute(userId)).filter(
-      t => t.dimension !== TagDimension.MOMENTO_DIA
+      t => t.dimension !== TagDimension.MOMENTO_DIA && t.dimension !== TagDimension.FORMATO
     );
     const currentPreferences = meals.find(([id]) => id === momentTagId)?.[1]?.getPreferences() ?? [];
 

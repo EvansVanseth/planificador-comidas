@@ -15,7 +15,14 @@ type RecipeData = {
   tags: TagInfo[];
   ingredients: unknown[];
 };
-type TagFull = { id: string; name: string; dimension: string };
+type TagFull = { id: string; name: string; dimension: string; order?: number };
+
+const DIM_PRIORITY: Record<string, number> = {
+  MOMENTO_DIA: 0,
+  FORMATO: 1,
+  TIPO_PLATO: 2,
+  ESTILOS_VIDA: 3,
+};
 
 const DIM_PILLS: Record<string, string> = {
   MOMENTO_DIA: 'bg-blue-100 text-blue-700',
@@ -79,18 +86,35 @@ export default function RecipeCard({
         </div>
 
         <div className="mt-auto flex flex-wrap items-center gap-1.5">
-          {recipe.tags.map((t) => {
-            const full = tagMap.get(t.id);
-            if (!full) return null;
-            return (
-              <span
-                key={t.id}
-                className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${DIM_PILLS[t.dimension] ?? 'bg-[#F1F5F9] text-[#0F172B]'}`}
-              >
-                {full.name}
-              </span>
-            );
-          })}
+          {[...recipe.tags]
+            .sort((a, b) => {
+              const dimDiff = (DIM_PRIORITY[a.dimension] ?? 99) - (DIM_PRIORITY[b.dimension] ?? 99);
+              if (dimDiff !== 0) return dimDiff;
+              const fa = tagMap.get(a.id);
+              const fb = tagMap.get(b.id);
+              if (fa?.order !== undefined && fb?.order !== undefined) return fa.order - fb.order;
+              if (fa?.order !== undefined) return -1;
+              if (fb?.order !== undefined) return 1;
+              const nameA = (fa?.name ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+              const nameB = (fb?.name ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+              if (a.dimension === 'FORMATO') {
+                const rank: Record<string, number> = { frio: 0, caliente: 1 };
+                return (rank[nameA] ?? 99) - (rank[nameB] ?? 99);
+              }
+              return nameA.localeCompare(nameB);
+            })
+            .map((t) => {
+              const full = tagMap.get(t.id);
+              if (!full) return null;
+              return (
+                <span
+                  key={t.id}
+                  className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${DIM_PILLS[t.dimension] ?? 'bg-[#F1F5F9] text-[#0F172B]'}`}
+                >
+                  {full.name}
+                </span>
+              );
+            })}
         </div>
       </div>
 

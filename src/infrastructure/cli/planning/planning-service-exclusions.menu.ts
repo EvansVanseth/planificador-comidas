@@ -39,7 +39,7 @@ export async function gestionarExclusiones(
     const momentTagId = elegido.tagId;
 
     const allUserTags = (await container.listTags.execute(userId)).filter(
-      t => t.dimension !== TagDimension.MOMENTO_DIA
+      t => t.dimension !== TagDimension.MOMENTO_DIA && t.dimension !== TagDimension.FORMATO
     );
     const currentExclusions = meals.find(([id]) => id === momentTagId)?.[1]?.getExclusions() ?? [];
 

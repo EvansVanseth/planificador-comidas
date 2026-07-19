@@ -78,7 +78,7 @@ export default function MealCellModal({
   }, [allRecipes, momentTagId, exclusions, skipRestrictions]);
 
   const availableTags = useMemo(
-    () => allTags.filter((t) => t.dimension !== 'MOMENTO_DIA'),
+    () => allTags.filter((t) => t.dimension !== 'MOMENTO_DIA' && t.dimension !== 'FORMATO'),
     [allTags],
   );
 

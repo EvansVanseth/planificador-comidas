@@ -28,7 +28,7 @@ export default function BulkAddServiceModal({ planningId, momentTags, allTags, o
   const [expanded, setExpanded] = useState<{ dimension: string; type: 'preference' | 'exclusion' } | null>(null);
 
   const availableTags = useMemo(
-    () => allTags.filter((t) => t.dimension !== 'MOMENTO_DIA'),
+    () => allTags.filter((t) => t.dimension !== 'MOMENTO_DIA' && t.dimension !== 'FORMATO'),
     [allTags],
   );
 

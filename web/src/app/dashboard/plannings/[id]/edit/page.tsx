@@ -29,6 +29,35 @@ export default async function EditPlanningPage({
 
   const primitives = planning.toPrimitives();
 
+  const recipes = await c.listRecipes.execute(userId);
+  const allTags = await c.listTags.execute(userId);
+  const calienteTagId = allTags.find((t) => t.systemKey === 'CALIENTE')?.id;
+  const frioTags = allTags.filter((t) => t.systemKey === 'FRIO').map((t) => t.id);
+  const recipeFormato = new Map(
+    recipes.map((r) => [
+      r.id,
+      {
+        isCaliente: calienteTagId ? r.tags.some((t) => t.id === calienteTagId) : false,
+        isFrio: r.tags.some((t) => frioTags.includes(t.id)),
+      },
+    ]),
+  );
+  let hotCount = 0;
+  let coldCount = 0;
+  let totalAssigned = 0;
+  for (const day of primitives.days) {
+    for (const svc of day.services) {
+      if (svc.recipeId) {
+        totalAssigned++;
+        const formato = recipeFormato.get(svc.recipeId);
+        if (formato?.isCaliente) hotCount++;
+        else if (formato?.isFrio) coldCount++;
+      }
+    }
+  }
+  const targetPct = primitives.hotColdBalance ?? 50;
+  const actualPct = totalAssigned > 0 ? Math.round((hotCount / totalAssigned) * 100) : null;
+
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="shrink-0 space-y-4 border-b border-gray-200 pb-4">
@@ -42,6 +71,21 @@ export default async function EditPlanningPage({
               {primitives.startdate &&
                 ` — desde ${new Date(primitives.startdate + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}`}
             </p>
+            {totalAssigned > 0 && actualPct !== null && (
+              <div className="mt-2 flex items-center gap-2 text-xs text-[#4F617B]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 font-medium text-red-600">
+                  {hotCount} caliente
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 font-medium text-blue-600">
+                  {coldCount} frío
+                </span>
+                <span className="text-[#94A3B8]">·</span>
+                <span>
+                  {actualPct}% caliente
+                  {actualPct !== targetPct && ` (objetivo: ${targetPct}%)`}
+                </span>
+              </div>
+            )}
           </div>
           <Link
             href="/dashboard/plannings"
