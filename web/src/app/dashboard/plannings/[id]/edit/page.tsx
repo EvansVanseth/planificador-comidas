@@ -1,13 +1,14 @@
+import { Suspense } from 'react';
 import { getUserId } from '@/lib/auth';
 import { getContainer } from '@/domain-container';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { CloseIcon } from '@/components/icons';
-import PlanningGrid from './planning-grid';
-import MobilePlanningGrid from './mobile-planning-grid';
-import PantryView from './pantry-view';
-import ShoppingView from './shopping-view';
 import TabNav from './tab-nav';
+import GridTabContent from './grid-tab-content';
+import PantryTabContent from './pantry-tab-content';
+import ShoppingTabContent from './shopping-tab-content';
+import { GridLoading, PantryLoading, ShoppingLoading } from './tab-loading';
 
 export default async function EditPlanningPage({
   params,
@@ -27,18 +28,6 @@ export default async function EditPlanningPage({
   if (!planning) notFound();
 
   const primitives = planning.toPrimitives();
-  const recipes = await c.listRecipes.execute(userId);
-  const tags = await c.listTags.execute(userId);
-  const momentTags = tags
-    .filter((t) => t.dimension === 'MOMENTO_DIA')
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-  const allTags = tags.map((t) => ({ id: t.id, name: t.name, dimension: t.dimension }));
-
-  const neededIngredients =
-    tab === 'pantry' ? await c.getNeededIngredients.execute(params.id) : [];
-  const shoppingList =
-    tab === 'shopping' ? await c.getShoppingList.execute(params.id) : [];
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -67,40 +56,15 @@ export default async function EditPlanningPage({
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col">
-        {tab === 'grid' && (
-          <>
-            <div className="hidden min-h-0 flex-1 overflow-y-auto md:block">
-              <PlanningGrid
-                planning={primitives}
-                recipes={recipes}
-                momentTags={momentTags}
-                allTags={allTags}
-              />
-            </div>
-            <div className="flex min-h-0 flex-1 flex-col md:hidden">
-              <MobilePlanningGrid
-                planning={primitives}
-                recipes={recipes}
-                momentTags={momentTags}
-                allTags={allTags}
-              />
-            </div>
-          </>
-        )}
-
-        {tab === 'pantry' && (
-          <PantryView
-            planning={primitives}
-            neededIngredients={neededIngredients}
-          />
-        )}
-
-        {tab === 'shopping' && (
-          <ShoppingView
-            planning={primitives}
-            shoppingList={shoppingList}
-          />
-        )}
+        <Suspense key={tab} fallback={
+          tab === 'grid' ? <GridLoading /> :
+          tab === 'pantry' ? <PantryLoading /> :
+          <ShoppingLoading />
+        }>
+          {tab === 'grid' && <GridTabContent planning={primitives} />}
+          {tab === 'pantry' && <PantryTabContent planning={primitives} planningId={params.id} />}
+          {tab === 'shopping' && <ShoppingTabContent planning={primitives} planningId={params.id} />}
+        </Suspense>
       </div>
     </div>
   );
