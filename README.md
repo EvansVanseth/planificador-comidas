@@ -7,7 +7,7 @@ Proyecto de fin del máster **"Máster de desarrollo con IA"** de Brais Moure.
 ## Proyecto desplegado
 URL: **https://planificador-comidas-rho.vercel.app/**  
 Usuario: **evansvanseth@gmail.com**  
-Contraseña: **J83a13g11_a**  
+Contraseña: **VYEq3r9e9YqVS6T**  
 
 ## SLIDE de presentación
 URL:   
