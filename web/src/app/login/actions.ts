@@ -24,3 +24,15 @@ export async function login(_prevState: State, formData: FormData): Promise<Stat
 
   redirect('/dashboard');
 }
+
+export async function getDevInfo(): Promise<{ show: false } | { show: true; dbUrl: string }> {
+  if (process.env.DEV_MODE !== 'DEVELOPMENT') {
+    return { show: false };
+  }
+
+  const raw = process.env.DATABASE_URL ?? 'no definida';
+
+  const sanitized = raw.replace(/\/\/([^:]+):([^@]+)@/, '//$1:***@');
+
+  return { show: true, dbUrl: sanitized };
+}

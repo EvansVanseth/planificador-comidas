@@ -1,7 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { login } from './actions';
+import { login, getDevInfo } from './actions';
 import Link from 'next/link';
 import { LogoIcon } from '@/components/icons';
 
@@ -22,6 +23,13 @@ function SubmitButton() {
 
 export default function LoginPage() {
   const [state, formAction] = useFormState(login, initialState);
+  const [devInfo, setDevInfo] = useState<{ dbUrl: string } | null>(null);
+
+  useEffect(() => {
+    getDevInfo().then((info) => {
+      if (info.show) setDevInfo(info);
+    });
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#F8FAFC] px-4">
@@ -98,6 +106,17 @@ export default function LoginPage() {
           >
             Crear una cuenta gratis
           </Link>
+
+          {devInfo && (
+            <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-amber-700">
+                DEV MODE
+              </p>
+              <p className="break-all font-mono text-xs text-amber-800">
+                {devInfo.dbUrl}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
