@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createBrowserSupabase } from '@/lib/supabase-browser';
 import { LogoIcon } from '@/components/icons';
+import { PasswordInput } from '@/components/ui/password-input';
 
 export default function UpdatePasswordPage() {
   const [password, setPassword] = useState('');
@@ -51,12 +52,10 @@ export default function UpdatePasswordPage() {
               <label className="mb-1.5 block text-sm font-medium text-[#314158]">
                 Nueva contraseña
               </label>
-              <input
-                type="password"
+              <PasswordInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Mínimo 6 caracteres"
-                className="h-10 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[#0A0A0A] placeholder:text-gray-400 transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
                 autoFocus
               />
             </div>

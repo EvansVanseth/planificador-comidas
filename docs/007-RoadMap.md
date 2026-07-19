@@ -23,7 +23,8 @@ Este documento contiene todos y cada uno de los pasos a seguir para la construcc
 
 ```
 Estado actual: 437 unit tests (76 ficheros) + 52 integration tests (5 ficheros), todo verde.
-Postgres vía Prisma v7 en Docker. CLI sin picocolors (no funciona en Windows con tsx).
+Postgres vía Prisma v7 + Supabase. Auth con Supabase Auth. Desplegado en Vercel.
+CLI sin picocolors (no funciona en Windows con tsx).
 ```
 
 ## Próximas fases
@@ -284,33 +285,70 @@ Migración a Supabase Auth y Postgres, primero local para desarrollo y luego a p
     - [x] 6.2: `supabase db push` via migration file (prisma SQL → supabase/migrations/)
     - [x] 6.3: Actualizar `.env` y `web/.env.local` con credenciales de producción
 - [x] Paso 7: Implementar políticas RLS (Row-Level Security)
-- [ ] Paso 8: Desplegar en Vercel (CI/CD desde GitHub)
-    - [ ] 8.1: Configurar Environment Variables en dashboard de Vercel
-        - `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
-        - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `STORAGE_BACKEND`
+- [x] Paso 8: Desplegar en Vercel (CI/CD desde GitHub)
+    - [x] 8.1: Configurar Environment Variables en dashboard de Vercel (signup fetch failed solucionado con pooler)
     - [x] 8.2: Build verde con monorepo (vercel.json, webpack extensionAlias para Prisma 7)
-- [ ] Paso 9: Rate limiting en endpoints de auth (OWASP)
-- [ ] Paso 10: Sanitización XSS (`isomorphic-dompurify`)
-- [ ] Paso 11: Revisión de seguridad y robustez
-- [ ] Paso 12: Actualizar dependencias deprecadas (eslint, rimraf, glob, etc.)
+
+### Fase 22: ^^ Versión WEB Final — preparación entrega TFM
+
+Últimos ajustes de UX, bugs y rendimiento antes de cerrar la versión entregable del TFM.
+
+**UX/Bugs — Completados**
+
+- [x] Mostrar/ocultar contraseña: añadir checkbox "Ver contraseña" en todos los inputs de tipo password
+- [x] Ordenar tags en recipe cards: MOMENTO_DIA (order) → FORMATO (Frío antes) → TIPO_PLATO → ESTILOS_VIDA
+- [x] Ocultar dimensión FORMATO de exclusiones/preferencias en MealService (lo controla el slider frío/caliente)
+- [x] Balance frío/caliente visible en cabecera del editor planning
+- [x] Modal editar planning: botón Guardar cierra modal + muestra estado "Guardando..."
+- [x] Loading states vía `loading.tsx` en todas las páginas del dashboard
+- [x] Bug: signup en Vercel (env vars de pooler solucionado)
+
+**Pendientes**
+
+- [ ] Paso 1: Optimización de rendimiento en consultas Postgres
+    - [ ] 1.1: Eliminar doble carga de recipes/tags entre `page.tsx` y `GridTabContent` (pasar por props)
+    - [ ] 1.2: Crear read models ligeros para listas — `findAllSummaries` en repositorios Postgres (selects planos sin includes pesados)
+        - `RecipeRepository.listSummaries(userId)` → id, name, prepTime, baseServings, tagIds (sin ingredients)
+        - `PlanningRepository.listSummaries(userId)` → id, name, weeks, startDate, hotColdBalance (sin days/services/pantry/shopping)
+    - [ ] 1.3: `findByName` con filtro WHERE real en Postgres en lugar de cargar todo y filtrar en JS
+    - [ ] 1.4: Usar `select` explícito en Prisma en lugar de `include` completo cuando solo se necesitan campos planos
+    - [ ] 1.5: Virtual scrolling o paginación en listas largas (recetas, planificaciones)
+- [ ] Paso 2: Rate limiting en endpoints de auth (OWASP)
+- [ ] Paso 3: Sanitización XSS (`isomorphic-dompurify`)
+- [ ] Paso 4: Revisión de seguridad y robustez
+- [ ] Paso 5: Actualizar dependencias deprecadas
     - [ ] Migrar eslint 8 → 9 con flat config
     - [ ] Revisar `npm audit` para parches de seguridad transitivos
 
-## UX / Bugs pendientes
+### Fase 23: Preparación académica final
 
-### En curso (Fase 21 paso 8)
+Entrega del TFM según los requisitos del máster.
 
-- [ ] Mostrar/ocultar contraseña: añadir checkbox (eye toggle) en todos los inputs de tipo password (signup, login, reset-password, settings)
-- [ ] Bug: signup devuelve 'fetch failed' y no crea usuario en Auth ni en User/Tags — env vars faltantes en Vercel (solucionado con pooler)
-- [ ] Ordenar tags en recipe cards: MOMENTO_DIA (order) → FORMATO → TIPO_PLATO (alfabético) → ESTILOS_VIDA (alfabético)
-- [ ] Ocultar dimensión FORMATO de exclusiones/preferencias en MealService (lo controla slider frío/caliente)
-- [ ] Modal editar planning: botón Guardar debe cerrar modal + estado "Guardando..."
-- [ ] Balance frío/caliente visible en cabecera del editor planning
-- [ ] LoadingOverlay reutilizable para operaciones lentas
-- [ ] Añadir loading states a: autoplanificar, addDays, bulkAddService, deleteDay, pantry toggle, shopping toggle
-
-### Fase 22: Preparación académica final
-
-- [ ] Documentación del proyecto
-- [ ] Memoria del TFM
-- [ ] Presentación / defensa
+- [ ] Paso 1: Documentación completa y detallada (`README.md`)
+    - [x] Descripción general del proyecto
+    - [x] Stack tecnológico utilizado
+    - [x] Información sobre instalación y ejecución
+    - [x] Estructura del proyecto
+    - [x] Funcionalidades principales
+    - [x] Usuario y contraseña de prueba
+- [ ] Paso 2: Código fuente
+    - [x] Repositorio público en GitHub
+    - [-] Permisos concedidos a `mouredev@gmail.com` (si es privado)
+- [ ] Paso 3: Despliegue o publicación funcional
+    - [x] URL del proyecto desplegado (añadir en README)
+- [ ] Paso 4: Slides de presentación (Google Slides, PowerPoint, Canva…)
+    - [ ] URL pública de las slides (añadir en README)
+- [ ] Paso 5: Vídeo explicativo con captura de pantalla
+    - [ ] URL pública del vídeo (añadir en README)
+- [ ] Paso 6: Contenido en el repositorio
+    - [x] Documentación incluida
+    - [x] Información del despliegue (dentro de documentación)
+    - [ ] Slides (enlace o archivo adjunto)
+- [ ] Paso 7: Envío del formulario de entrega
+    - [x] Nombre completo del alumno
+    - [x] Email de inscripción al máster
+    - [x] URL del repositorio
+    - [x] URL de despliegue (si existe)
+    - [ ] URL de las slides
+    - [ ] URL del vídeo
+    - [x] Usuario y contraseña de prueba

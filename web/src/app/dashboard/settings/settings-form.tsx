@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { logout } from '@/app/dashboard/actions';
 import { updateName, changePassword, deleteAccount } from './actions';
 import { LogoutIcon } from '@/components/icons';
+import { PasswordInput } from '@/components/ui/password-input';
 
 function SubmitButton({ label, busyLabel }: { label: string; busyLabel: string }) {
   const { pending } = useFormStatus();
@@ -63,21 +64,17 @@ export function SettingsForm({ name, email }: { name: string; email: string }) {
       <form action={passwordAction} className="space-y-4">
         <div>
           <label className="mb-1.5 block text-sm font-medium text-[#314158]">Contraseña actual</label>
-          <input
-            type="password"
+          <PasswordInput
             name="currentPassword"
             placeholder="••••••••"
-            className="h-10 w-full max-w-sm rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[#0A0A0A] transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
           />
         </div>
 
         <div>
           <label className="mb-1.5 block text-sm font-medium text-[#314158]">Nueva contraseña</label>
-          <input
-            type="password"
+          <PasswordInput
             name="newPassword"
             placeholder="Mínimo 6 caracteres"
-            className="h-10 w-full max-w-sm rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[#0A0A0A] transition-colors focus:border-[#007A55] focus:outline-none focus:ring-2 focus:ring-[#007A55]/20"
           />
         </div>
 

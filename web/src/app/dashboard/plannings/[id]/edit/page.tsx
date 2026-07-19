@@ -1,13 +1,14 @@
+import { Suspense } from 'react';
 import { getUserId } from '@/lib/auth';
 import { getContainer } from '@/domain-container';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { CloseIcon } from '@/components/icons';
-import PlanningGrid from './planning-grid';
-import MobilePlanningGrid from './mobile-planning-grid';
-import PantryView from './pantry-view';
-import ShoppingView from './shopping-view';
 import TabNav from './tab-nav';
+import GridTabContent from './grid-tab-content';
+import PantryTabContent from './pantry-tab-content';
+import ShoppingTabContent from './shopping-tab-content';
+import { GridLoading, PantryLoading, ShoppingLoading } from './tab-loading';
 
 export default async function EditPlanningPage({
   params,
@@ -27,18 +28,35 @@ export default async function EditPlanningPage({
   if (!planning) notFound();
 
   const primitives = planning.toPrimitives();
+
   const recipes = await c.listRecipes.execute(userId);
-  const tags = await c.listTags.execute(userId);
-  const momentTags = tags
-    .filter((t) => t.dimension === 'MOMENTO_DIA')
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-  const allTags = tags.map((t) => ({ id: t.id, name: t.name, dimension: t.dimension }));
-
-  const neededIngredients =
-    tab === 'pantry' ? await c.getNeededIngredients.execute(params.id) : [];
-  const shoppingList =
-    tab === 'shopping' ? await c.getShoppingList.execute(params.id) : [];
+  const allTags = await c.listTags.execute(userId);
+  const calienteTagId = allTags.find((t) => t.systemKey === 'CALIENTE')?.id;
+  const frioTags = allTags.filter((t) => t.systemKey === 'FRIO').map((t) => t.id);
+  const recipeFormato = new Map(
+    recipes.map((r) => [
+      r.id,
+      {
+        isCaliente: calienteTagId ? r.tags.some((t) => t.id === calienteTagId) : false,
+        isFrio: r.tags.some((t) => frioTags.includes(t.id)),
+      },
+    ]),
+  );
+  let hotCount = 0;
+  let coldCount = 0;
+  let totalAssigned = 0;
+  for (const day of primitives.days) {
+    for (const svc of day.services) {
+      if (svc.recipeId) {
+        totalAssigned++;
+        const formato = recipeFormato.get(svc.recipeId);
+        if (formato?.isCaliente) hotCount++;
+        else if (formato?.isFrio) coldCount++;
+      }
+    }
+  }
+  const targetPct = primitives.hotColdBalance ?? 50;
+  const actualPct = totalAssigned > 0 ? Math.round((hotCount / totalAssigned) * 100) : null;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -53,6 +71,21 @@ export default async function EditPlanningPage({
               {primitives.startdate &&
                 ` — desde ${new Date(primitives.startdate + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}`}
             </p>
+            {totalAssigned > 0 && actualPct !== null && (
+              <div className="mt-2 flex items-center gap-2 text-xs text-[#4F617B]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 font-medium text-red-600">
+                  {hotCount} caliente
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 font-medium text-blue-600">
+                  {coldCount} frío
+                </span>
+                <span className="text-[#94A3B8]">·</span>
+                <span>
+                  {actualPct}% caliente
+                  {actualPct !== targetPct && ` (objetivo: ${targetPct}%)`}
+                </span>
+              </div>
+            )}
           </div>
           <Link
             href="/dashboard/plannings"
@@ -67,40 +100,15 @@ export default async function EditPlanningPage({
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col">
-        {tab === 'grid' && (
-          <>
-            <div className="hidden min-h-0 flex-1 overflow-y-auto md:block">
-              <PlanningGrid
-                planning={primitives}
-                recipes={recipes}
-                momentTags={momentTags}
-                allTags={allTags}
-              />
-            </div>
-            <div className="flex min-h-0 flex-1 flex-col md:hidden">
-              <MobilePlanningGrid
-                planning={primitives}
-                recipes={recipes}
-                momentTags={momentTags}
-                allTags={allTags}
-              />
-            </div>
-          </>
-        )}
-
-        {tab === 'pantry' && (
-          <PantryView
-            planning={primitives}
-            neededIngredients={neededIngredients}
-          />
-        )}
-
-        {tab === 'shopping' && (
-          <ShoppingView
-            planning={primitives}
-            shoppingList={shoppingList}
-          />
-        )}
+        <Suspense key={tab} fallback={
+          tab === 'grid' ? <GridLoading /> :
+          tab === 'pantry' ? <PantryLoading /> :
+          <ShoppingLoading />
+        }>
+          {tab === 'grid' && <GridTabContent planning={primitives} />}
+          {tab === 'pantry' && <PantryTabContent planning={primitives} planningId={params.id} />}
+          {tab === 'shopping' && <ShoppingTabContent planning={primitives} planningId={params.id} />}
+        </Suspense>
       </div>
     </div>
   );
