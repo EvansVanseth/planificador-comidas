@@ -2,7 +2,7 @@
 
 Aplicación para planificar comidas semanales: gestiona recetas, ingredientes, etiquetas y planificaciones con un motor de autoplanificación que respeta preferencias, exclusiones y balance frío/caliente.
 
-Proyecto de fin del máster **"Programación desde Cero"** de Brais Moure ([@mouredev](https://github.com/mouredev)).
+Proyecto de fin del máster **"Máster de desarrollo con IA"** de Brais Moure.
 
 ---
 
@@ -37,7 +37,7 @@ Proyecto de fin del máster **"Programación desde Cero"** de Brais Moure ([@mou
 ### 1. Clonar e instalar
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/EvansVanseth/planificador-comidas
 cd TFM
 npm install
 cd web && npm install && cd ..
@@ -54,37 +54,19 @@ El proyecto ofrece **dos modos de ejecución**: CLI y Web. El modo con persisten
 STORAGE_BACKEND=file npm run cli
 ```
 
-En la primera ejecución aparecerá un menú para crear un usuario nuevo. Crea el usuario **Juan** con email `juan@plancomidas.com`. El CLI te guiará para crear el usuario, las etiquetas de sistema, y empezar a usar la aplicación desde terminal.
+Menú de persistencia: **Archivo (Persistentes)**  
+Menú de usuario: **Juan**  
+**Este usuario** es el usado para test de todas las funcionalidades durante desarrollo. **Ya contiene información para** que puedan verse y **probarse las funcionalidades de la aplicación**.
 
 #### Opción B: Web con persistencia en archivo
 
 ```bash
-# Terminal 1: Inicia la CLI y crea el usuario juan@plancomidas.com
-STORAGE_BACKEND=file npm run cli
-
-# Terminal 2: Arranca el servidor web
+# Persistencia en archivo (no necesita Postgres)
 cd web
 STORAGE_BACKEND=file npm run dev
 ```
 
-Abre `http://localhost:3000` e inicia sesión con **juan@plancomidas.com** (la contraseña se ignora en modo archivo). El usuario debe existir previamente (creado desde la CLI en el paso anterior).
-
-#### Opción C: Web completa con Postgres + Supabase (producción)
-
-Requiere Postgres y las variables de entorno configuradas.
-
-```bash
-# Arranca Postgres con Docker
-docker compose up -d
-
-# Migraciones
-npx prisma migrate deploy
-
-# Arranca la web
-cd web && npm run dev
-```
-
-La web correrá en `http://localhost:3000`.
+Abre `http://localhost:3000` e inicia sesión con **juan@plancomidas.com** (la contraseña se ignora en modo archivo). El usuario corresponde al mismo usuario que en CLI.
 
 ---
 
@@ -175,20 +157,6 @@ TFM/
 - Búsqueda y filtrado en listados
 - Modales de confirmación para acciones destructivas
 - Autenticación con Supabase (producción) o cookie-based (local)
-
----
-
-## Usuario de prueba
-
-Para probar la aplicación en local con persistencia en archivo:
-
-1. Ejecuta `STORAGE_BACKEND=file npm run cli`
-2. Crea un usuario nuevo con nombre **Juan** y email **juan@plancomidas.com**
-3. El CLI te guiará para crear las etiquetas de sistema
-
-Tras crear el usuario, puedes usar tanto el CLI como la web (`STORAGE_BACKEND=file npm run dev` en el directorio `web/`) con ese mismo email.
-
-> En **modo archivo** la contraseña se ignora — solo es necesario introducir el email para iniciar sesión.
 
 ---
 
