@@ -1,13 +1,15 @@
 import { SpinnerIcon, CloseIcon } from '@/components/icons';
 
+const sk = 'animate-pulse rounded bg-gradient-to-r from-[#007A55]/25 to-[#007A55]/10';
+
 export default function EditPlanningLoading() {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="shrink-0 space-y-4 border-b border-gray-200 pb-4">
         <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <div className="mb-2 h-7 w-48 animate-pulse rounded bg-gray-200" />
-            <div className="h-4 w-64 animate-pulse rounded bg-gray-200" />
+          <div className="flex-1 space-y-2">
+            <div className={`${sk} h-7 w-48`} />
+            <div className={`${sk} h-4 w-64`} />
           </div>
           <div className="rounded-md p-2 text-[#4F617B]">
             <CloseIcon />
