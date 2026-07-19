@@ -26,23 +26,24 @@ export async function signup(_prevState: State, formData: FormData): Promise<Sta
   try {
     authUserId = await getAuthProvider().signUp(email.trim(), password, name.trim());
   } catch (e) {
-    return { error: e instanceof Error ? e.message : 'Error al crear la cuenta' };
+    console.error('[signup] signUp error:', e);
+    return { error: 'Error al crear la cuenta. Revisa que el email no esté ya registrado.' };
   }
 
   let container: IContainer;
   try {
     container = getContainer();
   } catch (e) {
-    console.error('[signup] Error al crear el container:', e);
-    return { error: e instanceof Error ? e.message : 'Error al conectar con la base de datos' };
+    console.error('[signup] container creation error:', e);
+    return { error: 'Error al conectar con la base de datos' };
   }
 
   try {
     await container.createUser.execute(name.trim(), email.trim(), authUserId);
     await container.seedTagsForUser(authUserId);
   } catch (e) {
-    console.error('[signup] Error al crear usuario/tags:', e);
-    return { error: e instanceof Error ? e.message : 'Error al crear la cuenta' };
+    console.error('[signup] createUser/seedTags error:', e);
+    return { error: 'Error al crear la cuenta. Inténtalo de nuevo.' };
   }
 
   redirect('/dashboard');

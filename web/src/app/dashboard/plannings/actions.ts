@@ -73,13 +73,12 @@ export async function updatePlanning(formData: FormData) {
     await addToastToQueue(msg, 'error');
     const editPath = `/dashboard/plannings/${id}/edit`;
     revalidatePath(editPath);
-    redirect(editPath);
+    return;
   }
 
   await addToastToQueue('Planificación actualizada correctamente.');
   const editPath = `/dashboard/plannings/${id}/edit`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function addAllDays(formData: FormData) {

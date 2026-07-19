@@ -285,9 +285,29 @@ Migración a Supabase Auth y Postgres, primero local para desarrollo y luego a p
     - [x] 6.3: Actualizar `.env` y `web/.env.local` con credenciales de producción
 - [x] Paso 7: Implementar políticas RLS (Row-Level Security)
 - [ ] Paso 8: Desplegar en Vercel (CI/CD desde GitHub)
+    - [ ] 8.1: Configurar Environment Variables en dashboard de Vercel
+        - `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+        - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `STORAGE_BACKEND`
+    - [x] 8.2: Build verde con monorepo (vercel.json, webpack extensionAlias para Prisma 7)
 - [ ] Paso 9: Rate limiting en endpoints de auth (OWASP)
 - [ ] Paso 10: Sanitización XSS (`isomorphic-dompurify`)
 - [ ] Paso 11: Revisión de seguridad y robustez
+- [ ] Paso 12: Actualizar dependencias deprecadas (eslint, rimraf, glob, etc.)
+    - [ ] Migrar eslint 8 → 9 con flat config
+    - [ ] Revisar `npm audit` para parches de seguridad transitivos
+
+## UX / Bugs pendientes
+
+### En curso (Fase 21 paso 8)
+
+- [ ] Mostrar/ocultar contraseña: añadir checkbox (eye toggle) en todos los inputs de tipo password (signup, login, reset-password, settings)
+- [ ] Bug: signup devuelve 'fetch failed' y no crea usuario en Auth ni en User/Tags — env vars faltantes en Vercel (solucionado con pooler)
+- [ ] Ordenar tags en recipe cards: MOMENTO_DIA (order) → FORMATO → TIPO_PLATO (alfabético) → ESTILOS_VIDA (alfabético)
+- [ ] Ocultar dimensión FORMATO de exclusiones/preferencias en MealService (lo controla slider frío/caliente)
+- [ ] Modal editar planning: botón Guardar debe cerrar modal + estado "Guardando..."
+- [ ] Balance frío/caliente visible en cabecera del editor planning
+- [ ] LoadingOverlay reutilizable para operaciones lentas
+- [ ] Añadir loading states a: autoplanificar, addDays, bulkAddService, deleteDay, pantry toggle, shopping toggle
 
 ### Fase 22: Preparación académica final
 

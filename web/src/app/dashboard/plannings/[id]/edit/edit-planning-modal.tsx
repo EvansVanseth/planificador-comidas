@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CloseIcon } from '@/components/icons';
+import { CloseIcon, SpinnerIcon } from '@/components/icons';
 import { updatePlanning } from '../../actions';
 
 function toDateInputValue(iso: string | null): string {
@@ -35,11 +35,23 @@ export default function EditPlanningModal({
   const [weeks, setWeeks] = useState(initialWeeks);
   const [balance, setBalance] = useState(initialBalance);
   const [hasDate, setHasDate] = useState(!!initialStartDate);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
+    const form = e.currentTarget;
+    await updatePlanning(new FormData(form));
+    onClose();
+    window.location.reload();
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
       <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
-        <form action={updatePlanning}>
+        <form onSubmit={handleSubmit}>
           <input type="hidden" name="id" value={planningId} />
 
           <div className="mb-6 flex items-center justify-between">
@@ -130,17 +142,30 @@ export default function EditPlanningModal({
             </div>
           </div>
 
+          {error && (
+            <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>
+          )}
+
           <div className="mt-8 flex items-center gap-3">
             <button
               type="submit"
-              className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
+              disabled={saving}
+              className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Guardar cambios
+              {saving ? (
+                <>
+                  <SpinnerIcon />
+                  Guardando...
+                </>
+              ) : (
+                'Guardar cambios'
+              )}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex h-10 items-center rounded-[10px] border border-[#E2E8F0] bg-white px-5 text-sm font-medium text-[#0F172B] transition-colors hover:bg-gray-50"
+              disabled={saving}
+              className="inline-flex h-10 items-center rounded-[10px] border border-[#E2E8F0] bg-white px-5 text-sm font-medium text-[#0F172B] transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               Cancelar
             </button>

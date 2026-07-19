@@ -42,17 +42,38 @@ export function RecipeIcon() {
     <svg
       width="20"
       height="20"
-      viewBox="0 0 20 20"
+      viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M4 3h8a2 2 0 012 2v12a2 2 0 01-2 2H4V3z" />
-      <path d="M14 7h2a2 2 0 012 2v8a2 2 0 01-2 2h-2" />
-      <path d="M7 7h2" />
-      <path d="M7 10h2" />
+      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C5 4 6 5 7 6l1-1 1 1 1.5-1.5" />
+      <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5C19 4 18 5 17 6l-1-1-1 1-1.5-1.5" />
+      <path d="M4 15h1.5a2.5 2.5 0 0 1 0 5C5 20 4 19 3 18l-1 1-1-1-1.5 1.5" />
+      <path d="M16 15h1.5a2.5 2.5 0 0 0 0 5C18 20 19 19 20 18l1 1 1-1 1.5 1.5" />
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+    </svg>
+  );
+}
+
+export function SpinnerIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      className="animate-spin"
+    >
+      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>
   );
 }
