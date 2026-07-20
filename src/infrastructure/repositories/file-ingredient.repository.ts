@@ -32,10 +32,10 @@ export class FileIngredientRepository implements IngredientRepository {
     return ingredients.filter(i => i.getUserId() === userId);
   }
 
-  async findByName(name: string): Promise<Ingredient | null> {
+  async findByName(name: string, userId: string): Promise<Ingredient | null> {
     const normalized = name.toLowerCase().trim();
     const ingredients = await this.findAll();
-    return ingredients.find(i => i.getName().toLowerCase().trim() === normalized) ?? null;
+    return ingredients.find(i => i.getName().toLowerCase().trim() === normalized && i.getUserId() === userId) ?? null;
   }
 
   async findById(id: string): Promise<Ingredient | null> {

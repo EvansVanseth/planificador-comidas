@@ -65,7 +65,7 @@ export default async function DashboardPage() {
               </p>
             </div>
             <Link
-              href="/plannings"
+              href="/dashboard/plannings/new"
               className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
             >
               <PlusIcon />
@@ -125,7 +125,7 @@ export default async function DashboardPage() {
                   organizar tus comidas.
                 </p>
                 <Link
-                  href="/plannings"
+                  href="/dashboard/plannings"
                   className="inline-flex h-10 items-center gap-2 rounded-lg bg-white/20 px-5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/30"
                 >
                   Crear planificación
@@ -148,7 +148,7 @@ export default async function DashboardPage() {
               </p>
             </div>
             <Link
-              href="/plannings"
+              href="/dashboards/plannings"
               className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-[#007A55] px-5 text-sm font-medium text-white transition-colors hover:bg-[#008055]"
             >
               <PlusIcon />
@@ -194,7 +194,7 @@ export default async function DashboardPage() {
                   organizar tus comidas.
                 </p>
                 <Link
-                  href="/plannings"
+                  href="/dashboard/plannings"
                   className="inline-flex h-10 items-center gap-2 rounded-lg bg-white/20 px-5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/30"
                 >
                   Crear planificación

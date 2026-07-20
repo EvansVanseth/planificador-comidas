@@ -49,9 +49,10 @@ URL:
 
 ```bash
 git clone https://github.com/EvansVanseth/planificador-comidas
-cd TFM
+cd planificador-comidas
 npm install
 cd web && npm install && cd ..
+npx prisma generate
 ```
 
 ### 2. Probar la aplicación

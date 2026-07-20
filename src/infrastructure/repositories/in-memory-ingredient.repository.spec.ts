@@ -33,6 +33,17 @@ describe('InMemoryIngredientRepository', () => {
   it('debe devolver lista vacía si no hay ingredientes', async () => {
     expect(await repo.findAll()).toHaveLength(0);
   });
+  
+  it('debe listar todos los ingredientes de un usuario', async () => {
+    await repo.save(Ingredient.create(validId, validUserId, 'Arroz'));
+    await repo.save(Ingredient.create('550e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003', 'Frijoles'));
+    expect(await repo.findAllByUserId(validUserId)).toHaveLength(1);
+  }); 
+   
+  it('debe devolver lista vacia si no hay ingredientes de un usuario', async () => {
+    await repo.save(Ingredient.create(validId, validUserId, 'Arroz'));
+    expect(await repo.findAllByUserId('550e8400-e29b-41d4-a716-446655440002')).toHaveLength(0);
+  });  
 
   it('debe eliminar un ingrediente por id', async () => {
     await repo.save(Ingredient.create(validId, validUserId, 'Arroz'));
