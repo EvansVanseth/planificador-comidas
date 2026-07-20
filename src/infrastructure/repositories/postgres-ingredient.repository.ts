@@ -24,10 +24,10 @@ export class PostgresIngredientRepository implements IngredientRepository {
     return rows.map((r: IngredientRow) => this.toDomain(r));
   }
 
-  async findByName(name: string): Promise<Ingredient | null> {
+  async findByName(name: string, userId: string): Promise<Ingredient | null> {
     const normalized = name.toLowerCase().trim();
     const rows = await this.prisma.ingredient.findMany();
-    const found = rows.find((r: IngredientRow) => r.name.toLowerCase().trim() === normalized);
+    const found = rows.find((r: IngredientRow) => r.name.toLowerCase().trim() === normalized && r.userId === userId);
     return found ? this.toDomain(found) : null;
   }
 

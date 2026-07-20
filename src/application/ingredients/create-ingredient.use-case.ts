@@ -7,7 +7,7 @@ export class CreateIngredientUseCase {
   constructor(private ingredientRepository: IngredientRepository) {}
 
   async execute(userId: string, name: string): Promise<string> {
-    const existing = await this.ingredientRepository.findByName(name);
+    const existing = await this.ingredientRepository.findByName(name, userId);
     if (existing) {
       throw new AppError(`Ya existe un ingrediente con el nombre "${name}"`);
     }

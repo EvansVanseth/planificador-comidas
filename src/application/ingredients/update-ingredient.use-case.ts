@@ -16,16 +16,16 @@ export class UpdateIngredientUseCase {
       throw new AppError(`Ingredient not found: ${input.id}`);
     }
 
+    if (input.userId !== undefined) {
+      ingredient.reassignUser(input.userId);
+    }
+
     if (input.name !== undefined) {
-      const existing = await this.ingredientRepository.findByName(input.name);
+      const existing = await this.ingredientRepository.findByName(input.name, ingredient.getUserId());
       if (existing && existing.getId() !== input.id) {
         throw new AppError(`Ya existe un ingrediente con el nombre "${input.name}"`);
       }
       ingredient.rename(input.name);
-    }
-
-    if (input.userId !== undefined) {
-      ingredient.reassignUser(input.userId);
     }
 
     await this.ingredientRepository.save(ingredient);

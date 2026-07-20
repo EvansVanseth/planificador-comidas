@@ -141,7 +141,7 @@
     "dimension": "MOMENTO_DIA",
     "isSystem": true,
     "systemKey": "DESAYUNO",
-    "order": 0
+    "order": 1
   },
   {
     "id": "7bcf8def-8620-4ed0-af06-de2015d39531",
@@ -150,7 +150,7 @@
     "dimension": "MOMENTO_DIA",
     "isSystem": true,
     "systemKey": "COMIDA",
-    "order": 0
+    "order": 2
   },
   {
     "id": "5d847886-db2e-46c8-9ad6-1c85ca7cbc57",
@@ -159,7 +159,7 @@
     "dimension": "MOMENTO_DIA",
     "isSystem": true,
     "systemKey": "CENA",
-    "order": 0
+    "order": 3
   },
   {
     "id": "6b19fc40-d9d8-4c31-8962-0549616dc1e6",
