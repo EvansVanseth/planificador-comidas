@@ -974,7 +974,16 @@
     "baseServings": 2,
     "prepTime": 30,
     "preparation": null,
-    "ingredients": [],
+    "ingredients": [
+      {
+        "ingredientId": "aff5b5c1-9aee-4a6e-af80-69177a9259f0",
+        "quantityNote": null
+      },
+      {
+        "ingredientId": "7b6ee97b-1cc9-4e0e-9951-87a198250938",
+        "quantityNote": null
+      }
+    ],
     "tags": [
       {
         "id": "ba09df2a-682b-470e-b7a9-646a01566169",
