@@ -315,10 +315,10 @@ Archivos JSON (dev) ───→ Postgres Docker (local) ───→ Supabase +
 ```
 
 Debajo, destacar:
-- **Persistencia**: 3 modos intercambiables via variable de entorno `STORAGE_BACKEND`
+- **Persistencia**: 2 modos intercambiables via variable de entorno `STORAGE_BACKEND`
 - **Auth**: Cookie-based (local) → Supabase Auth (producción)
 - **Seguridad**: Políticas RLS en Postgres, service_role key para operaciones administrativas
-- **URL**: `https://planificador-comidas.vercel.app` (o la que corresponda)
+- **URL**: `https://planificador-comidas.vercel.app`
 
 ### Recursos
 - Captura de la web desplegada (pantalla completa)
@@ -327,7 +327,7 @@ Debajo, destacar:
 - Captura del pipeline de despliegue (Vercel dashboard o GitHub Actions) si existe
 
 ### Texto de narración
-> "El proyecto empezó con persistencia en archivos JSON para desarrollo rápido, luego migró a Postgres con Docker para el entorno local, y finalmente se desplegó en Supabase (base de datos + autenticación) y Vercel (frontend). Los 3 modos de persistencia son intercambiables cambiando una variable de entorno. En producción se aplican políticas RLS para garantizar que cada usuario solo vea sus propios datos."
+> "El proyecto empezó con persistencia en archivos JSON para desarrollo rápido, luego migró a Postgres con Docker para el entorno local, y finalmente se desplegó en Supabase (base de datos + autenticación) y Vercel (frontend). Los 2 modos de persistencia son intercambiables cambiando una variable de entorno (File / Postgres). En producción se aplican políticas RLS para garantizar que cada usuario solo vea sus propios datos."
 
 ---
 
@@ -364,8 +364,8 @@ Dos columnas:
 
 ### Descripción
 Slide final. Título grande "Gracias", nombre del autor, enlaces:
-- Repositorio: `github.com/[usuario]/TFM`
-- Web: `https://planificador-comidas.vercel.app`
+- Repositorio: `https://github.com/EvansVanseth/planificador-comidas`
+- Web: `https://planificador-comidas-rho.vercel.app/`
 - Email / LinkedIn (opcional)
 
 Incluir agradecimiento a Brais Moure y al equipo del máster.

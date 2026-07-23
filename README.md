@@ -10,10 +10,10 @@ Usuario: **evansvanseth@gmail.com**
 Contraseña: **VYEq3r9e9YqVS6T**  
 
 ## SLIDE de presentación
-URL:   
+URL: https://docs.google.com/presentation/d/1gvUH44zz0dNAfMD6Cj2TqRfKk2Vj4IV87Qwr7BcIKRM  
 
 ## VIDEO de presentación
-URL:   
+URL: https://www.loom.com/share/0e66d213e12648a2a77f4bdb0b15eaa5  
 
 ---
 
