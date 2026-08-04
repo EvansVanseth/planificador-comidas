@@ -112,6 +112,12 @@ cambiado, sin reescribir en aggregate entero.
 - Comparar tiempos de carga de Despensa/Lista antes/después.
 - Número de queries emitidas (Prisma query logging, `LOG_LEVEL=query`).
 
+> **Estado (Fase B): COMPLETA** — `GetNeededIngredients` y `GetShoppingList` ahora resuelven
+> recetas e ingredientes con `findManyByIds` (1 query por repositorio en vez de N+1), con
+> proyección común extraída a `needed-ingredients.projection.ts`. `findByName` de recetas e
+> ingredientes usa `where` de Prisma (`mode: 'insensitive'`), lo que arregla el test de
+> integración que fallaba. La página de edición usa `GetPlanningByIdUseCase` (R2). 509 tests verdes.
+
 ---
 
 ## Fase C — "Pasarela" / read models para entidades planas

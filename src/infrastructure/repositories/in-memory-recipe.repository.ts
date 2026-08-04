@@ -8,6 +8,11 @@ export class InMemoryRecipeRepository implements RecipeRepository {
     return this.recipes.get(id) || null;
   }
 
+  async findManyByIds(ids: string[]): Promise<Recipe[]> {
+    const idSet = new Set(ids);
+    return Array.from(this.recipes.values()).filter(r => idSet.has(r.getId()));
+  }
+
   async findAll(): Promise<Recipe[]> {
     return Array.from(this.recipes.values());
   }

@@ -50,6 +50,7 @@ import { ToggleShoppingItemUseCase } from '@/application/planning/toggle-shoppin
 import { Tag } from '@/domain/tags/aggregates/tag.aggregate';
 import { seedSystemTags } from '@/application/tags/seed-system-tags';
 import { ListPlanningsUseCase } from '@/application/planning/list-plannings.use-case';
+import { GetPlanningByIdUseCase } from '@/application/planning/get-planning-by-id.use-case';
 import { UpdatePlanningUseCase } from '@/application/planning/update-planning.use-case';
 import { DeletePlanningUseCase } from '@/application/planning/delete-planning.use-case';
 import { CreateTagUseCase } from '@/application/tags/create-tag.use-case';
@@ -84,6 +85,7 @@ export type RepositoryType = 'memory' | 'file' | 'postgres';
 export interface IContainer {
   // Planning
   listPlannings: ListPlanningsUseCase;
+  getPlanningById: GetPlanningByIdUseCase;
   createPlanning: CreatePlanningUseCase;
   updatePlanning: UpdatePlanningUseCase;
   deletePlanning: DeletePlanningUseCase;
@@ -177,6 +179,7 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
   const container: IContainer = {
     // Planning
     listPlannings: new ListPlanningsUseCase(planningRepository),
+    getPlanningById: new GetPlanningByIdUseCase(planningRepository),
     createPlanning: new CreatePlanningUseCase(planningRepository),
     updatePlanning: new UpdatePlanningUseCase(planningRepository),
     deletePlanning: new DeletePlanningUseCase(planningRepository),

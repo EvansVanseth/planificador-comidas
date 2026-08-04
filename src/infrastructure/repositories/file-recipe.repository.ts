@@ -41,6 +41,12 @@ export class FileRecipeRepository implements RecipeRepository {
     return recipes.find(r => r.getId() === id) || null;
   }
 
+  async findManyByIds(ids: string[]): Promise<Recipe[]> {
+    const recipes = await this.findAll();
+    const idSet = new Set(ids);
+    return recipes.filter(r => idSet.has(r.getId()));
+  }
+
   async save(recipe: Recipe): Promise<void> {
     const recipes = await this.findAll();
 

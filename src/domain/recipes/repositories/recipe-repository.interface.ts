@@ -2,6 +2,7 @@ import { Recipe } from "@/domain/recipes/aggregates/recipe.aggregate"
 
 export interface RecipeRepository {
   findById(id: string): Promise<Recipe | null>;
+  findManyByIds(ids: string[]): Promise<Recipe[]>;
   findAll(): Promise<Recipe[]>;
   findAllByUserId(userId: string): Promise<Recipe[]>;
   findByName(name: string): Promise<Recipe | null>;
