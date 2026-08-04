@@ -15,6 +15,6 @@ export class MarkPantryItemAvailableUseCase {
     }
     planning.markPantryItemAsAvailable(ingredientId);
 
-    await this.planningRepository.save(planning);
+    await this.planningRepository.setPantryItemAvailable(planningId, ingredientId, true);
   }
 }

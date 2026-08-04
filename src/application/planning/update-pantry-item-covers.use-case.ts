@@ -17,6 +17,6 @@ export class UpdatePantryItemCoversUseCase {
       planning.updatePantryItemCovers(ingredientId, covers);
     }
 
-    await this.planningRepository.save(planning);
+    await this.planningRepository.setPantryItemCovers(planningId, ingredientId, covers);
   }
 }

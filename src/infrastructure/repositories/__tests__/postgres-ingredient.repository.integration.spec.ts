@@ -67,13 +67,13 @@ describe('PostgresIngredientRepository (integration)', () => {
 
   it('debe buscar por nombre ignorando mayúsculas', async () => {
     await repo.save(Ingredient.create(validId, validUserId, 'Pollo'));
-    const found = await repo.findByName('pollo');
+    const found = await repo.findByName('pollo', validUserId);
     expect(found).not.toBeNull();
     expect(found!.getId()).toBe(validId);
   });
 
   it('debe devolver null si no existe el nombre', async () => {
-    const found = await repo.findByName('Inexistente');
+    const found = await repo.findByName('Inexistente', validUserId);
     expect(found).toBeNull();
   });
 

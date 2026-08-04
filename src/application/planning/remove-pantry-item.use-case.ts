@@ -8,6 +8,6 @@ export class RemovePantryItemUseCase {
     const planning = await this.planningRepository.findById(planningId);
     if (!planning) throw new AppError('El Id del planning no existe');
     planning.removePantryItem(ingredientId);
-    await this.planningRepository.save(planning);
+    await this.planningRepository.removePantryItem(planningId, ingredientId);
   }
 }

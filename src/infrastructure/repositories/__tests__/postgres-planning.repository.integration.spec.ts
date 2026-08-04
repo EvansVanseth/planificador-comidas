@@ -157,4 +157,234 @@ describe('PostgresPlanningRepository (integration)', () => {
     expect(found).not.toBeNull();
     expect(found!.getId()).toBe(planningId);
   });
+
+  describe('setPantryItemCovers', () => {
+    it('debe actualizar solo el covers de un item existente sin borrar el resto', async () => {
+      const planning = Planning.create(planningId, userId, 'Semana 1', null, 1);
+      planning.addDay(dayId, 1);
+      planning.assignMealToDay(1, momentTagId, 4, recipeId);
+      planning.addPantryItem(pantryId, ingredientId);
+      await repo.save(planning);
+
+      await repo.setPantryItemCovers(planningId, ingredientId, 3);
+
+      const found = (await repo.findById(planningId))!;
+      const items = found.getPantryItems();
+      expect(items).toHaveLength(1);
+      expect(items[0].getCovers()).toBe(3);
+      expect(items[0].isAvailable()).toBe(false);
+
+      const primitives = found.toPrimitives();
+      expect(primitives.days).toHaveLength(1);
+      expect(primitives.days[0].services[0].recipeId).toBe(recipeId);
+    });
+
+    it('debe crear el item si no existe y covers es mayor que cero', async () => {
+      await repo.save(Planning.create(planningId, userId, 'Semana 1', null, 1));
+
+      await repo.setPantryItemCovers(planningId, ingredientId, 5);
+
+      const found = (await repo.findById(planningId))!;
+      const items = found.getPantryItems();
+      expect(items).toHaveLength(1);
+      expect(items[0].getIngredientId()).toBe(ingredientId);
+      expect(items[0].getCovers()).toBe(5);
+      expect(items[0].isAvailable()).toBe(false);
+    });
+
+    it('no debe crear el item si no existe y covers es cero', async () => {
+      await repo.save(Planning.create(planningId, userId, 'Semana 1', null, 1));
+
+      await repo.setPantryItemCovers(planningId, ingredientId, 0);
+
+      const found = (await repo.findById(planningId))!;
+      expect(found.getPantryItems()).toHaveLength(0);
+    });
+
+    it('debe mantener el id del item existente', async () => {
+      const planning = Planning.create(planningId, userId, 'Semana 1', null, 1);
+      planning.addPantryItem(pantryId, ingredientId);
+      await repo.save(planning);
+
+      await repo.setPantryItemCovers(planningId, ingredientId, 2);
+
+      const found = (await repo.findById(planningId))!;
+      expect(found.getPantryItems()[0].getId()).toBe(pantryId);
+    });
+  });
+
+  describe('setShoppingItemCompleted', () => {
+    it('debe marcar completado un item existente sin borrar el resto', async () => {
+      const planning = Planning.create(planningId, userId, 'Semana 1', null, 1);
+      planning.addDay(dayId, 1);
+      planning.assignMealToDay(1, momentTagId, 4, recipeId);
+      planning.addShoppingItem(shoppingId, ingredientId);
+      await repo.save(planning);
+
+      await repo.setShoppingItemCompleted(planningId, ingredientId, true);
+
+      const found = (await repo.findById(planningId))!;
+      const items = found.getShoppingItems();
+      expect(items).toHaveLength(1);
+      expect(items[0].isCompleted()).toBe(true);
+
+      const primitives = found.toPrimitives();
+      expect(primitives.days).toHaveLength(1);
+      expect(primitives.days[0].services[0].recipeId).toBe(recipeId);
+    });
+
+    it('debe crear el item si no existe y completed es true', async () => {
+      await repo.save(Planning.create(planningId, userId, 'Semana 1', null, 1));
+
+      await repo.setShoppingItemCompleted(planningId, ingredientId, true);
+
+      const found = (await repo.findById(planningId))!;
+      const items = found.getShoppingItems();
+      expect(items).toHaveLength(1);
+      expect(items[0].getIngredientId()).toBe(ingredientId);
+      expect(items[0].isCompleted()).toBe(true);
+    });
+
+    it('debe marcar pendiente un item existente', async () => {
+      const planning = Planning.create(planningId, userId, 'Semana 1', null, 1);
+      planning.addShoppingItem(shoppingId, ingredientId);
+      planning.markShoppingItemAsCompleted(ingredientId);
+      await repo.save(planning);
+
+      await repo.setShoppingItemCompleted(planningId, ingredientId, false);
+
+      const found = (await repo.findById(planningId))!;
+      expect(found.getShoppingItems()[0].isCompleted()).toBe(false);
+    });
+
+    it('no debe crear el item si no existe y completed es false', async () => {
+      await repo.save(Planning.create(planningId, userId, 'Semana 1', null, 1));
+
+      await repo.setShoppingItemCompleted(planningId, ingredientId, false);
+
+      const found = (await repo.findById(planningId))!;
+      expect(found.getShoppingItems()).toHaveLength(0);
+    });
+
+    it('debe mantener el id del item existente', async () => {
+      const planning = Planning.create(planningId, userId, 'Semana 1', null, 1);
+      planning.addShoppingItem(shoppingId, ingredientId);
+      await repo.save(planning);
+
+      await repo.setShoppingItemCompleted(planningId, ingredientId, true);
+
+      const found = (await repo.findById(planningId))!;
+      expect(found.getShoppingItems()[0].getId()).toBe(shoppingId);
+    });
+  });
+
+  describe('setPantryItemAvailable', () => {
+    it('debe marcar disponible un item existente y poner covers a cero', async () => {
+      const planning = Planning.create(planningId, userId, 'Semana 1', null, 1);
+      planning.addDay(dayId, 1);
+      planning.assignMealToDay(1, momentTagId, 4, recipeId);
+      planning.addPantryItem(pantryId, ingredientId);
+      planning.updatePantryItemCovers(ingredientId, 3);
+      await repo.save(planning);
+
+      await repo.setPantryItemAvailable(planningId, ingredientId, true);
+
+      const found = (await repo.findById(planningId))!;
+      const items = found.getPantryItems();
+      expect(items).toHaveLength(1);
+      expect(items[0].isAvailable()).toBe(true);
+      expect(items[0].getCovers()).toBe(0);
+
+      const primitives = found.toPrimitives();
+      expect(primitives.days).toHaveLength(1);
+      expect(primitives.days[0].services[0].recipeId).toBe(recipeId);
+    });
+
+    it('debe crear el item si no existe y available es true', async () => {
+      await repo.save(Planning.create(planningId, userId, 'Semana 1', null, 1));
+
+      await repo.setPantryItemAvailable(planningId, ingredientId, true);
+
+      const found = (await repo.findById(planningId))!;
+      const items = found.getPantryItems();
+      expect(items).toHaveLength(1);
+      expect(items[0].getIngredientId()).toBe(ingredientId);
+      expect(items[0].isAvailable()).toBe(true);
+    });
+
+    it('no debe crear el item si no existe y available es false', async () => {
+      await repo.save(Planning.create(planningId, userId, 'Semana 1', null, 1));
+
+      await repo.setPantryItemAvailable(planningId, ingredientId, false);
+
+      const found = (await repo.findById(planningId))!;
+      expect(found.getPantryItems()).toHaveLength(0);
+    });
+  });
+
+  describe('removePantryItem', () => {
+    it('debe eliminar solo el item indicado sin borrar el resto de la planificación', async () => {
+      const otherIngredientId = '550e8400-e29b-41d4-a716-446655440031';
+      await ingredientRepo.save(Ingredient.create(otherIngredientId, userId, 'Zanahoria'));
+      const planning = Planning.create(planningId, userId, 'Semana 1', null, 1);
+      planning.addDay(dayId, 1);
+      planning.assignMealToDay(1, momentTagId, 4, recipeId);
+      planning.addPantryItem(pantryId, ingredientId);
+      planning.addPantryItem('550e8400-e29b-41d4-a716-446655440061', otherIngredientId);
+      await repo.save(planning);
+
+      await repo.removePantryItem(planningId, ingredientId);
+
+      const found = (await repo.findById(planningId))!;
+      const items = found.getPantryItems();
+      expect(items).toHaveLength(1);
+      expect(items[0].getIngredientId()).toBe(otherIngredientId);
+
+      const primitives = found.toPrimitives();
+      expect(primitives.days).toHaveLength(1);
+      expect(primitives.days[0].services[0].recipeId).toBe(recipeId);
+    });
+
+    it('no falla si el item no existe', async () => {
+      await repo.save(Planning.create(planningId, userId, 'Semana 1', null, 1));
+
+      await repo.removePantryItem(planningId, ingredientId);
+
+      const found = (await repo.findById(planningId))!;
+      expect(found.getPantryItems()).toHaveLength(0);
+    });
+  });
+
+  describe('removeShoppingItem', () => {
+    it('debe eliminar solo el item indicado sin borrar el resto de la planificación', async () => {
+      const otherIngredientId = '550e8400-e29b-41d4-a716-446655440032';
+      await ingredientRepo.save(Ingredient.create(otherIngredientId, userId, 'Calabacín'));
+      const planning = Planning.create(planningId, userId, 'Semana 1', null, 1);
+      planning.addDay(dayId, 1);
+      planning.assignMealToDay(1, momentTagId, 4, recipeId);
+      planning.addShoppingItem(shoppingId, ingredientId);
+      planning.addShoppingItem('550e8400-e29b-41d4-a716-446655440071', otherIngredientId);
+      await repo.save(planning);
+
+      await repo.removeShoppingItem(planningId, ingredientId);
+
+      const found = (await repo.findById(planningId))!;
+      const items = found.getShoppingItems();
+      expect(items).toHaveLength(1);
+      expect(items[0].getIngredientId()).toBe(otherIngredientId);
+
+      const primitives = found.toPrimitives();
+      expect(primitives.days).toHaveLength(1);
+      expect(primitives.days[0].services[0].recipeId).toBe(recipeId);
+    });
+
+    it('no falla si el item no existe', async () => {
+      await repo.save(Planning.create(planningId, userId, 'Semana 1', null, 1));
+
+      await repo.removeShoppingItem(planningId, ingredientId);
+
+      const found = (await repo.findById(planningId))!;
+      expect(found.getShoppingItems()).toHaveLength(0);
+    });
+  });
 });

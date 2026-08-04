@@ -23,8 +23,7 @@ export default async function EditPlanningPage({
   const tab = searchParams.tab ?? 'grid';
 
   const c = getContainer();
-  const planningList = await c.listPlannings.execute(userId);
-  const planning = planningList.find((p) => p.getId() === params.id);
+  const planning = await c.getPlanningById.execute(params.id);
   if (!planning) notFound();
 
   const primitives = planning.toPrimitives();

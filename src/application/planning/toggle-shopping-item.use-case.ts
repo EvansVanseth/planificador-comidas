@@ -19,6 +19,6 @@ export class ToggleShoppingItemUseCase {
       planning.markShoppingItemAsPending(ingredientId);
     }
 
-    await this.planningRepository.save(planning);
+    await this.planningRepository.setShoppingItemCompleted(planningId, ingredientId, completed);
   }
 }

@@ -26,6 +26,18 @@ export class PostgresRecipeRepository implements RecipeRepository {
     return this.toDomain(row);
   }
 
+  async findManyByIds(ids: string[]): Promise<Recipe[]> {
+    if (ids.length === 0) return [];
+    const rows = await this.prisma.recipe.findMany({
+      where: { id: { in: ids } },
+      include: {
+        ingredients: true,
+        tags: { include: { tag: true } },
+      },
+    });
+    return rows.map((r: RecipeRow) => this.toDomain(r));
+  }
+
   async findAll(): Promise<Recipe[]> {
     const rows = await this.prisma.recipe.findMany({
       include: {
@@ -48,15 +60,14 @@ export class PostgresRecipeRepository implements RecipeRepository {
   }
 
   async findByName(name: string): Promise<Recipe | null> {
-    const normalized = name.toLowerCase().trim();
-    const rows = await this.prisma.recipe.findMany({
+    const row = await this.prisma.recipe.findFirst({
+      where: { name: { equals: name, mode: 'insensitive' } },
       include: {
         ingredients: true,
         tags: { include: { tag: true } },
       },
     });
-    const found = rows.find((r: RecipeRow) => r.name.toLowerCase().trim() === normalized);
-    return found ? this.toDomain(found) : null;
+    return row ? this.toDomain(row) : null;
   }
 
   async save(recipe: Recipe): Promise<void> {

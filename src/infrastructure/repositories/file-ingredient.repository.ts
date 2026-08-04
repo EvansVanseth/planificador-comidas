@@ -43,6 +43,12 @@ export class FileIngredientRepository implements IngredientRepository {
     return ingredients.find(i => i.getId() === id) || null;
   }
 
+  async findManyByIds(ids: string[]): Promise<Ingredient[]> {
+    const ingredients = await this.findAll();
+    const idSet = new Set(ids);
+    return ingredients.filter(i => idSet.has(i.getId()));
+  }
+
   async save(ingredient: Ingredient): Promise<void> {
     const ingredients = await this.findAll();
 
