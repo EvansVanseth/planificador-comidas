@@ -127,7 +127,7 @@ export default function PantryView({ planning, neededIngredients }: Props) {
                         <input type="hidden" name="planningId" value={planning.id} />
                         <input type="hidden" name="ingredientId" value={ing.ingredientId} />
                         <input type="hidden" name="ingredientName" value={ing.ingredientName} />
-                        <input type="hidden" name="covers" value={1} />
+                        <input type="hidden" name="covers" value={0} />
                         <button
                           type="submit"
                           className="whitespace-nowrap rounded-lg border border-[#D1FAE5] bg-[#F0FDF4] px-4 py-2.5 text-sm font-medium text-[#007A55] transition-colors hover:bg-[#D1FAE5]"
@@ -227,7 +227,7 @@ export default function PantryView({ planning, neededIngredients }: Props) {
                         <input type="hidden" name="planningId" value={planning.id} />
                         <input type="hidden" name="ingredientId" value={ing.ingredientId} />
                         <input type="hidden" name="ingredientName" value={ing.ingredientName} />
-                        <input type="hidden" name="covers" value={1} />
+                        <input type="hidden" name="covers" value={0} />
                         <button
                           type="submit"
                           className="flex h-8 w-8 items-center justify-center rounded-full text-[#007A55] transition-colors hover:bg-[#F0FDF4]"

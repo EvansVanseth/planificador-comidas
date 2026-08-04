@@ -39,6 +39,19 @@ describe('ToggleShoppingItemUseCase', () => {
     expect(item!.isCompleted()).toBe(false);
   });
 
+  it('debe añadir y marcar como completado si el item no existe en el primer clic', async () => {
+    const planning = Planning.create(planningId, userId, 'Test', null, 2);
+    await planningRepo.save(planning);
+
+    await useCase.execute(planningId, ingredientId, true);
+
+    const updated = (await planningRepo.findById(planningId))!;
+    const items = updated.getShoppingItems();
+    expect(items).toHaveLength(1);
+    expect(items[0].getIngredientId()).toBe(ingredientId);
+    expect(items[0].isCompleted()).toBe(true);
+  });
+
   it('debe fallar si el planning no existe', async () => {
     await expect(useCase.execute('inexistente', ingredientId, true)).rejects.toThrow(AppError);
   });
