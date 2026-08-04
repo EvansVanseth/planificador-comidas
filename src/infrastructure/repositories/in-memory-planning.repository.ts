@@ -39,6 +39,32 @@ export class InMemoryPlanningRepository implements PlanningRepository {
     }
   }
 
+  async setPantryItemAvailable(planningId: string, ingredientId: string, available: boolean): Promise<void> {
+    const planning = this.plannings.get(planningId);
+    if (!planning) return;
+
+    const exists = planning.getPantryItems().some(p => p.getIngredientId() === ingredientId);
+    if (!exists && available) {
+      planning.addPantryItem(randomUUID(), ingredientId);
+    }
+    if (exists) {
+      if (available) {
+        planning.markPantryItemAsAvailable(ingredientId);
+      } else {
+        planning.updatePantryItemCovers(ingredientId, 0);
+      }
+    }
+  }
+
+  async removePantryItem(planningId: string, ingredientId: string): Promise<void> {
+    const planning = this.plannings.get(planningId);
+    if (!planning) return;
+
+    if (planning.getPantryItems().some(p => p.getIngredientId() === ingredientId)) {
+      planning.removePantryItem(ingredientId);
+    }
+  }
+
   async setShoppingItemCompleted(planningId: string, ingredientId: string, completed: boolean): Promise<void> {
     const planning = this.plannings.get(planningId);
     if (!planning) return;
@@ -53,6 +79,15 @@ export class InMemoryPlanningRepository implements PlanningRepository {
       } else {
         planning.markShoppingItemAsPending(ingredientId);
       }
+    }
+  }
+
+  async removeShoppingItem(planningId: string, ingredientId: string): Promise<void> {
+    const planning = this.plannings.get(planningId);
+    if (!planning) return;
+
+    if (planning.getShoppingItems().some(s => s.getIngredientId() === ingredientId)) {
+      planning.removeShoppingItem(ingredientId);
     }
   }
 

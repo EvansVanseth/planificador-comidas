@@ -159,6 +159,31 @@ export class PostgresPlanningRepository implements PlanningRepository {
     });
   }
 
+  async setPantryItemAvailable(planningId: string, ingredientId: string, available: boolean): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      const { count } = await tx.planningPantryItem.updateMany({
+        where: { planningId, ingredientId },
+        data: { available, covers: 0 },
+      });
+
+      if (count === 0 && available) {
+        await tx.planningPantryItem.create({
+          data: {
+            id: randomUUID(),
+            planningId,
+            ingredientId,
+            available,
+            covers: 0,
+          },
+        });
+      }
+    });
+  }
+
+  async removePantryItem(planningId: string, ingredientId: string): Promise<void> {
+    await this.prisma.planningPantryItem.deleteMany({ where: { planningId, ingredientId } });
+  }
+
   async setShoppingItemCompleted(planningId: string, ingredientId: string, completed: boolean): Promise<void> {
     await this.prisma.$transaction(async (tx) => {
       const { count } = await tx.planningShoppingItem.updateMany({
@@ -177,6 +202,10 @@ export class PostgresPlanningRepository implements PlanningRepository {
         });
       }
     });
+  }
+
+  async removeShoppingItem(planningId: string, ingredientId: string): Promise<void> {
+    await this.prisma.planningShoppingItem.deleteMany({ where: { planningId, ingredientId } });
   }
 
   async delete(id: string): Promise<void> {

@@ -75,6 +75,40 @@ export class FilePlanningRepository implements PlanningRepository {
     fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
   }
 
+  async setPantryItemAvailable(planningId: string, ingredientId: string, available: boolean): Promise<void> {
+    const plannings = await this.findAll();
+    const planning = plannings.find(p => p.getId() === planningId);
+    if (!planning) return;
+
+    const exists = planning.getPantryItems().some(p => p.getIngredientId() === ingredientId);
+    if (!exists && available) {
+      planning.addPantryItem(randomUUID(), ingredientId);
+    }
+    if (exists) {
+      if (available) {
+        planning.markPantryItemAsAvailable(ingredientId);
+      } else {
+        planning.updatePantryItemCovers(ingredientId, 0);
+      }
+    }
+
+    const rawData = plannings.map(p => p.toPrimitives());
+    fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
+  }
+
+  async removePantryItem(planningId: string, ingredientId: string): Promise<void> {
+    const plannings = await this.findAll();
+    const planning = plannings.find(p => p.getId() === planningId);
+    if (!planning) return;
+
+    if (planning.getPantryItems().some(p => p.getIngredientId() === ingredientId)) {
+      planning.removePantryItem(ingredientId);
+    }
+
+    const rawData = plannings.map(p => p.toPrimitives());
+    fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
+  }
+
   async setShoppingItemCompleted(planningId: string, ingredientId: string, completed: boolean): Promise<void> {
     const plannings = await this.findAll();
     const planning = plannings.find(p => p.getId() === planningId);
@@ -90,6 +124,19 @@ export class FilePlanningRepository implements PlanningRepository {
       } else {
         planning.markShoppingItemAsPending(ingredientId);
       }
+    }
+
+    const rawData = plannings.map(p => p.toPrimitives());
+    fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
+  }
+
+  async removeShoppingItem(planningId: string, ingredientId: string): Promise<void> {
+    const plannings = await this.findAll();
+    const planning = plannings.find(p => p.getId() === planningId);
+    if (!planning) return;
+
+    if (planning.getShoppingItems().some(s => s.getIngredientId() === ingredientId)) {
+      planning.removeShoppingItem(ingredientId);
     }
 
     const rawData = plannings.map(p => p.toPrimitives());
