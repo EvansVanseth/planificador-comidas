@@ -44,10 +44,11 @@ export class InMemoryPlanningRepository implements PlanningRepository {
     if (!planning) return;
 
     const exists = planning.getPantryItems().some(p => p.getIngredientId() === ingredientId);
-    if (!exists && available) {
+    const added = !exists && available;
+    if (added) {
       planning.addPantryItem(randomUUID(), ingredientId);
     }
-    if (exists) {
+    if (exists || added) {
       if (available) {
         planning.markPantryItemAsAvailable(ingredientId);
       } else {
@@ -70,10 +71,11 @@ export class InMemoryPlanningRepository implements PlanningRepository {
     if (!planning) return;
 
     const exists = planning.getShoppingItems().some(s => s.getIngredientId() === ingredientId);
-    if (!exists && completed) {
+    const added = !exists && completed;
+    if (added) {
       planning.addShoppingItem(randomUUID(), ingredientId);
     }
-    if (exists) {
+    if (exists || added) {
       if (completed) {
         planning.markShoppingItemAsCompleted(ingredientId);
       } else {

@@ -31,6 +31,19 @@ describe('MarkPantryItemAvailableUseCase', () => {
     expect(item!.isAvailable()).toBe(true);
   });
 
+  it('debe añadir y marcar como disponible si el item no existe en el primer clic', async () => {
+    const planning = Planning.create(planningId, userId, 'Test', null, 2);
+    await planningRepo.save(planning);
+
+    await useCase.execute(planningId, ingredientId);
+
+    const updated = (await planningRepo.findById(planningId))!;
+    const items = updated.getPantryItems();
+    expect(items).toHaveLength(1);
+    expect(items[0].getIngredientId()).toBe(ingredientId);
+    expect(items[0].isAvailable()).toBe(true);
+  });
+
   it('debe fallar si el planning no existe', async () => {
     await expect(useCase.execute('inexistente', ingredientId)).rejects.toThrow(AppError);
   });
