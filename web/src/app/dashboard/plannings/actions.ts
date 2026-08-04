@@ -97,7 +97,7 @@ export async function addAllDays(formData: FormData) {
     await addToastToQueue('Todos los días ya están creados.', 'error');
     const editPath = `/dashboard/plannings/${planningId}/edit`;
     revalidatePath(editPath);
-    redirect(editPath);
+    return;
   }
 
   const c = getContainer();
@@ -111,7 +111,6 @@ export async function addAllDays(formData: FormData) {
   await addToastToQueue(`${missing.length} día(s) añadido(s).`);
   const editPath = `/dashboard/plannings/${planningId}/edit`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function addDay(formData: FormData) {
@@ -124,12 +123,12 @@ export async function addDay(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al añadir el día';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   await addToastToQueue(`Día ${dayOrder} añadido.`);
   const editPath = `/dashboard/plannings/${planningId}/edit`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function removeDay(formData: FormData) {
@@ -142,12 +141,12 @@ export async function removeDay(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al eliminar el día';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   await addToastToQueue(`Día ${dayOrder} eliminado.`);
   const editPath = `/dashboard/plannings/${planningId}/edit`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function clearAllRecipes(formData: FormData) {
@@ -160,11 +159,11 @@ export async function clearAllRecipes(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al limpiar las recetas';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   const editPath = `/dashboard/plannings/${planningId}/edit`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function bulkAddMissingService(formData: FormData) {
@@ -183,11 +182,11 @@ export async function bulkAddMissingService(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al añadir servicio';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   const editPath = `/dashboard/plannings/${planningId}/edit`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function autoSchedule(formData: FormData) {
@@ -203,11 +202,11 @@ export async function autoSchedule(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al autoplanificar';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   const editPath = `/dashboard/plannings/${planningId}/edit`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function assignMeal(formData: FormData) {
@@ -230,13 +229,12 @@ export async function assignMeal(formData: FormData) {
     await addToastToQueue(msg, 'error');
     const editPath = `/dashboard/plannings/${planningId}/edit`;
     revalidatePath(editPath);
-    redirect(editPath);
+    return;
   }
 
   await addToastToQueue('Servicio actualizado correctamente.');
   const editPath = `/dashboard/plannings/${planningId}/edit`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function removeMeal(formData: FormData) {
@@ -250,12 +248,12 @@ export async function removeMeal(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al eliminar el servicio';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   await addToastToQueue('Servicio eliminado.');
   const editPath = `/dashboard/plannings/${planningId}/edit`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function addPantryItem(formData: FormData) {
@@ -270,11 +268,11 @@ export async function addPantryItem(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al añadir a la despensa';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   const editPath = `/dashboard/plannings/${planningId}/edit?tab=pantry`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function removePantryItem(formData: FormData) {
@@ -289,11 +287,11 @@ export async function removePantryItem(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al eliminar de la despensa';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   const editPath = `/dashboard/plannings/${planningId}/edit?tab=pantry`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function updatePantryItemCovers(formData: FormData) {
@@ -311,11 +309,11 @@ export async function updatePantryItemCovers(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al actualizar';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   const editPath = `/dashboard/plannings/${planningId}/edit?tab=pantry`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function markPantryItemAvailable(formData: FormData) {
@@ -330,11 +328,11 @@ export async function markPantryItemAvailable(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al marcar disponible';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   const editPath = `/dashboard/plannings/${planningId}/edit?tab=pantry`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function addShoppingItem(formData: FormData) {
@@ -349,11 +347,11 @@ export async function addShoppingItem(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al añadir';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   const editPath = `/dashboard/plannings/${planningId}/edit?tab=shopping`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function removeShoppingItem(formData: FormData) {
@@ -368,11 +366,11 @@ export async function removeShoppingItem(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al eliminar';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   const editPath = `/dashboard/plannings/${planningId}/edit?tab=shopping`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function toggleShoppingItem(formData: FormData) {
@@ -388,11 +386,11 @@ export async function toggleShoppingItem(formData: FormData) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error al actualizar';
     await addToastToQueue(msg, 'error');
+    return;
   }
 
   const editPath = `/dashboard/plannings/${planningId}/edit?tab=shopping`;
   revalidatePath(editPath);
-  redirect(editPath);
 }
 
 export async function getDeleteImpact(tagId: string, userId: string) {

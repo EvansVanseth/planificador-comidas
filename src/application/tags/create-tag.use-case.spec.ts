@@ -53,4 +53,58 @@ describe('CreateTagUseCase', () => {
     const userId = '550e8400-e29b-41d4-a716-446655440001';
     await expect(useCase.execute(userId, 'Caliente', TagDimension.FORMATO, false)).rejects.toThrow(DomainError);
   });
+
+  it('debe asignar orden 1 a la primera etiqueta MOMENTO_DIA', async () => {
+    const id = await useCase.execute(systemUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true);
+    const saved = await repo.findById(id);
+    expect(saved!.getOrder()).toBe(1);
+  });
+
+  it('debe asignar max+1 a una nueva etiqueta MOMENTO_DIA', async () => {
+    const seeds: Array<[string, number]> = [
+      ['Desayuno', 1],
+      ['Comida', 2],
+      ['Cena', 3],
+    ];
+    const seedIds = [
+      '550e8400-e29b-41d4-a716-446655441001',
+      '550e8400-e29b-41d4-a716-446655441002',
+      '550e8400-e29b-41d4-a716-446655441003',
+    ];
+    for (let i = 0; i < seeds.length; i++) {
+      const [name, order] = seeds[i];
+      const tag = Tag.create(
+        seedIds[i],
+        systemUserId,
+        name,
+        TagDimension.MOMENTO_DIA,
+        true,
+        undefined,
+        order,
+      );
+      await repo.save(tag);
+    }
+
+    const id = await useCase.execute(systemUserId, 'Merienda', TagDimension.MOMENTO_DIA);
+    const saved = await repo.findById(id);
+    expect(saved!.getOrder()).toBe(4);
+  });
+
+  it('no debe reordenar etiquetas existentes al crear una MOMENTO_DIA', async () => {
+    const tag = Tag.create(crypto.randomUUID(), systemUserId, 'Desayuno', TagDimension.MOMENTO_DIA, true, undefined, 1);
+    await repo.save(tag);
+
+    const id = await useCase.execute(systemUserId, 'Comida', TagDimension.MOMENTO_DIA);
+    const saved = await repo.findById(id);
+    expect(saved!.getOrder()).toBe(2);
+
+    const existing = await repo.findById(tag.getId());
+    expect(existing!.getOrder()).toBe(1);
+  });
+
+  it('no debe aplicar lógica de orden a otras dimensiones', async () => {
+    const id = await useCase.execute(systemUserId, 'Vegano', TagDimension.ESTILOS_VIDA);
+    const saved = await repo.findById(id);
+    expect(saved!.getOrder()).toBe(0);
+  });
 });

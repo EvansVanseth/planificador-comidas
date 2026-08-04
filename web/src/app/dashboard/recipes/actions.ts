@@ -3,7 +3,6 @@
 import { getContainer } from '@/domain-container';
 import { addToastToQueue } from '@/lib/toast-utils';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 const PATH = '/dashboard/recipes';
 
@@ -20,7 +19,6 @@ export async function deleteRecipe(formData: FormData) {
 
   await addToastToQueue(msg);
   revalidatePath(PATH);
-  redirect(PATH);
 }
 
 export async function createIngredientInline(userId: string, name: string) {

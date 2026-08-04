@@ -8,10 +8,12 @@ export default function SimilarNameWarning({
   similarNames,
   proposedName,
   userId,
+  query,
 }: {
   similarNames: string[];
   proposedName: string;
   userId: string;
+  query: string;
 }) {
   const [open, setOpen] = useState(true);
   const router = useRouter();
@@ -55,6 +57,7 @@ export default function SimilarNameWarning({
           <form action={forceCreateIngredient}>
             <input type="hidden" name="userId" value={userId} />
             <input type="hidden" name="name" value={proposedName} />
+            <input type="hidden" name="q" value={query} />
             <button
               type="submit"
               className="rounded-lg bg-[#007A55] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#008055]"

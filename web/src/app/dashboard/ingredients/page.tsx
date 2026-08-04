@@ -37,6 +37,7 @@ export default async function IngredientsPage({
           similarNames={similarNames}
           proposedName={searchParams.name}
           userId={userId}
+          query={query}
         />
       )}
 
@@ -56,6 +57,7 @@ export default async function IngredientsPage({
 
             <form action={createIngredient} className="flex flex-1 gap-2 md:flex-none">
               <input type="hidden" name="userId" value={userId} />
+              <input type="hidden" name="q" value={query} />
               <input
                 name="name"
                 placeholder="Nuevo ingrediente..."

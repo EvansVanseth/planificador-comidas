@@ -4,7 +4,6 @@ import { Name } from '@/domain/shared/value-objects/name.vo';
 import { getContainer } from '@/domain-container';
 import { addToastToQueue } from '@/lib/toast-utils';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { TagDimension } from '@/domain/recipes/value-objects/tag-dimension.enum';
 
 const PATH = '/dashboard/tags';
@@ -21,7 +20,7 @@ export async function createTag(formData: FormData) {
     const msg = e instanceof Error ? e.message : 'Nombre inválido';
     await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
-    redirect(PATH);
+    return;
   }
 
   const c = getContainer();
@@ -31,12 +30,11 @@ export async function createTag(formData: FormData) {
     const msg = e instanceof Error ? e.message : 'Error al crear la etiqueta';
     await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
-    redirect(PATH);
+    return;
   }
 
   await addToastToQueue(`Etiqueta '${nameVO.value}' creada correctamente.`);
   revalidatePath(PATH);
-  redirect(PATH);
 }
 
 export async function updateTag(formData: FormData) {
@@ -51,7 +49,7 @@ export async function updateTag(formData: FormData) {
     const msg = e instanceof Error ? e.message : 'Nombre inválido';
     await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
-    redirect(PATH);
+    return;
   }
 
   const c = getContainer();
@@ -61,14 +59,13 @@ export async function updateTag(formData: FormData) {
     const msg = e instanceof Error ? e.message : 'Error al editar la etiqueta';
     await addToastToQueue(msg, 'error');
     revalidatePath(PATH);
-    redirect(PATH);
+    return;
   }
 
   await addToastToQueue(
     `Modificada etiqueta '${previousName}' a '${nameVO.value}' correctamente.`,
   );
   revalidatePath(PATH);
-  redirect(PATH);
 }
 
 export async function deleteTag(formData: FormData) {
@@ -87,7 +84,6 @@ export async function deleteTag(formData: FormData) {
   }
 
   revalidatePath(PATH);
-  redirect(PATH);
 }
 
 export async function moveTagUp(formData: FormData) {

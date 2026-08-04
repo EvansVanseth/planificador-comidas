@@ -15,8 +15,8 @@ export class TagOrderMoveDownUseCase {
       throw new AppError('Solo etiquetas de dimensión MOMENTO_DIA pueden reordenarse');
     }
 
-    const allTags = await this.tagRepository.findAll();
-    const momentoTags = allTags
+    const userTags = await this.tagRepository.findAllByUserId(tag.getUserId());
+    const momentoTags = userTags
       .filter(t => t.getDimension() === TagDimension.MOMENTO_DIA)
       .sort((a, b) => a.getOrder() - b.getOrder());
 

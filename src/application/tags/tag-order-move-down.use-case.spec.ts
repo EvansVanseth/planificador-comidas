@@ -65,4 +65,25 @@ describe('TagOrderMoveDownUseCase', () => {
     expect((await repo.findById('550e8400-e29b-41d4-a716-446655440012'))!.getOrder()).toBe(2);
     expect((await repo.findById('550e8400-e29b-41d4-a716-446655440013'))!.getOrder()).toBe(4);
   });
+
+  it('no debe mezclar etiquetas de otros usuarios al bajar', async () => {
+    const otherUser = '550e8400-e29b-41d4-a716-446655440002';
+    seedTag('550e8400-e29b-41d4-a716-446655440010', 'Desayuno', 0);
+    seedTag('550e8400-e29b-41d4-a716-446655440011', 'Comida', 1);
+    seedTag('550e8400-e29b-41d4-a716-446655440012', 'Cena', 3);
+
+    await repo.save(Tag.create('550e8400-e29b-41d4-a716-446655440020', otherUser, 'Comida', TagDimension.MOMENTO_DIA, true, 'COMIDA', 2));
+    await repo.save(Tag.create('550e8400-e29b-41d4-a716-446655440021', otherUser, 'Desayuno', TagDimension.MOMENTO_DIA, true, 'DESAYUNO', 2));
+    await repo.save(Tag.create('550e8400-e29b-41d4-a716-446655440022', otherUser, 'Cena', TagDimension.MOMENTO_DIA, true, 'CENA', 4));
+
+    await useCase.execute('550e8400-e29b-41d4-a716-446655440011');
+
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440011'))!.getOrder()).toBe(3);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440012'))!.getOrder()).toBe(1);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440010'))!.getOrder()).toBe(0);
+
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440020'))!.getOrder()).toBe(2);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440021'))!.getOrder()).toBe(2);
+    expect((await repo.findById('550e8400-e29b-41d4-a716-446655440022'))!.getOrder()).toBe(4);
+  });
 });

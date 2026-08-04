@@ -12,6 +12,7 @@ export default function TagRow({
   isLast,
   canMoveUp,
   canMoveDown,
+  order,
 }: {
   id: string;
   name: string;
@@ -20,6 +21,7 @@ export default function TagRow({
   isLast: boolean;
   canMoveUp?: boolean;
   canMoveDown?: boolean;
+  order?: number;
 }) {
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(name);
@@ -91,6 +93,11 @@ export default function TagRow({
         ) : (
           <>
             <div className="flex items-center gap-2">
+              {order !== undefined && (
+                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-md bg-[#0F172B]/5 px-1.5 text-[11px] font-semibold tabular-nums text-[#4F617B]">
+                  {order}
+                </span>
+              )}
               <span className="text-sm text-[#0F172B]">{name}</span>
               {isSystem && (
                 <span className="rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-[#4F617B]">

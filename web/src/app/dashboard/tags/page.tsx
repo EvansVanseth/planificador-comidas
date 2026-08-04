@@ -103,6 +103,7 @@ export default async function TagsPage() {
                         isSystem={tag.isSystem}
                         userId={userId}
                         isLast={index === dimensionTags.length - 1}
+                        order={isMoment ? tag.order ?? 0 : undefined}
                         {...(isMoment
                           ? {
                               canMoveUp: index > 0,
