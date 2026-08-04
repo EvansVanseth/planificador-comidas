@@ -14,7 +14,7 @@ export default async function PantryTabContent({ planning, planningId }: Props) 
   if (!userId) notFound();
 
   const c = getContainer();
-  const neededIngredients = await c.getNeededIngredients.execute(planningId);
+  const neededIngredients = await c.getPantryView.execute(planningId);
 
   return <PantryView planning={planning} neededIngredients={neededIngredients} />;
 }

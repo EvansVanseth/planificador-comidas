@@ -20,6 +20,12 @@ import { PostgresIngredientRepository } from './repositories/postgres-ingredient
 import { PostgresRecipeRepository } from './repositories/postgres-recipe.repository';
 import { PostgresUserRepository } from './repositories/postgres-user.repository';
 import { PostgresPlanningRepository } from './repositories/postgres-planning.repository';
+import { PostgresPlanningFlatReadRepository } from './repositories/read-models/postgres-planning-flat-read.repository';
+import { PostgresRecipeFlatReadRepository } from './repositories/read-models/postgres-recipe-flat-read.repository';
+import { PostgresIngredientFlatReadRepository } from './repositories/read-models/postgres-ingredient-flat-read.repository';
+import { InMemoryPlanningFlatReadRepository } from './repositories/read-models/in-memory-planning-flat-read.repository';
+import { InMemoryRecipeFlatReadRepository } from './repositories/read-models/in-memory-recipe-flat-read.repository';
+import { InMemoryIngredientFlatReadRepository } from './repositories/read-models/in-memory-ingredient-flat-read.repository';
 //Use-cases
 import { CreatePlanningUseCase } from '@/application/planning/create-planning.use-case';
 import { AssignMealUseCase } from '@/application/planning/assign-meal.use-case';
@@ -40,6 +46,11 @@ import { AutoScheduleUseCase } from '@/application/planning/auto-schedule.use-ca
 import { GreedyPlanner } from '@/infrastructure/planner/greedy-planner';
 import { GetNeededIngredientsUseCase } from '@/application/planning/get-needed-ingredients.use-case';
 import { GetShoppingListUseCase } from '@/application/planning/get-shopping-list.use-case';
+import { GetPantryViewUseCase } from '@/application/planning/get-pantry-view.use-case';
+import { GetShoppingListViewUseCase } from '@/application/planning/get-shopping-list-view.use-case';
+import { PlanningFlatReadRepository } from '@/domain/planning/repositories/planning-flat-read-repository.interface';
+import { RecipeFlatReadRepository } from '@/domain/recipes/repositories/recipe-flat-read-repository.interface';
+import { IngredientFlatReadRepository } from '@/domain/ingredients/repositories/ingredient-flat-read-repository.interface';
 import { AddPantryItemUseCase } from '@/application/planning/add-pantry-item.use-case';
 import { RemovePantryItemUseCase } from '@/application/planning/remove-pantry-item.use-case';
 import { MarkPantryItemAvailableUseCase } from '@/application/planning/mark-pantry-item-available.use-case';
@@ -106,6 +117,8 @@ export interface IContainer {
   bulkAddMissingService: BulkAddMissingServiceUseCase;
   getNeededIngredients: GetNeededIngredientsUseCase;
   getShoppingList: GetShoppingListUseCase;
+  getPantryView: GetPantryViewUseCase;
+  getShoppingListView: GetShoppingListViewUseCase;
   addPantryItem: AddPantryItemUseCase;
   removePantryItem: RemovePantryItemUseCase;
   markPantryItemAvailable: MarkPantryItemAvailableUseCase;
@@ -150,6 +163,9 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
   let ingredientRepository: IngredientRepository;
   let recipeRepository: RecipeRepository;
   let userRepository: UserRepository;
+  let planningFlatReadRepository: PlanningFlatReadRepository;
+  let recipeFlatReadRepository: RecipeFlatReadRepository;
+  let ingredientFlatReadRepository: IngredientFlatReadRepository;
 
   switch (mode) {
     case 'file':
@@ -158,6 +174,9 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
       ingredientRepository = new FileIngredientRepository('ingredients-db.json');
       recipeRepository = new FileRecipeRepository('recipes-db.json');
       userRepository = new FileUserRepository('users-db.json');
+      planningFlatReadRepository = new InMemoryPlanningFlatReadRepository(planningRepository);
+      recipeFlatReadRepository = new InMemoryRecipeFlatReadRepository(recipeRepository);
+      ingredientFlatReadRepository = new InMemoryIngredientFlatReadRepository(ingredientRepository);
       break;
     case 'postgres':
       tagRepository = new PostgresTagRepository();
@@ -165,6 +184,9 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
       ingredientRepository = new PostgresIngredientRepository();
       recipeRepository = new PostgresRecipeRepository();
       userRepository = new PostgresUserRepository();
+      planningFlatReadRepository = new PostgresPlanningFlatReadRepository();
+      recipeFlatReadRepository = new PostgresRecipeFlatReadRepository();
+      ingredientFlatReadRepository = new PostgresIngredientFlatReadRepository();
       break;
     case 'memory':
     default:
@@ -173,6 +195,9 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
       ingredientRepository = new InMemoryIngredientRepository();
       recipeRepository = new InMemoryRecipeRepository();
       userRepository = new InMemoryUserRepository();
+      planningFlatReadRepository = new InMemoryPlanningFlatReadRepository(planningRepository);
+      recipeFlatReadRepository = new InMemoryRecipeFlatReadRepository(recipeRepository);
+      ingredientFlatReadRepository = new InMemoryIngredientFlatReadRepository(ingredientRepository);
       break;
   }
 
@@ -200,6 +225,8 @@ export const createContainer = (mode: RepositoryType = 'memory') => {
     clearAllRecipes: new ClearAllRecipesUseCase(planningRepository),
     getNeededIngredients: new GetNeededIngredientsUseCase(planningRepository, recipeRepository, ingredientRepository),
     getShoppingList: new GetShoppingListUseCase(planningRepository, recipeRepository, ingredientRepository),
+    getPantryView: new GetPantryViewUseCase(planningFlatReadRepository, recipeFlatReadRepository, ingredientFlatReadRepository),
+    getShoppingListView: new GetShoppingListViewUseCase(planningFlatReadRepository, recipeFlatReadRepository, ingredientFlatReadRepository),
     addPantryItem: new AddPantryItemUseCase(planningRepository),
     removePantryItem: new RemovePantryItemUseCase(planningRepository),
     markPantryItemAvailable: new MarkPantryItemAvailableUseCase(planningRepository),

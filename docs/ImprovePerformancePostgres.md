@@ -149,6 +149,14 @@ autoplanificador).
 - Las pantallas de Despensa y Lista de la compra dejan de instanciar aggregates para pintar filas.
 - Métricas de red/BD/payload menores.
 
+> **Estado (Fase C): COMPLETA** — read-models flat (`PlanningFlatReadRepository`,
+> `RecipeFlatReadRepository`, `IngredientFlatReadRepository`) con selects planos en SQL,
+> consumidos por `GetPantryViewUseCase` y `GetShoppingListViewUseCase`. Los tabs de
+> Despensa/Lista de la web usan estos use-cases y ya no materializan el aggregate de planning
+> ni los de receta (sin `include` de tags). La proyección común vive en
+> `needed-ingredients.projection.ts` (`projectNeededIngredients` pura). El CLI conserva la ruta
+> agregada. 525 tests verdes (incl. integración flat-read); `tsc --noEmit` limpio en root y web.
+
 ---
 
 ## Notas

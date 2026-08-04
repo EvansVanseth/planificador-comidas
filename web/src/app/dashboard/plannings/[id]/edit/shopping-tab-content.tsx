@@ -14,7 +14,7 @@ export default async function ShoppingTabContent({ planning, planningId }: Props
   if (!userId) notFound();
 
   const c = getContainer();
-  const shoppingList = await c.getShoppingList.execute(planningId);
+  const shoppingList = await c.getShoppingListView.execute(planningId);
 
   return <ShoppingView planning={planning} shoppingList={shoppingList} />;
 }
