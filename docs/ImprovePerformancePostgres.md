@@ -84,6 +84,10 @@ cambiado, sin reescribir en aggregate entero.
 - Integration tests de `planningPantryItem`/`shoppingItem` en postgres.
 - Medir reducción de queries SQL por toggle.
 
+> **Estado (Fase A): COMPLETA** — implementados los 5 métodos granulares + use-cases y el
+> `save()` transaccional por diffs. 506 tests verdes (1 fallo preexistente de `findByName`,
+> pendiente de Fase B3). Revisión manual de rendimiento pendiente antes de iniciar Fase B.
+
 ---
 
 ## Fase B — Lecturas lean (sin N+1 ni carga innecesaria)
