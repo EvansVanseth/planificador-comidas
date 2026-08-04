@@ -1,5 +1,6 @@
 import { PlanningRepository } from "@/domain/planning/repositories/planning-repository.interface";
 import { Planning } from "@/domain/planning/aggregates/planning.aggregate";
+import { randomUUID } from 'crypto';
 
 export class InMemoryPlanningRepository implements PlanningRepository {
   private plannings: Map<string, Planning> = new Map();
@@ -23,6 +24,36 @@ export class InMemoryPlanningRepository implements PlanningRepository {
 
   async save(planning: Planning): Promise<void> {
     this.plannings.set(planning.getId(), planning);
+  }
+
+  async setPantryItemCovers(planningId: string, ingredientId: string, covers: number): Promise<void> {
+    const planning = this.plannings.get(planningId);
+    if (!planning) return;
+
+    const exists = planning.getPantryItems().some(p => p.getIngredientId() === ingredientId);
+    if (!exists && covers > 0) {
+      planning.addPantryItem(randomUUID(), ingredientId);
+    }
+    if (exists || covers > 0) {
+      planning.updatePantryItemCovers(ingredientId, covers);
+    }
+  }
+
+  async setShoppingItemCompleted(planningId: string, ingredientId: string, completed: boolean): Promise<void> {
+    const planning = this.plannings.get(planningId);
+    if (!planning) return;
+
+    const exists = planning.getShoppingItems().some(s => s.getIngredientId() === ingredientId);
+    if (!exists && completed) {
+      planning.addShoppingItem(randomUUID(), ingredientId);
+    }
+    if (exists) {
+      if (completed) {
+        planning.markShoppingItemAsCompleted(ingredientId);
+      } else {
+        planning.markShoppingItemAsPending(ingredientId);
+      }
+    }
   }
 
   async delete(id: string): Promise<void> {

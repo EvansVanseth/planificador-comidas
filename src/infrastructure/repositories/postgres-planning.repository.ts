@@ -138,6 +138,47 @@ export class PostgresPlanningRepository implements PlanningRepository {
     }
   }
 
+  async setPantryItemCovers(planningId: string, ingredientId: string, covers: number): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      const { count } = await tx.planningPantryItem.updateMany({
+        where: { planningId, ingredientId },
+        data: { available: false, covers },
+      });
+
+      if (count === 0 && covers > 0) {
+        await tx.planningPantryItem.create({
+          data: {
+            id: randomUUID(),
+            planningId,
+            ingredientId,
+            available: false,
+            covers,
+          },
+        });
+      }
+    });
+  }
+
+  async setShoppingItemCompleted(planningId: string, ingredientId: string, completed: boolean): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      const { count } = await tx.planningShoppingItem.updateMany({
+        where: { planningId, ingredientId },
+        data: { completed },
+      });
+
+      if (count === 0 && completed) {
+        await tx.planningShoppingItem.create({
+          data: {
+            id: randomUUID(),
+            planningId,
+            ingredientId,
+            completed,
+          },
+        });
+      }
+    });
+  }
+
   async delete(id: string): Promise<void> {
     await this.prisma.planning.delete({ where: { id } }).catch(() => {});
   }

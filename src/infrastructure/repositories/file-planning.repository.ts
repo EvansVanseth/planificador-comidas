@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { randomUUID } from 'crypto';
 import { PlanningRepository } from "@/domain/planning/repositories/planning-repository.interface";
 import { Planning } from "@/domain/planning/aggregates/planning.aggregate";
 
@@ -54,6 +55,44 @@ export class FilePlanningRepository implements PlanningRepository {
 
     const rawData = plannings.map(p => p.toPrimitives());
     
+    fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
+  }
+
+  async setPantryItemCovers(planningId: string, ingredientId: string, covers: number): Promise<void> {
+    const plannings = await this.findAll();
+    const planning = plannings.find(p => p.getId() === planningId);
+    if (!planning) return;
+
+    const exists = planning.getPantryItems().some(p => p.getIngredientId() === ingredientId);
+    if (!exists && covers > 0) {
+      planning.addPantryItem(randomUUID(), ingredientId);
+    }
+    if (exists || covers > 0) {
+      planning.updatePantryItemCovers(ingredientId, covers);
+    }
+
+    const rawData = plannings.map(p => p.toPrimitives());
+    fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
+  }
+
+  async setShoppingItemCompleted(planningId: string, ingredientId: string, completed: boolean): Promise<void> {
+    const plannings = await this.findAll();
+    const planning = plannings.find(p => p.getId() === planningId);
+    if (!planning) return;
+
+    const exists = planning.getShoppingItems().some(s => s.getIngredientId() === ingredientId);
+    if (!exists && completed) {
+      planning.addShoppingItem(randomUUID(), ingredientId);
+    }
+    if (exists) {
+      if (completed) {
+        planning.markShoppingItemAsCompleted(ingredientId);
+      } else {
+        planning.markShoppingItemAsPending(ingredientId);
+      }
+    }
+
+    const rawData = plannings.map(p => p.toPrimitives());
     fs.writeFileSync(this.filePath, JSON.stringify(rawData, null, 2), 'utf-8');
   }
 

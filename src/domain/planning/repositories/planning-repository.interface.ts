@@ -6,5 +6,7 @@ export interface PlanningRepository {
   findAllByUserId(userId: string): Promise<Planning[]>;
   findByName(name: string): Promise<Planning | null>;
   save(planning: Planning | null): Promise<void>;
+  setPantryItemCovers(planningId: string, ingredientId: string, covers: number): Promise<void>;
+  setShoppingItemCompleted(planningId: string, ingredientId: string, completed: boolean): Promise<void>;
   delete(id: string): Promise<void>;
 }
