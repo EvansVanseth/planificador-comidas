@@ -51,6 +51,9 @@ export class GreedyPlanner implements AutoPlanner {
         const tipoId = recipe.tags.find(t => t.dimension === TagDimension.TIPO_PLATO)?.id ?? '';
         score -= (tipoCount.get(tipoId) ?? 0) * 3;
 
+        // Small random perturbation to break ties and add variety across runs
+        score += Math.random() * 0.3 - 0.15;
+
         return { recipe, score };
       });
 
