@@ -19,7 +19,7 @@ export class UpdatePlanningUseCase {
     }
 
     if (input.name !== undefined) {
-      const existing = await this.planningRepository.findByName(input.name);
+      const existing = await this.planningRepository.findByName(input.name, planning.getUserId());
       if (existing && existing.getId() !== input.id) {
         throw new AppError(`Ya existe una planificación con el nombre "${input.name}"`);
       }

@@ -51,17 +51,17 @@ export class PostgresPlanningRepository implements PlanningRepository {
     return rows.map((r: PlanningRow) => this.toDomain(r));
   }
 
-  async findByName(name: string): Promise<Planning | null> {
+  async findByName(name: string, userId: string): Promise<Planning | null> {
     const normalized = name.toLowerCase().trim();
-    const rows = await this.prisma.planning.findMany({
+    const row = await this.prisma.planning.findFirst({
+      where: { name: { equals: normalized, mode: 'insensitive' }, userid: userId },
       include: {
         days: { include: { services: true } },
         pantryItems: true,
         shoppingItems: true,
       },
     });
-    const found = rows.find((r: PlanningRow) => r.name.toLowerCase().trim() === normalized);
-    return found ? this.toDomain(found) : null;
+    return row ? this.toDomain(row) : null;
   }
 
   async save(planning: Planning): Promise<void> {

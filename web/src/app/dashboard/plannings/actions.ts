@@ -22,9 +22,16 @@ export async function createPlanning(formData: FormData) {
 
   const c = getContainer();
   const displayName = name?.trim() || `Planificación ${weeks} semanas`;
-  await c.createPlanning.execute(userId, displayName, startDate, weeks, balance);
+  try {
+    await c.createPlanning.execute(userId, displayName, startDate, weeks, balance);
+    await addToastToQueue('Planificación creada correctamente.');
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Error al crear la planificación';
+    await addToastToQueue(msg, 'error');
+    revalidatePath(PATH);
+    return;
+  }
 
-  await addToastToQueue('Planificación creada correctamente.');
   revalidatePath(PATH);
   redirect(PATH);
 }
