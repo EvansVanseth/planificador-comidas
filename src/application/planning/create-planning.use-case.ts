@@ -7,7 +7,7 @@ export class CreatePlanningUseCase {
   constructor(private planningRepository: PlanningRepository) {}
 
   async execute(userId: string, name: string, startDate: Date | null, weeks: number, hotColdBalance?: number): Promise<string> {
-    const existing = await this.planningRepository.findByName(name);
+    const existing = await this.planningRepository.findByName(name, userId);
     if (existing) {
       throw new AppError(`Ya existe una planificación con el nombre "${name}"`);
     }

@@ -15,7 +15,7 @@ export class DuplicatePlanningUseCase {
 
     let clonedName = `${primitives.name} (Copia)`;
     let counter = 2;
-    while (await this.planningRepository.findByName(clonedName)) {
+    while (await this.planningRepository.findByName(clonedName, userId)) {
       clonedName = `${primitives.name} (Copia ${counter})`;
       counter++;
     }

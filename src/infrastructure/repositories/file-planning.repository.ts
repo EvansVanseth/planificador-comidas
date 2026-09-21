@@ -32,9 +32,9 @@ export class FilePlanningRepository implements PlanningRepository {
     return (await this.findAll()).filter(p => p.getUserId() === userId);
   }
 
-  async findByName(name: string): Promise<Planning | null> {
+  async findByName(name: string, userId: string): Promise<Planning | null> {
     const normalized = name.toLowerCase().trim();
-    return (await this.findAll()).find(p => p.getName().toLowerCase().trim() === normalized) ?? null;
+    return (await this.findAllByUserId(userId)).find(p => p.getName().toLowerCase().trim() === normalized) ?? null;
   }
 
   async findById(id: string): Promise<Planning | null> {
